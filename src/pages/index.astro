@@ -1,17 +1,341 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EstimateForm from '../components/EstimateForm.astro';
 
+const whyChooseUsItems = [
+  {
+    paths: [
+      'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z',
+      'm9 12 2 2 4-4',
+    ],
+    title: 'Project Guidance',
+    description:
+      'Get clear next-step help for removal, trimming, stump work, and storm-related tree concerns.',
+  },
+  {
+    paths: [
+      'M12 21s6-4.35 6-10a6 6 0 1 0-12 0c0 5.65 6 10 6 10Z',
+      'M12 11.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5Z',
+    ],
+    title: 'Parrish Focus',
+    description:
+      'Built around the kinds of property questions homeowners in Parrish and nearby areas ask most often.',
+  },
+  {
+    paths: [
+      'M9 3h6l1.1 2H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3.9L9 3Z',
+      'M12 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z',
+    ],
+    title: 'Fast Estimate Starts',
+    description:
+      'Photos, notes, and location details can be reviewed quickly so the request moves in the right direction.',
+  },
+  {
+    paths: [
+      'M12 22v-6',
+      'M12 16c0-3 2.2-5.4 5.2-6.7',
+      'M12 16c0-3-2.2-5.4-5.2-6.7',
+      'M12 10c1.5-3.2 4.2-5 8-5-1 4.6-3.9 7.3-8 7.8',
+      'M12 10C10.5 6.8 7.8 5 4 5c1 4.6 3.9 7.3 8 7.8',
+    ],
+    title: 'Service Variety',
+    description:
+      'One request can cover cleanup, pruning, stump work, or a full tree removal conversation.',
+  },
+];
+
+const processSteps = [
+  {
+    paths: [
+      'M8 6h8',
+      'M8 10h8',
+      'M8 14h5',
+      'M7 3h10a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2V5a2 2 0 0 1 2-2Z',
+    ],
+    title: 'Request Your Estimate',
+    description: 'Send a few details about the tree, the property, and the kind of help you need.',
+  },
+  {
+    paths: [
+      'M4 7h4l2-3h4l2 3h4v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z',
+      'M12 16a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5Z',
+    ],
+    title: 'Share Photos Or Notes',
+    description: 'Optional pictures and quick notes help clarify access, size, and any urgency.',
+  },
+  {
+    paths: [
+      'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z',
+      'M8 9h8',
+      'M8 13h5',
+    ],
+    title: 'Review The Best Next Step',
+    description: 'You get follow-up on removal, trimming, cleanup, or stump options that fit the request.',
+  },
+  {
+    paths: [
+      'M7 3v3',
+      'M17 3v3',
+      'M4 8h16',
+      'M5 5h14a1 1 0 0 1 1 1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1Z',
+      'm9 14 2 2 4-4',
+    ],
+    title: 'Move Toward Scheduling',
+    description: 'Once the scope is clear, the project can move into quoting and scheduling discussion.',
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Parrish Tree Removal | Tree Removal, Trimming, and Storm Cleanup in Parrish, FL"
+  description="Request a free estimate for tree removal, tree trimming, stump grinding, and storm cleanup in Parrish, Florida."
+>
+  <section class="page-hero">
+    <div class="hero-bleed">
+      <img
+        src="/images/hero-image.png"
+        alt="Tree service crew cutting and loading storm-damaged wood in a residential yard"
+        class="hero-image"
+        loading="eager"
+        decoding="async"
+      />
+
+      <div class="hero-copy">
+        <h1>
+          <span class="hero-accent">Professional</span>
+          <span class="hero-line">Tree Removal Services</span>
+        </h1>
+        <p class="hero-subcopy">
+          Free estimate help for tree removal, trimming, stump grinding, and storm
+          cleanup projects across Parrish and nearby communities.
+        </p>
+      </div>
+
+      <div class="hero-cta-wrap">
+        <button type="button" class="hero-cta" data-open-estimate-modal>Get Free Estimate</button>
+      </div>
+    </div>
+
+    <div class="badge-row" aria-label="Helpful project highlights">
+      <span>Clear estimate guidance</span>
+      <span>Fast follow-up options</span>
+      <span>Flexible project support</span>
+      <span>Helpful next-step planning</span>
+    </div>
+  </section>
+
+  <div class="page-shell">
+    <section id="services" class="page-section">
+      <div class="clone-heading">
+        <span class="clone-kicker">Our Services</span>
+      </div>
+
+      <p class="section-lead">
+        Tree service support for common residential property needs in and around
+        Parrish, Florida.
+      </p>
+
+      <div class="service-grid">
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">🪵</div>
+          <h3>Tree Removal</h3>
+          <p>Get help with damaged, unwanted, or difficult trees that may need removal.</p>
+          <a href="/tree-removal" class="service-link">Learn More</a>
+        </article>
+
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">🌳</div>
+          <h3>Tree Trimming</h3>
+          <p>Review trimming and pruning options for overgrowth, clearance, and upkeep.</p>
+          <a href="/tree-trimming" class="service-link">Learn More</a>
+        </article>
+
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">🚜</div>
+          <h3>Stump Grinding</h3>
+          <p>See how stump work can help finish a yard after a tree is already down.</p>
+          <a href="/stump-grinding" class="service-link">Learn More</a>
+        </article>
+
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">⛈️</div>
+          <h3>Storm Cleanup</h3>
+          <p>Learn what details matter after fallen limbs, debris, or weather damage.</p>
+          <a href="/emergency-tree-service" class="service-link">Learn More</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="page-section page-section-emphasis section-clone-showcase">
+      <div class="clone-heading">
+        <span class="clone-kicker">Why Choose Us</span>
+        <h3 class="clone-subtitle">Trusted Tree Care Support For Parrish Properties</h3>
+        <p class="section-lead clone-intro">
+          Parrish Tree Removal is built to make estimate requests easier to start,
+          easier to understand, and easier to move forward.
+        </p>
+      </div>
+
+      <div class="clone-value-grid">
+        {whyChooseUsItems.map((item) => (
+          <article class="clone-value-card">
+            <div class="clone-value-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                {item.paths.map((path) => (
+                  <path d={path}></path>
+                ))}
+              </svg>
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="page-section page-section-emphasis section-clone-showcase">
+      <div class="clone-heading">
+        <span class="clone-kicker">How It Works</span>
+        <h2 class="section-title-reveal">Our Process</h2>
+      </div>
+
+      <div class="clone-process-list">
+        {processSteps.map((step) => (
+          <article class="clone-process-card">
+            <div class="clone-process-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                {step.paths.map((path) => (
+                  <path d={path}></path>
+                ))}
+              </svg>
+            </div>
+            <div class="clone-process-copy">
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="estimate-cta" class="page-section estimate-cta-section">
+      <div class="estimate-cta-card">
+        <span class="clone-kicker">Free Estimate</span>
+        <h2>Ready To Talk About Your Tree Project?</h2>
+        <p>
+          Tell us what is going on at the property and request the next best step for
+          tree removal, trimming, stump work, or storm cleanup.
+        </p>
+        <button type="button" class="btn-primary" data-open-estimate-modal>Get Estimate</button>
+      </div>
+    </section>
+
+    <section id="faq" class="page-section">
+      <div class="clone-heading">
+        <span class="clone-kicker">FAQ</span>
+      </div>
+
+      <div class="faq-list">
+        <article class="faq-item">
+          <h3>What details should I include in an estimate request?</h3>
+          <p>
+            The most helpful details are the tree location, approximate size, access
+            conditions, photos if available, and whether there is anything urgent.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Can one request include more than one service?</h3>
+          <p>
+            Yes. Many projects involve a combination of removal, trimming, stump work,
+            and cleanup planning.
+          </p>
+        </article>
+
+        <article class="faq-item">
+          <h3>Do you cover nearby cities outside Parrish?</h3>
+          <p>
+            Nearby communities are commonly included. Sharing the property ZIP code is
+            a quick way to confirm whether the location fits the service area.
+          </p>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <section class="estimate-modal" data-estimate-modal aria-hidden="true">
+    <div class="estimate-modal-scrim" data-close-estimate-modal></div>
+    <div
+      class="estimate-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="estimate-modal-title"
+    >
+      <button
+        type="button"
+        class="estimate-modal-close"
+        aria-label="Close estimate form"
+        data-close-estimate-modal
+      >
+        Close
+      </button>
+      <EstimateForm
+        heading="Tell us about your tree service project"
+        intro="Share a few project details and request free estimate follow-up for removal, trimming, stump work, or storm cleanup."
+        buttonLabel="Send Estimate Request"
+        headingId="estimate-modal-title"
+      />
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const modal = document.querySelector("[data-estimate-modal]");
+      const openButtons = document.querySelectorAll("[data-open-estimate-modal]");
+      const closeButtons = document.querySelectorAll("[data-close-estimate-modal]");
+      const body = document.body;
+
+      if (!modal || !openButtons.length) return;
+
+      const focusFirstField = () => {
+        const target = modal.querySelector("input, select, textarea, button");
+        if (target instanceof HTMLElement) {
+          window.setTimeout(() => target.focus(), 30);
+        }
+      };
+
+      const openModal = () => {
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        body.classList.add("modal-open");
+        focusFirstField();
+      };
+
+      const closeModal = () => {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        body.classList.remove("modal-open");
+      };
+
+      openButtons.forEach((button) => {
+        button.addEventListener("click", openModal);
+      });
+
+      closeButtons.forEach((button) => {
+        button.addEventListener("click", closeModal);
+      });
+
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
+</BaseLayout>

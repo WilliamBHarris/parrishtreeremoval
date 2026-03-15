@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EstimateForm from '../components/EstimateForm.astro';
+---
+
+<BaseLayout
+  title="Contact Parrish Tree Removal | Free Tree Service Estimate"
+  description="Contact Parrish Tree Removal for a free estimate on tree removal, trimming, stump grinding, and storm cleanup in Parrish, FL."
+>
+  <section class="internal-hero">
+    <div class="internal-hero-shell">
+      <span class="eyebrow">Contact</span>
+      <h1>Request tree service estimate help</h1>
+      <p>
+        Share your project details, the property ZIP code, and the service you need to
+        start the estimate process.
+      </p>
+    </div>
+  </section>
+
+  <div class="page-shell">
+    <section class="page-section">
+      <div class="section-heading">
+        <h2 class="section-title-reveal">Send Project Details</h2>
+      </div>
+
+      <EstimateForm
+        heading="Free estimate request"
+        intro="Use the form below to tell us about removal, trimming, stump work, or storm-related cleanup at your property."
+        buttonLabel="Submit Free Estimate"
+      />
+    </section>
+
+    <section class="page-section">
+      <div class="section-heading">
+        <h2 class="section-title-reveal">Before You Submit</h2>
+      </div>
+
+      <div class="contact-stack">
+        <article class="contact-card">
+          <h3>Photos can help</h3>
+          <p>
+            If possible, note whether the tree is near a structure, fence, driveway,
+            or other obstacle that affects access.
+          </p>
+        </article>
+
+        <article class="contact-card">
+          <h3>Storm-related issues</h3>
+          <p>
+            Mention if debris is blocking access or if a branch appears to be resting
+            on a structure so the urgency is clear.
+          </p>
+        </article>
+
+        <article class="contact-card">
+          <h3>Prefer to call?</h3>
+          <p>
+            The floating phone icon at the bottom-right of the screen is always
+            available as a quick call option.
+          </p>
+        </article>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

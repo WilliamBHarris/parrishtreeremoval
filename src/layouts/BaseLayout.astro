@@ -1,0 +1,133 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  schema?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const {
+  title = 'Parrish Tree Removal | Tree Removal and Trimming in Parrish, FL',
+  description = 'Tree removal, trimming, stump grinding, and storm cleanup information for homeowners in Parrish, Florida.',
+  schema
+} = Astro.props;
+
+const siteUrl = Astro.site?.toString() ?? 'https://parrishtreeremoval.com';
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const schemaList = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Parrish Tree Removal',
+    url: siteUrl
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: title,
+    url: canonical,
+    areaServed: ['Parrish, FL', 'Bradenton, FL', 'Palmetto, FL', 'Lakewood Ranch, FL'],
+    serviceType: 'Tree removal, trimming, stump grinding, and storm cleanup',
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Parrish Tree Removal',
+      url: siteUrl,
+      telephone: '+1-800-555-0199'
+    },
+    description
+  },
+  ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Parrish Tree Removal" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={JSON.stringify(schemaList)}></script>
+  </head>
+  <body>
+    <div id="site-top" aria-hidden="true"></div>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <a
+      href="tel:+18005550199"
+      class="sticky-call-fab"
+      aria-label="Call now"
+      style="position:fixed;right:10px;bottom:84px;z-index:2147483647;display:inline-flex;align-items:center;justify-content:center;width:62px;height:62px;border-radius:999px;background:linear-gradient(180deg, #89a228 0%, #677f12 100%);color:#ffffff;border:1px solid rgba(34, 49, 55, 0.12);box-shadow:0 16px 30px rgba(34, 49, 55, 0.22);text-decoration:none;"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        focusable="false"
+        style="display:block;width:26px;height:26px;fill:currentColor;"
+      >
+        <path
+          d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+          fill="currentColor"
+        ></path>
+      </svg>
+    </a>
+
+    <script is:inline>
+      (() => {
+        const setupRevealObserver = () => {
+          const revealTargets = document.querySelectorAll(".section-title-reveal");
+          const slideTargets = document.querySelectorAll(".page-section, .internal-hero");
+
+          if (!revealTargets.length && !slideTargets.length) return;
+
+          const revealTarget = (entry) => {
+            entry.target.classList.add("is-visible");
+          };
+
+          if (!("IntersectionObserver" in window)) {
+            revealTargets.forEach((target) => revealTarget({ target }));
+            slideTargets.forEach((target) => revealTarget({ target }));
+            return;
+          }
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                revealTarget(entry);
+                observer.unobserve(entry.target);
+              });
+            },
+            { threshold: 0.18, rootMargin: "0px 0px -48px 0px" }
+          );
+
+          revealTargets.forEach((target) => observer.observe(target));
+          slideTargets.forEach((target) => observer.observe(target));
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", setupRevealObserver, { once: true });
+        } else {
+          setupRevealObserver();
+        }
+      })();
+    </script>
+  </body>
+</html>
