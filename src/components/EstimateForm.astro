@@ -8,11 +8,11 @@ interface Props {
 }
 
 const {
-  heading = 'Request A Free Estimate',
-  intro = 'Share your project details and we will follow up with the next best step for your property.',
-  buttonLabel = 'Submit Estimate Request',
-  serviceLabel = 'Service Needed',
-  headingId
+  heading = "Request A Free Estimate",
+  intro = "Share your project details and we will follow up with the next best step for your property.",
+  buttonLabel = "Submit Estimate Request",
+  serviceLabel = "Service Needed",
+  headingId,
 } = Astro.props;
 ---
 
@@ -22,12 +22,24 @@ const {
     <p>{intro}</p>
   </div>
 
-  <form class="form-grid estimate-form" method="post" action="/api/estimate" data-estimate-form novalidate>
+  <form
+    class="form-grid estimate-form"
+    method="post"
+    action="/api/estimate.php"
+    data-estimate-form
+    novalidate
+  >
     <input type="hidden" name="website" value="" autocomplete="off" />
 
     <label>
       Name
-      <input type="text" name="name" placeholder="Your name" required autocomplete="name" />
+      <input
+        type="text"
+        name="name"
+        placeholder="Your name"
+        required
+        autocomplete="name"
+      />
     </label>
 
     <label>
@@ -54,7 +66,12 @@ const {
 
     <label>
       ZIP Code
-      <input type="text" name="zip" placeholder="Parrish-area ZIP code" required />
+      <input
+        type="text"
+        name="zip"
+        placeholder="Parrish-area ZIP code"
+        required
+      />
     </label>
 
     <label>
@@ -65,7 +82,9 @@ const {
         <option value="Tree Trimming">Tree Trimming</option>
         <option value="Stump Grinding">Stump Grinding</option>
         <option value="Storm Cleanup">Storm Cleanup</option>
-        <option value="General Estimate Request">General Estimate Request</option>
+        <option value="General Estimate Request"
+          >General Estimate Request</option
+        >
       </select>
     </label>
 
@@ -74,11 +93,12 @@ const {
       <textarea
         name="details"
         placeholder="Describe the tree, the property location, and anything urgent or access-related."
-        required
-      ></textarea>
+        required></textarea>
     </label>
 
-    <button type="submit" class="btn-primary" data-submit-button>{buttonLabel}</button>
+    <button type="submit" class="btn-primary" data-submit-button
+      >{buttonLabel}</button
+    >
     <p class="form-status" data-form-status aria-live="polite"></p>
   </form>
 </div>
@@ -101,12 +121,13 @@ const {
         if (!(form instanceof HTMLFormElement)) return;
         if (!form.reportValidity()) return;
 
-        const rawAction = form.getAttribute("action") || "/api/estimate";
+        const rawAction = form.getAttribute("action") || "/api/estimate.php";
         const submitUrl = new URL(rawAction, window.location.origin);
 
         if (submitUrl.origin !== window.location.origin) {
           if (status instanceof HTMLElement) {
-            status.textContent = "The form is pointing to an unexpected URL. Please refresh and try again.";
+            status.textContent =
+              "The form is pointing to an unexpected URL. Please refresh and try again.";
             status.className = "form-status is-error";
           }
           return;
@@ -130,8 +151,8 @@ const {
             method: "POST",
             body: formData,
             headers: {
-              Accept: "application/json"
-            }
+              Accept: "application/json",
+            },
           });
 
           const text = await response.text();
@@ -142,18 +163,21 @@ const {
           } catch {
             result = {
               success: false,
-              message: text || "The server returned an unexpected response."
+              message: text || "The server returned an unexpected response.",
             };
           }
 
           if (!response.ok || result.success !== true) {
-            throw new Error(result.message || "Unable to send your request right now.");
+            throw new Error(
+              result.message || "Unable to send your request right now.",
+            );
           }
 
           form.reset();
 
           if (status instanceof HTMLElement) {
-            status.textContent = result.message || "Your request was submitted successfully.";
+            status.textContent =
+              result.message || "Your request was submitted successfully.";
             status.className = "form-status is-success";
           }
         } catch (error) {
@@ -161,7 +185,7 @@ const {
 
           if (error instanceof TypeError) {
             message =
-              "The request could not reach the server. Make sure the Astro app is running and check the terminal for server-side errors.";
+              "The request could not reach the server. Please try again in a moment.";
           } else if (error instanceof Error) {
             message = error.message;
           }
