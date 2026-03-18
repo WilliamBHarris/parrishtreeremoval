@@ -1,48 +1,9 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EstimateForm from '../components/EstimateForm.astro';
-
-const whyChooseUsItems = [
-  {
-    paths: [
-      'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z',
-      'm9 12 2 2 4-4',
-    ],
-    title: 'Project Guidance',
-    description:
-      'Get clear next-step help for removal, trimming, stump work, and storm-related tree concerns.',
-  },
-  {
-    paths: [
-      'M12 21s6-4.35 6-10a6 6 0 1 0-12 0c0 5.65 6 10 6 10Z',
-      'M12 11.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5Z',
-    ],
-    title: 'Parrish Focus',
-    description:
-      'Built around the kinds of property questions homeowners in Parrish and nearby areas ask most often.',
-  },
-  {
-    paths: [
-      'M9 3h6l1.1 2H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3.9L9 3Z',
-      'M12 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z',
-    ],
-    title: 'Fast Estimate Starts',
-    description:
-      'Photos, notes, and location details can be reviewed quickly so the request moves in the right direction.',
-  },
-  {
-    paths: [
-      'M12 22v-6',
-      'M12 16c0-3 2.2-5.4 5.2-6.7',
-      'M12 16c0-3-2.2-5.4-5.2-6.7',
-      'M12 10c1.5-3.2 4.2-5 8-5-1 4.6-3.9 7.3-8 7.8',
-      'M12 10C10.5 6.8 7.8 5 4 5c1 4.6 3.9 7.3 8 7.8',
-    ],
-    title: 'Service Variety',
-    description:
-      'One request can cover cleanup, pruning, stump work, or a full tree removal conversation.',
-  },
-];
+import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
+import heroImage from '../assets/hero-image.png';
 
 const processSteps = [
   {
@@ -87,27 +48,32 @@ const processSteps = [
 ---
 
 <BaseLayout
-  title="Parrish Tree Removal | Tree Removal, Trimming, and Storm Cleanup in Parrish, FL"
-  description="Request a free estimate for tree removal, tree trimming, stump grinding, and storm cleanup in Parrish, Florida."
+  title="Tree Removal, Tree Trimming, and Stump Grinding in Parrish, FL | Parrish Tree Removal"
+  description="Request a free estimate for tree removal, tree trimming, stump grinding, and storm cleanup in Parrish, FL."
+  ogImage="/images/parrish-service-area-map.svg"
 >
   <section class="page-hero">
     <div class="hero-bleed">
-      <img
-        src="/images/hero-image.png"
+      <Image
+        src={heroImage}
         alt="Tree service crew cutting and loading storm-damaged wood in a residential yard"
         class="hero-image"
         loading="eager"
-        decoding="async"
+        fetchpriority="high"
+        formats={['avif', 'webp']}
+        quality={65}
+        widths={[480, 768, 1024]}
+        sizes="100vw"
       />
 
       <div class="hero-copy">
         <h1>
-          <span class="hero-accent">Professional</span>
-          <span class="hero-line">Tree Removal Services</span>
+          <span class="hero-title-primary">Tree Services</span>
+          <span class="hero-title-secondary">in Parrish FL</span>
         </h1>
         <p class="hero-subcopy">
-          Free estimate help for tree removal, trimming, stump grinding, and storm
-          cleanup projects across Parrish and nearby communities.
+          Free estimate help for tree removal, tree trimming, stump grinding, and
+          storm cleanup projects across Parrish and nearby communities.
         </p>
       </div>
 
@@ -127,7 +93,7 @@ const processSteps = [
   <div class="page-shell">
     <section id="services" class="page-section">
       <div class="clone-heading">
-        <span class="clone-kicker">Our Services</span>
+        <h2 class="clone-kicker section-divider-title">Our Services</h2>
       </div>
 
       <p class="section-lead">
@@ -140,63 +106,37 @@ const processSteps = [
           <div class="service-icon" aria-hidden="true">🪵</div>
           <h3>Tree Removal</h3>
           <p>Get help with damaged, unwanted, or difficult trees that may need removal.</p>
-          <a href="/tree-removal" class="service-link">Learn More</a>
+          <a href="/tree-removal" class="service-link" aria-label="Learn more about tree removal in Parrish, FL">Learn more</a>
         </article>
 
         <article class="service-card">
           <div class="service-icon" aria-hidden="true">🌳</div>
           <h3>Tree Trimming</h3>
           <p>Review trimming and pruning options for overgrowth, clearance, and upkeep.</p>
-          <a href="/tree-trimming" class="service-link">Learn More</a>
+          <a href="/tree-trimming" class="service-link" aria-label="Learn more about tree trimming in Parrish, FL">Learn more</a>
         </article>
 
         <article class="service-card">
           <div class="service-icon" aria-hidden="true">🚜</div>
           <h3>Stump Grinding</h3>
           <p>See how stump work can help finish a yard after a tree is already down.</p>
-          <a href="/stump-grinding" class="service-link">Learn More</a>
+          <a href="/stump-grinding" class="service-link" aria-label="Learn more about stump grinding in Parrish, FL">Learn more</a>
         </article>
 
         <article class="service-card">
           <div class="service-icon" aria-hidden="true">⛈️</div>
           <h3>Storm Cleanup</h3>
           <p>Learn what details matter after fallen limbs, debris, or weather damage.</p>
-          <a href="/emergency-tree-service" class="service-link">Learn More</a>
+          <a href="/emergency-tree-service" class="service-link" aria-label="Learn more about storm cleanup in Parrish, FL">Learn more</a>
         </article>
       </div>
     </section>
 
-    <section class="page-section page-section-emphasis section-clone-showcase">
-      <div class="clone-heading">
-        <span class="clone-kicker">Why Choose Us</span>
-        <h3 class="clone-subtitle">Trusted Tree Care Support For Parrish Properties</h3>
-        <p class="section-lead clone-intro">
-          Parrish Tree Removal is built to make estimate requests easier to start,
-          easier to understand, and easier to move forward.
-        </p>
-      </div>
-
-      <div class="clone-value-grid">
-        {whyChooseUsItems.map((item) => (
-          <article class="clone-value-card">
-            <div class="clone-value-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                {item.paths.map((path) => (
-                  <path d={path}></path>
-                ))}
-              </svg>
-            </div>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </article>
-        ))}
-      </div>
-    </section>
+    <HomepageWhyChoose />
 
     <section class="page-section page-section-emphasis section-clone-showcase">
       <div class="clone-heading">
-        <span class="clone-kicker">How It Works</span>
-        <h2 class="section-title-reveal">Our Process</h2>
+        <h2 class="clone-kicker section-divider-title">Our Process</h2>
       </div>
 
       <div class="clone-process-list">
@@ -220,8 +160,8 @@ const processSteps = [
 
     <section id="estimate-cta" class="page-section estimate-cta-section">
       <div class="estimate-cta-card">
-        <span class="clone-kicker">Free Estimate</span>
-        <h2>Ready To Talk About Your Tree Project?</h2>
+        <h2 class="clone-kicker section-divider-title">Free Estimate</h2>
+        <p class="estimate-cta-heading">Ready To Talk About Your Tree Project?</p>
         <p>
           Tell us what is going on at the property and request the next best step for
           tree removal, trimming, stump work, or storm cleanup.
@@ -232,7 +172,7 @@ const processSteps = [
 
     <section id="faq" class="page-section">
       <div class="clone-heading">
-        <span class="clone-kicker">FAQ</span>
+        <h2 class="clone-kicker section-divider-title">FAQ</h2>
       </div>
 
       <div class="faq-list">

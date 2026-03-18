@@ -1,38 +1,55 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ServicePageTemplate from '../components/ServicePageTemplate.astro';
 ---
 
 <BaseLayout
-  title="Tree Trimming In Parrish, FL | Parrish Tree Removal"
-  description="Tree trimming and pruning information for homeowners in Parrish, Florida."
+  title="Tree Trimming in Parrish, FL | Parrish Tree Removal"
+  description="Tree trimming in Parrish, FL for branch reduction, canopy shaping, roof clearance, and ongoing property maintenance."
 >
-  <section class="internal-hero">
-    <div class="internal-hero-shell">
-      <span class="eyebrow">Tree Trimming</span>
-      <h1>Tree trimming support for clearance, shape, and maintenance</h1>
-      <p>
-        Trimming requests commonly focus on overhang reduction, shape improvement, and
-        keeping growth away from structures or traffic areas.
-      </p>
-      <div class="inline-actions">
-        <a href="/contact" class="btn-primary">Ask About Trimming</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="page-shell">
-    <section class="page-section">
-      <div class="section-heading">
-        <h2 class="section-title-reveal">Helpful Trimming Details</h2>
-      </div>
-      <div class="page-card">
-        <ul class="list-copy">
-          <li>Which side of the tree needs attention?</li>
-          <li>Is the concern mostly about roof, driveway, or walkway clearance?</li>
-          <li>Are one or several trees involved in the same request?</li>
-          <li>Would cleanup or additional services be needed at the same time?</li>
-        </ul>
-      </div>
-    </section>
-  </div>
+  <ServicePageTemplate
+    heroTitle="Tree Trimming in Parrish, FL"
+    heroIntro="Tree trimming helps manage clearance, shape, and healthy-looking growth around homes, driveways, and walkways."
+    estimateHeading="Free tree trimming estimate"
+    estimateIntro="Describe the branches, roofline, or overgrowth you want addressed so the trimming request can be reviewed quickly."
+    includedLayout="stack"
+    whenYouNeedThisService={[
+      'Branches are hanging over the roof, driveway, pool cage, or sidewalk.',
+      'The canopy looks uneven, too dense, or is pushing into utility clearance zones.',
+      'You want routine maintenance before storm season or after fast growth.',
+      'Several trees on the property need cleanup during the same visit.',
+    ]}
+    whatsIncluded={[
+      { title: 'Review', description: 'Reviewing which sides of the tree need attention and what clearance matters most.' },
+      { title: 'Discuss', description: 'Discussing pruning, shaping, branch reduction, and cleanup as part of one request.' },
+      { title: 'Plan', description: 'Planning whether the trimming should be paired with removal, storm cleanup, or stump work.' },
+    ]}
+    processSteps={[
+      'Submit the property details and explain what branches or areas need the most attention.',
+      'Include photos or notes about roof edges, lanes of access, and the number of trees involved.',
+      'Get follow-up on the scope of the trimming work and the best next step for the property.',
+    ]}
+    relatedServices={[
+      { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
+      { href: '/stump-grinding', label: 'Stump Grinding in Parrish, FL' },
+      { href: '/emergency-tree-service', label: 'Storm Cleanup in Parrish, FL' },
+    ]}
+    faqs={[
+      {
+        question: 'What should I mention in a trimming request?',
+        answer:
+          'Mention which sides of the tree need work, what needs clearance, and whether the concern is maintenance, overgrowth, or storm prep.',
+      },
+      {
+        question: 'Can one visit cover multiple trees?',
+        answer:
+          'Yes. If several trees need trimming in Parrish, FL, include that in the request so the scope is clear from the start.',
+      },
+      {
+        question: 'Is cleanup part of tree trimming?',
+        answer:
+          'Cleanup can be discussed as part of the estimate so the final result matches how you want the yard to look.',
+      },
+    ]}
+  />
 </BaseLayout>

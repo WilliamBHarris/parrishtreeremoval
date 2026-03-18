@@ -1,38 +1,55 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ServicePageTemplate from '../components/ServicePageTemplate.astro';
 ---
 
 <BaseLayout
-  title="Tree Removal In Parrish, FL | Parrish Tree Removal"
-  description="Tree removal information for homeowners in Parrish, Florida dealing with damaged, unwanted, or difficult trees."
+  title="Tree Removal in Parrish, FL | Parrish Tree Removal"
+  description="Tree removal in Parrish, FL for damaged, hazardous, overgrown, or unwanted trees around homes, driveways, and structures."
 >
-  <section class="internal-hero">
-    <div class="internal-hero-shell">
-      <span class="eyebrow">Tree Removal</span>
-      <h1>Tree removal information for changing property conditions</h1>
-      <p>
-        Removal requests often begin when a tree starts affecting safety, access, or
-        long-term plans for the yard.
-      </p>
-      <div class="inline-actions">
-        <a href="/contact" class="btn-primary">Ask About Removal</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="page-shell">
-    <section class="page-section">
-      <div class="section-heading">
-        <h2 class="section-title-reveal">Common Removal Questions</h2>
-      </div>
-      <div class="page-card">
-        <ul class="list-copy">
-          <li>Is the tree dead, leaning, or declining after recent weather?</li>
-          <li>Does it crowd a structure, driveway, fence, or planned yard improvement?</li>
-          <li>Would cleanup or stump work likely be part of the same project?</li>
-          <li>Is access straightforward or limited by gates, ground conditions, or layout?</li>
-        </ul>
-      </div>
-    </section>
-  </div>
+  <ServicePageTemplate
+    heroTitle="Tree Removal in Parrish, FL"
+    heroIntro="Tree removal requests usually start when a tree becomes unsafe, blocks a project, or no longer fits the property."
+    estimateHeading="Free tree removal estimate"
+    estimateIntro="Share the tree location, nearby structures, and any urgency so the next step for tree removal in Parrish, FL is clear."
+    includedLayout="stack"
+    whenYouNeedThisService={[
+      'A tree is dead, leaning, split, or declining after wind and rain.',
+      'Large growth is crowding the roof, driveway, fence line, or pool area.',
+      'You need to clear space for construction, a yard redesign, or safer access.',
+      'A difficult tree is too close to structures for routine maintenance alone.',
+    ]}
+    whatsIncluded={[
+      { title: 'Review', description: 'Reviewing the tree location, access conditions, and nearby structures before quoting the work.' },
+      { title: 'Discuss', description: 'Discussing debris handling, cleanup, and whether stump grinding should be included with the removal.' },
+      { title: 'Plan', description: 'Planning around gates, soft ground, tight side yards, and the property constraints shaping the removal.' },
+    ]}
+    processSteps={[
+      'Send the property address, ZIP code, and a short description of the tree concern.',
+      'Add photos if available so height, access, and nearby structures are easier to review.',
+      'Receive follow-up about the scope, related services, and the best next step toward scheduling.',
+    ]}
+    relatedServices={[
+      { href: '/tree-trimming', label: 'Tree Trimming in Parrish, FL' },
+      { href: '/stump-grinding', label: 'Stump Grinding in Parrish, FL' },
+      { href: '/emergency-tree-service', label: 'Storm Cleanup in Parrish, FL' },
+    ]}
+    faqs={[
+      {
+        question: 'What details help with a tree removal estimate?',
+        answer:
+          'The most useful details are the tree location, approximate size, nearby structures, and whether access is tight or urgent.',
+      },
+      {
+        question: 'Can stump grinding be included with tree removal?',
+        answer:
+          'Yes. Many removal projects also include stump grinding so the yard feels fully cleared when the work is done.',
+      },
+      {
+        question: 'Do photos help for tree removal in Parrish, FL?',
+        answer:
+          'Yes. A few wide and close photos can make the first review much faster, especially when access or storm damage is involved.',
+      },
+    ]}
+  />
 </BaseLayout>

@@ -1,38 +1,55 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ServicePageTemplate from '../components/ServicePageTemplate.astro';
 ---
 
 <BaseLayout
-  title="Stump Grinding In Parrish, FL | Parrish Tree Removal"
-  description="Stump grinding information for Parrish homeowners looking to finish cleanup after a tree has been removed."
+  title="Stump Grinding in Parrish, FL | Parrish Tree Removal"
+  description="Stump grinding in Parrish, FL for leftover stumps after tree removal, yard cleanup, replanting, and better usable space."
 >
-  <section class="internal-hero">
-    <div class="internal-hero-shell">
-      <span class="eyebrow">Stump Grinding</span>
-      <h1>Stump grinding information for cleaner post-removal results</h1>
-      <p>
-        Stump work often comes up after a removal when the remaining yard still feels
-        unfinished or harder to use.
-      </p>
-      <div class="inline-actions">
-        <a href="/contact" class="btn-primary">Ask About Stump Work</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="page-shell">
-    <section class="page-section">
-      <div class="section-heading">
-        <h2 class="section-title-reveal">What To Include In A Stump Request</h2>
-      </div>
-      <div class="page-card">
-        <ul class="list-copy">
-          <li>Approximate stump width or the size of the removed tree.</li>
-          <li>Nearby fencing, irrigation, patios, or tight access points.</li>
-          <li>Whether the goal is open yard space, replanting, or general cleanup.</li>
-          <li>If there are multiple stumps in different parts of the property.</li>
-        </ul>
-      </div>
-    </section>
-  </div>
+  <ServicePageTemplate
+    heroTitle="Stump Grinding in Parrish, FL"
+    heroIntro="Stump grinding helps finish the yard after tree removal so the space is cleaner, easier to use, and ready for the next step."
+    estimateHeading="Free stump grinding estimate"
+    estimateIntro="Share stump size, access details, and whether the goal is cleanup, replanting, or reclaiming usable yard space."
+    includedLayout="stack"
+    whenYouNeedThisService={[
+      'A leftover stump is making the yard look unfinished after removal.',
+      'You need the area cleared for grass, landscaping, or a future project.',
+      'The stump is in the way of mowing, foot traffic, or driveway access.',
+      'There are multiple stumps across the property that should be handled together.',
+    ]}
+    whatsIncluded={[
+      { title: 'Review', description: 'Reviewing stump size, count, and access points around fences, gates, and patios.' },
+      { title: 'Discuss', description: 'Discussing whether the request is tied to recent tree removal or a longer-standing cleanup need.' },
+      { title: 'Plan', description: 'Planning around irrigation, nearby hardscape, and the final use of the cleared area.' },
+    ]}
+    processSteps={[
+      'Send the stump count, size estimate, and the property ZIP code.',
+      'Include notes about tight access, fencing, irrigation, or patios near the work area.',
+      'Receive follow-up on the scope and whether stump grinding should be paired with another service.',
+    ]}
+    relatedServices={[
+      { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
+      { href: '/tree-trimming', label: 'Tree Trimming in Parrish, FL' },
+      { href: '/services', label: 'Tree Services in Parrish, FL' },
+    ]}
+    faqs={[
+      {
+        question: 'What details help with a stump grinding estimate?',
+        answer:
+          'The most helpful details are the stump width, the number of stumps, and whether access is limited by fencing, gates, or hardscape.',
+      },
+      {
+        question: 'Can stump grinding be requested after an older tree removal?',
+        answer:
+          'Yes. Stump grinding in Parrish, FL is often requested well after the original tree was removed.',
+      },
+      {
+        question: 'Should I mention plans for the area afterward?',
+        answer:
+          'Yes. It helps to know whether the area will be replanted, seeded, landscaped, or simply cleaned up for open yard space.',
+      },
+    ]}
+  />
 </BaseLayout>

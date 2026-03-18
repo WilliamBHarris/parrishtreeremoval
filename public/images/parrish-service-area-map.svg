@@ -1,0 +1,31 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="60" x2="1080" y2="660" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7F2EA"/>
+      <stop offset="1" stop-color="#EBE4D8"/>
+    </linearGradient>
+    <filter id="shadow" x="517" y="146" width="166" height="214" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="18"/>
+      <feGaussianBlur stdDeviation="16"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0588235 0 0 0 0 0.129412 0 0 0 0 0.262745 0 0 0 0.18 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_2"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_2" result="shape"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="720" rx="36" fill="url(#bg)"/>
+  <path d="M143 167C246 151 307 203 385 181C470 157 511 88 602 105C710 126 736 225 845 231C935 236 998 172 1070 195" stroke="#354E56" stroke-opacity=".18" stroke-width="18" stroke-linecap="round"/>
+  <path d="M118 341C223 279 290 375 384 345C453 324 485 264 566 269C679 276 718 401 838 395C949 390 1014 299 1087 329" stroke="#43572E" stroke-opacity=".16" stroke-width="20" stroke-linecap="round"/>
+  <path d="M190 545C255 500 337 497 414 531C492 565 578 570 668 533C770 491 842 481 932 519C980 539 1022 548 1070 538" stroke="#0F2143" stroke-opacity=".14" stroke-width="16" stroke-linecap="round"/>
+  <path d="M350 123L295 192L349 257L435 242L469 166L431 104L350 123Z" fill="#0F2143" fill-opacity=".06"/>
+  <path d="M732 420L662 479L696 558L787 575L848 506L822 430L732 420Z" fill="#43572E" fill-opacity=".08"/>
+  <path d="M858 112L802 168L825 241L904 265L967 209L945 137L858 112Z" fill="#8B6212" fill-opacity=".08"/>
+  <g filter="url(#shadow)">
+    <path d="M600 176C564.654 176 536 204.654 536 240C536 289.333 600 328 600 328C600 328 664 289.333 664 240C664 204.654 635.346 176 600 176Z" fill="#0F2143"/>
+    <circle cx="600" cy="240" r="23" fill="#F7F2EA"/>
+    <circle cx="600" cy="240" r="12" fill="#8B6212"/>
+  </g>
+  <rect x="470" y="555" width="260" height="58" rx="29" fill="#F7F2EA" fill-opacity=".88" stroke="#0F2143" stroke-opacity=".08"/>
+  <text x="600" y="592" text-anchor="middle" fill="#0F2143" font-family="Arial, sans-serif" font-size="26" font-weight="700">Parrish, FL</text>
+</svg>

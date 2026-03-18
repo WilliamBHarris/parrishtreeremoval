@@ -1,0 +1,194 @@
+---
+import EstimateForm from './EstimateForm.astro';
+import HomepageWhyChoose from './HomepageWhyChoose.astro';
+import ServiceAreaMap from './ServiceAreaMap.astro';
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface IncludedItem {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  heroTitle: string;
+  heroIntro: string;
+  estimateHeading: string;
+  estimateIntro: string;
+  whenYouNeedThisService: string[];
+  whatsIncluded: Array<string | IncludedItem>;
+  processSteps: string[];
+  relatedServices: Array<{ href: string; label: string }>;
+  faqs: FaqItem[];
+  whenLayout?: 'list' | 'cards';
+  includedLayout?: 'stack' | 'grid';
+}
+
+const {
+  heroTitle,
+  heroIntro,
+  estimateHeading,
+  estimateIntro,
+  whenYouNeedThisService,
+  whatsIncluded,
+  processSteps,
+  relatedServices,
+  faqs,
+  whenLayout = 'list',
+  includedLayout = 'grid',
+} = Astro.props;
+
+const getVisibleRelatedLabel = (label: string) =>
+  label
+    .replace(' in Parrish, FL', '')
+    .replace('Contact Parrish Tree Removal', 'Contact');
+
+const heroMainTitle = heroTitle.replace(' in Parrish, FL', '');
+const heroLocationTitle = heroTitle.includes(' in Parrish, FL') ? 'in Parrish FL' : '';
+
+const processIcons = [
+  ['M8 6h8', 'M8 10h8', 'M8 14h5', 'M7 3h10a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2V5a2 2 0 0 1 2-2Z'],
+  ['M4 7h4l2-3h4l2 3h4v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z', 'M12 16a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5Z'],
+  ['M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z', 'M8 9h8', 'M8 13h5'],
+];
+---
+
+<section class="page-hero internal-hero service-hero">
+  <div class="hero-bleed subpage-hero-bleed">
+    <div class="hero-copy">
+      <h1>
+        <span class="hero-title-primary">{heroMainTitle}</span>
+        {heroLocationTitle && <span class="hero-title-secondary">{heroLocationTitle}</span>}
+      </h1>
+      <p class="hero-subcopy">{heroIntro}</p>
+    </div>
+    <div class="hero-cta-wrap">
+      <a href="#estimate-form" class="hero-cta">Free Estimate</a>
+    </div>
+  </div>
+</section>
+
+<div class="page-shell">
+  <section class="page-section">
+    <div class="clone-heading">
+      <h2 class="clone-kicker section-divider-title">When You Need This Service</h2>
+    </div>
+    {whenLayout === 'cards' ? (
+      <div class="stack-grid stack-grid-two">
+        {whenYouNeedThisService.map((item) => (
+          <article class="stack-panel">
+            <p>{item}</p>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="page-card when-needed-card">
+        <ul class="list-copy">
+          {whenYouNeedThisService.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    )}
+  </section>
+
+  <section class="page-section">
+    <div class="clone-heading">
+      <h2 class="clone-kicker section-divider-title">What&apos;s Included</h2>
+    </div>
+    <div class:list={['stack-grid', includedLayout === 'grid' && 'stack-grid-two']}>
+      {whatsIncluded.map((item) => (
+        <article class="stack-panel">
+          {typeof item === 'string' ? (
+            <p>{item}</p>
+          ) : (
+            <>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <HomepageWhyChoose />
+
+  <section class="page-section">
+    <div class="clone-heading">
+      <h2 class="clone-kicker section-divider-title">Process</h2>
+    </div>
+    <div class="clone-process-list">
+      {processSteps.map((item, index) => (
+        <article class="clone-process-card">
+          <div class="clone-process-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              {processIcons[index]!.map((path) => (
+                <path d={path}></path>
+              ))}
+            </svg>
+          </div>
+          <div class="clone-process-copy">
+            <h3>Step {index + 1}</h3>
+            <p>{item}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="clone-heading">
+      <h2 class="clone-kicker section-divider-title">Related Services</h2>
+    </div>
+    <div class="service-button-row" role="navigation" aria-label="Related service links">
+      {relatedServices.map((service) => (
+        <a
+          href={service.href}
+          class="subpage-service-button"
+          aria-label={`Go to ${service.label}`}
+        >
+          {getVisibleRelatedLabel(service.label)}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="clone-heading">
+      <h2 class="clone-kicker section-divider-title">FAQ</h2>
+    </div>
+    <div class="faq-list">
+      {faqs.map((item) => (
+        <article class="faq-item">
+          <h3>{item.question}</h3>
+          <p>{item.answer}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="estimate-form" class="page-section">
+    <div class="clone-heading">
+      <h2 class="clone-kicker section-divider-title">Request A Free Estimate</h2>
+    </div>
+    <EstimateForm
+      heading={estimateHeading}
+      intro={estimateIntro}
+      buttonLabel="Submit Free Estimate"
+    />
+  </section>
+
+  <section class="page-section">
+    <div class="clone-heading">
+      <h2 class="clone-kicker section-divider-title">Service Area</h2>
+    </div>
+    <p class="section-lead subpage-section-lead">
+      Parrish Tree Removal serves homeowners in Parrish, FL and nearby communities,
+      including Palmetto, Ellenton, Bradenton, and Lakewood Ranch when the project
+      fits the service area.
+    </p>
+    <ServiceAreaMap />
+  </section>
+</div>

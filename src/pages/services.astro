@@ -1,29 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import EstimateForm from '../components/EstimateForm.astro';
+import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
+import ServiceAreaMap from '../components/ServiceAreaMap.astro';
 ---
 
 <BaseLayout
-  title="Tree Services In Parrish, FL | Parrish Tree Removal"
-  description="Explore tree removal, tree trimming, stump grinding, and storm cleanup services in Parrish, Florida."
+  title="Tree Services in Parrish, FL | Parrish Tree Removal"
+  description="Explore tree removal, tree trimming, stump grinding, and storm cleanup services in Parrish, FL with clear next-step guidance."
 >
-  <section class="internal-hero">
-    <div class="internal-hero-shell">
-      <span class="eyebrow">Services</span>
-      <h1>Tree service options for common property concerns</h1>
-      <p>
-        Explore the main project types homeowners ask about most often in Parrish and
-        nearby communities.
-      </p>
-      <div class="hero-actions">
-        <a href="/contact" class="btn-primary">Request A Free Estimate</a>
+  <section class="page-hero internal-hero service-hero">
+    <div class="hero-bleed subpage-hero-bleed">
+      <div class="hero-copy">
+        <h1>
+          <span class="hero-title-primary">Tree Services</span>
+          <span class="hero-title-secondary">in Parrish FL</span>
+        </h1>
+        <p class="hero-subcopy">
+          Explore the main tree service pages for Parrish, FL and compare which option
+          fits your property conditions best.
+        </p>
+      </div>
+      <div class="hero-cta-wrap">
+        <a href="/contact" class="hero-cta">Free Estimate</a>
       </div>
     </div>
   </section>
 
   <div class="page-shell">
     <section class="page-section">
-      <div class="section-heading">
-        <h2 class="section-title-reveal">Service Categories</h2>
+      <div class="clone-heading">
+        <h2 class="clone-kicker section-divider-title">Our Services</h2>
       </div>
 
       <div class="service-grid">
@@ -31,51 +38,89 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="service-icon" aria-hidden="true">🪵</div>
           <h3>Tree Removal</h3>
           <p>Projects involving damaged, unwanted, unstable, or awkwardly placed trees.</p>
-          <a href="/tree-removal" class="service-link">Open Page</a>
+          <a href="/tree-removal" class="service-link" aria-label="Learn more about tree removal in Parrish, FL">Learn more</a>
         </article>
 
         <article class="service-card">
           <div class="service-icon" aria-hidden="true">🌳</div>
           <h3>Tree Trimming</h3>
           <p>Pruning, shaping, branch reduction, and maintenance planning for growth control.</p>
-          <a href="/tree-trimming" class="service-link">Open Page</a>
+          <a href="/tree-trimming" class="service-link" aria-label="Learn more about tree trimming in Parrish, FL">Learn more</a>
         </article>
 
         <article class="service-card">
           <div class="service-icon" aria-hidden="true">🚜</div>
           <h3>Stump Grinding</h3>
           <p>Post-removal cleanup when a leftover stump still affects the yard.</p>
-          <a href="/stump-grinding" class="service-link">Open Page</a>
+          <a href="/stump-grinding" class="service-link" aria-label="Learn more about stump grinding in Parrish, FL">Learn more</a>
         </article>
 
         <article class="service-card">
           <div class="service-icon" aria-hidden="true">⛈️</div>
           <h3>Storm Cleanup</h3>
           <p>Tree and debris concerns after severe weather, broken limbs, or blocked access.</p>
-          <a href="/emergency-tree-service" class="service-link">Open Page</a>
+          <a href="/emergency-tree-service" class="service-link" aria-label="Learn more about storm cleanup in Parrish, FL">Learn more</a>
         </article>
       </div>
     </section>
 
     <section class="page-section">
-      <div class="section-heading">
-        <h2 class="section-title-reveal">What Helps An Estimate</h2>
+      <div class="clone-heading">
+        <h2 class="clone-kicker section-divider-title">Compare Services</h2>
       </div>
 
       <div class="stack-grid">
-        <article class="stack-panel">
-          <h3>Location on the property</h3>
-          <p>Let the request reflect whether the tree is near the roof, fence, driveway, or pool area.</p>
+        <article class="stack-panel compare-card">
+          <h3>Tree Removal</h3>
+          <p>Best for dead, hazardous, unwanted, or badly placed trees near structures and access points.</p>
         </article>
-        <article class="stack-panel">
-          <h3>Project urgency</h3>
-          <p>It is helpful to know whether the request is routine maintenance or a recent concern.</p>
+        <article class="stack-panel compare-card">
+          <h3>Tree Trimming</h3>
+          <p>Best for overgrowth, roof clearance, branch reduction, shaping, and routine maintenance needs.</p>
         </article>
-        <article class="stack-panel">
-          <h3>Photos if available</h3>
-          <p>Wide yard shots and close photos of the issue can make the next step much clearer.</p>
+        <article class="stack-panel compare-card">
+          <h3>Stump Grinding or Storm Cleanup</h3>
+          <p>Use stump grinding for leftover stumps and storm cleanup for fallen limbs, blocked access, and urgent weather damage.</p>
         </article>
       </div>
+    </section>
+
+    <HomepageWhyChoose />
+
+    <section class="page-section">
+      <div class="clone-heading">
+        <h2 class="clone-kicker section-divider-title">Estimate Tips</h2>
+      </div>
+      <div class="page-card page-card-soft">
+        <ul class="list-copy">
+          <li>Explain where the tree or stump sits on the property.</li>
+          <li>Note whether the issue is routine, urgent, or storm-related.</li>
+          <li>Include photos when possible to clarify scale and access.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="estimate-form" class="page-section">
+      <div class="clone-heading">
+        <h2 class="clone-kicker section-divider-title">Request A Free Estimate</h2>
+      </div>
+      <EstimateForm
+        heading="Free estimate request"
+        intro="Use the form below to request tree removal, trimming, stump grinding, or storm cleanup follow-up in Parrish, FL."
+        buttonLabel="Submit Free Estimate"
+      />
+    </section>
+
+    <section class="page-section">
+      <div class="clone-heading">
+        <h2 class="clone-kicker section-divider-title">Service Area</h2>
+      </div>
+      <p class="section-lead subpage-section-lead">
+        Parrish Tree Removal serves homeowners in Parrish, FL and nearby communities,
+        including Palmetto, Ellenton, Bradenton, and Lakewood Ranch when the project
+        fits the service area.
+      </p>
+      <ServiceAreaMap />
     </section>
   </div>
 </BaseLayout>

@@ -1,38 +1,55 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ServicePageTemplate from '../components/ServicePageTemplate.astro';
 ---
 
 <BaseLayout
-  title="Storm Cleanup And Emergency Tree Service In Parrish, FL | Parrish Tree Removal"
-  description="Storm cleanup and urgent tree service information for homeowners in Parrish, Florida."
+  title="Storm Cleanup in Parrish, FL | Parrish Tree Removal"
+  description="Storm cleanup in Parrish, FL for fallen limbs, blocked driveways, damaged trees, and urgent post-storm property concerns."
 >
-  <section class="internal-hero">
-    <div class="internal-hero-shell">
-      <span class="eyebrow">Storm Cleanup</span>
-      <h1>Storm cleanup and urgent tree issue guidance</h1>
-      <p>
-        Severe weather can change a tree project quickly. Clear notes about access,
-        debris, and visible hazards help shape the next step.
-      </p>
-      <div class="inline-actions">
-        <a href="/contact" class="btn-primary">Start An Urgent Request</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="page-shell">
-    <section class="page-section">
-      <div class="section-heading">
-        <h2 class="section-title-reveal">What To Report After A Storm</h2>
-      </div>
-      <div class="page-card">
-        <ul class="list-copy">
-          <li>Whether limbs or debris are blocking access to the home or driveway.</li>
-          <li>If anything is resting on a structure, fence, or vehicle.</li>
-          <li>Whether the tree appears split, uprooted, or newly unstable.</li>
-          <li>Any immediate safety concerns that should be noted in the request.</li>
-        </ul>
-      </div>
-    </section>
-  </div>
+  <ServicePageTemplate
+    heroTitle="Storm Cleanup in Parrish, FL"
+    heroIntro="Storm cleanup requests often involve fallen limbs, damaged trees, blocked access, and urgent property hazards after severe weather."
+    estimateHeading="Storm cleanup estimate request"
+    estimateIntro="Explain what fell, what is blocked, and whether anything is resting on a structure so the urgency is easy to review."
+    includedLayout="stack"
+    whenYouNeedThisService={[
+      'A storm leaves limbs, debris, or broken sections of tree across the yard or driveway.',
+      'A branch or trunk section is resting on a roof, fence, vehicle, or other structure.',
+      'A tree appears split, uprooted, or newly unstable after wind and rain.',
+      'You need to explain safety concerns and site access clearly after fast-changing weather.',
+    ]}
+    whatsIncluded={[
+      { title: 'Review', description: 'Reviewing the visible damage, blocked areas, and any structures involved in the incident.' },
+      { title: 'Discuss', description: 'Discussing whether the cleanup should also include tree removal, trimming, or stump work.' },
+      { title: 'Plan', description: 'Planning around access conditions so follow-up can match the urgency of the property issue.' },
+    ]}
+    processSteps={[
+      'Submit the address, service area details, and a quick summary of the storm damage.',
+      'Add photos if it is safe to do so, especially if access is blocked or a structure is involved.',
+      'Receive follow-up on the immediate next step and whether another tree service should be included.',
+    ]}
+    relatedServices={[
+      { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
+      { href: '/tree-trimming', label: 'Tree Trimming in Parrish, FL' },
+      { href: '/contact', label: 'Contact Parrish Tree Removal' },
+    ]}
+    faqs={[
+      {
+        question: 'What should I report after a storm?',
+        answer:
+          'Report blocked access, visible splits, downed limbs, and whether any tree material is touching a structure, fence, or vehicle.',
+      },
+      {
+        question: 'Can storm cleanup turn into a tree removal project?',
+        answer:
+          'Yes. Storm cleanup in Parrish, FL often leads to removal or trimming when the damaged tree cannot stay as-is.',
+      },
+      {
+        question: 'Do photos help with urgent requests?',
+        answer:
+          'Yes, if the area is safe. Photos can quickly show scale, access, and whether the issue is affecting a structure or driveway.',
+      },
+    ]}
+  />
 </BaseLayout>
