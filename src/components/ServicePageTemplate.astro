@@ -1,7 +1,9 @@
 ---
 import EstimateForm from './EstimateForm.astro';
 import HomepageWhyChoose from './HomepageWhyChoose.astro';
-import ServiceAreaMap from './ServiceAreaMap.astro';
+import HomepageProcess from './HomepageProcess.astro';
+import PageSection from './PageSection.astro';
+import ServiceAreaSection from './ServiceAreaSection.astro';
 
 interface FaqItem {
   question: string;
@@ -14,6 +16,7 @@ interface IncludedItem {
 }
 
 interface Props {
+  pageId: string;
   heroTitle: string;
   heroIntro: string;
   estimateHeading: string;
@@ -28,6 +31,7 @@ interface Props {
 }
 
 const {
+  pageId,
   heroTitle,
   heroIntro,
   estimateHeading,
@@ -47,23 +51,32 @@ const getVisibleRelatedLabel = (label: string) =>
     .replace('Contact Parrish Tree Removal', 'Contact');
 
 const heroMainTitle = heroTitle.replace(' in Parrish, FL', '');
-const heroLocationTitle = heroTitle.includes(' in Parrish, FL') ? 'in Parrish FL' : '';
+const heroLocationTitle = heroTitle.includes(' in Parrish, FL') ? 'in Parrish, FL' : '';
 
-const processIcons = [
+const processIconPaths = [
   ['M8 6h8', 'M8 10h8', 'M8 14h5', 'M7 3h10a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2V5a2 2 0 0 1 2-2Z'],
   ['M4 7h4l2-3h4l2 3h4v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z', 'M12 16a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5Z'],
   ['M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z', 'M8 9h8', 'M8 13h5'],
+  ['M7 3v3', 'M17 3v3', 'M4 8h16', 'M5 5h14a1 1 0 0 1 1 1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1Z', 'm9 14 2 2 4-4'],
 ];
+
+const processStepItems = processSteps.map((item, index) => ({
+  title: `Step ${index + 1}`,
+  description: item,
+  paths: processIconPaths[index] ?? processIconPaths[processIconPaths.length - 1],
+}));
 ---
 
-<section class="page-hero internal-hero service-hero">
-  <div class="hero-bleed subpage-hero-bleed">
-    <div class="hero-copy">
-      <h1>
-        <span class="hero-title-primary">{heroMainTitle}</span>
-        {heroLocationTitle && <span class="hero-title-secondary">{heroLocationTitle}</span>}
-      </h1>
-      <p class="hero-subcopy">{heroIntro}</p>
+<section class="page-hero internal-hero service-hero" data-page={pageId}>
+  <div class="hero-frame">
+    <div class="hero-bleed subpage-hero-bleed">
+      <div class="hero-copy">
+        <h1>
+          <span class="hero-title-primary">{heroMainTitle}</span>
+          {heroLocationTitle && <span class="hero-title-secondary">{heroLocationTitle}</span>}
+        </h1>
+        <p class="hero-subcopy">{heroIntro}</p>
+      </div>
     </div>
     <div class="hero-cta-wrap">
       <a href="#estimate-form" class="hero-cta">Free Estimate</a>
@@ -71,8 +84,8 @@ const processIcons = [
   </div>
 </section>
 
-<div class="page-shell">
-  <section class="page-section">
+<div class="page-shell" data-page={pageId}>
+  <PageSection section="when-you-need-this-service" page={pageId}>
     <div class="clone-heading">
       <h2 class="clone-kicker section-divider-title">When You Need This Service</h2>
     </div>
@@ -91,9 +104,9 @@ const processIcons = [
         </ul>
       </div>
     )}
-  </section>
+  </PageSection>
 
-  <section class="page-section">
+  <PageSection section="whats-included" page={pageId}>
     <div class="clone-heading">
       <h2 class="clone-kicker section-divider-title">What&apos;s Included</h2>
     </div>
@@ -111,34 +124,13 @@ const processIcons = [
         </article>
       ))}
     </div>
-  </section>
+  </PageSection>
 
-  <HomepageWhyChoose />
+  <HomepageWhyChoose pageId={pageId} />
 
-  <section class="page-section">
-    <div class="clone-heading">
-      <h2 class="clone-kicker section-divider-title">Process</h2>
-    </div>
-    <div class="clone-process-list">
-      {processSteps.map((item, index) => (
-        <article class="clone-process-card">
-          <div class="clone-process-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-              {processIcons[index]!.map((path) => (
-                <path d={path}></path>
-              ))}
-            </svg>
-          </div>
-          <div class="clone-process-copy">
-            <h3>Step {index + 1}</h3>
-            <p>{item}</p>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
+  <HomepageProcess steps={processStepItems} pageId={pageId} />
 
-  <section class="page-section">
+  <PageSection section="related-services" page={pageId}>
     <div class="clone-heading">
       <h2 class="clone-kicker section-divider-title">Related Services</h2>
     </div>
@@ -153,9 +145,9 @@ const processIcons = [
         </a>
       ))}
     </div>
-  </section>
+  </PageSection>
 
-  <section class="page-section">
+  <PageSection section="faq" page={pageId}>
     <div class="clone-heading">
       <h2 class="clone-kicker section-divider-title">FAQ</h2>
     </div>
@@ -167,9 +159,9 @@ const processIcons = [
         </article>
       ))}
     </div>
-  </section>
+  </PageSection>
 
-  <section id="estimate-form" class="page-section">
+  <PageSection id="estimate-form" section="estimate-form" page={pageId}>
     <div class="clone-heading">
       <h2 class="clone-kicker section-divider-title">Request A Free Estimate</h2>
     </div>
@@ -178,17 +170,7 @@ const processIcons = [
       intro={estimateIntro}
       buttonLabel="Submit Free Estimate"
     />
-  </section>
+  </PageSection>
 
-  <section class="page-section">
-    <div class="clone-heading">
-      <h2 class="clone-kicker section-divider-title">Service Area</h2>
-    </div>
-    <p class="section-lead subpage-section-lead">
-      Parrish Tree Removal serves homeowners in Parrish, FL and nearby communities,
-      including Palmetto, Ellenton, Bradenton, and Lakewood Ranch when the project
-      fits the service area.
-    </p>
-    <ServiceAreaMap />
-  </section>
+  <ServiceAreaSection pageId={pageId} />
 </div>

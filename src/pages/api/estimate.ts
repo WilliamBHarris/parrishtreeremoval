@@ -30,6 +30,12 @@ const json = (status: number, payload: Record<string, string | boolean>) =>
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 const isValidPhone = (value: string) => value.replace(/\D/g, '').length >= 10;
 
+export const GET: APIRoute = async () =>
+  json(405, {
+    success: false,
+    message: 'Use POST to submit estimate requests.'
+  });
+
 export const POST: APIRoute = async ({ request }) => {
   const resendApiKey = import.meta.env.RESEND_API_KEY;
   const resendFromEmail = import.meta.env.RESEND_FROM_EMAIL;

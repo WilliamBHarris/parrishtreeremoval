@@ -1,4 +1,6 @@
 ---
+import { estimateServiceOptions } from '../data/services';
+
 interface Props {
   heading?: string;
   intro?: string;
@@ -14,12 +16,23 @@ const {
   serviceLabel = "Service Needed",
   headingId,
 } = Astro.props;
+
+const instanceId = `estimate-${Math.random().toString(36).slice(2, 10)}`;
+const resolvedHeadingId = headingId ?? `${instanceId}-heading`;
+const introId = `${instanceId}-intro`;
+const statusId = `${instanceId}-status`;
+const nameId = `${instanceId}-name`;
+const emailId = `${instanceId}-email`;
+const phoneId = `${instanceId}-phone`;
+const zipId = `${instanceId}-zip`;
+const serviceId = `${instanceId}-service`;
+const detailsId = `${instanceId}-details`;
 ---
 
 <div class="estimate-form-shell form-card">
   <div class="estimate-form-intro">
-    <h3 id={headingId}>{heading}</h3>
-    <p>{intro}</p>
+    <h3 id={resolvedHeadingId}>{heading}</h3>
+    <p id={introId}>{intro}</p>
   </div>
 
   <form
@@ -27,181 +40,87 @@ const {
     method="post"
     action="/api/estimate.php"
     data-estimate-form
+    aria-describedby={`${introId} ${statusId}`}
     novalidate
   >
     <input type="hidden" name="website" value="" autocomplete="off" />
 
-    <label>
-      Name
+    <div class="form-field">
+      <label for={nameId}>Name</label>
       <input
+        id={nameId}
         type="text"
         name="name"
         placeholder="Your name"
         required
         autocomplete="name"
       />
-    </label>
+    </div>
 
-    <label>
-      Email
+    <div class="form-field">
+      <label for={emailId}>Email</label>
       <input
+        id={emailId}
         type="email"
         name="email"
         placeholder="you@example.com"
         required
         autocomplete="email"
       />
-    </label>
+    </div>
 
-    <label>
-      Phone
+    <div class="form-field">
+      <label for={phoneId}>Phone</label>
       <input
+        id={phoneId}
         type="tel"
         name="phone"
         placeholder="(555) 555-0199"
         required
         autocomplete="tel"
+        inputmode="tel"
       />
-    </label>
+    </div>
 
-    <label>
-      ZIP Code
+    <div class="form-field">
+      <label for={zipId}>ZIP Code</label>
       <input
+        id={zipId}
         type="text"
         name="zip"
         placeholder="Parrish-area ZIP code"
         required
+        autocomplete="postal-code"
+        inputmode="numeric"
+        pattern="[0-9]{5}(-[0-9]{4})?"
       />
-    </label>
+    </div>
 
-    <label>
-      {serviceLabel}
-      <select name="service" required>
+    <div class="form-field">
+      <label for={serviceId}>{serviceLabel}</label>
+      <select id={serviceId} name="service" required>
         <option value="">Select a service</option>
-        <option value="Tree Removal">Tree Removal</option>
-        <option value="Tree Trimming">Tree Trimming</option>
-        <option value="Stump Grinding">Stump Grinding</option>
-        <option value="Storm Cleanup">Storm Cleanup</option>
-        <option value="General Estimate Request"
-          >General Estimate Request</option
-        >
+        {estimateServiceOptions.map((option) => (
+          <option value={option}>{option}</option>
+        ))}
       </select>
-    </label>
+    </div>
 
-    <label>
-      Project Details
+    <div class="form-field">
+      <label for={detailsId}>Project Details</label>
       <textarea
+        id={detailsId}
         name="details"
         placeholder="Describe the tree, the property location, and anything urgent or access-related."
-        required></textarea>
-    </label>
+        required
+      ></textarea>
+    </div>
 
     <button type="submit" class="btn-primary" data-submit-button
       >{buttonLabel}</button
     >
-    <p class="form-status" data-form-status aria-live="polite"></p>
+    <p id={statusId} class="form-status" data-form-status aria-live="polite" role="status"></p>
   </form>
 </div>
 
-<script is:inline>
-  (() => {
-    const forms = document.querySelectorAll("[data-estimate-form]");
-
-    forms.forEach((form) => {
-      if (form.dataset.bound === "true") return;
-      form.dataset.bound = "true";
-
-      const status = form.querySelector("[data-form-status]");
-      const submitButton = form.querySelector("[data-submit-button]");
-      const defaultLabel = submitButton ? submitButton.textContent : "";
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        if (!(form instanceof HTMLFormElement)) return;
-        if (!form.reportValidity()) return;
-
-        const rawAction = form.getAttribute("action") || "/api/estimate.php";
-        const submitUrl = new URL(rawAction, window.location.origin);
-
-        if (submitUrl.origin !== window.location.origin) {
-          if (status instanceof HTMLElement) {
-            status.textContent =
-              "The form is pointing to an unexpected URL. Please refresh and try again.";
-            status.className = "form-status is-error";
-          }
-          return;
-        }
-
-        const formData = new FormData(form);
-
-        if (submitButton instanceof HTMLButtonElement) {
-          submitButton.disabled = true;
-          submitButton.setAttribute("aria-busy", "true");
-          submitButton.textContent = "Sending...";
-        }
-
-        if (status instanceof HTMLElement) {
-          status.textContent = "";
-          status.className = "form-status";
-        }
-
-        try {
-          const response = await fetch(submitUrl.pathname, {
-            method: "POST",
-            body: formData,
-            headers: {
-              Accept: "application/json",
-            },
-          });
-
-          const text = await response.text();
-          let result = {};
-
-          try {
-            result = text ? JSON.parse(text) : {};
-          } catch {
-            result = {
-              success: false,
-              message: text || "The server returned an unexpected response.",
-            };
-          }
-
-          if (!response.ok || result.success !== true) {
-            throw new Error(
-              result.message || "Unable to send your request right now.",
-            );
-          }
-
-          form.reset();
-
-          if (status instanceof HTMLElement) {
-            status.textContent =
-              result.message || "Your request was submitted successfully.";
-            status.className = "form-status is-success";
-          }
-        } catch (error) {
-          let message = "Unable to submit your request right now.";
-
-          if (error instanceof TypeError) {
-            message =
-              "The request could not reach the server. Please try again in a moment.";
-          } else if (error instanceof Error) {
-            message = error.message;
-          }
-
-          if (status instanceof HTMLElement) {
-            status.textContent = message;
-            status.className = "form-status is-error";
-          }
-        } finally {
-          if (submitButton instanceof HTMLButtonElement) {
-            submitButton.disabled = false;
-            submitButton.setAttribute("aria-busy", "false");
-            submitButton.textContent = defaultLabel;
-          }
-        }
-      });
-    });
-  })();
-</script>
+<script type="module" src="/scripts/estimate-form.js"></script>

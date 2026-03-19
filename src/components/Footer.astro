@@ -1,9 +1,14 @@
+---
+import { client } from '../data/client';
+import { brand } from '../data/brand';
+---
+
 <footer class="site-footer">
   <div class="footer-shell">
-    <a href="#site-top" class="footer-top-link">Back to Top</a>
+    <a href="#site-top" class="footer-top-link">{client.ctas.backToTop}</a>
     <div class="footer-credit"><strong>© Will Made It.</strong></div>
-    <a href="/" class="footer-brand" aria-label="Parrish Tree Removal home">
-      <span class="site-mark footer-mark" aria-label="PTR">PTR</span>
+    <a href="/" class="footer-brand" aria-label={`${client.businessName} home`}>
+      <span class="site-mark footer-mark" aria-hidden="true">{brand.identity.mark}</span>
     </a>
   </div>
 </footer>

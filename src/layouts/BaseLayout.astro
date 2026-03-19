@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { client } from '../data/client';
+import { brand } from '../data/brand';
 
 interface Props {
   title?: string;
@@ -11,30 +13,52 @@ interface Props {
 }
 
 const {
-  title = 'Parrish Tree Removal | Tree Removal and Trimming in Parrish, FL',
-  description = 'Tree removal, trimming, stump grinding, and storm cleanup information for homeowners in Parrish, Florida.',
+  title = `${client.businessName} | Tree Removal and Trimming in ${client.primaryLocation}`,
+  description = `Tree removal, trimming, stump grinding, and storm cleanup information for homeowners in ${client.primaryLocation}.`,
   schema,
-  ogImage = '/images/parrish-service-area-map.svg'
+  ogImage = brand.assets.ogImage
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString() ?? 'https://parrishtreeremoval.com';
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const brandCssVars = `
+  :root {
+    --brand-primary: ${brand.colors.primary};
+    --brand-secondary: ${brand.colors.secondary};
+    --brand-accent: ${brand.colors.accent};
+    --brand-highlight: ${brand.colors.highlight};
+    --brand-page-bg: ${brand.colors.pageBg};
+    --brand-page-bg-soft: ${brand.colors.pageBgSoft};
+    --brand-surface: ${brand.colors.surface};
+    --brand-surface-soft: ${brand.colors.surfaceSoft};
+    --brand-text: ${brand.colors.text};
+    --brand-text-soft: ${brand.colors.textSoft};
+    --brand-heading: ${brand.colors.heading};
+    --brand-line: ${brand.colors.line};
+    --brand-line-strong: ${brand.colors.lineStrong};
+    --brand-overlay: ${brand.colors.overlay};
+    --brand-button-top: ${brand.colors.buttonTop};
+    --brand-button-bottom: ${brand.colors.buttonBottom};
+    --brand-accent-top: ${brand.colors.accentTop};
+    --brand-accent-bottom: ${brand.colors.accentBottom};
+  }
+`;
 const schemaList = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Parrish Tree Removal',
+    name: client.siteName,
     url: siteUrl
   },
   {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': `${siteUrl}#localbusiness`,
-    name: 'Parrish Tree Removal',
+    name: client.businessName,
     url: siteUrl,
-    telephone: '+1-800-555-0199',
-    areaServed: ['Parrish, FL', 'Bradenton, FL', 'Palmetto, FL', 'Lakewood Ranch, FL'],
+    telephone: client.primaryPhoneDisplay,
+    areaServed: client.serviceAreas,
     description,
     image: ogImageUrl,
     serviceType: 'Tree removal, trimming, stump grinding, and storm cleanup'
@@ -48,22 +72,28 @@ const schemaList = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,address=no,email=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content="index,follow,max-image-preview:large" />
-    <meta name="theme-color" content="#0F2143" />
+    <meta name="theme-color" content={brand.colors.themeColor} />
+    <link rel="icon" href={brand.assets.faviconSvg} type="image/svg+xml" />
+    <link rel="icon" href={brand.assets.faviconIco} sizes="any" />
     <link rel="canonical" href={canonical} />
+    <style is:global set:html={brandCssVars}></style>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="Parrish Tree Removal" />
+    <meta property="og:site_name" content={client.siteName} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={`${client.businessName} service area map`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="sitemap" href="/sitemap.xml" />
     <script type="application/ld+json" set:html={JSON.stringify(schemaList)}></script>
   </head>
   <body>
@@ -74,24 +104,5 @@ const schemaList = [
       <slot />
     </main>
     <Footer />
-    <a
-      href="tel:+18005550199"
-      class="sticky-call-fab"
-      aria-label="Call now"
-      style="text-decoration:none;"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        focusable="false"
-        style="display:block;width:26px;height:26px;fill:currentColor;"
-      >
-        <path
-          d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
-          fill="currentColor"
-        ></path>
-      </svg>
-    </a>
-
   </body>
 </html>

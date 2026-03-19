@@ -1,0 +1,78 @@
+---
+interface ProcessStep {
+  title: string;
+  description: string;
+  paths: string[];
+}
+
+interface Props {
+  steps?: ProcessStep[];
+}
+
+const defaultSteps = [
+  {
+    paths: [
+      'M8 6h8',
+      'M8 10h8',
+      'M8 14h5',
+      'M7 3h10a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2V5a2 2 0 0 1 2-2Z',
+    ],
+    title: 'Request Your Estimate',
+    description: 'Send a few details about the tree, the property, and the kind of help you need.',
+  },
+  {
+    paths: [
+      'M4 7h4l2-3h4l2 3h4v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z',
+      'M12 16a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5Z',
+    ],
+    title: 'Share Photos Or Notes',
+    description: 'Optional pictures and quick notes help clarify access, size, and any urgency.',
+  },
+  {
+    paths: [
+      'M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z',
+      'M8 9h8',
+      'M8 13h5',
+    ],
+    title: 'Review The Best Next Step',
+    description: 'You get follow-up on removal, trimming, cleanup, or stump options that fit the request.',
+  },
+  {
+    paths: [
+      'M7 3v3',
+      'M17 3v3',
+      'M4 8h16',
+      'M5 5h14a1 1 0 0 1 1 1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1Z',
+      'm9 14 2 2 4-4',
+    ],
+    title: 'Move Toward Scheduling',
+    description: 'Once the scope is clear, the project can move into quoting and scheduling discussion.',
+  },
+];
+
+const { steps = defaultSteps, pageId } = Astro.props;
+---
+
+<section class="page-section page-section-emphasis section-clone-showcase" data-section="our-process" data-page={pageId}>
+  <div class="clone-heading">
+    <h2 class="clone-kicker section-divider-title">Our Process</h2>
+  </div>
+
+  <div class="clone-process-list">
+    {steps.map((step) => (
+      <article class="clone-process-card">
+        <div class="clone-process-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            {step.paths.map((path) => (
+              <path d={path}></path>
+            ))}
+          </svg>
+        </div>
+        <div class="clone-process-copy">
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

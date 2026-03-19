@@ -1,31 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EstimateForm from '../components/EstimateForm.astro';
+import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import ServiceAreaMap from '../components/ServiceAreaMap.astro';
+import PageSection from '../components/PageSection.astro';
+import ServiceAreaSection from '../components/ServiceAreaSection.astro';
+import { client } from '../data/client';
+import { pageContent } from '../data/pages';
+import { servicePages } from '../data/services';
+
+const contactPage = pageContent.contact;
 ---
 
 <BaseLayout
-  title="Contact Parrish Tree Removal | Free Estimate in Parrish, FL"
-  description="Contact Parrish Tree Removal for a free estimate on tree removal, tree trimming, stump grinding, and storm cleanup in Parrish, FL."
+  title={contactPage.title}
+  description={contactPage.description}
 >
   <section class="page-hero internal-hero service-hero">
-    <div class="hero-bleed subpage-hero-bleed">
-      <div class="hero-copy">
-        <h1>
-          <span class="hero-title-primary">Contact</span>
-          <span class="hero-title-secondary">Parrish Tree Removal</span>
-        </h1>
-        <p class="hero-subcopy">
-          Share your project details, the property ZIP code, and the service you need to
-          start the estimate process.
-        </p>
-        <div class="hero-actions">
-          <a href="tel:9415550123" class="btn-secondary hero-call-button" aria-label="Call Parrish Tree Removal">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6.6 10.8a15.4 15.4 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24c1.08.36 2.24.54 3.4.54a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.52a1 1 0 0 1 1 1c0 1.16.18 2.32.54 3.4a1 1 0 0 1-.24 1z" fill="currentColor"></path>
-            </svg>
-          </a>
+    <div class="hero-frame">
+      <div class="hero-bleed subpage-hero-bleed">
+        <div class="hero-copy">
+          <h1>
+            <span class="hero-title-primary">Contact</span>
+            <span class="hero-title-secondary">Parrish Tree Removal</span>
+          </h1>
+          <p class="hero-subcopy">{contactPage.heroIntro}</p>
+          <div class="hero-actions">
+            <a href={`tel:${client.contactHeroPhoneHref}`} class="btn-secondary hero-call-button" aria-label={`Call ${client.businessName}`}>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M6.6 10.8a15.4 15.4 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24c1.08.36 2.24.54 3.4.54a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.52a1 1 0 0 1 1 1c0 1.16.18 2.32.54 3.4a1 1 0 0 1-.24 1z" fill="currentColor"></path>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
       <div class="hero-cta-wrap">
@@ -34,82 +40,50 @@ import ServiceAreaMap from '../components/ServiceAreaMap.astro';
     </div>
   </section>
 
-  <div class="page-shell">
-    <section id="estimate-form" class="page-section">
+  <div class="page-shell" data-page="contact">
+    <PageSection id="estimate-form" section="estimate-form" page="contact">
       <div class="clone-heading">
         <h2 class="clone-kicker section-divider-title">Send Project Details</h2>
       </div>
 
       <EstimateForm
-        heading="Free estimate request"
-        intro="Use the form below to tell us about removal, trimming, stump work, or storm-related cleanup at your property."
-        buttonLabel="Submit Free Estimate"
+        heading={contactPage.estimateForm.heading}
+        intro={contactPage.estimateForm.intro}
+        buttonLabel={contactPage.estimateForm.buttonLabel}
       />
-    </section>
+    </PageSection>
 
-    <section class="page-section">
+    <PageSection section="before-you-submit" page="contact">
       <div class="clone-heading">
         <h2 class="clone-kicker section-divider-title">Before You Submit</h2>
       </div>
 
       <div class="contact-stack">
-        <article class="contact-card">
-          <h3>Property details help</h3>
-          <p>
-            If possible, note whether the tree is near a structure, fence, driveway,
-            or other obstacle that affects access.
-          </p>
-        </article>
-
-        <article class="contact-card">
-          <h3>Storm-related issues</h3>
-          <p>
-            Mention if debris is blocking access or if a branch appears to be resting
-            on a structure so the urgency is clear.
-          </p>
-        </article>
-
-        <article class="contact-card">
-          <h3>Prefer to call?</h3>
-          <p>
-            The phone button in the left side of the header bar is always
-            available as a quick call option.
-          </p>
-        </article>
-        <article class="contact-card">
-          <h3>ZIP code matters</h3>
-          <p>
-            Including the property ZIP code helps confirm that the request fits the
-            Parrish, FL service area from the start.
-          </p>
-        </article>
+        {contactPage.beforeYouSubmit.map((item) => (
+          <article class="contact-card">
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
       </div>
-    </section>
+    </PageSection>
 
-    <HomepageWhyChoose />
+    <HomepageWhyChoose pageId="contact" />
 
-    <section class="page-section">
+    <HomepageProcess pageId="contact" />
+
+    <PageSection section="related-services" page="contact">
       <div class="clone-heading">
         <h2 class="clone-kicker section-divider-title">Service Links</h2>
       </div>
       <div class="service-button-row" role="navigation" aria-label="Service links">
-        <a href="/tree-removal" class="subpage-service-button" aria-label="Go to Tree Removal in Parrish, FL">Tree Removal</a>
-        <a href="/stump-grinding" class="subpage-service-button" aria-label="Go to Stump Grinding in Parrish, FL">Stump Grinding</a>
-        <a href="/tree-trimming" class="subpage-service-button" aria-label="Go to Tree Trimming in Parrish, FL">Tree Trimming</a>
-        <a href="/emergency-tree-service" class="subpage-service-button" aria-label="Go to Storm Cleanup in Parrish, FL">Storm Cleanup</a>
+        <a href={`/${servicePages.treeRemoval.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeRemoval.heroTitle}`}>{servicePages.treeRemoval.cardTitle}</a>
+        <a href={`/${servicePages.stumpGrinding.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.stumpGrinding.heroTitle}`}>{servicePages.stumpGrinding.cardTitle}</a>
+        <a href={`/${servicePages.treeTrimming.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeTrimming.heroTitle}`}>{servicePages.treeTrimming.cardTitle}</a>
+        <a href={`/${servicePages.stormCleanup.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.stormCleanup.heroTitle}`}>{servicePages.stormCleanup.cardTitle}</a>
       </div>
-    </section>
+    </PageSection>
 
-    <section class="page-section">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Service Area</h2>
-      </div>
-      <p class="section-lead subpage-section-lead">
-        Parrish Tree Removal serves homeowners in Parrish, FL and nearby communities,
-        including Palmetto, Ellenton, Bradenton, and Lakewood Ranch when the project
-        fits the service area.
-      </p>
-      <ServiceAreaMap />
-    </section>
+    <ServiceAreaSection pageId="contact" />
   </div>
 </BaseLayout>

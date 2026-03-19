@@ -1,0 +1,25 @@
+---
+import PageSection from './PageSection.astro';
+import ServiceAreaMap from './ServiceAreaMap.astro';
+import { client } from '../data/client';
+
+interface Props {
+  pageId: string;
+  copy?: string;
+}
+
+const {
+  pageId,
+  copy = client.serviceAreaCopy,
+} = Astro.props;
+---
+
+<PageSection section="service-area" page={pageId} borderVariant="straight-bottom">
+  <div class="clone-heading">
+    <h2 class="clone-kicker section-divider-title">Service Area</h2>
+  </div>
+  <p class="section-lead subpage-section-lead">
+    {copy}
+  </p>
+  <ServiceAreaMap />
+</PageSection>

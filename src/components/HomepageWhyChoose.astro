@@ -1,4 +1,10 @@
 ---
+interface Props {
+  pageId?: string;
+}
+
+const { pageId } = Astro.props;
+
 const whyChooseUsItems = [
   {
     paths: [
@@ -42,7 +48,7 @@ const whyChooseUsItems = [
 ];
 ---
 
-<section class="page-section page-section-emphasis section-clone-showcase">
+<section class="page-section page-section-emphasis section-clone-showcase" data-section="why-choose-us" data-page={pageId}>
   <div class="clone-heading">
     <h2 class="clone-kicker section-divider-title">Why Choose Us</h2>
     <p class="section-lead clone-intro">

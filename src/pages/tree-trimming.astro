@@ -1,55 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServicePageTemplate from '../components/ServicePageTemplate.astro';
+import { servicePages } from '../data/services';
+
+const service = servicePages.treeTrimming;
 ---
 
 <BaseLayout
-  title="Tree Trimming in Parrish, FL | Parrish Tree Removal"
-  description="Tree trimming in Parrish, FL for branch reduction, canopy shaping, roof clearance, and ongoing property maintenance."
+  title={service.title}
+  description={service.description}
 >
-  <ServicePageTemplate
-    heroTitle="Tree Trimming in Parrish, FL"
-    heroIntro="Tree trimming helps manage clearance, shape, and healthy-looking growth around homes, driveways, and walkways."
-    estimateHeading="Free tree trimming estimate"
-    estimateIntro="Describe the branches, roofline, or overgrowth you want addressed so the trimming request can be reviewed quickly."
-    includedLayout="stack"
-    whenYouNeedThisService={[
-      'Branches are hanging over the roof, driveway, pool cage, or sidewalk.',
-      'The canopy looks uneven, too dense, or is pushing into utility clearance zones.',
-      'You want routine maintenance before storm season or after fast growth.',
-      'Several trees on the property need cleanup during the same visit.',
-    ]}
-    whatsIncluded={[
-      { title: 'Review', description: 'Reviewing which sides of the tree need attention and what clearance matters most.' },
-      { title: 'Discuss', description: 'Discussing pruning, shaping, branch reduction, and cleanup as part of one request.' },
-      { title: 'Plan', description: 'Planning whether the trimming should be paired with removal, storm cleanup, or stump work.' },
-    ]}
-    processSteps={[
-      'Submit the property details and explain what branches or areas need the most attention.',
-      'Include photos or notes about roof edges, lanes of access, and the number of trees involved.',
-      'Get follow-up on the scope of the trimming work and the best next step for the property.',
-    ]}
-    relatedServices={[
-      { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
-      { href: '/stump-grinding', label: 'Stump Grinding in Parrish, FL' },
-      { href: '/emergency-tree-service', label: 'Storm Cleanup in Parrish, FL' },
-    ]}
-    faqs={[
-      {
-        question: 'What should I mention in a trimming request?',
-        answer:
-          'Mention which sides of the tree need work, what needs clearance, and whether the concern is maintenance, overgrowth, or storm prep.',
-      },
-      {
-        question: 'Can one visit cover multiple trees?',
-        answer:
-          'Yes. If several trees need trimming in Parrish, FL, include that in the request so the scope is clear from the start.',
-      },
-      {
-        question: 'Is cleanup part of tree trimming?',
-        answer:
-          'Cleanup can be discussed as part of the estimate so the final result matches how you want the yard to look.',
-      },
-    ]}
-  />
+  <ServicePageTemplate {...service} />
 </BaseLayout>

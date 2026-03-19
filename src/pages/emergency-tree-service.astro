@@ -1,55 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServicePageTemplate from '../components/ServicePageTemplate.astro';
+import { servicePages } from '../data/services';
+
+const service = servicePages.stormCleanup;
 ---
 
 <BaseLayout
-  title="Storm Cleanup in Parrish, FL | Parrish Tree Removal"
-  description="Storm cleanup in Parrish, FL for fallen limbs, blocked driveways, damaged trees, and urgent post-storm property concerns."
+  title={service.title}
+  description={service.description}
 >
-  <ServicePageTemplate
-    heroTitle="Storm Cleanup in Parrish, FL"
-    heroIntro="Storm cleanup requests often involve fallen limbs, damaged trees, blocked access, and urgent property hazards after severe weather."
-    estimateHeading="Storm cleanup estimate request"
-    estimateIntro="Explain what fell, what is blocked, and whether anything is resting on a structure so the urgency is easy to review."
-    includedLayout="stack"
-    whenYouNeedThisService={[
-      'A storm leaves limbs, debris, or broken sections of tree across the yard or driveway.',
-      'A branch or trunk section is resting on a roof, fence, vehicle, or other structure.',
-      'A tree appears split, uprooted, or newly unstable after wind and rain.',
-      'You need to explain safety concerns and site access clearly after fast-changing weather.',
-    ]}
-    whatsIncluded={[
-      { title: 'Review', description: 'Reviewing the visible damage, blocked areas, and any structures involved in the incident.' },
-      { title: 'Discuss', description: 'Discussing whether the cleanup should also include tree removal, trimming, or stump work.' },
-      { title: 'Plan', description: 'Planning around access conditions so follow-up can match the urgency of the property issue.' },
-    ]}
-    processSteps={[
-      'Submit the address, service area details, and a quick summary of the storm damage.',
-      'Add photos if it is safe to do so, especially if access is blocked or a structure is involved.',
-      'Receive follow-up on the immediate next step and whether another tree service should be included.',
-    ]}
-    relatedServices={[
-      { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
-      { href: '/tree-trimming', label: 'Tree Trimming in Parrish, FL' },
-      { href: '/contact', label: 'Contact Parrish Tree Removal' },
-    ]}
-    faqs={[
-      {
-        question: 'What should I report after a storm?',
-        answer:
-          'Report blocked access, visible splits, downed limbs, and whether any tree material is touching a structure, fence, or vehicle.',
-      },
-      {
-        question: 'Can storm cleanup turn into a tree removal project?',
-        answer:
-          'Yes. Storm cleanup in Parrish, FL often leads to removal or trimming when the damaged tree cannot stay as-is.',
-      },
-      {
-        question: 'Do photos help with urgent requests?',
-        answer:
-          'Yes, if the area is safe. Photos can quickly show scale, access, and whether the issue is affecting a structure or driveway.',
-      },
-    ]}
-  />
+  <ServicePageTemplate {...service} />
 </BaseLayout>

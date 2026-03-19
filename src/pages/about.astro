@@ -1,24 +1,29 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import ServiceAreaMap from '../components/ServiceAreaMap.astro';
+import PageSection from '../components/PageSection.astro';
+import ServiceAreaSection from '../components/ServiceAreaSection.astro';
+import { pageContent } from '../data/pages';
+import { servicePages } from '../data/services';
+
+const aboutPage = pageContent.about;
 ---
 
 <BaseLayout
-  title="About Parrish Tree Removal | Tree Service in Parrish, FL"
-  description="Learn about Parrish Tree Removal, the estimate process, and the tree service guidance offered for homeowners in Parrish, FL."
+  title={aboutPage.title}
+  description={aboutPage.description}
 >
   <section class="page-hero internal-hero service-hero">
-    <div class="hero-bleed subpage-hero-bleed">
-      <div class="hero-copy">
-        <h1>
-          <span class="hero-title-primary">About</span>
-          <span class="hero-title-secondary">Parrish Tree Removal</span>
-        </h1>
-        <p class="hero-subcopy">
-          Parrish Tree Removal focuses on clear information, practical next steps, and a
-          smoother estimate experience for common residential tree projects.
-        </p>
+    <div class="hero-frame">
+      <div class="hero-bleed subpage-hero-bleed">
+        <div class="hero-copy">
+          <h1>
+            <span class="hero-title-primary">About</span>
+            <span class="hero-title-secondary">Parrish Tree Removal</span>
+          </h1>
+          <p class="hero-subcopy">{aboutPage.heroIntro}</p>
+        </div>
       </div>
       <div class="hero-cta-wrap">
         <a href="/contact" class="hero-cta">Free Estimate</a>
@@ -26,83 +31,49 @@ import ServiceAreaMap from '../components/ServiceAreaMap.astro';
     </div>
   </section>
 
-  <div class="page-shell">
-    <section class="page-section">
+  <div class="page-shell" data-page="about">
+    <PageSection section="what-homeowners-need" page="about">
       <div class="clone-heading">
         <h2 class="clone-kicker section-divider-title">What Homeowners Need</h2>
       </div>
 
       <div class="stack-grid">
-        <article class="stack-panel">
-          <h3>Help identifying the right service</h3>
-          <p>
-            The first question is often whether a tree needs removal, trimming,
-            stump work, or storm-related cleanup.
-          </p>
-        </article>
-
-        <article class="stack-panel">
-          <h3>Clear next-step guidance</h3>
-          <p>
-            Projects move faster when the estimate request already includes useful
-            details about access, urgency, and property layout.
-          </p>
-        </article>
-
-        <article class="stack-panel">
-          <h3>Simple communication</h3>
-          <p>
-            Good estimate support starts with straightforward information, not
-            confusing steps or vague project descriptions.
-          </p>
-        </article>
-        <article class="stack-panel">
-          <h3>Clear local context</h3>
-          <p>
-            Parrish homeowners usually need service guidance that reflects their lot
-            layout, access conditions, and storm-season concerns.
-          </p>
-        </article>
+        {aboutPage.homeownerNeeds.map((item) => (
+          <article class="stack-panel">
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
       </div>
-    </section>
+    </PageSection>
 
-    <HomepageWhyChoose />
+    <HomepageWhyChoose pageId="about" />
 
-    <section class="page-section">
+    <HomepageProcess pageId="about" />
+
+    <PageSection section="how-requests-work" page="about">
       <div class="clone-heading">
         <h2 class="clone-kicker section-divider-title">How Requests Work</h2>
       </div>
 
       <div class="page-card page-card-soft">
         <ul class="list-copy">
-          <li>Property owners describe the issue and the location on the lot.</li>
-          <li>Tree size, access, and urgency are used to shape the next conversation.</li>
-          <li>Removal, trimming, stump work, and cleanup can all be discussed together.</li>
+          {aboutPage.howRequestsWork.map((item) => <li>{item}</li>)}
         </ul>
       </div>
-    </section>
+    </PageSection>
 
-    <section class="page-section">
+    <PageSection section="related-services" page="about">
       <div class="clone-heading">
         <h2 class="clone-kicker section-divider-title">Service Pages</h2>
       </div>
       <div class="service-button-row" role="navigation" aria-label="Service page links">
-        <a href="/tree-removal" class="subpage-service-button" aria-label="Go to Tree Removal in Parrish, FL">Tree Removal</a>
-        <a href="/tree-trimming" class="subpage-service-button" aria-label="Go to Tree Trimming in Parrish, FL">Tree Trimming</a>
-        <a href="/stump-grinding" class="subpage-service-button" aria-label="Go to Stump Grinding in Parrish, FL">Stump Grinding</a>
+        <a href={`/${servicePages.treeRemoval.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeRemoval.heroTitle}`}>{servicePages.treeRemoval.cardTitle}</a>
+        <a href={`/${servicePages.treeTrimming.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeTrimming.heroTitle}`}>{servicePages.treeTrimming.cardTitle}</a>
+        <a href={`/${servicePages.stumpGrinding.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.stumpGrinding.heroTitle}`}>{servicePages.stumpGrinding.cardTitle}</a>
       </div>
-    </section>
+    </PageSection>
 
-    <section class="page-section">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Service Area</h2>
-      </div>
-      <p class="section-lead subpage-section-lead">
-        Parrish Tree Removal serves homeowners in Parrish, FL and nearby communities,
-        including Palmetto, Ellenton, Bradenton, and Lakewood Ranch when the project
-        fits the service area.
-      </p>
-      <ServiceAreaMap />
-    </section>
+    <ServiceAreaSection pageId="about" />
   </div>
 </BaseLayout>

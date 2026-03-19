@@ -1,0 +1,30 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+  section?: string;
+  page?: string;
+  borderVariant?: string;
+  ariaLabel?: string;
+}
+
+const {
+  id,
+  class: className,
+  section,
+  page,
+  borderVariant,
+  ariaLabel,
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['page-section', className]}
+  data-section={section}
+  data-page={page}
+  data-border-variant={borderVariant}
+  aria-label={ariaLabel}
+>
+  <slot />
+</section>
