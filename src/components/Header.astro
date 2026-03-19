@@ -3,53 +3,56 @@ import { client } from '../data/client';
 import { brand } from '../data/brand';
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/services', label: 'Services' },
+const serviceLinks = [
   { href: '/tree-removal', label: 'Tree Removal' },
   { href: '/stump-grinding', label: 'Stump Grinding' },
   { href: '/tree-trimming', label: 'Tree Trimming' },
   { href: '/emergency-tree-service', label: 'Storm & Emergency' },
+];
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services', children: serviceLinks },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
 ---
 
 <header class="site-header">
-  <a
-    href={`tel:${client.primaryPhoneHref}`}
-    class="sticky-call-fab"
-    aria-label={`Call ${client.businessName}`}
-  >
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path
-        d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
-        fill="currentColor"
-      ></path>
-    </svg>
-    <span class="sticky-call-label">{client.ctas.callNow}</span>
-  </a>
   <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
     <span class="site-mark" aria-hidden="true">{brand.identity.mark}</span>
   </a>
-  <button
-    class="menu-toggle"
-    type="button"
-    aria-expanded="false"
-    aria-controls="mobile-drawer"
-    aria-haspopup="dialog"
-    aria-label="Open menu"
-  >
-    <span class="menu-toggle-lines" aria-hidden="true">
-      <span></span>
-      <span></span>
-      <span></span>
-    </span>
-  </button>
+  <div class="header-actions">
+    <a
+      href={`tel:${client.primaryPhoneHref}`}
+      class="sticky-call-fab"
+      aria-label={`Call ${client.businessName}`}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+          fill="currentColor"
+        ></path>
+      </svg>
+    </a>
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-drawer"
+      aria-label="Open menu"
+    >
+      <span class="menu-toggle-lines" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+  </div>
 </header>
 
 <div class="menu-scrim" hidden></div>
@@ -57,29 +60,66 @@ const navLinks = [
 <aside
   id="mobile-drawer"
   class="mobile-drawer"
-  aria-labelledby="mobile-drawer-title"
+  aria-label="Primary navigation"
   hidden
   inert
 >
-  <div class="mobile-drawer-head">
-    <p id="mobile-drawer-title">Menu</p>
-    <button class="menu-close" type="button" aria-label="Close menu">Close</button>
+  <div class="mobile-drawer-panel">
+    <nav class="mobile-drawer-nav" aria-label="Primary navigation">
+      {navLinks.map((link) => {
+        const normalizedHref = link.href.replace(/\/+$/, '') || '/';
+        const isCurrent = currentPath === normalizedHref;
+        const hasChildren = Array.isArray(link.children);
+        const isSectionCurrent = hasChildren
+          ? link.children.some((child) => currentPath === (child.href.replace(/\/+$/, '') || '/'))
+          : false;
+        const submenuId = hasChildren ? `drawer-submenu-${link.label.toLowerCase().replace(/\s+/g, '-')}` : undefined;
+
+        return hasChildren ? (
+          <div class="drawer-submenu-group" data-submenu-default-open="true">
+            <div class="drawer-submenu-row">
+              <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
+                {link.label}
+              </a>
+              <button
+                class="drawer-submenu-toggle"
+                type="button"
+                aria-expanded={isCurrent || isSectionCurrent ? 'true' : 'false'}
+                aria-controls={submenuId}
+                aria-label={`Toggle ${link.label} submenu`}
+              >
+                <span class="drawer-submenu-caret" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div
+              id={submenuId}
+              class="drawer-submenu"
+              hidden={!(isCurrent || isSectionCurrent)}
+            >
+              {link.children.map((child) => {
+                const childPath = child.href.replace(/\/+$/, '') || '/';
+                const isChildCurrent = currentPath === childPath;
+
+                return (
+                  <a href={child.href} aria-current={isChildCurrent ? 'page' : undefined}>
+                    {child.label}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <div class="mobile-drawer-footer">
+      <a href="/contact" class="drawer-cta">Request Estimate</a>
+    </div>
   </div>
-
-  <nav class="mobile-drawer-nav" aria-label="Primary navigation">
-    {navLinks.map((link) => {
-      const normalizedHref = link.href.replace(/\/+$/, '') || '/';
-      const isCurrent = currentPath === normalizedHref;
-
-      return (
-        <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
-          {link.label}
-        </a>
-      );
-    })}
-  </nav>
-
-  <a href="/contact" class="drawer-cta">Request Estimate</a>
 </aside>
 
 <script type="module" src="/scripts/header-menu.js"></script>

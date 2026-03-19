@@ -1,4 +1,6 @@
 ---
+import PageSection from './PageSection.astro';
+
 interface Props {
   pageId?: string;
 }
@@ -11,27 +13,27 @@ const whyChooseUsItems = [
       'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z',
       'm9 12 2 2 4-4',
     ],
-    title: 'Project Guidance',
+    title: 'Experienced Tree Service',
     description:
-      'Get clear next-step help for removal, trimming, stump work, and storm-related tree concerns.',
+      'We handle tree removal, trimming, stump grinding, and storm cleanup for common residential property needs.',
   },
   {
     paths: [
       'M12 21s6-4.35 6-10a6 6 0 1 0-12 0c0 5.65 6 10 6 10Z',
       'M12 11.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5Z',
     ],
-    title: 'Parrish Focus',
+    title: 'Local Service Area',
     description:
-      'Built around the kinds of property questions homeowners in Parrish and nearby areas ask most often.',
+      'We serve Parrish and nearby communities with tree service that reflects local property conditions and seasonal concerns.',
   },
   {
     paths: [
       'M9 3h6l1.1 2H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3.9L9 3Z',
       'M12 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z',
     ],
-    title: 'Fast Estimate Starts',
+    title: 'Straightforward Communication',
     description:
-      'Photos, notes, and location details can be reviewed quickly so the request moves in the right direction.',
+      'Clear project details, honest communication, and prompt follow-up help keep the process simple from the beginning.',
   },
   {
     paths: [
@@ -41,19 +43,23 @@ const whyChooseUsItems = [
       'M12 10c1.5-3.2 4.2-5 8-5-1 4.6-3.9 7.3-8 7.8',
       'M12 10C10.5 6.8 7.8 5 4 5c1 4.6 3.9 7.3 8 7.8',
     ],
-    title: 'Service Variety',
+    title: 'Complete Property Support',
     description:
-      'One request can cover cleanup, pruning, stump work, or a full tree removal conversation.',
+      'One project can include cleanup, trimming, stump work, or full tree removal depending on what the property needs.',
   },
 ];
 ---
 
-<section class="page-section page-section-emphasis section-clone-showcase" data-section="why-choose-us" data-page={pageId}>
+<PageSection
+  class="page-section-emphasis section-clone-showcase"
+  section="why-choose-us"
+  page={pageId}
+>
   <div class="clone-heading">
     <h2 class="clone-kicker section-divider-title">Why Choose Us</h2>
     <p class="section-lead clone-intro">
-      Parrish Tree Removal is built to make estimate requests easier to start,
-      easier to understand, and easier to move forward.
+      Parrish Tree Removal is built around dependable service, clear communication,
+      and practical help for homeowners throughout Parrish and the surrounding area.
     </p>
   </div>
 
@@ -72,4 +78,4 @@ const whyChooseUsItems = [
       </article>
     ))}
   </div>
-</section>
+</PageSection>

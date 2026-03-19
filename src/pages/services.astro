@@ -1,14 +1,19 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EstimateForm from '../components/EstimateForm.astro';
+import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
+import HeroTitleWords from '../components/HeroTitleWords.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
 import PageSection from '../components/PageSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { serviceCardList } from '../data/services';
+import heroImage from '../assets/hero-image.png';
 
 const servicesPage = pageContent.services;
+const servicesHeroWords = 'Tree Services'.split(/\s+/);
 ---
 
 <BaseLayout
@@ -18,10 +23,20 @@ const servicesPage = pageContent.services;
   <section class="page-hero internal-hero service-hero">
     <div class="hero-frame">
       <div class="hero-bleed subpage-hero-bleed">
+        <HeroOutlineCopy words={servicesHeroWords} />
+        <Image
+          src={heroImage}
+          alt=""
+          aria-hidden="true"
+          class="hero-accent-image"
+          format="webp"
+          quality={75}
+          loading="eager"
+          decoding="async"
+        />
         <div class="hero-copy">
           <h1>
-            <span class="hero-title-primary">Tree Services</span>
-            <span class="hero-title-secondary">in Parrish, FL</span>
+            <span class="hero-title-primary"><HeroTitleWords text="Tree Services" /></span>
           </h1>
           <p class="hero-subcopy">{servicesPage.heroIntro}</p>
         </div>

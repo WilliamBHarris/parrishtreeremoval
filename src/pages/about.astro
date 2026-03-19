@@ -1,13 +1,18 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
+import HeroTitleWords from '../components/HeroTitleWords.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
 import PageSection from '../components/PageSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { servicePages } from '../data/services';
+import heroImage from '../assets/hero-image.png';
 
 const aboutPage = pageContent.about;
+const aboutHeroWords = 'About'.split(/\s+/);
 ---
 
 <BaseLayout
@@ -17,9 +22,20 @@ const aboutPage = pageContent.about;
   <section class="page-hero internal-hero service-hero">
     <div class="hero-frame">
       <div class="hero-bleed subpage-hero-bleed">
+        <HeroOutlineCopy words={aboutHeroWords} />
+        <Image
+          src={heroImage}
+          alt=""
+          aria-hidden="true"
+          class="hero-accent-image"
+          format="webp"
+          quality={75}
+          loading="eager"
+          decoding="async"
+        />
         <div class="hero-copy">
           <h1>
-            <span class="hero-title-primary">About</span>
+            <span class="hero-title-primary"><HeroTitleWords text="About" /></span>
             <span class="hero-title-secondary">Parrish Tree Removal</span>
           </h1>
           <p class="hero-subcopy">{aboutPage.heroIntro}</p>
@@ -65,7 +81,7 @@ const aboutPage = pageContent.about;
 
     <PageSection section="related-services" page="about">
       <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Service Pages</h2>
+        <h2 class="clone-kicker section-divider-title">Services</h2>
       </div>
       <div class="service-button-row" role="navigation" aria-label="Service page links">
         <a href={`/${servicePages.treeRemoval.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeRemoval.heroTitle}`}>{servicePages.treeRemoval.cardTitle}</a>

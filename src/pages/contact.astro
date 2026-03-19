@@ -1,15 +1,19 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EstimateForm from '../components/EstimateForm.astro';
+import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
+import HeroTitleWords from '../components/HeroTitleWords.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
 import PageSection from '../components/PageSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
-import { client } from '../data/client';
 import { pageContent } from '../data/pages';
 import { servicePages } from '../data/services';
+import heroImage from '../assets/hero-image.png';
 
 const contactPage = pageContent.contact;
+const contactHeroWords = 'Contact'.split(/\s+/);
 ---
 
 <BaseLayout
@@ -19,19 +23,23 @@ const contactPage = pageContent.contact;
   <section class="page-hero internal-hero service-hero">
     <div class="hero-frame">
       <div class="hero-bleed subpage-hero-bleed">
+        <HeroOutlineCopy words={contactHeroWords} />
+        <Image
+          src={heroImage}
+          alt=""
+          aria-hidden="true"
+          class="hero-accent-image"
+          format="webp"
+          quality={75}
+          loading="eager"
+          decoding="async"
+        />
         <div class="hero-copy">
           <h1>
-            <span class="hero-title-primary">Contact</span>
+            <span class="hero-title-primary"><HeroTitleWords text="Contact" /></span>
             <span class="hero-title-secondary">Parrish Tree Removal</span>
           </h1>
           <p class="hero-subcopy">{contactPage.heroIntro}</p>
-          <div class="hero-actions">
-            <a href={`tel:${client.contactHeroPhoneHref}`} class="btn-secondary hero-call-button" aria-label={`Call ${client.businessName}`}>
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M6.6 10.8a15.4 15.4 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24c1.08.36 2.24.54 3.4.54a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.52a1 1 0 0 1 1 1c0 1.16.18 2.32.54 3.4a1 1 0 0 1-.24 1z" fill="currentColor"></path>
-              </svg>
-            </a>
-          </div>
         </div>
       </div>
       <div class="hero-cta-wrap">
@@ -74,7 +82,7 @@ const contactPage = pageContent.contact;
 
     <PageSection section="related-services" page="contact">
       <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Service Links</h2>
+        <h2 class="clone-kicker section-divider-title">Services</h2>
       </div>
       <div class="service-button-row" role="navigation" aria-label="Service links">
         <a href={`/${servicePages.treeRemoval.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeRemoval.heroTitle}`}>{servicePages.treeRemoval.cardTitle}</a>

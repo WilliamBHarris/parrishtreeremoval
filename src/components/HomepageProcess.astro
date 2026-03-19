@@ -1,4 +1,6 @@
 ---
+import PageSection from './PageSection.astro';
+
 interface ProcessStep {
   title: string;
   description: string;
@@ -17,8 +19,8 @@ const defaultSteps = [
       'M8 14h5',
       'M7 3h10a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2V5a2 2 0 0 1 2-2Z',
     ],
-    title: 'Request Your Estimate',
-    description: 'Send a few details about the tree, the property, and the kind of help you need.',
+    title: 'Reach Out',
+    description: 'Tell us about the tree, the property, and the kind of work you need done.',
   },
   {
     paths: [
@@ -26,7 +28,7 @@ const defaultSteps = [
       'M12 16a3.25 3.25 0 1 0 0-6.5 3.25 3.25 0 0 0 0 6.5Z',
     ],
     title: 'Share Photos Or Notes',
-    description: 'Optional pictures and quick notes help clarify access, size, and any urgency.',
+    description: 'Photos and a few quick notes help clarify access, size, and any urgency.',
   },
   {
     paths: [
@@ -34,8 +36,8 @@ const defaultSteps = [
       'M8 9h8',
       'M8 13h5',
     ],
-    title: 'Review The Best Next Step',
-    description: 'You get follow-up on removal, trimming, cleanup, or stump options that fit the request.',
+    title: 'Review The Job',
+    description: 'We review the work involved and talk through the service options that fit the property.',
   },
   {
     paths: [
@@ -45,15 +47,19 @@ const defaultSteps = [
       'M5 5h14a1 1 0 0 1 1 1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1Z',
       'm9 14 2 2 4-4',
     ],
-    title: 'Move Toward Scheduling',
-    description: 'Once the scope is clear, the project can move into quoting and scheduling discussion.',
+    title: 'Schedule The Work',
+    description: 'Once the scope is clear, the job can move forward into quoting and scheduling.',
   },
 ];
 
 const { steps = defaultSteps, pageId } = Astro.props;
 ---
 
-<section class="page-section page-section-emphasis section-clone-showcase" data-section="our-process" data-page={pageId}>
+<PageSection
+  class="page-section-emphasis section-clone-showcase"
+  section="our-process"
+  page={pageId}
+>
   <div class="clone-heading">
     <h2 class="clone-kicker section-divider-title">Our Process</h2>
   </div>
@@ -75,4 +81,4 @@ const { steps = defaultSteps, pageId } = Astro.props;
       </article>
     ))}
   </div>
-</section>
+</PageSection>

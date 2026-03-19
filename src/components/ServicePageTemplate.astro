@@ -1,9 +1,13 @@
 ---
+import { Image } from 'astro:assets';
 import EstimateForm from './EstimateForm.astro';
+import HeroOutlineCopy from './HeroOutlineCopy.astro';
+import HeroTitleWords from './HeroTitleWords.astro';
 import HomepageWhyChoose from './HomepageWhyChoose.astro';
 import HomepageProcess from './HomepageProcess.astro';
 import PageSection from './PageSection.astro';
 import ServiceAreaSection from './ServiceAreaSection.astro';
+import heroImage from '../assets/hero-image.png';
 
 interface FaqItem {
   question: string;
@@ -52,6 +56,7 @@ const getVisibleRelatedLabel = (label: string) =>
 
 const heroMainTitle = heroTitle.replace(' in Parrish, FL', '');
 const heroLocationTitle = heroTitle.includes(' in Parrish, FL') ? 'in Parrish, FL' : '';
+const heroOutlineWords = `${heroMainTitle} ${heroLocationTitle}`.trim().split(/\s+/);
 
 const processIconPaths = [
   ['M8 6h8', 'M8 10h8', 'M8 14h5', 'M7 3h10a2 2 0 0 1 2 2v14l-3-2-3 2-3-2-3 2V5a2 2 0 0 1 2-2Z'],
@@ -70,9 +75,20 @@ const processStepItems = processSteps.map((item, index) => ({
 <section class="page-hero internal-hero service-hero" data-page={pageId}>
   <div class="hero-frame">
     <div class="hero-bleed subpage-hero-bleed">
+      <HeroOutlineCopy words={heroOutlineWords} />
+      <Image
+        src={heroImage}
+        alt=""
+        aria-hidden="true"
+        class="hero-accent-image"
+        format="webp"
+        quality={75}
+        loading="eager"
+        decoding="async"
+      />
       <div class="hero-copy">
         <h1>
-          <span class="hero-title-primary">{heroMainTitle}</span>
+          <span class="hero-title-primary"><HeroTitleWords text={heroMainTitle} /></span>
           {heroLocationTitle && <span class="hero-title-secondary">{heroLocationTitle}</span>}
         </h1>
         <p class="hero-subcopy">{heroIntro}</p>
@@ -132,7 +148,7 @@ const processStepItems = processSteps.map((item, index) => ({
 
   <PageSection section="related-services" page={pageId}>
     <div class="clone-heading">
-      <h2 class="clone-kicker section-divider-title">Related Services</h2>
+      <h2 class="clone-kicker section-divider-title">Services</h2>
     </div>
     <div class="service-button-row" role="navigation" aria-label="Related service links">
       {relatedServices.map((service) => (

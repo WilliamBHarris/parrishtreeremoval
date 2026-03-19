@@ -9,6 +9,8 @@ interface Props {
   headingId?: string;
 }
 
+let estimateFormInstanceCount = 0;
+
 const {
   heading = "Request A Free Estimate",
   intro = "Share your project details and we will follow up with the next best step for your property.",
@@ -17,16 +19,18 @@ const {
   headingId,
 } = Astro.props;
 
-const instanceId = `estimate-${Math.random().toString(36).slice(2, 10)}`;
-const resolvedHeadingId = headingId ?? `${instanceId}-heading`;
-const introId = `${instanceId}-intro`;
-const statusId = `${instanceId}-status`;
-const nameId = `${instanceId}-name`;
-const emailId = `${instanceId}-email`;
-const phoneId = `${instanceId}-phone`;
-const zipId = `${instanceId}-zip`;
-const serviceId = `${instanceId}-service`;
-const detailsId = `${instanceId}-details`;
+const instanceBaseId = headingId
+  ? headingId.replace(/-heading$/, '')
+  : `estimate-${++estimateFormInstanceCount}`;
+const resolvedHeadingId = headingId ?? `${instanceBaseId}-heading`;
+const introId = `${instanceBaseId}-intro`;
+const statusId = `${instanceBaseId}-status`;
+const nameId = `${instanceBaseId}-name`;
+const emailId = `${instanceBaseId}-email`;
+const phoneId = `${instanceBaseId}-phone`;
+const zipId = `${instanceBaseId}-zip`;
+const serviceId = `${instanceBaseId}-service`;
+const detailsId = `${instanceBaseId}-details`;
 ---
 
 <div class="estimate-form-shell form-card">

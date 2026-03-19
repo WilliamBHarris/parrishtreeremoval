@@ -4,6 +4,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EstimateForm from '../components/EstimateForm.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
+import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
+import HeroTitleWords from '../components/HeroTitleWords.astro';
 import PageSection from '../components/PageSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
@@ -11,31 +13,33 @@ import { serviceCardList } from '../data/services';
 import heroImage from '../assets/hero-image.png';
 
 const homePage = pageContent.home;
+const homeHeroWords = 'Parrish Tree Removal'.split(/\s+/);
 ---
 
 <BaseLayout
   title={homePage.title}
   description={homePage.description}
 >
-  <section class="page-hero">
+  <section class="page-hero internal-hero service-hero homepage-hero" data-page="home">
     <div class="hero-frame">
-      <div class="hero-bleed">
+      <div class="hero-bleed subpage-hero-bleed">
+        <HeroOutlineCopy words={homeHeroWords} />
         <Image
           src={heroImage}
-          alt="Tree service crew cutting and loading storm-damaged wood in a residential yard"
-          class="hero-image"
+          alt=""
+          aria-hidden="true"
+          class="hero-accent-image"
+          format="webp"
+          quality={75}
           loading="eager"
-          fetchpriority="high"
-          formats={['avif', 'webp']}
-          quality={65}
-          widths={[480, 768, 1024]}
-          sizes="100vw"
+          decoding="async"
         />
-
         <div class="hero-copy">
           <h1>
-            <span class="hero-title-primary">{homePage.hero.titlePrimary}</span>
-            <span class="hero-title-secondary">{homePage.hero.titleSecondary}</span>
+            <span class="hero-title-primary"><HeroTitleWords text={homePage.hero.titlePrimary} /></span>
+            {homePage.hero.titleSecondary && (
+              <span class="hero-title-secondary">{homePage.hero.titleSecondary}</span>
+            )}
           </h1>
           <p class="hero-subcopy">{homePage.hero.intro}</p>
         </div>

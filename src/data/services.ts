@@ -43,12 +43,12 @@ export const servicePages: Record<string, ServicePageData> = {
     title: 'Tree Removal in Parrish, FL | Parrish Tree Removal',
     description:
       'Tree removal in Parrish, FL for damaged, hazardous, overgrown, or unwanted trees around homes, driveways, and structures.',
-    heroTitle: 'Tree Removal in Parrish, FL',
+    heroTitle: 'Tree Removal',
     heroIntro:
-      'Tree removal requests usually start when a tree becomes unsafe, blocks a project, or no longer fits the property.',
+      'Removal for unsafe or unwanted trees.',
     estimateHeading: 'Free tree removal estimate',
     estimateIntro:
-      'Share the tree location, nearby structures, and any urgency so the next step for tree removal in Parrish, FL is clear.',
+      'Share the tree location, nearby structures, and any urgency so we can review the removal and follow up with the right next step.',
     servicesOverviewSummary:
       'Projects involving damaged, unwanted, unstable, or awkwardly placed trees.',
     includedLayout: 'stack',
@@ -64,9 +64,9 @@ export const servicePages: Record<string, ServicePageData> = {
       { title: 'Plan', description: 'Planning around gates, soft ground, tight side yards, and the property constraints shaping the removal.' },
     ],
     processSteps: [
-      'Send the property address, ZIP code, and a short description of the tree concern.',
+      'Send the property address, ZIP code, and a short description of the tree that needs attention.',
       'Add photos if available so height, access, and nearby structures are easier to review.',
-      'Receive follow-up about the scope, related services, and the best next step toward scheduling.',
+      'We follow up about the scope of the work, any related services, and the best next step toward scheduling.',
     ],
     relatedServices: [
       { href: '/tree-trimming', label: 'Tree Trimming in Parrish, FL' },
@@ -87,7 +87,7 @@ export const servicePages: Record<string, ServicePageData> = {
       {
         question: 'Do photos help for tree removal in Parrish, FL?',
         answer:
-          'Yes. A few wide and close photos can make the first review much faster, especially when access or storm damage is involved.',
+          'Yes. A few wide and close photos can make the first review much faster, especially when access is limited or storm damage is involved.',
       },
     ],
     serviceCardSummary: 'Get help with damaged, unwanted, or difficult trees that may need removal.',
@@ -100,12 +100,12 @@ export const servicePages: Record<string, ServicePageData> = {
     title: 'Tree Trimming in Parrish, FL | Parrish Tree Removal',
     description:
       'Tree trimming in Parrish, FL for branch reduction, canopy shaping, roof clearance, and ongoing property maintenance.',
-    heroTitle: 'Tree Trimming in Parrish, FL',
+    heroTitle: 'Tree Trimming',
     heroIntro:
-      'Tree trimming helps manage clearance, shape, and healthy-looking growth around homes, driveways, and walkways.',
+      'Cleaner canopies. Better clearance.',
     estimateHeading: 'Free tree trimming estimate',
     estimateIntro:
-      'Describe the branches, roofline, or overgrowth you want addressed so the trimming request can be reviewed quickly.',
+      'Describe the branches, roofline, or overgrowth you want addressed so we can review the trimming work and follow up quickly.',
     servicesOverviewSummary:
       'Pruning, shaping, branch reduction, and maintenance planning for growth control.',
     includedLayout: 'stack',
@@ -123,7 +123,7 @@ export const servicePages: Record<string, ServicePageData> = {
     processSteps: [
       'Submit the property details and explain what branches or areas need the most attention.',
       'Include photos or notes about roof edges, lanes of access, and the number of trees involved.',
-      'Get follow-up on the scope of the trimming work and the best next step for the property.',
+      'We follow up about the scope of the trimming work and the best next step for the property.',
     ],
     relatedServices: [
       { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
@@ -157,12 +157,12 @@ export const servicePages: Record<string, ServicePageData> = {
     title: 'Stump Grinding in Parrish, FL | Parrish Tree Removal',
     description:
       'Stump grinding in Parrish, FL for leftover stumps after tree removal, yard cleanup, replanting, and better usable space.',
-    heroTitle: 'Stump Grinding in Parrish, FL',
+    heroTitle: 'Stump Grinding',
     heroIntro:
-      'Stump grinding helps finish the yard after tree removal so the space is cleaner, easier to use, and ready for the next step.',
+      'Clear old stumps and reclaim space.',
     estimateHeading: 'Free stump grinding estimate',
     estimateIntro:
-      'Share stump size, access details, and whether the goal is cleanup, replanting, or reclaiming usable yard space.',
+      'Share stump size, access details, and whether the goal is cleanup, replanting, or reclaiming usable yard space so we can review the job properly.',
     servicesOverviewSummary:
       'Post-removal cleanup when a leftover stump still affects the yard.',
     includedLayout: 'stack',
@@ -180,7 +180,7 @@ export const servicePages: Record<string, ServicePageData> = {
     processSteps: [
       'Send the stump count, size estimate, and the property ZIP code.',
       'Include notes about tight access, fencing, irrigation, or patios near the work area.',
-      'Receive follow-up on the scope and whether stump grinding should be paired with another service.',
+      'We follow up about the scope of the work and whether stump grinding should be paired with another service.',
     ],
     relatedServices: [
       { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
@@ -214,12 +214,12 @@ export const servicePages: Record<string, ServicePageData> = {
     title: 'Storm Cleanup in Parrish, FL | Parrish Tree Removal',
     description:
       'Storm cleanup in Parrish, FL for fallen limbs, blocked driveways, damaged trees, and urgent post-storm property concerns.',
-    heroTitle: 'Storm Cleanup in Parrish, FL',
+    heroTitle: 'Storm Cleanup',
     heroIntro:
-      'Storm cleanup requests often involve fallen limbs, damaged trees, blocked access, and urgent property hazards after severe weather.',
+      'Fast cleanup after storms and damage.',
     estimateHeading: 'Storm cleanup estimate request',
     estimateIntro:
-      'Explain what fell, what is blocked, and whether anything is resting on a structure so the urgency is easy to review.',
+      'Explain what fell, what is blocked, and whether anything is resting on a structure so we can understand the urgency and follow up quickly.',
     servicesOverviewSummary:
       'Tree and debris concerns after severe weather, broken limbs, or blocked access.',
     includedLayout: 'stack',
@@ -237,7 +237,7 @@ export const servicePages: Record<string, ServicePageData> = {
     processSteps: [
       'Submit the address, service area details, and a quick summary of the storm damage.',
       'Add photos if it is safe to do so, especially if access is blocked or a structure is involved.',
-      'Receive follow-up on the immediate next step and whether another tree service should be included.',
+      'We follow up on the immediate next step and whether another tree service should be included.',
     ],
     relatedServices: [
       { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },

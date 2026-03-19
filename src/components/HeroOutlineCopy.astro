@@ -1,0 +1,11 @@
+---
+interface Props {
+  words: string[];
+}
+
+const { words } = Astro.props;
+---
+
+<div class="hero-outline-copy" aria-hidden="true">
+  {words.map((word) => <span>{word}</span>)}
+</div>
