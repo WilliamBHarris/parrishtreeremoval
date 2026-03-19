@@ -44,7 +44,10 @@ const servicesPage = pageContent.services;
             <div class="service-icon" aria-hidden="true">{service.icon}</div>
             <h3>{service.cardTitle}</h3>
             <p>{service.servicesOverviewSummary}</p>
-            <a href={`/${service.slug}`} class="service-link" aria-label={`Learn more about ${service.heroTitle}`}>Learn more</a>
+            <a href={`/${service.slug}`} class="service-link">
+              Learn more
+              <span class="sr-only"> about {service.heroTitle}</span>
+            </a>
           </article>
         ))}
       </div>
