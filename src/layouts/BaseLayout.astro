@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import globalCss from '../styles/global.css?raw';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { client } from '../data/client';
@@ -98,6 +98,7 @@ const schemaList = [
     <link rel="icon" href={brand.assets.faviconSvg} type="image/svg+xml" />
     <link rel="icon" href={brand.assets.faviconIco} sizes="any" />
     <link rel="canonical" href={canonical} />
+    <style is:global set:html={globalCss}></style>
     <style is:global set:html={brandCssVars}></style>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
