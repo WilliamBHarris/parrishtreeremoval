@@ -1,13 +1,9 @@
 # Client Template Guide
 
 ## Main questionnaire
-- The primary onboarding/build-sheet file is [src/data/client-questionnaire.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-questionnaire.ts).
+- The primary onboarding/build-sheet file is [src/data/client-intake.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-intake.ts).
 - Start there for every new client.
-- It is intentionally written like a guided intake questionnaire with:
-  - `QUESTION`
-  - `WHY THIS MATTERS`
-  - `AFFECTS`
-  - `EXAMPLE`
+- It is intentionally organized in plain-language page-by-page sections so you can fill out one client without tracing through the internal config layer.
 
 ## Parrish baseline
 - `Parrish Tree Removal` is the live reference implementation.
@@ -17,8 +13,12 @@
 - If you want Parrish to remain visually unchanged, keep Preset A selected and leave the current active variant selections in place.
 
 ## File roles
+- [src/data/client-intake.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-intake.ts)
+  - Main file to edit for a new client.
+  - Plain-language intake answers plus explicit page assembly order.
 - [src/data/client-questionnaire.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-questionnaire.ts)
-  - Main questionnaire, preset library, variant library, and page assembly map.
+  - Internal normalized config and mapping layer.
+  - Converts the intake file into the structure used by components and thin exports.
 - [src/data/client.ts](/Users/will/Desktop/parrish-tree-service/src/data/client.ts)
   - Thin export layer for shared business/contact data.
 - [src/data/brand.ts](/Users/will/Desktop/parrish-tree-service/src/data/brand.ts)
@@ -28,31 +28,28 @@
 - [src/data/services.ts](/Users/will/Desktop/parrish-tree-service/src/data/services.ts)
   - Thin export layer for service data and service lists.
 
-## Questionnaire structure
-- `questionnaireMeta`
-  - High-level onboarding notes and the currently selected site preset.
-- `presetLibrary`
-  - Named preset combinations for future client directions.
-- `variantLibrary`
-  - Human-readable A/B/C labels and descriptions for the highest-value section variants.
-- `business`
-  - Business identity, contact info, and service area answers.
-- `branding`
-  - Palette, typography, border preset, asset references, and style controls.
-- `presets`
-  - The active live section/pattern selections used by the build.
-- `ctas`
-  - Shared CTA labels.
-- `trust`
-  - Trust-badge content.
-- `services`
-  - All service-card and service-page content.
-- `pages`
-  - Page-specific content plus the explicit page assembly order.
-- `form`
+## Intake structure
+- `setup`
+  - Starting preset and reference-implementation note.
+- `globalBusinessInfo`
+  - Business identity, contact info, and service-area answers.
+- `globalBrandStyle`
+  - Asset references, palette/typography/border selections, and active section variants.
+- `sharedSiteCopy`
+  - Shared CTA labels and trust badges.
+- Page-by-page sections:
+  - `homepage`
+  - `servicesPage`
+  - `treeRemovalPage`
+  - `treeTrimmingPage`
+  - `stumpGrindingPage`
+  - `stormCleanupPage`
+  - `aboutPage`
+  - `contactPage`
+- `productionForm`
   - Static Astro + Hostinger form-post settings.
-- `social`
-  - Future client social links.
+- `socialLinks`
+  - Optional future social links.
 
 ## Preset system
 - Presets are stored in `presetLibrary`.
@@ -105,18 +102,18 @@
   - `Variant C: Card Links`
 
 ## Page assembly order
-- Every page now exposes an ordered `layout` array in [src/data/client-questionnaire.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-questionnaire.ts).
-- That array is the clearest place to understand or edit page composition.
-- Each layout entry shows:
+- Every page now exposes a plain-language `sections` array in [src/data/client-intake.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-intake.ts).
+- That is the main place to control page composition.
+- The internal normalized `layout` arrays in [src/data/client-questionnaire.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-questionnaire.ts) are generated from those intake sections.
+- Each intake section entry shows:
   - stable section key
   - component name
   - enabled state
-  - route
   - order/position
   - selected variant/preset when relevant
   - content source
   - surface tone when relevant
-  - prompt / why-this-matters notes
+  - plain-language notes about what the section is doing
 
 ### Current page stacks
 - Homepage
@@ -165,13 +162,13 @@
   - Service Area
 
 ## Safe onboarding workflow
-1. Duplicate the Parrish questionnaire values in [src/data/client-questionnaire.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-questionnaire.ts).
+1. Duplicate the Parrish intake values in [src/data/client-intake.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-intake.ts).
 2. Decide whether the new site should start from Preset A, B, C, D, or E.
-3. Update `business` with the client’s identity, phone, email, hours, and service areas.
-4. Update `branding` with new colors, asset references, and any allowed style-control overrides.
-5. Update `services` with the offered services and page-level service copy.
-6. Update `pages` with the page-specific hero copy, FAQs, and supporting content.
-7. Review each `pages.*.layout` array to confirm the exact section order and enabled state.
+3. Update `globalBusinessInfo`.
+4. Update `globalBrandStyle`.
+5. Update the page-by-page sections for homepage, services, about, contact, and each service page.
+6. Review each page’s `sections` array to confirm the exact order, enabled state, and selected variants.
+7. Let the internal normalized layer in [src/data/client-questionnaire.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-questionnaire.ts) translate that into the reusable component system.
 8. Build and review before deploying.
 
 ## Assets
@@ -181,7 +178,7 @@
   - [public/favicon.ico](/Users/will/Desktop/parrish-tree-service/public/favicon.ico)
 - Service area art:
   - [public/images/parrish-service-area-map.svg](/Users/will/Desktop/parrish-tree-service/public/images/parrish-service-area-map.svg)
-- Change asset references through the questionnaire/brand layer, not by hunting through components.
+- Change asset references through [src/data/client-intake.ts](/Users/will/Desktop/parrish-tree-service/src/data/client-intake.ts), not by hunting through components.
 
 ## Components
 - Reusable section components live in `src/components/` and are driven by the questionnaire and thin export files.

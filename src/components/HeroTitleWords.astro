@@ -8,5 +8,9 @@ const words = text.trim().split(/\s+/);
 ---
 
 <>
-  {words.map((word) => <span>{word}</span>)}
+  {words.map((word) => (
+    <span class={word.replace(/[^a-z0-9]+/gi, '').toLowerCase() === 'tree' ? 'hero-word-tree' : undefined}>
+      {word}
+    </span>
+  ))}
 </>

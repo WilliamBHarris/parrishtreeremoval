@@ -1,6 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { client } from '../data/client';
-import { brand } from '../data/brand';
+import parrishLogo from '../assets/parrish-logo.png';
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const serviceLinks = [
@@ -20,7 +21,16 @@ const navLinks = [
 
 <header class="site-header">
   <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
-    <span class="site-mark" aria-hidden="true">{brand.identity.mark}</span>
+    <Image
+      src={parrishLogo}
+      alt=""
+      aria-hidden="true"
+      class="site-logo"
+      widths={[120, 180, 260]}
+      sizes="180px"
+      loading="eager"
+      format="webp"
+    />
   </a>
   <div class="header-actions">
     <a

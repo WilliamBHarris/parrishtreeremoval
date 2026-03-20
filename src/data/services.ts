@@ -1,3 +1,9 @@
+/**
+ * THIN EXPORT / COMPATIBILITY LAYER
+ *
+ * Do not start new client setup here.
+ * Edit `src/data/client-intake.ts` first.
+ */
 import { templateConfig } from './client-questionnaire';
 import type { ServicePageData } from './client-questionnaire';
 

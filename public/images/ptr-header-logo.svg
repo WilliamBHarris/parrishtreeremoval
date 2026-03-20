@@ -1,0 +1,50 @@
+<svg width="320" height="96" viewBox="0 0 320 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ptrFill" x1="32" y1="14" x2="264" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F7F2EA"/>
+      <stop offset="0.52" stop-color="#E8D7B0"/>
+      <stop offset="1" stop-color="#F7F2EA"/>
+    </linearGradient>
+    <linearGradient id="ptrStroke" x1="44" y1="8" x2="258" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B6212"/>
+      <stop offset="0.5" stop-color="#43572E"/>
+      <stop offset="1" stop-color="#354E56"/>
+    </linearGradient>
+    <filter id="ptrShadow" x="0" y="0" width="320" height="96" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#0F2143" flood-opacity="0.28"/>
+      <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#F7F2EA" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#ptrShadow)" transform="translate(12 10)">
+    <text
+      x="0"
+      y="58"
+      fill="url(#ptrFill)"
+      stroke="url(#ptrStroke)"
+      stroke-width="3.2"
+      paint-order="stroke fill"
+      font-family="'Avenir Next', 'Trebuchet MS', 'Segoe UI', sans-serif"
+      font-size="66"
+      font-weight="800"
+      letter-spacing="6"
+    >PTR</text>
+    <path
+      d="M17 69.5H238"
+      stroke="#8B6212"
+      stroke-width="3.5"
+      stroke-linecap="round"
+      opacity="0.95"
+    />
+    <path
+      d="M124 6L111 25H137L124 6Z"
+      fill="#43572E"
+      opacity="0.95"
+    />
+    <path
+      d="M124 18L115.5 31H132.5L124 18Z"
+      fill="#8B6212"
+      opacity="0.98"
+    />
+  </g>
+</svg>
