@@ -4,3 +4,5 @@
 03-17-26 : Updated the mobile layout, and connected all pages. Updated all the styles. Need to get the services map working correctly.
 
 03-18-26 : Created seperate files to make the site reusable for many businesses.  Fixed display problems in the background. Optimized the site for all 100's on the Lighthouse test.
+
+03-19-26 : Updated and basically finished the Mobile version A.  Created the intake forms for clients, but stopped short of simplifying all the intake forms.
