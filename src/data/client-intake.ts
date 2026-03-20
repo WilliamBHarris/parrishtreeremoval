@@ -188,10 +188,10 @@ export const clientIntake = {
     seoDescription:
       'Request a free estimate for tree removal, tree trimming, stump grinding, and storm cleanup in Parrish, FL.',
     hero: {
-      titlePrimary: 'Expert Tree Care',
+      titlePrimary: 'Expert Tree Services',
       titleSecondary: '',
-      outlineWords: ['Expert', 'Tree', 'Care'],
-      intro: 'Tree Services',
+      outlineWords: ['Expert', 'Tree', 'Services'],
+      intro: '',
       variant: 'split-image' as HeroVariant,
       cta: {
         kind: 'modal',
@@ -446,7 +446,7 @@ export const clientIntake = {
           'Yes. A few wide and close photos can make the first review much faster, especially when access is limited or storm damage is involved.',
       },
     ] as FaqItem[],
-    serviceCardSummary: 'Get help with damaged, unwanted, or difficult trees that may need removal.',
+    serviceCardSummary: 'Remove damaged or unwanted trees safely.',
     icon: '🪵',
   },
 
@@ -541,7 +541,7 @@ export const clientIntake = {
           'Cleanup can be discussed as part of the estimate so the final result matches how you want the yard to look.',
       },
     ] as FaqItem[],
-    serviceCardSummary: 'Review trimming and pruning options for overgrowth, clearance, and upkeep.',
+    serviceCardSummary: 'Trim trees for clearance, shape, and upkeep.',
     icon: '🌳',
   },
 
@@ -636,7 +636,7 @@ export const clientIntake = {
           'Yes. It helps to know whether the area will be replanted, seeded, landscaped, or simply cleaned up for open yard space.',
       },
     ] as FaqItem[],
-    serviceCardSummary: 'See how stump work can help finish a yard after a tree is already down.',
+    serviceCardSummary: 'Clear old stumps and open up the yard.',
     icon: '🚜',
   },
 
@@ -731,7 +731,7 @@ export const clientIntake = {
           'Yes, if the area is safe. Photos can quickly show scale, access, and whether the issue is affecting a structure or driveway.',
       },
     ] as FaqItem[],
-    serviceCardSummary: 'Learn what details matter after fallen limbs, debris, or weather damage.',
+    serviceCardSummary: 'Clean up storm damage and fallen debris.',
     icon: '⛈️',
   },
 

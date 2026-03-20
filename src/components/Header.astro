@@ -28,7 +28,7 @@ const navLinks = [
       class="site-logo"
       widths={[120, 180, 260]}
       sizes="180px"
-      loading="eager"
+      fetchpriority="low"
       format="webp"
     />
   </a>
@@ -132,4 +132,27 @@ const navLinks = [
   </div>
 </aside>
 
-<script type="module" src="/scripts/header-menu.js"></script>
+<script is:inline>
+  (() => {
+    if (window.__headerMenuLoaderBound) return;
+    window.__headerMenuLoaderBound = true;
+
+    let loaded;
+    const toggle = document.querySelector('.menu-toggle');
+    const loadHeaderMenu = () => loaded ??= import('/scripts/header-menu.js');
+
+    if (toggle instanceof HTMLElement) {
+      toggle.addEventListener('click', async (event) => {
+        if (!loaded) {
+          event.preventDefault();
+          await loadHeaderMenu();
+          toggle.click();
+        }
+      }, { once: true });
+
+      toggle.addEventListener('pointerenter', loadHeaderMenu, { once: true, passive: true });
+      toggle.addEventListener('touchstart', loadHeaderMenu, { once: true, passive: true });
+      toggle.addEventListener('focus', loadHeaderMenu, { once: true, passive: true });
+    }
+  })();
+</script>

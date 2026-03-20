@@ -54,6 +54,8 @@ const heroClassName = [
           alt=""
           aria-hidden="true"
           class="hero-accent-image"
+          width={800}
+          height={480}
           format={heroImageTransform.format}
           quality={heroImageTransform.quality}
           widths={heroImageTransform.widths}
@@ -69,7 +71,7 @@ const heroClassName = [
           <span class="hero-title-primary"><HeroTitleWords text={titlePrimary} /></span>
           {titleSecondary && <span class="hero-title-secondary">{titleSecondary}</span>}
         </h1>
-        <p class="hero-subcopy" data-block="intro">{intro}</p>
+        {intro && <p class="hero-subcopy" data-block="intro">{intro}</p>}
       </div>
     </div>
     {cta.kind !== 'none' && (

@@ -127,4 +127,17 @@ const detailsId = `${instanceBaseId}-details`;
   </form>
 </div>
 
-<script type="module" src="/scripts/estimate-form.js"></script>
+<script is:inline>
+  (() => {
+    if (window.__estimateFormLoaderBound) return;
+    window.__estimateFormLoaderBound = true;
+
+    let loaded;
+    const loadEstimateForm = () => loaded ??= import('/scripts/estimate-form.js');
+    document.addEventListener('focusin', (event) => {
+      if (event.target instanceof Element && event.target.closest('[data-estimate-form]')) {
+        loadEstimateForm();
+      }
+    });
+  })();
+</script>

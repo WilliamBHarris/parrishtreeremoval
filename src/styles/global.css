@@ -29,7 +29,7 @@
   --radius-sm: 14px;
   --font-body: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --font-display: "Palatino Linotype", Georgia, serif;
-  --font-h2: "Avenir Next Rounded", "Trebuchet MS", "Segoe UI", sans-serif;
+  --font-h2: "Avenir Next Rounded", "Avenir Next", "Trebuchet MS", "Segoe UI", sans-serif;
 }
 
 *,
@@ -554,7 +554,7 @@ body.menu-open .mobile-drawer {
   z-index: 0;
   pointer-events: none;
   user-select: none;
-  font-family: "Poppins", var(--font-h2);
+  font-family: var(--font-h2);
   font-size: clamp(6.2rem, 20vw, 13.4rem);
   font-weight: 700;
   line-height: 0.76;
@@ -586,7 +586,7 @@ body.menu-open .mobile-drawer {
   font-size: clamp(2.8rem, 9vw, 4.05rem);
   line-height: 0.9;
   letter-spacing: 0;
-  font-family: "Rubik", var(--font-h2);
+  font-family: var(--font-h2);
   font-weight: 800;
   text-wrap: balance;
   -webkit-text-stroke: 1.2px var(--gold);
@@ -610,7 +610,7 @@ body.menu-open .mobile-drawer {
 .hero-title-primary,
 .hero-title-secondary {
   display: block;
-  font-family: "Rubik", var(--font-h2);
+  font-family: var(--font-h2);
   color: inherit;
 }
 
@@ -622,6 +622,11 @@ body.menu-open .mobile-drawer {
 
 .hero-title-primary span {
   display: block;
+}
+
+.page-hero[data-page="home"] .hero-title-primary span,
+.page-hero.homepage-hero .hero-title-primary span {
+  margin-bottom: 0.08em;
 }
 
 .hero-title-primary .hero-word-tree {
@@ -838,6 +843,7 @@ body.menu-open .mobile-drawer {
 
 .services-variant-grid-cards {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 0.85rem;
 }
 
@@ -950,6 +956,7 @@ body.menu-open .mobile-drawer {
   display: grid;
   grid-template-rows: auto auto minmax(3.5rem, 1fr) auto;
   gap: 0.25rem;
+  height: 100%;
   padding: 1rem 0.85rem 0.9rem;
   border: 0;
   border-radius: 20px;
@@ -1055,6 +1062,7 @@ body.menu-open .mobile-drawer {
 .clone-value-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   gap: 0.8rem;
   align-items: stretch;
 }
@@ -1064,6 +1072,7 @@ body.menu-open .mobile-drawer {
 }
 
 .clone-value-card {
+  height: 100%;
   padding: 1rem 0.9rem 1rem;
   border: 0;
   border-radius: 24px;
@@ -1456,7 +1465,7 @@ body.menu-open .mobile-drawer {
 
 .page-hero[data-page="home"] .hero-copy,
 .page-hero.homepage-hero .hero-copy {
-  padding-top: calc(var(--header-safe) + 1.5rem);
+  padding-top: calc(var(--header-safe) - 0.15rem);
 }
 
 .page-hero[data-page="home"] .hero-outline-copy,
@@ -1578,7 +1587,7 @@ body.menu-open .mobile-drawer {
 .internal-hero h1 {
   margin: 0 0 0.7rem;
   color: var(--heading);
-  font-family: "Rubik", var(--font-h2);
+  font-family: var(--font-h2);
   font-size: 2.25rem;
   line-height: 0.95;
   letter-spacing: -0.05em;
@@ -1908,5 +1917,80 @@ select:focus-visible {
     width: 100%;
     border-radius: 24px;
     padding: 1rem;
+  }
+}
+
+@media (max-width: 430px) {
+  :root {
+    --page-pad: 12px;
+  }
+
+  .site-header {
+    padding: 0 0.68rem 0 0.6rem;
+  }
+
+  .site-logo {
+    height: 52px;
+    max-width: 220px;
+    margin-top: 8px;
+    margin-left: -10px;
+  }
+
+  .hero-copy {
+    padding-inline: 0.9rem;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.45rem, 11vw, 3.25rem);
+  }
+
+  .hero-outline-copy {
+    width: min(82vw, 21rem);
+    font-size: clamp(3.45rem, 18vw, 6rem);
+  }
+
+  .hero-subcopy,
+  .subpage-hero-bleed .hero-subcopy {
+    max-width: 13rem;
+  }
+
+  .service-grid,
+  .faq-variant-card-grid,
+  .stack-grid-two,
+  .related-services-variant-grid-links {
+    grid-template-columns: 1fr;
+  }
+
+  .subpage-service-button {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .footer-shell {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+  }
+
+  .footer-credit {
+    width: auto;
+    order: initial;
+    flex: 1 1 auto;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer-logo {
+    height: 38px;
+    max-width: 150px;
+    margin-top: 2px;
+  }
+
+  .page-hero[data-page="about"] .hero-title-secondary,
+  .page-hero[data-page="contact"] .hero-title-secondary {
+    font-size: 0.39em;
+    line-height: 1.02;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
   }
 }

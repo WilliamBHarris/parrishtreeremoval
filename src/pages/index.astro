@@ -17,6 +17,8 @@ import heroImage from '../assets/hero-image.png';
 const homePage = pageContent.home;
 const homepageCriticalImage = await getImage({
   src: heroImage,
+  width: 800,
+  height: 480,
   format: heroImageTransform.format,
   quality: heroImageTransform.quality,
   widths: heroImageTransform.widths,
@@ -112,5 +114,27 @@ const homepageCriticalImage = await getImage({
     </div>
   </section>
 
-  <script type="module" src="/scripts/estimate-modal.js"></script>
+  <script is:inline>
+    (() => {
+      if (window.__estimateModalLoaderBound) return;
+      window.__estimateModalLoaderBound = true;
+
+      let loaded;
+      const loadEstimateModal = () => loaded ??= import('/scripts/estimate-modal.js');
+      const primeTriggers = document.querySelectorAll('[data-open-estimate-modal]');
+
+      primeTriggers.forEach((trigger) => {
+        trigger.addEventListener('click', async (event) => {
+          if (!loaded) {
+            event.preventDefault();
+            await loadEstimateModal();
+            trigger.click();
+          }
+        }, { once: true });
+        trigger.addEventListener('pointerenter', loadEstimateModal, { once: true, passive: true });
+        trigger.addEventListener('touchstart', loadEstimateModal, { once: true, passive: true });
+        trigger.addEventListener('focus', loadEstimateModal, { once: true, passive: true });
+      });
+    })();
+  </script>
 </BaseLayout>
