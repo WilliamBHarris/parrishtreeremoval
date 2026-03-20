@@ -1,32 +1,13 @@
+import { templateConfig } from './client-questionnaire';
+
 export const brand = {
-  identity: {
-    mark: 'PTR',
+  identity: templateConfig.branding.identity,
+  assets: templateConfig.branding.assets,
+  colors: templateConfig.branding.colors,
+  presets: {
+    palette: templateConfig.branding.palettePreset,
+    typography: templateConfig.branding.typographyPreset,
+    border: templateConfig.branding.borderPreset,
   },
-  assets: {
-    ogImage: '/images/parrish-service-area-map.svg',
-    serviceAreaMap: '/images/parrish-service-area-map.svg',
-    faviconSvg: '/favicon.svg',
-    faviconIco: '/favicon.ico',
-  },
-  colors: {
-    primary: '#0F2143',
-    secondary: '#43572E',
-    accent: '#354E56',
-    highlight: '#8B6212',
-    pageBg: '#182533',
-    pageBgSoft: '#223241',
-    surface: '#f7f2ea',
-    surfaceSoft: '#ebe4d8',
-    text: '#24303a',
-    textSoft: '#4e5c61',
-    heading: '#0f2143',
-    line: 'rgba(15, 33, 67, 0.12)',
-    lineStrong: 'rgba(15, 33, 67, 0.2)',
-    overlay: 'rgba(15, 33, 67, 0.18)',
-    buttonTop: '#0F2143',
-    buttonBottom: '#354E56',
-    accentTop: '#43572E',
-    accentBottom: '#354E56',
-    themeColor: '#0F2143',
-  },
+  styleControls: templateConfig.branding.styleControls,
 } as const;

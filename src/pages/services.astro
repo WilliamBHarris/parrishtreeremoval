@@ -1,114 +1,74 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EstimateForm from '../components/EstimateForm.astro';
-import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
-import HeroTitleWords from '../components/HeroTitleWords.astro';
+import HeroSection from '../components/HeroSection.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import PageSection from '../components/PageSection.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+import CardGridSection from '../components/CardGridSection.astro';
+import InfoListSection from '../components/InfoListSection.astro';
+import EstimateFormSection from '../components/EstimateFormSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { serviceCardList } from '../data/services';
-import heroImage from '../assets/hero-image.png';
 
 const servicesPage = pageContent.services;
-const servicesHeroWords = 'Tree Services'.split(/\s+/);
 ---
 
 <BaseLayout
   title={servicesPage.title}
   description={servicesPage.description}
 >
-  <section class="page-hero internal-hero service-hero">
-    <div class="hero-frame">
-      <div class="hero-bleed subpage-hero-bleed">
-        <HeroOutlineCopy words={servicesHeroWords} />
-        <Image
-          src={heroImage}
-          alt=""
-          aria-hidden="true"
-          class="hero-accent-image"
-          format="webp"
-          quality={75}
-          loading="eager"
-          decoding="async"
-        />
-        <div class="hero-copy">
-          <h1>
-            <span class="hero-title-primary"><HeroTitleWords text="Tree Services" /></span>
-          </h1>
-          <p class="hero-subcopy">{servicesPage.heroIntro}</p>
-        </div>
-      </div>
-      <div class="hero-cta-wrap">
-        <a href="/contact" class="hero-cta">Free Estimate</a>
-      </div>
-    </div>
-  </section>
+  <HeroSection
+    pageId="services"
+    titlePrimary={servicesPage.hero.titlePrimary}
+    titleSecondary={servicesPage.hero.titleSecondary}
+    intro={servicesPage.hero.intro}
+    outlineWords={servicesPage.hero.outlineWords}
+    variant={servicesPage.hero.variant}
+    cta={servicesPage.hero.cta}
+  />
 
   <div class="page-shell" data-page="services">
-    <PageSection section="services-overview" page="services">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Our Services</h2>
-      </div>
+    <ServicesSection
+      pageId="services"
+      sectionKey="services-overview"
+      title="Our Services"
+      services={serviceCardList}
+      variant="grid-cards"
+      summaryMode="overview"
+      surfaceTone="base"
+    />
 
-      <div class="service-grid">
-        {serviceCardList.map((service) => (
-          <article class="service-card">
-            <div class="service-icon" aria-hidden="true">{service.icon}</div>
-            <h3>{service.cardTitle}</h3>
-            <p>{service.servicesOverviewSummary}</p>
-            <a href={`/${service.slug}`} class="service-link">
-              Learn more
-              <span class="sr-only"> about {service.heroTitle}</span>
-            </a>
-          </article>
-        ))}
-      </div>
-    </PageSection>
+    <CardGridSection
+      pageId="services"
+      section="compare-services"
+      title="Compare Services"
+      items={servicesPage.compareCards}
+      surfaceTone="warm"
+    />
 
-    <PageSection section="compare-services" page="services">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Compare Services</h2>
-      </div>
+    <HomepageWhyChoose pageId="services" surfaceTone="cool" />
 
-      <div class="stack-grid">
-        {servicesPage.compareCards.map((item) => (
-          <article class="stack-panel compare-card">
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </article>
-        ))}
-      </div>
-    </PageSection>
+    <HomepageProcess pageId="services" surfaceTone="olive" />
 
-    <HomepageWhyChoose pageId="services" />
+    <InfoListSection
+      pageId="services"
+      section="estimate-tips"
+      title="Estimate Tips"
+      items={servicesPage.estimateTips}
+      softCard={true}
+      surfaceTone="base"
+    />
 
-    <HomepageProcess pageId="services" />
+    <EstimateFormSection
+      pageId="services"
+      title="Request A Free Estimate"
+      heading={servicesPage.estimateForm.heading}
+      intro={servicesPage.estimateForm.intro}
+      buttonLabel={servicesPage.estimateForm.buttonLabel}
+      surfaceTone="warm"
+    />
 
-    <PageSection section="estimate-tips" page="services">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Estimate Tips</h2>
-      </div>
-      <div class="page-card page-card-soft">
-        <ul class="list-copy">
-          {servicesPage.estimateTips.map((item) => <li>{item}</li>)}
-        </ul>
-      </div>
-    </PageSection>
-
-    <PageSection id="estimate-form" section="estimate-form" page="services">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Request A Free Estimate</h2>
-      </div>
-      <EstimateForm
-        heading={servicesPage.estimateForm.heading}
-        intro={servicesPage.estimateForm.intro}
-        buttonLabel={servicesPage.estimateForm.buttonLabel}
-      />
-    </PageSection>
-
-    <ServiceAreaSection pageId="services" />
+    <ServiceAreaSection pageId="services" surfaceTone="cool" />
   </div>
 </BaseLayout>

@@ -5,6 +5,7 @@ interface Props {
   section?: string;
   page?: string;
   borderVariant?: string;
+  surfaceTone?: string;
   ariaLabel?: string;
 }
 
@@ -14,6 +15,7 @@ const {
   section,
   page,
   borderVariant,
+  surfaceTone,
   ariaLabel,
 } = Astro.props;
 ---
@@ -24,6 +26,7 @@ const {
   data-section={section}
   data-page={page}
   data-border-variant={borderVariant}
+  data-surface-tone={surfaceTone}
   aria-label={ariaLabel}
 >
   <slot />

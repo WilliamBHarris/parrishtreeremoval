@@ -1,0 +1,38 @@
+---
+import PageSection from './PageSection.astro';
+import EstimateForm from './EstimateForm.astro';
+import type { SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  sectionId?: string;
+  title: string;
+  heading: string;
+  intro: string;
+  buttonLabel: string;
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  sectionId = 'estimate-form',
+  title,
+  heading,
+  intro,
+  buttonLabel,
+  surfaceTone = 'base',
+} = Astro.props;
+---
+
+<PageSection id={sectionId} section="estimate-form" page={pageId} surfaceTone={surfaceTone}>
+  <div class="clone-heading" data-block="heading">
+    <h2 class="clone-kicker section-divider-title">{title}</h2>
+  </div>
+  <div data-block="form">
+    <EstimateForm
+      heading={heading}
+      intro={intro}
+      buttonLabel={buttonLabel}
+    />
+  </div>
+</PageSection>

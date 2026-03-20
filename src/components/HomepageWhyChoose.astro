@@ -1,11 +1,19 @@
 ---
 import PageSection from './PageSection.astro';
+import { templateConfig } from '../data/client-questionnaire';
+import type { SectionTone, WhyChooseVariant } from '../data/client-questionnaire';
 
 interface Props {
   pageId?: string;
+  variant?: WhyChooseVariant;
+  surfaceTone?: SectionTone;
 }
 
-const { pageId } = Astro.props;
+const {
+  pageId,
+  variant = templateConfig.presets.whyChoose,
+  surfaceTone = 'cool',
+} = Astro.props;
 
 const whyChooseUsItems = [
   {
@@ -54,8 +62,9 @@ const whyChooseUsItems = [
   class="page-section-emphasis section-clone-showcase"
   section="why-choose-us"
   page={pageId}
+  surfaceTone={surfaceTone}
 >
-  <div class="clone-heading">
+  <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">Why Choose Us</h2>
     <p class="section-lead clone-intro">
       Parrish Tree Removal is built around dependable service, clear communication,
@@ -63,7 +72,7 @@ const whyChooseUsItems = [
     </p>
   </div>
 
-  <div class="clone-value-grid">
+  <div class:list={['clone-value-grid', `why-choose-variant-${variant}`]} data-block="cards">
     {whyChooseUsItems.map((item) => (
       <article class="clone-value-card">
         <div class="clone-value-icon" aria-hidden="true">

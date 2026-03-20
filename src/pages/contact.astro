@@ -1,97 +1,66 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EstimateForm from '../components/EstimateForm.astro';
-import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
-import HeroTitleWords from '../components/HeroTitleWords.astro';
+import HeroSection from '../components/HeroSection.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import PageSection from '../components/PageSection.astro';
+import CardGridSection from '../components/CardGridSection.astro';
+import EstimateFormSection from '../components/EstimateFormSection.astro';
+import RelatedServicesSection from '../components/RelatedServicesSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { servicePages } from '../data/services';
-import heroImage from '../assets/hero-image.png';
 
 const contactPage = pageContent.contact;
-const contactHeroWords = 'Contact'.split(/\s+/);
 ---
 
 <BaseLayout
   title={contactPage.title}
   description={contactPage.description}
 >
-  <section class="page-hero internal-hero service-hero">
-    <div class="hero-frame">
-      <div class="hero-bleed subpage-hero-bleed">
-        <HeroOutlineCopy words={contactHeroWords} />
-        <Image
-          src={heroImage}
-          alt=""
-          aria-hidden="true"
-          class="hero-accent-image"
-          format="webp"
-          quality={75}
-          loading="eager"
-          decoding="async"
-        />
-        <div class="hero-copy">
-          <h1>
-            <span class="hero-title-primary"><HeroTitleWords text="Contact" /></span>
-            <span class="hero-title-secondary">Parrish Tree Removal</span>
-          </h1>
-          <p class="hero-subcopy">{contactPage.heroIntro}</p>
-        </div>
-      </div>
-      <div class="hero-cta-wrap">
-        <a href="#estimate-form" class="hero-cta">Free Estimate</a>
-      </div>
-    </div>
-  </section>
+  <HeroSection
+    pageId="contact"
+    titlePrimary={contactPage.hero.titlePrimary}
+    titleSecondary={contactPage.hero.titleSecondary}
+    intro={contactPage.hero.intro}
+    outlineWords={contactPage.hero.outlineWords}
+    variant={contactPage.hero.variant}
+    cta={contactPage.hero.cta}
+  />
 
   <div class="page-shell" data-page="contact">
-    <PageSection id="estimate-form" section="estimate-form" page="contact">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Send Project Details</h2>
-      </div>
+    <EstimateFormSection
+      pageId="contact"
+      title="Send Project Details"
+      heading={contactPage.estimateForm.heading}
+      intro={contactPage.estimateForm.intro}
+      buttonLabel={contactPage.estimateForm.buttonLabel}
+      surfaceTone="base"
+    />
 
-      <EstimateForm
-        heading={contactPage.estimateForm.heading}
-        intro={contactPage.estimateForm.intro}
-        buttonLabel={contactPage.estimateForm.buttonLabel}
-      />
-    </PageSection>
+    <CardGridSection
+      pageId="contact"
+      section="before-you-submit"
+      title="Before You Submit"
+      items={contactPage.beforeYouSubmit}
+      surfaceTone="warm"
+    />
 
-    <PageSection section="before-you-submit" page="contact">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Before You Submit</h2>
-      </div>
+    <HomepageWhyChoose pageId="contact" surfaceTone="cool" />
 
-      <div class="contact-stack">
-        {contactPage.beforeYouSubmit.map((item) => (
-          <article class="contact-card">
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </article>
-        ))}
-      </div>
-    </PageSection>
+    <HomepageProcess pageId="contact" surfaceTone="olive" />
 
-    <HomepageWhyChoose pageId="contact" />
+    <RelatedServicesSection
+      pageId="contact"
+      ariaLabel="Service links"
+      links={[
+        { href: `/${servicePages.treeRemoval.slug}`, label: servicePages.treeRemoval.cardTitle },
+        { href: `/${servicePages.stumpGrinding.slug}`, label: servicePages.stumpGrinding.cardTitle },
+        { href: `/${servicePages.treeTrimming.slug}`, label: servicePages.treeTrimming.cardTitle },
+        { href: `/${servicePages.stormCleanup.slug}`, label: servicePages.stormCleanup.cardTitle },
+      ]}
+      surfaceTone="base"
+    />
 
-    <HomepageProcess pageId="contact" />
-
-    <PageSection section="related-services" page="contact">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Services</h2>
-      </div>
-      <div class="service-button-row" role="navigation" aria-label="Service links">
-        <a href={`/${servicePages.treeRemoval.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeRemoval.heroTitle}`}>{servicePages.treeRemoval.cardTitle}</a>
-        <a href={`/${servicePages.stumpGrinding.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.stumpGrinding.heroTitle}`}>{servicePages.stumpGrinding.cardTitle}</a>
-        <a href={`/${servicePages.treeTrimming.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeTrimming.heroTitle}`}>{servicePages.treeTrimming.cardTitle}</a>
-        <a href={`/${servicePages.stormCleanup.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.stormCleanup.heroTitle}`}>{servicePages.stormCleanup.cardTitle}</a>
-      </div>
-    </PageSection>
-
-    <ServiceAreaSection pageId="contact" />
+    <ServiceAreaSection pageId="contact" surfaceTone="cool" />
   </div>
 </BaseLayout>

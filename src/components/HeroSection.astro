@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import HeroOutlineCopy from './HeroOutlineCopy.astro';
+import HeroTitleWords from './HeroTitleWords.astro';
+import heroImage from '../assets/hero-image.png';
+import { heroImageTransform } from '../data/heroMedia';
+import type { HeroVariant } from '../data/client-questionnaire';
+
+interface HeroAction {
+  kind: 'modal' | 'link' | 'anchor' | 'none';
+  label: string;
+  href?: string;
+  target?: string;
+}
+
+interface Props {
+  pageId: string;
+  titlePrimary: string;
+  titleSecondary?: string;
+  intro: string;
+  outlineWords: string[];
+  variant?: HeroVariant;
+  cta?: HeroAction;
+}
+
+const {
+  pageId,
+  titlePrimary,
+  titleSecondary = '',
+  intro,
+  outlineWords,
+  variant = 'split-image',
+  cta = { kind: 'none', label: '' },
+} = Astro.props;
+
+const heroClassName = [
+  'page-hero',
+  'internal-hero',
+  'service-hero',
+  pageId === 'home' && 'homepage-hero',
+  `hero-variant-${variant}`,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<section class={heroClassName} data-page={pageId} data-section="hero" data-hero-variant={variant}>
+  <div class="hero-frame" data-block="frame">
+    <div class="hero-bleed subpage-hero-bleed" data-block="background">
+      <HeroOutlineCopy words={outlineWords} />
+      {variant !== 'abstract-no-image' && (
+        <Image
+          src={heroImage}
+          alt=""
+          aria-hidden="true"
+          class="hero-accent-image"
+          format={heroImageTransform.format}
+          quality={heroImageTransform.quality}
+          widths={heroImageTransform.widths}
+          sizes={heroImageTransform.sizes}
+          priority={pageId === 'home'}
+          fetchpriority={pageId === 'home' ? 'high' : undefined}
+          loading="eager"
+          decoding="async"
+        />
+      )}
+      <div class="hero-copy" data-block="content">
+        <h1 data-block="title">
+          <span class="hero-title-primary"><HeroTitleWords text={titlePrimary} /></span>
+          {titleSecondary && <span class="hero-title-secondary">{titleSecondary}</span>}
+        </h1>
+        <p class="hero-subcopy" data-block="intro">{intro}</p>
+      </div>
+    </div>
+    {cta.kind !== 'none' && (
+      <div class="hero-cta-wrap" data-block="cta">
+        {cta.kind === 'modal' ? (
+          <button
+            type="button"
+            class="hero-cta"
+            data-open-estimate-modal
+            aria-haspopup="dialog"
+            aria-controls={cta.target}
+          >
+            {cta.label}
+          </button>
+        ) : (
+          <a
+            href={cta.href}
+            class="hero-cta"
+          >
+            {cta.label}
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</section>

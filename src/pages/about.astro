@@ -1,95 +1,65 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
-import HeroTitleWords from '../components/HeroTitleWords.astro';
+import HeroSection from '../components/HeroSection.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import PageSection from '../components/PageSection.astro';
+import CardGridSection from '../components/CardGridSection.astro';
+import InfoListSection from '../components/InfoListSection.astro';
+import RelatedServicesSection from '../components/RelatedServicesSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { servicePages } from '../data/services';
-import heroImage from '../assets/hero-image.png';
 
 const aboutPage = pageContent.about;
-const aboutHeroWords = 'About'.split(/\s+/);
 ---
 
 <BaseLayout
   title={aboutPage.title}
   description={aboutPage.description}
 >
-  <section class="page-hero internal-hero service-hero">
-    <div class="hero-frame">
-      <div class="hero-bleed subpage-hero-bleed">
-        <HeroOutlineCopy words={aboutHeroWords} />
-        <Image
-          src={heroImage}
-          alt=""
-          aria-hidden="true"
-          class="hero-accent-image"
-          format="webp"
-          quality={75}
-          loading="eager"
-          decoding="async"
-        />
-        <div class="hero-copy">
-          <h1>
-            <span class="hero-title-primary"><HeroTitleWords text="About" /></span>
-            <span class="hero-title-secondary">Parrish Tree Removal</span>
-          </h1>
-          <p class="hero-subcopy">{aboutPage.heroIntro}</p>
-        </div>
-      </div>
-      <div class="hero-cta-wrap">
-        <a href="/contact" class="hero-cta">Free Estimate</a>
-      </div>
-    </div>
-  </section>
+  <HeroSection
+    pageId="about"
+    titlePrimary={aboutPage.hero.titlePrimary}
+    titleSecondary={aboutPage.hero.titleSecondary}
+    intro={aboutPage.hero.intro}
+    outlineWords={aboutPage.hero.outlineWords}
+    variant={aboutPage.hero.variant}
+    cta={aboutPage.hero.cta}
+  />
 
   <div class="page-shell" data-page="about">
-    <PageSection section="what-homeowners-need" page="about">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">What Homeowners Need</h2>
-      </div>
+    <CardGridSection
+      pageId="about"
+      section="what-homeowners-need"
+      title="What Homeowners Need"
+      items={aboutPage.homeownerNeeds}
+      surfaceTone="base"
+    />
 
-      <div class="stack-grid">
-        {aboutPage.homeownerNeeds.map((item) => (
-          <article class="stack-panel">
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </article>
-        ))}
-      </div>
-    </PageSection>
+    <HomepageWhyChoose pageId="about" surfaceTone="warm" />
 
-    <HomepageWhyChoose pageId="about" />
+    <HomepageProcess pageId="about" surfaceTone="cool" />
 
-    <HomepageProcess pageId="about" />
+    <InfoListSection
+      pageId="about"
+      section="how-requests-work"
+      title="How Requests Work"
+      items={aboutPage.howRequestsWork}
+      softCard={true}
+      surfaceTone="olive"
+    />
 
-    <PageSection section="how-requests-work" page="about">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">How Requests Work</h2>
-      </div>
+    <RelatedServicesSection
+      pageId="about"
+      ariaLabel="Service page links"
+      links={[
+        { href: `/${servicePages.treeRemoval.slug}`, label: servicePages.treeRemoval.cardTitle },
+        { href: `/${servicePages.treeTrimming.slug}`, label: servicePages.treeTrimming.cardTitle },
+        { href: `/${servicePages.stumpGrinding.slug}`, label: servicePages.stumpGrinding.cardTitle },
+      ]}
+      surfaceTone="base"
+    />
 
-      <div class="page-card page-card-soft">
-        <ul class="list-copy">
-          {aboutPage.howRequestsWork.map((item) => <li>{item}</li>)}
-        </ul>
-      </div>
-    </PageSection>
-
-    <PageSection section="related-services" page="about">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Services</h2>
-      </div>
-      <div class="service-button-row" role="navigation" aria-label="Service page links">
-        <a href={`/${servicePages.treeRemoval.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeRemoval.heroTitle}`}>{servicePages.treeRemoval.cardTitle}</a>
-        <a href={`/${servicePages.treeTrimming.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.treeTrimming.heroTitle}`}>{servicePages.treeTrimming.cardTitle}</a>
-        <a href={`/${servicePages.stumpGrinding.slug}`} class="subpage-service-button" aria-label={`Go to ${servicePages.stumpGrinding.heroTitle}`}>{servicePages.stumpGrinding.cardTitle}</a>
-      </div>
-    </PageSection>
-
-    <ServiceAreaSection pageId="about" />
+    <ServiceAreaSection pageId="about" surfaceTone="cool" />
   </div>
 </BaseLayout>

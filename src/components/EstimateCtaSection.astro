@@ -1,0 +1,50 @@
+---
+import PageSection from './PageSection.astro';
+import type { EstimateCtaVariant, SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  sectionId?: string;
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  buttonLabel: string;
+  variant?: EstimateCtaVariant;
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  sectionId,
+  eyebrow,
+  heading,
+  intro,
+  buttonLabel,
+  variant = 'single-panel',
+  surfaceTone = 'olive',
+} = Astro.props;
+---
+
+<PageSection
+  id={sectionId}
+  class="estimate-cta-section"
+  section="estimate-cta"
+  page={pageId}
+  surfaceTone={surfaceTone}
+>
+  <div class:list={['estimate-cta-card', `estimate-cta-variant-${variant}`]} data-block="content">
+    <h2 class="clone-kicker section-divider-title" data-block="heading">{eyebrow}</h2>
+    <p class="estimate-cta-heading" data-block="title">{heading}</p>
+    <p data-block="intro">{intro}</p>
+    <button
+      type="button"
+      class="btn-primary"
+      data-open-estimate-modal
+      aria-haspopup="dialog"
+      aria-controls="estimate-modal"
+      data-block="cta"
+    >
+      {buttonLabel}
+    </button>
+  </div>
+</PageSection>

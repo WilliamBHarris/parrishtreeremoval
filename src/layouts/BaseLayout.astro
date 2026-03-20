@@ -10,13 +10,20 @@ interface Props {
   description?: string;
   schema?: Record<string, unknown> | Array<Record<string, unknown>>;
   ogImage?: string;
+  criticalImage?: {
+    src: string;
+    srcSet?: string;
+    sizes?: string;
+    type?: string;
+  };
 }
 
 const {
   title = `${client.businessName} | Tree Removal and Trimming in ${client.primaryLocation}`,
   description = `Tree removal, trimming, stump grinding, and storm cleanup information for homeowners in ${client.primaryLocation}.`,
   schema,
-  ogImage = brand.assets.ogImage
+  ogImage = brand.assets.ogImage,
+  criticalImage,
 } = Astro.props;
 
 const siteUrl = Astro.site?.toString() ?? 'https://parrishtreeremoval.com';
@@ -77,12 +84,38 @@ const schemaList = [
     <meta name="description" content={description} />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="theme-color" content={brand.colors.themeColor} />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap"
+      as="style"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    {criticalImage && (
+      <link
+        rel="preload"
+        as="image"
+        href={criticalImage.src}
+        imagesrcset={criticalImage.srcSet}
+        imagesizes={criticalImage.sizes}
+        type={criticalImage.type}
+        fetchpriority="high"
+      />
+    )}
     <link rel="icon" href={brand.assets.faviconSvg} type="image/svg+xml" />
     <link rel="icon" href={brand.assets.faviconIco} sizes="any" />
     <link rel="canonical" href={canonical} />

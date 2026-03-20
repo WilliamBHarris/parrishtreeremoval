@@ -1,0 +1,51 @@
+---
+import PageSection from './PageSection.astro';
+import type { ServicePageData } from '../data/services';
+import type { ServicesVariant, SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  sectionId?: string;
+  sectionKey?: string;
+  title?: string;
+  lead?: string;
+  services: ServicePageData[];
+  variant?: ServicesVariant;
+  summaryMode?: 'card' | 'overview';
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  sectionId,
+  sectionKey = 'services',
+  title = 'Our Services',
+  lead,
+  services,
+  variant = 'grid-cards',
+  summaryMode = 'card',
+  surfaceTone = 'base',
+} = Astro.props;
+---
+
+<PageSection id={sectionId} section={sectionKey} page={pageId} surfaceTone={surfaceTone}>
+  <div class="clone-heading" data-block="heading">
+    <h2 class="clone-kicker section-divider-title">{title}</h2>
+  </div>
+
+  {lead && <p class="section-lead" data-block="intro">{lead}</p>}
+
+  <div class:list={['services-section-grid', `services-variant-${variant}`]} data-block="cards">
+    {services.map((service) => (
+      <article class="service-card">
+        <div class="service-icon" aria-hidden="true">{service.icon}</div>
+        <h3>{service.cardTitle}</h3>
+        <p>{summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary}</p>
+        <a href={`/${service.slug}`} class="service-link">
+          Learn more
+          <span class="sr-only"> about {service.heroTitle}</span>
+        </a>
+      </article>
+    ))}
+  </div>
+</PageSection>

@@ -1,0 +1,35 @@
+---
+import PageSection from './PageSection.astro';
+import type { SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  section: string;
+  title: string;
+  items: string[];
+  softCard?: boolean;
+  sectionId?: string;
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  section,
+  title,
+  items,
+  softCard = false,
+  sectionId,
+  surfaceTone = 'base',
+} = Astro.props;
+---
+
+<PageSection id={sectionId} section={section} page={pageId} surfaceTone={surfaceTone}>
+  <div class="clone-heading" data-block="heading">
+    <h2 class="clone-kicker section-divider-title">{title}</h2>
+  </div>
+  <div class:list={['page-card', softCard && 'page-card-soft']} data-block="content">
+    <ul class="list-copy">
+      {items.map((item) => <li>{item}</li>)}
+    </ul>
+  </div>
+</PageSection>

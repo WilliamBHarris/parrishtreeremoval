@@ -1,63 +1,48 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EstimateForm from '../components/EstimateForm.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import HeroOutlineCopy from '../components/HeroOutlineCopy.astro';
-import HeroTitleWords from '../components/HeroTitleWords.astro';
-import PageSection from '../components/PageSection.astro';
+import HeroSection from '../components/HeroSection.astro';
+import ServicesSection from '../components/ServicesSection.astro';
+import EstimateCtaSection from '../components/EstimateCtaSection.astro';
+import FaqSection from '../components/FaqSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { serviceCardList } from '../data/services';
+import { heroImageTransform } from '../data/heroMedia';
 import heroImage from '../assets/hero-image.png';
 
 const homePage = pageContent.home;
-const homeHeroWords = 'Parrish Tree Removal'.split(/\s+/);
+const homepageCriticalImage = await getImage({
+  src: heroImage,
+  format: heroImageTransform.format,
+  quality: heroImageTransform.quality,
+  widths: heroImageTransform.widths,
+  sizes: heroImageTransform.sizes,
+});
 ---
 
 <BaseLayout
   title={homePage.title}
   description={homePage.description}
+  criticalImage={{
+    src: homepageCriticalImage.src,
+    srcSet: homepageCriticalImage.srcSet.attribute,
+    sizes: heroImageTransform.sizes,
+    type: 'image/webp',
+  }}
 >
-  <section class="page-hero internal-hero service-hero homepage-hero" data-page="home">
-    <div class="hero-frame">
-      <div class="hero-bleed subpage-hero-bleed">
-        <HeroOutlineCopy words={homeHeroWords} />
-        <Image
-          src={heroImage}
-          alt=""
-          aria-hidden="true"
-          class="hero-accent-image"
-          format="webp"
-          quality={75}
-          loading="eager"
-          decoding="async"
-        />
-        <div class="hero-copy">
-          <h1>
-            <span class="hero-title-primary"><HeroTitleWords text={homePage.hero.titlePrimary} /></span>
-            {homePage.hero.titleSecondary && (
-              <span class="hero-title-secondary">{homePage.hero.titleSecondary}</span>
-            )}
-          </h1>
-          <p class="hero-subcopy">{homePage.hero.intro}</p>
-        </div>
-      </div>
-
-      <div class="hero-cta-wrap">
-        <button
-          type="button"
-          class="hero-cta"
-          data-open-estimate-modal
-          aria-haspopup="dialog"
-          aria-controls="estimate-modal"
-        >
-          Get Free Estimate
-        </button>
-      </div>
-    </div>
-  </section>
+  <HeroSection
+    pageId="home"
+    titlePrimary={homePage.hero.titlePrimary}
+    titleSecondary={homePage.hero.titleSecondary}
+    intro={homePage.hero.intro}
+    outlineWords={homePage.hero.outlineWords}
+    variant={homePage.hero.variant}
+    cta={homePage.hero.cta}
+  />
 
   <div class="page-shell" data-page="home">
     <section class="page-section trust-badges-section" aria-label="Helpful project highlights" data-section="trust-badges" data-page="home">
@@ -66,65 +51,33 @@ const homeHeroWords = 'Parrish Tree Removal'.split(/\s+/);
       </div>
     </section>
 
-    <PageSection id="services" section="services" page="home">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">Our Services</h2>
-      </div>
+    <ServicesSection
+      pageId="home"
+      sectionId="services"
+      title="Our Services"
+      lead={homePage.servicesLead}
+      services={serviceCardList}
+      variant="grid-cards"
+      surfaceTone="base"
+    />
 
-      <p class="section-lead">{homePage.servicesLead}</p>
+    <HomepageWhyChoose pageId="home" surfaceTone="warm" />
 
-      <div class="service-grid">
-        {serviceCardList.map((service) => (
-          <article class="service-card">
-            <div class="service-icon" aria-hidden="true">{service.icon}</div>
-            <h3>{service.cardTitle}</h3>
-            <p>{service.serviceCardSummary}</p>
-            <a href={`/${service.slug}`} class="service-link">
-              Learn more
-              <span class="sr-only"> about {service.heroTitle}</span>
-            </a>
-          </article>
-        ))}
-      </div>
-    </PageSection>
+    <HomepageProcess pageId="home" surfaceTone="cool" />
 
-    <HomepageWhyChoose pageId="home" />
+    <EstimateCtaSection
+      pageId="home"
+      sectionId="estimate-cta"
+      eyebrow={homePage.estimateCta.eyebrow}
+      heading={homePage.estimateCta.heading}
+      intro={homePage.estimateCta.intro}
+      buttonLabel={homePage.estimateCta.buttonLabel}
+      surfaceTone="olive"
+    />
 
-    <HomepageProcess pageId="home" />
+    <FaqSection pageId="home" items={homePage.faq} surfaceTone="base" />
 
-    <PageSection id="estimate-cta" class="estimate-cta-section" section="estimate-cta" page="home">
-      <div class="estimate-cta-card">
-        <h2 class="clone-kicker section-divider-title">{homePage.estimateCta.eyebrow}</h2>
-        <p class="estimate-cta-heading">{homePage.estimateCta.heading}</p>
-        <p>{homePage.estimateCta.intro}</p>
-        <button
-          type="button"
-          class="btn-primary"
-          data-open-estimate-modal
-          aria-haspopup="dialog"
-          aria-controls="estimate-modal"
-        >
-          {homePage.estimateCta.buttonLabel}
-        </button>
-      </div>
-    </PageSection>
-
-    <PageSection id="faq" section="faq" page="home">
-      <div class="clone-heading">
-        <h2 class="clone-kicker section-divider-title">FAQ</h2>
-      </div>
-
-      <div class="faq-list">
-        {homePage.faq.map((item) => (
-          <article class="faq-item">
-            <h3>{item.question}</h3>
-            <p>{item.answer}</p>
-          </article>
-        ))}
-      </div>
-    </PageSection>
-
-    <ServiceAreaSection pageId="home" />
+    <ServiceAreaSection pageId="home" surfaceTone="cool" />
   </div>
 
   <section

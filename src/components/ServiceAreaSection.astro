@@ -2,24 +2,32 @@
 import PageSection from './PageSection.astro';
 import ServiceAreaMap from './ServiceAreaMap.astro';
 import { client } from '../data/client';
+import { templateConfig } from '../data/client-questionnaire';
+import type { SectionTone, ServiceAreaVariant } from '../data/client-questionnaire';
 
 interface Props {
   pageId: string;
   copy?: string;
+  variant?: ServiceAreaVariant;
+  surfaceTone?: SectionTone;
 }
 
 const {
   pageId,
   copy = client.serviceAreaCopy,
+  variant = templateConfig.presets.serviceArea,
+  surfaceTone = 'cool',
 } = Astro.props;
 ---
 
-<PageSection section="service-area" page={pageId} borderVariant="straight-bottom">
-  <div class="clone-heading">
+<PageSection section="service-area" page={pageId} borderVariant="straight-bottom" surfaceTone={surfaceTone}>
+  <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">Service Area</h2>
   </div>
-  <p class="section-lead subpage-section-lead">
+  <p class:list={['section-lead', 'subpage-section-lead', `service-area-variant-${variant}`]} data-block="content">
     {copy}
   </p>
-  <ServiceAreaMap />
+  <div data-block="map">
+    <ServiceAreaMap />
+  </div>
 </PageSection>

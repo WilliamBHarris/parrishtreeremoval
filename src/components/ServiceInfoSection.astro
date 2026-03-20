@@ -1,0 +1,51 @@
+---
+import PageSection from './PageSection.astro';
+import type { IncludedItem } from '../data/services';
+import type { SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  section: string;
+  title: string;
+  items: Array<string | IncludedItem>;
+  layout?: 'list' | 'cards' | 'stack' | 'grid';
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  section,
+  title,
+  items,
+  layout = 'grid',
+  surfaceTone = 'base',
+} = Astro.props;
+---
+
+<PageSection section={section} page={pageId} surfaceTone={surfaceTone}>
+  <div class="clone-heading" data-block="heading">
+    <h2 class="clone-kicker section-divider-title">{title}</h2>
+  </div>
+  {layout === 'list' ? (
+    <div class="page-card when-needed-card" data-block="content">
+      <ul class="list-copy">
+        {items.map((item) => <li>{typeof item === 'string' ? item : item.description}</li>)}
+      </ul>
+    </div>
+  ) : (
+    <div class:list={['stack-grid', layout === 'grid' && 'stack-grid-two']} data-block="cards">
+      {items.map((item) => (
+        <article class="stack-panel">
+          {typeof item === 'string' ? (
+            <p>{item}</p>
+          ) : (
+            <>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </>
+          )}
+        </article>
+      ))}
+    </div>
+  )}
+</PageSection>

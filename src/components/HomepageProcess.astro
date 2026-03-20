@@ -1,5 +1,7 @@
 ---
 import PageSection from './PageSection.astro';
+import { templateConfig } from '../data/client-questionnaire';
+import type { ProcessVariant, SectionTone } from '../data/client-questionnaire';
 
 interface ProcessStep {
   title: string;
@@ -9,6 +11,9 @@ interface ProcessStep {
 
 interface Props {
   steps?: ProcessStep[];
+  pageId?: string;
+  variant?: ProcessVariant;
+  surfaceTone?: SectionTone;
 }
 
 const defaultSteps = [
@@ -52,19 +57,25 @@ const defaultSteps = [
   },
 ];
 
-const { steps = defaultSteps, pageId } = Astro.props;
+const {
+  steps = defaultSteps,
+  pageId,
+  variant = templateConfig.presets.process,
+  surfaceTone = 'olive',
+} = Astro.props;
 ---
 
 <PageSection
   class="page-section-emphasis section-clone-showcase"
   section="our-process"
   page={pageId}
+  surfaceTone={surfaceTone}
 >
-  <div class="clone-heading">
+  <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">Our Process</h2>
   </div>
 
-  <div class="clone-process-list">
+  <div class:list={['clone-process-list', `process-variant-${variant}`]} data-block="cards">
     {steps.map((step) => (
       <article class="clone-process-card">
         <div class="clone-process-icon" aria-hidden="true">

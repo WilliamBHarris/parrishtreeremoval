@@ -1,0 +1,34 @@
+---
+import PageSection from './PageSection.astro';
+import type { FaqItem } from '../data/services';
+import type { FaqVariant, SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  items: FaqItem[];
+  variant?: FaqVariant;
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  items,
+  variant = 'clean-list',
+  surfaceTone = 'warm',
+} = Astro.props;
+---
+
+<PageSection id="faq" section="faq" page={pageId} surfaceTone={surfaceTone}>
+  <div class="clone-heading" data-block="heading">
+    <h2 class="clone-kicker section-divider-title">FAQ</h2>
+  </div>
+
+  <div class:list={['faq-list', `faq-variant-${variant}`]} data-block="items">
+    {items.map((item) => (
+      <article class="faq-item">
+        <h3>{item.question}</h3>
+        <p>{item.answer}</p>
+      </article>
+    ))}
+  </div>
+</PageSection>
