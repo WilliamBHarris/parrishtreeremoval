@@ -24,9 +24,18 @@ const {
 } = Astro.props;
 ---
 
-<PageSection id={sectionId} section="estimate-form" page={pageId} surfaceTone={surfaceTone}>
+<PageSection
+  id={sectionId}
+  class="section-desktop-split"
+  section="estimate-form"
+  page={pageId}
+  surfaceTone={surfaceTone}
+>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
+    <p class="section-lead section-desktop-lead clone-intro">
+      Share a few job details and the next step stays simple.
+    </p>
   </div>
   <div data-block="form">
     <EstimateForm

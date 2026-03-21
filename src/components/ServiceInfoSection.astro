@@ -20,11 +20,21 @@ const {
   layout = 'grid',
   surfaceTone = 'base',
 } = Astro.props;
+
+const desktopIntroBySection: Record<string, string> = {
+  'when-you-need-this-service': 'Common signs the property is ready for this work.',
+  'whats-included': 'A quick overview of what the service typically covers.',
+};
 ---
 
-<PageSection section={section} page={pageId} surfaceTone={surfaceTone}>
+<PageSection class="section-desktop-split" section={section} page={pageId} surfaceTone={surfaceTone}>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
+    {desktopIntroBySection[section] && (
+      <p class="section-lead section-desktop-lead clone-intro">
+        {desktopIntroBySection[section]}
+      </p>
+    )}
   </div>
   {layout === 'list' ? (
     <div class="page-card when-needed-card" data-block="content">

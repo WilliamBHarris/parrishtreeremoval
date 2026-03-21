@@ -24,11 +24,22 @@ const {
   columns = 'default',
   surfaceTone = 'base',
 } = Astro.props;
+
+const desktopIntroBySection: Record<string, string> = {
+  'compare-services': 'A clear snapshot of how the main services differ.',
+  'before-you-submit': 'A few details that help the estimate request move faster.',
+  'what-homeowners-need': 'The core things homeowners usually care about first.',
+};
 ---
 
-<PageSection section={section} page={pageId} surfaceTone={surfaceTone}>
+<PageSection class="section-desktop-split" section={section} page={pageId} surfaceTone={surfaceTone}>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
+    {desktopIntroBySection[section] && (
+      <p class="section-lead section-desktop-lead clone-intro">
+        {desktopIntroBySection[section]}
+      </p>
+    )}
   </div>
 
   <div class:list={['stack-grid', columns === 'two' && 'stack-grid-two']} data-block="cards">

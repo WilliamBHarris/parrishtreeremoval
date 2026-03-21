@@ -28,12 +28,17 @@ const {
 } = Astro.props;
 ---
 
-<PageSection id={sectionId} section={sectionKey} page={pageId} surfaceTone={surfaceTone}>
+<PageSection
+  id={sectionId}
+  class="section-desktop-split"
+  section={sectionKey}
+  page={pageId}
+  surfaceTone={surfaceTone}
+>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
+    {lead && <p class="section-lead clone-intro">{lead}</p>}
   </div>
-
-  {lead && <p class="section-lead" data-block="intro">{lead}</p>}
 
   <div class:list={['services-section-grid', `services-variant-${variant}`]} data-block="cards">
     {services.map((service) => (

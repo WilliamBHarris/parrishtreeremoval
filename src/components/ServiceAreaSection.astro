@@ -20,13 +20,19 @@ const {
 } = Astro.props;
 ---
 
-<PageSection section="service-area" page={pageId} borderVariant="straight-bottom" surfaceTone={surfaceTone}>
+<PageSection
+  class="section-desktop-split"
+  section="service-area"
+  page={pageId}
+  borderVariant="straight-bottom"
+  surfaceTone={surfaceTone}
+>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">Service Area</h2>
+    <p class:list={['section-lead', 'subpage-section-lead', 'clone-intro', `service-area-variant-${variant}`]}>
+      {copy}
+    </p>
   </div>
-  <p class:list={['section-lead', 'subpage-section-lead', `service-area-variant-${variant}`]} data-block="content">
-    {copy}
-  </p>
   <div data-block="map">
     <ServiceAreaMap />
   </div>

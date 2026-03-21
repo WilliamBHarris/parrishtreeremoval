@@ -21,11 +21,27 @@ const {
   sectionId,
   surfaceTone = 'base',
 } = Astro.props;
+
+const desktopIntroBySection: Record<string, string> = {
+  'estimate-tips': 'The quick details that help quoting and scheduling stay clear.',
+  'how-requests-work': 'What to expect after sending over the project details.',
+};
 ---
 
-<PageSection id={sectionId} section={section} page={pageId} surfaceTone={surfaceTone}>
+<PageSection
+  id={sectionId}
+  class="section-desktop-split"
+  section={section}
+  page={pageId}
+  surfaceTone={surfaceTone}
+>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
+    {desktopIntroBySection[section] && (
+      <p class="section-lead section-desktop-lead clone-intro">
+        {desktopIntroBySection[section]}
+      </p>
+    )}
   </div>
   <div class:list={['page-card', softCard && 'page-card-soft']} data-block="content">
     <ul class="list-copy">

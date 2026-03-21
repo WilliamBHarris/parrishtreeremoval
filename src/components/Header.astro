@@ -17,51 +17,92 @@ const navLinks = [
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
+
+const desktopNavLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  ...serviceLinks,
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
 ---
 
 <header class="site-header">
-  <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
-    <Image
-      src={parrishLogo}
-      alt=""
-      aria-hidden="true"
-      class="site-logo"
-      widths={[120, 180, 260]}
-      sizes="180px"
-      fetchpriority="low"
-      format="webp"
-    />
-  </a>
-  <div class="header-actions">
-    <a
-      href={`tel:${client.primaryPhoneHref}`}
-      class="sticky-call-fab"
-      aria-label={`Call ${client.businessName}`}
-    >
-      <svg
-        viewBox="0 0 24 24"
+  <div class="site-header-inner">
+    <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
+      <Image
+        src={parrishLogo}
+        alt=""
         aria-hidden="true"
-        focusable="false"
-      >
-        <path
-          d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
-          fill="currentColor"
-        ></path>
-      </svg>
+        class="site-logo"
+        widths={[120, 180, 260]}
+        sizes="180px"
+        fetchpriority="low"
+        format="webp"
+      />
     </a>
-    <button
-      class="menu-toggle"
-      type="button"
-      aria-expanded="false"
-      aria-controls="mobile-drawer"
-      aria-label="Open menu"
-    >
-      <span class="menu-toggle-lines" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
-      </span>
-    </button>
+
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {desktopNavLinks.map((link) => {
+        const normalizedHref = link.href.replace(/\/+$/, '') || '/';
+        const isCurrent = currentPath === normalizedHref;
+
+        return (
+          <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+
+    <div class="header-actions">
+      <a
+        href={`tel:${client.primaryPhoneHref}`}
+        class="desktop-call-link"
+        aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+            fill="currentColor"
+          ></path>
+        </svg>
+        <span>Call Now</span>
+      </a>
+      <a
+        href={`tel:${client.primaryPhoneHref}`}
+        class="sticky-call-fab"
+        aria-label={`Call ${client.businessName}`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path
+            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+            fill="currentColor"
+          ></path>
+        </svg>
+      </a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+        aria-label="Open menu"
+      >
+        <span class="menu-toggle-lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
   </div>
 </header>
 

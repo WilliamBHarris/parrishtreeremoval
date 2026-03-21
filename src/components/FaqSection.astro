@@ -18,9 +18,12 @@ const {
 } = Astro.props;
 ---
 
-<PageSection id="faq" section="faq" page={pageId} surfaceTone={surfaceTone}>
+<PageSection id="faq" class="section-desktop-split" section="faq" page={pageId} surfaceTone={surfaceTone}>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">FAQ</h2>
+    <p class="section-lead section-desktop-lead clone-intro">
+      Quick answers to the questions homeowners ask most.
+    </p>
   </div>
 
   <div class:list={['faq-list', `faq-variant-${variant}`]} data-block="items">

@@ -26,9 +26,12 @@ const {
 } = Astro.props;
 ---
 
-<PageSection section="related-services" page={pageId} surfaceTone={surfaceTone}>
+<PageSection class="section-desktop-split" section="related-services" page={pageId} surfaceTone={surfaceTone}>
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
+    <p class="section-lead section-desktop-lead clone-intro">
+      Explore the other core services available for Parrish properties.
+    </p>
   </div>
   <div
     class:list={['service-button-row', `related-services-variant-${variant}`]}
