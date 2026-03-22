@@ -1,9 +1,24 @@
 ---
 import { Image } from 'astro:assets';
+import { brand } from '../data/brand';
 import { client } from '../data/client';
 import parrishLogo from '../assets/parrish-logo.png';
+import type { HeaderVariant } from '../lib/template/intake-types';
+
+interface Props {
+  variant?: HeaderVariant;
+  previewMode?: boolean;
+  instanceId?: string;
+}
+
+const {
+  variant = brand.presets.headerVariant,
+  previewMode = false,
+  instanceId = 'site-header',
+} = Astro.props;
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const drawerId = `${instanceId}-mobile-drawer`;
 const serviceLinks = [
   { href: '/tree-removal', label: 'Tree Removal' },
   { href: '/stump-grinding', label: 'Stump Grinding' },
@@ -27,173 +42,191 @@ const desktopNavLinks = [
 ];
 ---
 
-<header class="site-header">
-  <div class="site-header-inner">
-    <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
-      <Image
-        src={parrishLogo}
-        alt=""
-        aria-hidden="true"
-        class="site-logo"
-        widths={[120, 180, 260]}
-        sizes="180px"
-        fetchpriority="low"
-        format="webp"
-      />
-    </a>
-
-    <nav class="desktop-nav" aria-label="Primary navigation">
-      {desktopNavLinks.map((link) => {
-        const normalizedHref = link.href.replace(/\/+$/, '') || '/';
-        const isCurrent = currentPath === normalizedHref;
-
-        return (
-          <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
-            {link.label}
-          </a>
-        );
-      })}
-    </nav>
-
-    <div class="header-actions">
-      <a
-        href={`tel:${client.primaryPhoneHref}`}
-        class="desktop-call-link"
-        aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path
-            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
-            fill="currentColor"
-          ></path>
-        </svg>
-        <span>Call Now</span>
-      </a>
-      <a
-        href={`tel:${client.primaryPhoneHref}`}
-        class="sticky-call-fab"
-        aria-label={`Call ${client.businessName}`}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path
-            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </a>
-      <button
-        class="menu-toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="mobile-drawer"
-        aria-label="Open menu"
-      >
-        <span class="menu-toggle-lines" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<div class="menu-scrim" hidden></div>
-
-<aside
-  id="mobile-drawer"
-  class="mobile-drawer"
-  aria-label="Primary navigation"
-  hidden
-  inert
+<div
+  class:list={['site-header-shell', previewMode && 'site-header-shell--preview']}
+  data-header-root
+  data-header-instance={instanceId}
 >
-  <div class="mobile-drawer-panel">
-    <nav class="mobile-drawer-nav" aria-label="Primary navigation">
-      {navLinks.map((link) => {
-        const normalizedHref = link.href.replace(/\/+$/, '') || '/';
-        const isCurrent = currentPath === normalizedHref;
-        const hasChildren = Array.isArray(link.children);
-        const isSectionCurrent = hasChildren
-          ? link.children.some((child) => currentPath === (child.href.replace(/\/+$/, '') || '/'))
-          : false;
-        const submenuId = hasChildren ? `drawer-submenu-${link.label.toLowerCase().replace(/\s+/g, '-')}` : undefined;
+  <header class:list={['site-header', `site-header-variant-${variant}`, previewMode && 'site-header--preview']}>
+    <div class="site-header-inner">
+      <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
+        <Image
+          src={parrishLogo}
+          alt=""
+          aria-hidden="true"
+          class="site-logo"
+          widths={[120, 180, 260]}
+          sizes="180px"
+          fetchpriority="low"
+          format="webp"
+        />
+      </a>
 
-        return hasChildren ? (
-          <div class="drawer-submenu-group" data-submenu-default-open="true">
-            <div class="drawer-submenu-row">
-              <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
-                {link.label}
-              </a>
-              <button
-                class="drawer-submenu-toggle"
-                type="button"
-                aria-expanded={isCurrent || isSectionCurrent ? 'true' : 'false'}
-                aria-controls={submenuId}
-                aria-label={`Toggle ${link.label} submenu`}
-              >
-                <span class="drawer-submenu-caret" aria-hidden="true"></span>
-              </button>
-            </div>
-            <div
-              id={submenuId}
-              class="drawer-submenu"
-              hidden={!(isCurrent || isSectionCurrent)}
-            >
-              {link.children.map((child) => {
-                const childPath = child.href.replace(/\/+$/, '') || '/';
-                const isChildCurrent = currentPath === childPath;
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        {desktopNavLinks.map((link) => {
+          const normalizedHref = link.href.replace(/\/+$/, '') || '/';
+          const isCurrent = currentPath === normalizedHref;
 
-                return (
-                  <a href={child.href} aria-current={isChildCurrent ? 'page' : undefined}>
-                    {child.label}
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        ) : (
-          <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
-            {link.label}
-          </a>
-        );
-      })}
-    </nav>
+          return (
+            <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
+              {link.label}
+            </a>
+          );
+        })}
+      </nav>
 
-    <div class="mobile-drawer-footer">
-      <a href="/contact" class="drawer-cta">Request Estimate</a>
+      <div class="header-actions">
+        <a
+          href="/contact"
+          class="desktop-estimate-link"
+          aria-label={`Request an estimate from ${client.businessName}`}
+        >
+          <span>{client.ctas.heroEstimate}</span>
+        </a>
+
+        <a
+          href={`tel:${client.primaryPhoneHref}`}
+          class="desktop-call-link"
+          aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <span>{client.ctas.secondaryButtonLabel}</span>
+        </a>
+
+        <a
+          href={`tel:${client.primaryPhoneHref}`}
+          class="sticky-call-fab"
+          aria-label={`Call ${client.businessName}`}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </a>
+
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls={drawerId}
+          aria-label="Open menu"
+        >
+          <span class="menu-toggle-lines" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
-</aside>
+  </header>
 
-<script is:inline>
-  (() => {
-    if (window.__headerMenuLoaderBound) return;
-    window.__headerMenuLoaderBound = true;
+  <div class="menu-scrim" hidden></div>
 
-    let loaded;
-    const toggle = document.querySelector('.menu-toggle');
-    const loadHeaderMenu = () => loaded ??= import('/scripts/header-menu.js');
+  <aside
+    id={drawerId}
+    class="mobile-drawer"
+    aria-label="Primary navigation"
+    hidden
+    inert
+  >
+    <div class="mobile-drawer-panel">
+      <nav class="mobile-drawer-nav" aria-label="Primary navigation">
+        {navLinks.map((link) => {
+          const normalizedHref = link.href.replace(/\/+$/, '') || '/';
+          const isCurrent = currentPath === normalizedHref;
+          const hasChildren = Array.isArray(link.children);
+          const isSectionCurrent = hasChildren
+            ? link.children.some((child) => currentPath === (child.href.replace(/\/+$/, '') || '/'))
+            : false;
+          const submenuId = hasChildren
+            ? `${instanceId}-drawer-submenu-${link.label.toLowerCase().replace(/\s+/g, '-')}`
+            : undefined;
 
-    if (toggle instanceof HTMLElement) {
-      toggle.addEventListener('click', async (event) => {
-        if (!loaded) {
-          event.preventDefault();
-          await loadHeaderMenu();
-          toggle.click();
-        }
-      }, { once: true });
+          return hasChildren ? (
+            <div class="drawer-submenu-group" data-submenu-default-open="true">
+              <div class="drawer-submenu-row">
+                <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
+                  {link.label}
+                </a>
+                <button
+                  class="drawer-submenu-toggle"
+                  type="button"
+                  aria-expanded={isCurrent || isSectionCurrent ? 'true' : 'false'}
+                  aria-controls={submenuId}
+                  aria-label={`Toggle ${link.label} submenu`}
+                >
+                  <span class="drawer-submenu-caret" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div
+                id={submenuId}
+                class="drawer-submenu"
+                hidden={!(isCurrent || isSectionCurrent)}
+              >
+                {link.children.map((child) => {
+                  const childPath = child.href.replace(/\/+$/, '') || '/';
+                  const isChildCurrent = currentPath === childPath;
 
-      toggle.addEventListener('pointerenter', loadHeaderMenu, { once: true, passive: true });
-      toggle.addEventListener('touchstart', loadHeaderMenu, { once: true, passive: true });
-      toggle.addEventListener('focus', loadHeaderMenu, { once: true, passive: true });
-    }
-  })();
-</script>
+                  return (
+                    <a href={child.href} aria-current={isChildCurrent ? 'page' : undefined}>
+                      {child.label}
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
+              {link.label}
+            </a>
+          );
+        })}
+      </nav>
+
+      <div class="mobile-drawer-footer">
+        <a href="/contact" class="drawer-cta">{client.ctas.heroEstimate}</a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+{!previewMode && (
+  <script is:inline define:vars={{ instanceId }}>
+    (() => {
+      const root = document.querySelector(`[data-header-instance="${instanceId}"]`);
+      if (!(root instanceof HTMLElement) || root.dataset.headerLoaderBound === 'true') return;
+      root.dataset.headerLoaderBound = 'true';
+
+      let loaded;
+      const toggle = root.querySelector('.menu-toggle');
+      const loadHeaderMenu = async () => {
+        const mod = loaded ??= import('/scripts/header-menu.js');
+        const resolved = await mod;
+        resolved.bindHeaderMenus?.(root);
+        return resolved;
+      };
+
+      if (toggle instanceof HTMLElement) {
+        toggle.addEventListener('click', async (event) => {
+          if (!root.dataset.menuBound) {
+            event.preventDefault();
+            await loadHeaderMenu();
+            toggle.click();
+          }
+        }, { once: true });
+
+        toggle.addEventListener('pointerenter', () => { void loadHeaderMenu(); }, { once: true, passive: true });
+        toggle.addEventListener('touchstart', () => { void loadHeaderMenu(); }, { once: true, passive: true });
+        toggle.addEventListener('focus', () => { void loadHeaderMenu(); }, { once: true, passive: true });
+      }
+    })();
+  </script>
+)}

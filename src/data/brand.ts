@@ -11,9 +11,17 @@ export const brand = {
   assets: templateConfig.branding.assets,
   colors: templateConfig.branding.colors,
   presets: {
-    palette: templateConfig.branding.palettePreset,
+    colorTemplate: templateConfig.branding.colorTemplate,
     typography: templateConfig.branding.typographyPreset,
     border: templateConfig.branding.borderPreset,
+    headerVariant: templateConfig.presets.header,
+    headingTypography: templateConfig.branding.headingTypography,
+    bodyTypography: templateConfig.branding.bodyTypography,
+    sectionTitleStyle: templateConfig.branding.sectionTitleStyle,
+    cardSurface: templateConfig.branding.cardSurface,
+    cardBorderStyle: templateConfig.branding.cardBorderStyle,
+    buttonBorderStyle: templateConfig.branding.buttonBorderStyle,
+    sectionFrameStyle: templateConfig.branding.sectionFrameStyle,
   },
   styleControls: templateConfig.branding.styleControls,
 } as const;

@@ -9,6 +9,7 @@ import InfoListSection from '../components/InfoListSection.astro';
 import EstimateFormSection from '../components/EstimateFormSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
+import { templateConfig } from '../data/client-questionnaire';
 import { serviceCardList } from '../data/services';
 
 const servicesPage = pageContent.services;
@@ -34,7 +35,7 @@ const servicesPage = pageContent.services;
       sectionKey="services-overview"
       title="Our Services"
       services={serviceCardList}
-      variant="grid-cards"
+      variant={templateConfig.presets.services}
       summaryMode="overview"
       surfaceTone="base"
     />

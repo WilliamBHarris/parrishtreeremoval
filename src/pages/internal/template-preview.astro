@@ -1,0 +1,1812 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import EstimateForm from '../../components/EstimateForm.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import ServicesSection from '../../components/ServicesSection.astro';
+import HomepageProcess from '../../components/HomepageProcess.astro';
+import HomepageWhyChoose from '../../components/HomepageWhyChoose.astro';
+import FaqSection from '../../components/FaqSection.astro';
+import ServiceAreaSection from '../../components/ServiceAreaSection.astro';
+import EstimateCtaSection from '../../components/EstimateCtaSection.astro';
+import EstimateFormSection from '../../components/EstimateFormSection.astro';
+import CardGridSection from '../../components/CardGridSection.astro';
+import InfoListSection from '../../components/InfoListSection.astro';
+import ServiceInfoSection from '../../components/ServiceInfoSection.astro';
+import RelatedServicesSection from '../../components/RelatedServicesSection.astro';
+import { pageContent } from '../../data/pages';
+import { serviceCardList, servicePages } from '../../data/services';
+import { siteStylePresets, variantOptions } from '../../data/client-questionnaire';
+
+const homePage = pageContent.home;
+const servicesPage = pageContent.services;
+const contactPage = pageContent.contact;
+const presetEntries = Object.values(siteStylePresets);
+const defaultPreset = siteStylePresets['preset-a-parrish-baseline'];
+const previewSections = [
+  { key: 'header', label: 'Header' },
+  { key: 'hero', label: 'Hero' },
+  { key: 'whyChoose', label: 'Why Choose Us' },
+  { key: 'services', label: 'Services' },
+  { key: 'process', label: 'Process' },
+  { key: 'serviceArea', label: 'Service Area' },
+  { key: 'faq', label: 'FAQ' },
+  { key: 'estimateCta', label: 'Estimate CTA' },
+  { key: 'relatedServices', label: 'Related Services' },
+  { key: 'cardGrid', label: 'Card Grid' },
+  { key: 'infoList', label: 'Info List' },
+  { key: 'serviceInfo', label: 'Service Info' },
+  { key: 'estimateForm', label: 'Estimate Form' },
+] as const;
+
+const previewState = {
+  presets: presetEntries.map((preset) => ({
+    id: preset.id,
+    label: preset.label,
+    description: preset.description,
+    useCase: preset.useCase,
+    header: preset.header,
+    hero: preset.hero,
+    colorTemplate: preset.colorTemplate,
+    headingTypography: preset.headingTypography,
+    bodyTypography: preset.bodyTypography,
+    sectionTitleStyle: preset.sectionTitleStyle,
+    cardSurface: preset.cardSurface,
+    cardBorderStyle: preset.cardBorderStyle,
+    buttonBorderStyle: preset.buttonBorderStyle,
+    sectionFrameStyle: preset.sectionFrameStyle,
+    estimateCta: preset.estimateCta,
+    relatedServices: preset.relatedServices,
+    whyChoose: preset.whyChoose,
+    services: preset.services,
+    faq: preset.faq,
+    process: preset.process,
+    serviceArea: preset.serviceArea,
+  })),
+  labels: {
+    header: Object.fromEntries(variantOptions.header.map((option) => [option.value, option.label])),
+    colorTemplate: Object.fromEntries(variantOptions.colorTemplate.map((option) => [option.value, option.label])),
+    headingTypography: Object.fromEntries(variantOptions.headingTypography.map((option) => [option.value, option.label])),
+    bodyTypography: Object.fromEntries(variantOptions.bodyTypography.map((option) => [option.value, option.label])),
+    sectionTitleStyle: Object.fromEntries(variantOptions.sectionTitleStyle.map((option) => [option.value, option.label])),
+    cardSurface: Object.fromEntries(variantOptions.cardSurface.map((option) => [option.value, option.label])),
+    cardBorderStyle: Object.fromEntries(variantOptions.cardBorderStyle.map((option) => [option.value, option.label])),
+    buttonBorderStyle: Object.fromEntries(variantOptions.buttonBorderStyle.map((option) => [option.value, option.label])),
+    sectionFrameStyle: Object.fromEntries(variantOptions.sectionFrameStyle.map((option) => [option.value, option.label])),
+    services: Object.fromEntries(variantOptions.services.map((option) => [option.value, option.label])),
+    faq: Object.fromEntries(variantOptions.faq.map((option) => [option.value, option.label])),
+    process: Object.fromEntries(variantOptions.process.map((option) => [option.value, option.label])),
+    serviceArea: Object.fromEntries(variantOptions.serviceArea.map((option) => [option.value, option.label])),
+  },
+  allowedVariants: {
+    header: variantOptions.header.map((option) => option.value),
+    hero: variantOptions.hero.map((option) => option.value),
+    estimateCta: variantOptions.estimateCta.map((option) => option.value),
+    colorTemplate: variantOptions.colorTemplate.map((option) => option.value),
+    headingTypography: variantOptions.headingTypography.map((option) => option.value),
+    bodyTypography: variantOptions.bodyTypography.map((option) => option.value),
+    sectionTitleStyle: variantOptions.sectionTitleStyle.map((option) => option.value),
+    cardSurface: variantOptions.cardSurface.map((option) => option.value),
+    cardBorderStyle: variantOptions.cardBorderStyle.map((option) => option.value),
+    buttonBorderStyle: variantOptions.buttonBorderStyle.map((option) => option.value),
+    sectionFrameStyle: variantOptions.sectionFrameStyle.map((option) => option.value),
+    services: variantOptions.services.map((option) => option.value),
+    faq: variantOptions.faq.map((option) => option.value),
+    process: variantOptions.process.map((option) => option.value),
+    serviceArea: variantOptions.serviceArea.map((option) => option.value),
+  },
+  sections: previewSections,
+};
+---
+
+<BaseLayout
+  title="Internal Template Preview"
+  description="Internal-only template preview for preset and section variant comparisons."
+  robots="noindex,nofollow,noarchive"
+  showSiteChrome={false}
+>
+  <div class="page-shell template-preview-shell" data-page="internal-template-preview">
+    <div class="template-preview-workspace">
+      <section class="template-preview-intro">
+        <p class="template-preview-eyebrow">Internal Tooling</p>
+        <h1>Template Preview</h1>
+        <p>
+          Compare real preset bundles and section variants using the live framework components.
+          Preset A remains the current Parrish baseline; the controls below let you preview alternate preset defaults, global visual-system settings, or section-level overrides without the public site chrome getting in the way.
+        </p>
+      </section>
+
+      <section class="template-preview-toolbar" aria-label="Template preview controls" data-preview-root>
+        <div class="template-preview-controls">
+          <label class="template-preview-control">
+            <span>Preview mode</span>
+            <select data-preview-mode>
+              <option value="sections">Isolated sections</option>
+              <option value="full-page">Full-page flow</option>
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Preset bundle</span>
+            <select data-preview-preset>
+              {presetEntries.map((preset) => (
+                <option value={preset.id} selected={preset.id === defaultPreset.id}>{preset.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Header</span>
+            <select data-preview-override="header">
+              <option value="preset">Follow preset</option>
+              {variantOptions.header.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Heading type</span>
+            <select data-preview-override="headingTypography">
+              <option value="preset">Follow preset</option>
+              {variantOptions.headingTypography.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Body type</span>
+            <select data-preview-override="bodyTypography">
+              <option value="preset">Follow preset</option>
+              {variantOptions.bodyTypography.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Section titles</span>
+            <select data-preview-override="sectionTitleStyle">
+              <option value="preset">Follow preset</option>
+              {variantOptions.sectionTitleStyle.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Color template</span>
+            <select data-preview-override="colorTemplate">
+              <option value="preset">Follow preset</option>
+              {variantOptions.colorTemplate.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Card surface</span>
+            <select data-preview-override="cardSurface">
+              <option value="preset">Follow preset</option>
+              {variantOptions.cardSurface.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Card border</span>
+            <select data-preview-override="cardBorderStyle">
+              <option value="preset">Follow preset</option>
+              {variantOptions.cardBorderStyle.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Button border</span>
+            <select data-preview-override="buttonBorderStyle">
+              <option value="preset">Follow preset</option>
+              {variantOptions.buttonBorderStyle.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Section frame</span>
+            <select data-preview-override="sectionFrameStyle">
+              <option value="preset">Follow preset</option>
+              {variantOptions.sectionFrameStyle.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Services</span>
+            <select data-preview-override="services">
+              <option value="preset">Follow preset</option>
+              {variantOptions.services.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>FAQ</span>
+            <select data-preview-override="faq">
+              <option value="preset">Follow preset</option>
+              {variantOptions.faq.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Process</span>
+            <select data-preview-override="process">
+              <option value="preset">Follow preset</option>
+              {variantOptions.process.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+
+          <label class="template-preview-control">
+            <span>Service Area</span>
+            <select data-preview-override="serviceArea">
+              <option value="preset">Follow preset</option>
+              {variantOptions.serviceArea.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div class="template-preview-accordion">
+          <button
+            type="button"
+            class="template-preview-accordion-trigger"
+            data-preview-accordion-trigger="visibility"
+            aria-expanded="false"
+            aria-controls="template-preview-visibility-panel"
+          >
+            <span>Section visibility</span>
+            <span class="template-preview-accordion-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div
+            id="template-preview-visibility-panel"
+            class="template-preview-accordion-panel template-preview-visibility"
+            data-preview-accordion-panel="visibility"
+            hidden
+          >
+            <div class="template-preview-visibility-grid">
+              {previewSections.map((section) => (
+                <label class="template-preview-visibility-item">
+                  <input
+                    type="checkbox"
+                    value={section.key}
+                    data-preview-section-toggle={section.key}
+                    checked
+                  />
+                  <span>{section.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="template-preview-accordion">
+          <button
+            type="button"
+            class="template-preview-accordion-trigger"
+            data-preview-accordion-trigger="ordering"
+            aria-expanded="false"
+            aria-controls="template-preview-ordering-panel"
+          >
+            <span>Section order</span>
+            <span class="template-preview-accordion-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div
+            id="template-preview-ordering-panel"
+            class="template-preview-accordion-panel template-preview-ordering"
+            data-preview-accordion-panel="ordering"
+            hidden
+          >
+            <div class="template-preview-order-list" data-preview-order-list>
+              {previewSections.map((section, index) => (
+                <div class="template-preview-order-item" data-preview-order-item={section.key}>
+                  <span class="template-preview-order-label">{section.label}</span>
+                  <div class="template-preview-order-actions">
+                    <button
+                      type="button"
+                      class="template-preview-order-button"
+                      data-preview-order-up={section.key}
+                      aria-label={`Move ${section.label} up`}
+                      disabled={index === 0}
+                    >
+                      Up
+                    </button>
+                    <button
+                      type="button"
+                      class="template-preview-order-button"
+                      data-preview-order-down={section.key}
+                      aria-label={`Move ${section.label} down`}
+                      disabled={index === previewSections.length - 1}
+                    >
+                      Down
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div class="template-preview-accordion">
+          <button
+            type="button"
+            class="template-preview-accordion-trigger"
+            data-preview-accordion-trigger="summary"
+            aria-expanded="false"
+            aria-controls="template-preview-summary-panel"
+          >
+            <span>Active preset</span>
+            <span class="template-preview-accordion-chevron" aria-hidden="true">▾</span>
+          </button>
+          <div
+            id="template-preview-summary-panel"
+            class="template-preview-accordion-panel template-preview-summary"
+            data-preview-accordion-panel="summary"
+            hidden
+          >
+            <div class="template-preview-summary-main">
+              <h2 data-summary-preset-label>{defaultPreset.label}</h2>
+              <p data-summary-preset-description>{defaultPreset.description}</p>
+              <p class="template-preview-summary-note" data-summary-preset-use-case>{defaultPreset.useCase}</p>
+            </div>
+
+            <dl class="template-preview-summary-grid">
+              <div>
+                <dt>Header</dt>
+                <dd data-summary-header></dd>
+              </div>
+              <div>
+                <dt>Color Template</dt>
+                <dd data-summary-colorTemplate></dd>
+              </div>
+              <div>
+                <dt>Heading Type</dt>
+                <dd data-summary-headingTypography></dd>
+              </div>
+              <div>
+                <dt>Body Type</dt>
+                <dd data-summary-bodyTypography></dd>
+              </div>
+              <div>
+                <dt>Section Titles</dt>
+                <dd data-summary-sectionTitleStyle></dd>
+              </div>
+              <div>
+                <dt>Card Surface</dt>
+                <dd data-summary-cardSurface></dd>
+              </div>
+              <div>
+                <dt>Card Borders</dt>
+                <dd data-summary-cardBorderStyle></dd>
+              </div>
+              <div>
+                <dt>Button Borders</dt>
+                <dd data-summary-buttonBorderStyle></dd>
+              </div>
+              <div>
+                <dt>Section Frames</dt>
+                <dd data-summary-sectionFrameStyle></dd>
+              </div>
+              <div>
+                <dt>Services</dt>
+                <dd data-summary-services></dd>
+              </div>
+              <div>
+                <dt>FAQ</dt>
+                <dd data-summary-faq></dd>
+              </div>
+              <div>
+                <dt>Process</dt>
+                <dd data-summary-process></dd>
+              </div>
+              <div>
+                <dt>Service Area</dt>
+                <dd data-summary-serviceArea></dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="template-preview-canvas">
+    <section class="template-preview-stage" data-preview-mode-panel="sections">
+      <div class="template-preview-block" data-preview-section="header">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Header</h2>
+        </div>
+        {variantOptions.header.map((option) => (
+          <div
+            class="template-preview-panel template-preview-panel-header"
+            data-preview-kind="header"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.header}
+          >
+            <Header
+              variant={option.value}
+              previewMode={true}
+              instanceId={`preview-header-${option.value}`}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="hero">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Hero</h2>
+        </div>
+        {variantOptions.hero.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="hero"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.hero}
+          >
+            <HeroSection
+              pageId={`preview-section-hero-${option.value}`}
+              titlePrimary={homePage.hero.titlePrimary}
+              titleSecondary={homePage.hero.titleSecondary}
+              intro={homePage.hero.intro}
+              outlineWords={homePage.hero.outlineWords}
+              variant={option.value}
+              cta={homePage.hero.cta}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="whyChoose">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Why Choose Us</h2>
+        </div>
+        {variantOptions.whyChoose.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="whyChoose"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.whyChoose}
+          >
+            <HomepageWhyChoose pageId={`preview-why-choose-${option.value}`} variant={option.value} surfaceTone="cool" />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="services">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Services</h2>
+        </div>
+        {variantOptions.services.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="services"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.services}
+          >
+            <ServicesSection
+              pageId={`preview-services-${option.value}`}
+              sectionId={`preview-services-${option.value}`}
+              title="Our Services"
+              lead={homePage.servicesLead}
+              services={serviceCardList}
+              variant={option.value}
+              surfaceTone="base"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="process">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Process</h2>
+        </div>
+        {variantOptions.process.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="process"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.process}
+          >
+            <HomepageProcess
+              pageId={`preview-process-${option.value}`}
+              variant={option.value}
+              surfaceTone="cool"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="faq">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>FAQ</h2>
+        </div>
+        {variantOptions.faq.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="faq"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.faq}
+          >
+            <FaqSection
+              pageId={`preview-faq-${option.value}`}
+              items={homePage.faq}
+              variant={option.value}
+              surfaceTone="base"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="serviceArea">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Service Area</h2>
+        </div>
+        {variantOptions.serviceArea.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="serviceArea"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.serviceArea}
+          >
+            <ServiceAreaSection
+              pageId={`preview-service-area-${option.value}`}
+              variant={option.value}
+              surfaceTone="cool"
+              lookupInputId={`preview-service-area-zip-${option.value}`}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="estimateCta">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Estimate CTA</h2>
+        </div>
+        {variantOptions.estimateCta.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="estimateCta"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.estimateCta}
+          >
+            <EstimateCtaSection
+              pageId={`preview-estimate-cta-${option.value}`}
+              sectionId={`preview-estimate-cta-${option.value}`}
+              eyebrow={homePage.estimateCta.eyebrow}
+              heading={homePage.estimateCta.heading}
+              intro={homePage.estimateCta.intro}
+              buttonLabel={homePage.estimateCta.buttonLabel}
+              variant={option.value}
+              surfaceTone="olive"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="relatedServices">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Related Services</h2>
+        </div>
+        {variantOptions.relatedServices.map((option) => (
+          <div
+            class="template-preview-panel"
+            data-preview-kind="relatedServices"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.relatedServices}
+          >
+            <RelatedServicesSection
+              pageId={`preview-related-services-${option.value}`}
+              links={servicePages.treeRemoval.relatedServices}
+              variant={option.value}
+              surfaceTone="base"
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="template-preview-block" data-preview-section="cardGrid">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Card Grid</h2>
+        </div>
+        <div class="template-preview-panel">
+          <CardGridSection
+            pageId="preview-card-grid"
+            section="compare-services"
+            title="Compare Services"
+            items={servicesPage.compareCards}
+            surfaceTone="base"
+          />
+        </div>
+      </div>
+
+      <div class="template-preview-block" data-preview-section="infoList">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Info List</h2>
+        </div>
+        <div class="template-preview-panel">
+          <InfoListSection
+            pageId="preview-info-list"
+            section="estimate-tips"
+            title="Estimate Tips"
+            items={servicesPage.estimateTips}
+            surfaceTone="base"
+          />
+        </div>
+      </div>
+
+      <div class="template-preview-block" data-preview-section="serviceInfo">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Service Info</h2>
+        </div>
+        <div class="template-preview-panel">
+          <ServiceInfoSection
+            pageId="preview-service-info"
+            section="whats-included"
+            title="What’s Included"
+            items={servicePages.treeRemoval.whatsIncluded}
+            layout={servicePages.treeRemoval.includedLayout}
+            surfaceTone="base"
+          />
+        </div>
+      </div>
+
+      <div class="template-preview-block" data-preview-section="estimateForm">
+        <div class="template-preview-block-head">
+          <p class="template-preview-block-kicker">Section Preview</p>
+          <h2>Estimate Form</h2>
+        </div>
+        <div class="template-preview-panel">
+          <EstimateFormSection
+            pageId="preview-estimate-form"
+            sectionId="preview-estimate-form"
+            title="Get in Touch"
+            heading={contactPage.estimateForm.heading}
+            intro={contactPage.estimateForm.intro}
+            buttonLabel={contactPage.estimateForm.buttonLabel}
+            surfaceTone="base"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="template-preview-full-flow" data-preview-mode-panel="full-page" hidden>
+      <div class="template-preview-block-head">
+        <p class="template-preview-block-kicker">Assembled Preview</p>
+        <h2>Full-Page Flow</h2>
+      </div>
+
+      <div class="template-preview-flow-frame">
+        {variantOptions.header.map((option) => (
+          <div
+            class="template-preview-flow-section template-preview-flow-section-header"
+            data-preview-section="header"
+            data-preview-kind="header"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.header}
+          >
+            <Header
+              variant={option.value}
+              previewMode={true}
+              instanceId={`preview-flow-header-${option.value}`}
+            />
+          </div>
+        ))}
+
+        {variantOptions.hero.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="hero"
+            data-preview-kind="hero"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.hero}
+          >
+            <HeroSection
+              pageId={`preview-hero-${option.value}`}
+              titlePrimary={homePage.hero.titlePrimary}
+              titleSecondary={homePage.hero.titleSecondary}
+              intro={homePage.hero.intro}
+              outlineWords={homePage.hero.outlineWords}
+              variant={option.value}
+              cta={homePage.hero.cta}
+            />
+          </div>
+        ))}
+
+        {variantOptions.whyChoose.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="whyChoose"
+            data-preview-kind="whyChoose"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.whyChoose}
+          >
+            <HomepageWhyChoose
+              pageId={`preview-flow-why-choose-${option.value}`}
+              variant={option.value}
+              surfaceTone="cool"
+            />
+          </div>
+        ))}
+
+        {variantOptions.services.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="services"
+            data-preview-kind="services"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.services}
+          >
+            <ServicesSection
+              pageId={`preview-flow-services-${option.value}`}
+              sectionId={`preview-flow-services-${option.value}`}
+              title="Our Services"
+              lead={homePage.servicesLead}
+              services={serviceCardList}
+              variant={option.value}
+              surfaceTone="base"
+            />
+          </div>
+        ))}
+
+        <div class="template-preview-flow-section" data-preview-section="cardGrid">
+          <CardGridSection
+            pageId="preview-flow-card-grid"
+            section="compare-services"
+            title="Compare Services"
+            items={servicesPage.compareCards}
+            surfaceTone="base"
+          />
+        </div>
+
+        <div class="template-preview-flow-section" data-preview-section="serviceInfo">
+          <ServiceInfoSection
+            pageId="preview-flow-service-info"
+            section="whats-included"
+            title="What’s Included"
+            items={servicePages.treeRemoval.whatsIncluded}
+            layout={servicePages.treeRemoval.includedLayout}
+            surfaceTone="base"
+          />
+        </div>
+
+        {variantOptions.process.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="process"
+            data-preview-kind="process"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.process}
+          >
+            <HomepageProcess
+              pageId={`preview-flow-process-${option.value}`}
+              variant={option.value}
+              surfaceTone="cool"
+            />
+          </div>
+        ))}
+
+        {variantOptions.serviceArea.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="serviceArea"
+            data-preview-kind="serviceArea"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.serviceArea}
+          >
+            <ServiceAreaSection
+              pageId={`preview-flow-service-area-${option.value}`}
+              variant={option.value}
+              surfaceTone="cool"
+              lookupInputId={`preview-flow-service-area-zip-${option.value}`}
+            />
+          </div>
+        ))}
+
+        {variantOptions.faq.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="faq"
+            data-preview-kind="faq"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.faq}
+          >
+            <FaqSection
+              pageId={`preview-flow-faq-${option.value}`}
+              items={homePage.faq}
+              variant={option.value}
+              surfaceTone="base"
+            />
+          </div>
+        ))}
+
+        {variantOptions.relatedServices.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="relatedServices"
+            data-preview-kind="relatedServices"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.relatedServices}
+          >
+            <RelatedServicesSection
+              pageId={`preview-flow-related-services-${option.value}`}
+              links={servicePages.treeRemoval.relatedServices}
+              variant={option.value}
+              surfaceTone="base"
+            />
+          </div>
+        ))}
+
+        <div class="template-preview-flow-section" data-preview-section="infoList">
+          <InfoListSection
+            pageId="preview-flow-info-list"
+            section="estimate-tips"
+            title="Estimate Tips"
+            items={servicesPage.estimateTips}
+            surfaceTone="base"
+          />
+        </div>
+
+        {variantOptions.estimateCta.map((option) => (
+          <div
+            class="template-preview-flow-section"
+            data-preview-section="estimateCta"
+            data-preview-kind="estimateCta"
+            data-preview-variant={option.value}
+            hidden={option.value !== defaultPreset.estimateCta}
+          >
+            <EstimateCtaSection
+              pageId={`preview-flow-estimate-${option.value}`}
+              sectionId={`preview-flow-estimate-${option.value}`}
+              eyebrow={homePage.estimateCta.eyebrow}
+              heading={homePage.estimateCta.heading}
+              intro={homePage.estimateCta.intro}
+              buttonLabel={homePage.estimateCta.buttonLabel}
+              variant={option.value}
+              surfaceTone="olive"
+            />
+          </div>
+        ))}
+
+        <div class="template-preview-flow-section" data-preview-section="estimateForm">
+          <EstimateFormSection
+            pageId="preview-flow-estimate-form"
+            sectionId="preview-flow-estimate-form"
+            title="Get in Touch"
+            heading={contactPage.estimateForm.heading}
+            intro={contactPage.estimateForm.intro}
+            buttonLabel={contactPage.estimateForm.buttonLabel}
+            surfaceTone="base"
+          />
+        </div>
+      </div>
+    </section>
+    </div>
+  </div>
+
+  <script
+    type="application/json"
+    id="template-preview-data"
+    set:html={JSON.stringify(previewState)}
+  ></script>
+
+  <section
+    id="estimate-modal"
+    class="estimate-modal"
+    data-estimate-modal
+    aria-hidden="true"
+    hidden
+    inert
+  >
+    <div class="estimate-modal-scrim" data-close-estimate-modal></div>
+    <div
+      class="estimate-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="estimate-modal-title"
+    >
+      <button
+        type="button"
+        class="estimate-modal-close"
+        aria-label="Close estimate form"
+        data-close-estimate-modal
+      >
+        Close
+      </button>
+      <EstimateForm
+        heading={homePage.modal.heading}
+        intro={homePage.modal.intro}
+        buttonLabel={homePage.modal.buttonLabel}
+        headingId="estimate-modal-title"
+      />
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      if (window.__templatePreviewEstimateModalLoaderBound) return;
+      window.__templatePreviewEstimateModalLoaderBound = true;
+
+      let loaded;
+      const loadEstimateModal = () => loaded ??= import('/scripts/estimate-modal.js');
+
+      document.addEventListener('click', async (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const trigger = target.closest('[data-open-estimate-modal]');
+        if (!(trigger instanceof HTMLElement) || loaded) return;
+
+        event.preventDefault();
+        await loadEstimateModal();
+        trigger.click();
+      }, true);
+
+      document.addEventListener('pointerenter', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (!target.closest('[data-open-estimate-modal]')) return;
+        void loadEstimateModal();
+      }, { passive: true, capture: true });
+
+      document.addEventListener('touchstart', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (!target.closest('[data-open-estimate-modal]')) return;
+        void loadEstimateModal();
+      }, { passive: true, capture: true });
+
+      document.addEventListener('focusin', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (!target.closest('[data-open-estimate-modal]')) return;
+        void loadEstimateModal();
+      });
+    })();
+  </script>
+
+  <script is:inline>
+    (() => {
+      const root = document.querySelector('[data-preview-root]');
+      const dataNode = document.getElementById('template-preview-data');
+      if (!(root instanceof HTMLElement) || !(dataNode instanceof HTMLScriptElement) || root.dataset.previewBound === 'true') return;
+      root.dataset.previewBound = 'true';
+
+      const previewData = JSON.parse(dataNode.textContent || '{}');
+      const presetSelect = root.querySelector('[data-preview-preset]');
+      const modeSelect = root.querySelector('[data-preview-mode]');
+      if (!(presetSelect instanceof HTMLSelectElement)) return;
+      if (!(modeSelect instanceof HTMLSelectElement)) return;
+
+      const overrideKeys = [
+        'header',
+        'colorTemplate',
+        'headingTypography',
+        'bodyTypography',
+        'sectionTitleStyle',
+        'cardSurface',
+        'cardBorderStyle',
+        'buttonBorderStyle',
+        'sectionFrameStyle',
+        'services',
+        'faq',
+        'process',
+        'serviceArea',
+      ];
+      const overrideSelects = Object.fromEntries(
+        overrideKeys.map((key) => [key, root.querySelector(`[data-preview-override="${key}"]`)]),
+      );
+      const sectionToggleInputs = Array.from(document.querySelectorAll('[data-preview-section-toggle]'));
+      const orderList = root.querySelector('[data-preview-order-list]');
+      const defaultSectionOrder = (previewData.sections || []).map((section) => section.key);
+      let sectionOrderState = [...defaultSectionOrder];
+
+      const presetMap = Object.fromEntries((previewData.presets || []).map((preset) => [preset.id, preset]));
+      const labelMaps = previewData.labels || {};
+      const allowedVariants = previewData.allowedVariants || {};
+      const validPresetIds = new Set(Object.keys(presetMap));
+      const previewSectionKeys = new Set((previewData.sections || []).map((section) => section.key));
+      const bodyClassPrefixes = [
+        'template-color-',
+        'template-heading-',
+        'template-body-',
+        'template-section-title-',
+        'template-card-surface-',
+        'template-card-border-',
+        'template-button-border-',
+        'template-section-frame-',
+      ];
+
+      const summaryPresetLabel = root.querySelector('[data-summary-preset-label]');
+      const summaryPresetDescription = root.querySelector('[data-summary-preset-description]');
+      const summaryPresetUseCase = root.querySelector('[data-summary-preset-use-case]');
+      const accordionButtons = Array.from(root.querySelectorAll('[data-preview-accordion-trigger]'));
+
+      const setAccordionState = (accordionKey, isOpen) => {
+        const button = root.querySelector(`[data-preview-accordion-trigger="${accordionKey}"]`);
+        const panel = root.querySelector(`[data-preview-accordion-panel="${accordionKey}"]`);
+        const wrapper = button?.closest('.template-preview-accordion');
+
+        if (!(button instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
+
+        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        panel.hidden = !isOpen;
+        panel.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+
+        if (wrapper instanceof HTMLElement) {
+          wrapper.classList.toggle('is-open', isOpen);
+        }
+      };
+
+      const syncPreviewSectionVisibility = (activeVariants, enabledSections) => {
+        document.querySelectorAll('[data-preview-section], [data-preview-kind]').forEach((panel) => {
+          if (!(panel instanceof HTMLElement)) return;
+
+          const sectionKey = panel.dataset.previewSection;
+          const kind = panel.dataset.previewKind;
+          const variant = panel.dataset.previewVariant;
+          const sectionVisible = sectionKey ? enabledSections.has(sectionKey) : true;
+          const variantVisible = kind && variant ? activeVariants[kind] === variant : true;
+          const isVisible = sectionVisible && variantVisible;
+
+          panel.hidden = !isVisible;
+          panel.setAttribute('aria-hidden', isVisible ? 'false' : 'true');
+        });
+      };
+
+      const syncSectionOrder = () => {
+        const orderMap = new Map(sectionOrderState.map((key, index) => [key, index + 1]));
+
+        document.querySelectorAll('[data-preview-section]').forEach((panel) => {
+          if (!(panel instanceof HTMLElement)) return;
+          const sectionKey = panel.dataset.previewSection;
+          if (!sectionKey) return;
+          panel.style.order = String(orderMap.get(sectionKey) ?? defaultSectionOrder.length + 1);
+        });
+
+        if (!(orderList instanceof HTMLElement)) return;
+
+        sectionOrderState.forEach((key, index) => {
+          const item = orderList.querySelector(`[data-preview-order-item="${key}"]`);
+          if (!(item instanceof HTMLElement)) return;
+          item.style.order = String(index + 1);
+
+          const upButton = item.querySelector(`[data-preview-order-up="${key}"]`);
+          const downButton = item.querySelector(`[data-preview-order-down="${key}"]`);
+
+          if (upButton instanceof HTMLButtonElement) {
+            upButton.disabled = index === 0;
+          }
+
+          if (downButton instanceof HTMLButtonElement) {
+            downButton.disabled = index === sectionOrderState.length - 1;
+          }
+        });
+      };
+
+      const moveSection = (sectionKey, direction) => {
+        const currentIndex = sectionOrderState.indexOf(sectionKey);
+        if (currentIndex < 0) return;
+
+        const nextIndex = currentIndex + direction;
+        if (nextIndex < 0 || nextIndex >= sectionOrderState.length) return;
+
+        const nextOrder = [...sectionOrderState];
+        const [moved] = nextOrder.splice(currentIndex, 1);
+        nextOrder.splice(nextIndex, 0, moved);
+        sectionOrderState = nextOrder;
+        syncPreview();
+      };
+
+      const previewShell = document.querySelector('.template-preview-shell');
+
+      const setPreviewMode = (mode) => {
+        if (previewShell instanceof HTMLElement) {
+          previewShell.dataset.previewMode = mode;
+        }
+
+        document.querySelectorAll('[data-preview-mode-panel]').forEach((panel) => {
+          if (!(panel instanceof HTMLElement)) return;
+          const isActive = panel.dataset.previewModePanel === mode;
+          panel.hidden = !isActive;
+          panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        });
+      };
+
+      const describeSelection = (kind, variant, followsPreset) => {
+        const label = labelMaps[kind]?.[variant] || variant;
+        return followsPreset ? `${label} (preset)` : `${label} (manual override)`;
+      };
+
+      const applyPreviewBodyClasses = (activeValues) => {
+        bodyClassPrefixes.forEach((prefix) => {
+          document.body.classList.forEach((className) => {
+            if (className.startsWith(prefix)) {
+              document.body.classList.remove(className);
+            }
+          });
+        });
+
+        document.body.classList.add(`template-color-${activeValues.colorTemplate}`);
+        document.body.classList.add(`template-heading-${activeValues.headingTypography}`);
+        document.body.classList.add(`template-body-${activeValues.bodyTypography}`);
+        document.body.classList.add(`template-section-title-${activeValues.sectionTitleStyle}`);
+        document.body.classList.add(`template-card-surface-${activeValues.cardSurface}`);
+        document.body.classList.add(`template-card-border-${activeValues.cardBorderStyle}`);
+        document.body.classList.add(`template-button-border-${activeValues.buttonBorderStyle}`);
+        document.body.classList.add(`template-section-frame-${activeValues.sectionFrameStyle}`);
+      };
+
+      const restoreStateFromQuery = () => {
+        const params = new URLSearchParams(window.location.search);
+        const modeFromQuery = params.get('mode');
+        const presetFromQuery = params.get('preset');
+        const sectionOrderFromQuery = (params.get('sectionOrder') || '')
+          .split(',')
+          .map((value) => value.trim())
+          .filter((value) => previewSectionKeys.has(value));
+        const hiddenSections = new Set(
+          (params.get('hiddenSections') || '')
+            .split(',')
+            .map((value) => value.trim())
+            .filter((value) => previewSectionKeys.has(value)),
+        );
+
+        modeSelect.value = modeFromQuery === 'full-page' ? 'full-page' : 'sections';
+        if (sectionOrderFromQuery.length === defaultSectionOrder.length) {
+          sectionOrderState = [...sectionOrderFromQuery];
+        } else {
+          sectionOrderState = [...defaultSectionOrder];
+        }
+
+        if (presetFromQuery && validPresetIds.has(presetFromQuery)) {
+          presetSelect.value = presetFromQuery;
+        } else {
+          presetSelect.value = presetSelect.options[0]?.value || '';
+        }
+
+        overrideKeys.forEach((kind) => {
+          const select = overrideSelects[kind];
+          if (!(select instanceof HTMLSelectElement)) return;
+
+          const queryValue = params.get(kind);
+          const validVariants = new Set(allowedVariants[kind] || []);
+
+          if (queryValue === 'preset' || queryValue === null) {
+            select.value = 'preset';
+            return;
+          }
+
+          select.value = validVariants.has(queryValue) ? queryValue : 'preset';
+        });
+
+        sectionToggleInputs.forEach((input) => {
+          if (!(input instanceof HTMLInputElement)) return;
+          input.checked = !hiddenSections.has(input.value);
+        });
+      };
+
+      const syncQueryString = () => {
+        const params = new URLSearchParams();
+
+        if (modeSelect.value === 'full-page') {
+          params.set('mode', 'full-page');
+        }
+
+        if (presetSelect.value && validPresetIds.has(presetSelect.value)) {
+          params.set('preset', presetSelect.value);
+        }
+
+        overrideKeys.forEach((kind) => {
+          const select = overrideSelects[kind];
+          if (!(select instanceof HTMLSelectElement)) return;
+
+          const validVariants = new Set(allowedVariants[kind] || []);
+          if (select.value === 'preset' || !validVariants.has(select.value)) return;
+
+          params.set(kind, select.value);
+        });
+
+        const hiddenSections = sectionToggleInputs
+          .filter((input) => input instanceof HTMLInputElement && !input.checked)
+          .map((input) => input.value);
+
+        if (hiddenSections.length > 0) {
+          params.set('hiddenSections', hiddenSections.join(','));
+        }
+
+        if (sectionOrderState.join(',') !== defaultSectionOrder.join(',')) {
+          params.set('sectionOrder', sectionOrderState.join(','));
+        }
+
+        const nextQuery = params.toString();
+        const nextUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}${window.location.hash}`;
+        window.history.replaceState({}, '', nextUrl);
+      };
+
+      const syncPreview = () => {
+        const activePreset = presetMap[presetSelect.value];
+        if (!activePreset) return;
+
+        if (summaryPresetLabel instanceof HTMLElement) summaryPresetLabel.textContent = activePreset.label;
+        if (summaryPresetDescription instanceof HTMLElement) summaryPresetDescription.textContent = activePreset.description;
+        if (summaryPresetUseCase instanceof HTMLElement) summaryPresetUseCase.textContent = activePreset.useCase;
+
+        setPreviewMode(modeSelect.value);
+
+        const activeVariants = {
+          header: activePreset.header,
+          hero: activePreset.hero,
+          estimateCta: activePreset.estimateCta,
+          whyChoose: activePreset.whyChoose,
+          relatedServices: activePreset.relatedServices,
+        };
+
+        overrideKeys.forEach((kind) => {
+          const select = overrideSelects[kind];
+          const summaryNode = root.querySelector(`[data-summary-${kind}]`);
+          if (!(select instanceof HTMLSelectElement)) return;
+
+          const followsPreset = select.value === 'preset';
+          const variant = followsPreset ? activePreset[kind] : select.value;
+          activeVariants[kind] = variant;
+
+          if (summaryNode instanceof HTMLElement) {
+            summaryNode.textContent = describeSelection(kind, variant, followsPreset);
+          }
+        });
+        const enabledSections = new Set(
+          sectionToggleInputs
+            .filter((input) => input instanceof HTMLInputElement && input.checked)
+            .map((input) => input.value),
+        );
+        syncSectionOrder();
+        syncPreviewSectionVisibility(activeVariants, enabledSections);
+
+        applyPreviewBodyClasses({
+          colorTemplate:
+            overrideSelects.colorTemplate instanceof HTMLSelectElement && overrideSelects.colorTemplate.value !== 'preset'
+              ? overrideSelects.colorTemplate.value
+              : activePreset.colorTemplate,
+          headingTypography:
+            overrideSelects.headingTypography instanceof HTMLSelectElement && overrideSelects.headingTypography.value !== 'preset'
+              ? overrideSelects.headingTypography.value
+              : activePreset.headingTypography,
+          bodyTypography:
+            overrideSelects.bodyTypography instanceof HTMLSelectElement && overrideSelects.bodyTypography.value !== 'preset'
+              ? overrideSelects.bodyTypography.value
+              : activePreset.bodyTypography,
+          sectionTitleStyle:
+            overrideSelects.sectionTitleStyle instanceof HTMLSelectElement && overrideSelects.sectionTitleStyle.value !== 'preset'
+              ? overrideSelects.sectionTitleStyle.value
+              : activePreset.sectionTitleStyle,
+          cardSurface:
+            overrideSelects.cardSurface instanceof HTMLSelectElement && overrideSelects.cardSurface.value !== 'preset'
+              ? overrideSelects.cardSurface.value
+              : activePreset.cardSurface,
+          cardBorderStyle:
+            overrideSelects.cardBorderStyle instanceof HTMLSelectElement && overrideSelects.cardBorderStyle.value !== 'preset'
+              ? overrideSelects.cardBorderStyle.value
+              : activePreset.cardBorderStyle,
+          buttonBorderStyle:
+            overrideSelects.buttonBorderStyle instanceof HTMLSelectElement && overrideSelects.buttonBorderStyle.value !== 'preset'
+              ? overrideSelects.buttonBorderStyle.value
+              : activePreset.buttonBorderStyle,
+          sectionFrameStyle:
+            overrideSelects.sectionFrameStyle instanceof HTMLSelectElement && overrideSelects.sectionFrameStyle.value !== 'preset'
+              ? overrideSelects.sectionFrameStyle.value
+              : activePreset.sectionFrameStyle,
+        });
+
+        syncQueryString();
+        window.dispatchEvent(new Event('resize'));
+      };
+
+      presetSelect.addEventListener('change', syncPreview);
+      modeSelect.addEventListener('change', syncPreview);
+      overrideKeys.forEach((kind) => {
+        const select = overrideSelects[kind];
+        if (select instanceof HTMLSelectElement) {
+          select.addEventListener('change', syncPreview);
+        }
+      });
+      sectionToggleInputs.forEach((input) => {
+        if (input instanceof HTMLInputElement) {
+          input.addEventListener('change', syncPreview);
+        }
+      });
+      if (orderList instanceof HTMLElement) {
+        orderList.addEventListener('click', (event) => {
+          const target = event.target;
+          if (!(target instanceof HTMLElement)) return;
+
+          const upKey = target.getAttribute('data-preview-order-up');
+          if (upKey) {
+            moveSection(upKey, -1);
+            return;
+          }
+
+          const downKey = target.getAttribute('data-preview-order-down');
+          if (downKey) {
+            moveSection(downKey, 1);
+          }
+        });
+      }
+
+      accordionButtons.forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) return;
+
+        const accordionKey = button.dataset.previewAccordionTrigger;
+        if (!accordionKey) return;
+
+        setAccordionState(accordionKey, button.getAttribute('aria-expanded') === 'true');
+        button.addEventListener('click', () => {
+          const isOpen = button.getAttribute('aria-expanded') === 'true';
+          setAccordionState(accordionKey, !isOpen);
+        });
+      });
+
+      restoreStateFromQuery();
+      syncPreview();
+    })();
+  </script>
+
+  <style>
+    body:has(.template-preview-shell) {
+      background:
+        linear-gradient(180deg, #f5f7fa 0%, #eef2f6 100%);
+    }
+
+    body:has(.template-preview-shell) main#main-content {
+      background: transparent;
+    }
+
+    .template-preview-shell {
+      display: grid;
+      width: 100%;
+      max-width: 100%;
+      gap: 1.25rem;
+      padding-top: 1.15rem;
+      padding-bottom: 3.2rem;
+      overflow-x: clip;
+    }
+
+    .template-preview-workspace {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .template-preview-shell,
+    .template-preview-workspace,
+    .template-preview-canvas,
+    .template-preview-shell * {
+      min-width: 0;
+    }
+
+    .template-preview-canvas {
+      display: grid;
+      gap: 1.15rem;
+      width: 100vw;
+      max-width: 100vw;
+      margin-inline: calc(50% - 50vw);
+      overflow-x: clip;
+    }
+
+    .template-preview-intro,
+    .template-preview-toolbar,
+    .template-preview-block-head {
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 248, 250, 0.98) 100%);
+      box-shadow:
+        0 14px 30px rgba(15, 33, 67, 0.07),
+        0 2px 8px rgba(15, 33, 67, 0.04);
+      border: 1px solid rgba(15, 33, 67, 0.08);
+    }
+
+    .template-preview-intro,
+    .template-preview-toolbar {
+      padding: 1.2rem;
+    }
+
+    .template-preview-eyebrow,
+    .template-preview-block-kicker,
+    .template-preview-summary-label {
+      margin: 0 0 0.45rem;
+      color: var(--text-soft);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .template-preview-intro h1,
+    .template-preview-block-head h2,
+    .template-preview-summary-main h2 {
+      margin: 0 0 0.45rem;
+      color: var(--heading);
+    }
+
+    .template-preview-intro p:last-child,
+    .template-preview-summary-main p,
+    .template-preview-summary-note {
+      margin: 0;
+    }
+
+    .template-preview-toolbar {
+      display: grid;
+      gap: 1rem;
+      position: sticky;
+      top: 1rem;
+      z-index: 3;
+      backdrop-filter: blur(8px);
+    }
+
+    .template-preview-accordion {
+      display: grid;
+      gap: 0;
+      border: 1px solid rgba(15, 33, 67, 0.08);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.76);
+      overflow: clip;
+    }
+
+    .template-preview-accordion-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.9rem;
+      width: 100%;
+      padding: 0.92rem 1rem;
+      border: 0;
+      background: transparent;
+      color: var(--heading);
+      font: inherit;
+      font-size: 0.94rem;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .template-preview-accordion-trigger:focus-visible {
+      outline: 2px solid rgba(15, 33, 67, 0.22);
+      outline-offset: -2px;
+    }
+
+    .template-preview-accordion-chevron {
+      flex: 0 0 auto;
+      font-size: 0.95rem;
+      line-height: 1;
+      transition: transform 160ms ease;
+    }
+
+    .template-preview-accordion.is-open .template-preview-accordion-chevron {
+      transform: rotate(180deg);
+    }
+
+    .template-preview-accordion-panel {
+      padding: 0 1rem 1rem;
+    }
+
+    .template-preview-accordion-panel[hidden] {
+      display: none !important;
+    }
+
+    .template-preview-controls {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .template-preview-control {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .template-preview-control span {
+      color: var(--heading);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .template-preview-control select {
+      min-height: 44px;
+      border: 1px solid rgba(15, 33, 67, 0.12);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 0.68rem 0.85rem;
+      font: inherit;
+      color: var(--heading);
+    }
+
+    .template-preview-control select:focus-visible {
+      outline: 2px solid rgba(15, 33, 67, 0.2);
+      outline-offset: 0.15rem;
+    }
+
+    .template-preview-summary {
+      display: grid;
+      gap: 0.9rem;
+      border-top: 1px solid rgba(15, 33, 67, 0.1);
+      padding-top: 0.9rem;
+    }
+
+    .template-preview-visibility {
+      display: grid;
+      gap: 0.7rem;
+      border-top: 1px solid rgba(15, 33, 67, 0.1);
+      padding-top: 0.9rem;
+    }
+
+    .template-preview-ordering {
+      display: grid;
+      gap: 0.7rem;
+      border-top: 1px solid rgba(15, 33, 67, 0.1);
+      padding-top: 0.9rem;
+    }
+
+    .template-preview-visibility-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem 0.9rem;
+    }
+
+    .template-preview-order-list {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .template-preview-order-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.8rem;
+      align-items: center;
+      padding: 0.68rem 0.8rem;
+      border: 1px solid rgba(15, 33, 67, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .template-preview-order-label {
+      color: var(--heading);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .template-preview-order-actions {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .template-preview-order-button {
+      min-height: 34px;
+      padding: 0.4rem 0.7rem;
+      border: 1px solid rgba(15, 33, 67, 0.12);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--heading);
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .template-preview-order-button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    .template-preview-visibility-item {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--heading);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .template-preview-visibility-item input {
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--heading);
+    }
+
+    .template-preview-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin: 0;
+    }
+
+    .template-preview-summary-grid dt {
+      color: var(--text-soft);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 0.22rem;
+    }
+
+    .template-preview-summary-grid dd {
+      margin: 0;
+      color: var(--heading);
+      font-weight: 700;
+    }
+
+    .template-preview-stage {
+      display: grid;
+      gap: 1.15rem;
+    }
+
+    [data-preview-mode-panel][hidden] {
+      display: none !important;
+    }
+
+    [data-preview-section][hidden] {
+      display: none !important;
+    }
+
+    .template-preview-shell[data-preview-mode="full-page"] .template-preview-stage {
+      display: none !important;
+    }
+
+    .template-preview-shell[data-preview-mode="sections"] .template-preview-full-flow {
+      display: none !important;
+    }
+
+    .template-preview-full-flow {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .template-preview-block {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .template-preview-block-head {
+      width: min(100% - (var(--page-pad) * 2), 68rem);
+      margin: 0 auto;
+      padding: 0.95rem 1rem;
+    }
+
+    .template-preview-panel {
+      width: 100%;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
+    }
+
+    .template-preview-panel[hidden] {
+      display: none;
+    }
+
+    .template-preview-flow-frame {
+      display: grid;
+      gap: 0;
+      width: 100%;
+      overflow: visible;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .template-preview-flow-section[hidden] {
+      display: none !important;
+    }
+
+    .template-preview-flow-section + .template-preview-flow-section {
+      border-top: 0;
+    }
+
+    .template-preview-panel > .page-section,
+    .template-preview-flow-section > .page-section {
+      width: min(100%, 68rem);
+      position: relative;
+      z-index: 2;
+      margin: 0 auto;
+      padding: 0 var(--page-pad) 0;
+      overflow: visible;
+    }
+
+    .template-preview-panel > .page-section:not(.trust-badges-section)::before,
+    .template-preview-flow-section > .page-section:not(.trust-badges-section)::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 100vw;
+      transform: translateX(-50%);
+      z-index: -2;
+      clip-path: polygon(0 3.5%, 100% 0, 100% 96.5%, 0 100%);
+      background: linear-gradient(180deg, rgba(247, 242, 234, 0.97) 0%, rgba(236, 228, 214, 0.97) 100%);
+      box-shadow:
+        0 18px 34px rgba(15, 33, 67, 0.05),
+        0 2px 8px rgba(15, 33, 67, 0.03);
+    }
+
+    .template-preview-panel > .page-section:not(.trust-badges-section)::after,
+    .template-preview-flow-section > .page-section:not(.trust-badges-section)::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 100vw;
+      transform: translateX(-50%);
+      z-index: -1;
+      clip-path: polygon(0 3.5%, 100% 0, 100% 96.5%, 0 100%);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0) 12%),
+        linear-gradient(180deg, rgba(15, 33, 67, 0.08) 0%, rgba(15, 33, 67, 0) 18%),
+        linear-gradient(0deg, rgba(15, 33, 67, 0.06) 0%, rgba(15, 33, 67, 0) 14%);
+      pointer-events: none;
+    }
+
+    .template-preview-panel > .page-section.page-hero,
+    .template-preview-flow-section > .page-section.page-hero,
+    .template-preview-panel > .page-section.internal-hero,
+    .template-preview-flow-section > .page-section.internal-hero {
+      margin-top: calc(-1 * var(--header-safe));
+      padding-top: 0;
+      position: relative;
+      z-index: 3;
+    }
+
+    .template-preview-canvas .hero-frame {
+      width: 100vw;
+      margin-inline: calc(50% - 50vw);
+      max-width: none;
+      overflow: clip;
+    }
+
+    @media (min-width: 900px) {
+      .template-preview-toolbar {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .template-preview-controls {
+        grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+      }
+
+      .template-preview-summary-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .template-preview-visibility-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
+</BaseLayout>

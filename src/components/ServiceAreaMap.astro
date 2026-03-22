@@ -1,15 +1,91 @@
 ---
+import leafletCss from 'leaflet/dist/leaflet.css?raw';
 import { brand } from '../data/brand';
+
+const parrishLat = 27.5806;
+const parrishLng = -82.4251;
+const manateeBounds = [
+  [27.204, -82.704],
+  [27.813, -82.053],
+];
 ---
 
+<style is:global set:html={leafletCss}></style>
+
 <div class="service-area-map-shell">
-  <img
-    src={brand.assets.serviceAreaMap}
-    alt="Illustrated map centered on Parrish, Florida"
-    class="service-area-map"
-    loading="lazy"
-    decoding="async"
-    width="1200"
-    height="720"
-  />
+  <div
+    class="service-area-map-canvas"
+    data-service-area-map
+    data-lat={parrishLat}
+    data-lng={parrishLng}
+    data-bounds={JSON.stringify(manateeBounds)}
+    aria-label="Map centered on Parrish, Florida"
+  ></div>
+  <div class="service-area-map-fade" aria-hidden="true"></div>
+  <noscript>
+    <img
+      src={brand.assets.serviceAreaMap}
+      alt="Illustrated map centered on Parrish, Florida"
+      class="service-area-map"
+      loading="lazy"
+      decoding="async"
+      width="1200"
+      height="720"
+    />
+  </noscript>
 </div>
+
+<script>
+  import L from 'leaflet';
+
+  const mapNodes = document.querySelectorAll('[data-service-area-map]');
+
+  mapNodes.forEach((node) => {
+    if (!(node instanceof HTMLElement) || node.dataset.mapBound === 'true') return;
+    node.dataset.mapBound = 'true';
+
+    const lat = Number(node.dataset.lat);
+    const lng = Number(node.dataset.lng);
+    const boundsData = node.dataset.bounds;
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lng) || !boundsData) return;
+
+    const bounds = JSON.parse(boundsData);
+    const map = L.map(node, {
+      zoomControl: false,
+      scrollWheelZoom: false,
+      tap: true,
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
+
+    L.circle([lat, lng], {
+      radius: 22000,
+      color: '#8B6212',
+      weight: 1.2,
+      fillColor: '#43572E',
+      fillOpacity: 0.12,
+    }).addTo(map);
+
+    const pinIcon = L.divIcon({
+      className: 'service-area-pin',
+      html: '<span></span>',
+      iconSize: [28, 28],
+      iconAnchor: [14, 28],
+      popupAnchor: [0, -24],
+    });
+
+    L.marker([lat, lng], { icon: pinIcon })
+      .addTo(map)
+      .bindPopup('Parrish, FL');
+
+    map.fitBounds(bounds, {
+      padding: [20, 20],
+    });
+
+    window.setTimeout(() => map.invalidateSize(), 0);
+  });
+</script>

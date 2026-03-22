@@ -1,6 +1,7 @@
 ---
 import PageSection from './PageSection.astro';
 import type { FaqItem } from '../data/services';
+import { templateConfig } from '../data/client-questionnaire';
 import type { FaqVariant, SectionTone } from '../data/client-questionnaire';
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 const {
   pageId,
   items,
-  variant = 'clean-list',
+  variant = templateConfig.presets.faq,
   surfaceTone = 'warm',
 } = Astro.props;
 ---
@@ -26,12 +27,99 @@ const {
     </p>
   </div>
 
-  <div class:list={['faq-list', `faq-variant-${variant}`]} data-block="items">
-    {items.map((item) => (
-      <article class="faq-item">
-        <h3>{item.question}</h3>
-        <p>{item.answer}</p>
-      </article>
-    ))}
-  </div>
+  {variant === 'accordion' ? (
+    <div class:list={['faq-list', 'faq-variant-accordion']} data-block="items" data-faq-accordion>
+      {items.map((item, index) => {
+        const itemId = `${pageId}-faq-${index}`;
+        const triggerId = `${itemId}-trigger`;
+        const panelId = `${itemId}-panel`;
+        const isOpen = index === 0;
+
+        return (
+          <article class:list={['faq-item', 'faq-accordion-item', isOpen && 'is-open']} data-faq-item data-open={isOpen ? 'true' : 'false'}>
+            <h3 class="faq-accordion-heading">
+              <button
+                id={triggerId}
+                class="faq-accordion-trigger"
+                type="button"
+                aria-expanded={isOpen ? 'true' : 'false'}
+                aria-controls={panelId}
+                data-faq-trigger
+              >
+                <span class="faq-accordion-question">{item.question}</span>
+                <span class="faq-accordion-arrow" aria-hidden="true">▾</span>
+              </button>
+            </h3>
+            <div
+              id={panelId}
+              class="faq-accordion-panel"
+              role="region"
+              aria-labelledby={triggerId}
+              data-faq-panel
+              hidden={!isOpen}
+            >
+              <div class="faq-accordion-answer">
+                <p>{item.answer}</p>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  ) : (
+    <div class:list={['faq-list', `faq-variant-${variant}`]} data-block="items">
+      {items.map((item) => (
+        <article class="faq-item">
+          <h3>{item.question}</h3>
+          <p>{item.answer}</p>
+        </article>
+      ))}
+    </div>
+  )}
 </PageSection>
+
+<script is:inline>
+  (() => {
+    const accordions = document.querySelectorAll('[data-faq-accordion]');
+
+    accordions.forEach((accordion) => {
+      if (!(accordion instanceof HTMLElement) || accordion.dataset.faqBound === 'true') return;
+      accordion.dataset.faqBound = 'true';
+
+      const items = Array.from(accordion.querySelectorAll('[data-faq-item]'));
+
+      const setOpenItem = (nextItem) => {
+        items.forEach((item) => {
+          const trigger = item.querySelector('[data-faq-trigger]');
+          const panel = item.querySelector('[data-faq-panel]');
+          const isOpen = item === nextItem;
+
+          item.dataset.open = isOpen ? 'true' : 'false';
+          item.classList.toggle('is-open', isOpen);
+
+          if (trigger instanceof HTMLButtonElement) {
+            trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+          }
+
+          if (panel instanceof HTMLElement) {
+            panel.hidden = !isOpen;
+          }
+        });
+      };
+
+      items.forEach((item) => {
+        const trigger = item.querySelector('[data-faq-trigger]');
+        if (!(trigger instanceof HTMLButtonElement)) return;
+
+        trigger.addEventListener('click', () => {
+          setOpenItem(item);
+        });
+      });
+
+      if (items.length > 0) {
+        const initiallyOpen = items.find((item) => item.dataset.open === 'true') ?? items[0];
+        setOpenItem(initiallyOpen);
+      }
+    });
+  })();
+</script>

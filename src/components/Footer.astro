@@ -2,23 +2,107 @@
 import { Image } from 'astro:assets';
 import { client } from '../data/client';
 import parrishLogo from '../assets/parrish-logo.png';
+
+const socialLabelMap = {
+  googleBusinessProfile: 'Google Business Profile',
+  facebook: 'Facebook',
+  instagram: 'Instagram',
+  nextdoor: 'Nextdoor',
+  yelp: 'Yelp',
+  googleReviews: 'Google Reviews',
+  yelpReviews: 'Yelp Reviews',
+} as const;
+
+const socialEntries = [
+  ...Object.entries(client.social.profiles),
+  ...Object.entries(client.social.reputation),
+]
+  .filter(([, href]) => Boolean(href))
+  .map(([key, href]) => ({
+    label: socialLabelMap[key as keyof typeof socialLabelMap] ?? key,
+    href,
+  }));
+
+const placeholderSocialEntries = [
+  { label: 'Facebook', shortLabel: 'f' },
+  { label: 'Instagram', shortLabel: 'ig' },
+  { label: 'Google', shortLabel: 'g' },
+  { label: 'Nextdoor', shortLabel: 'n' },
+];
+
+const normalizeFooterHours = (value: string) =>
+  value
+    .replace(/^\s*mon(?:day)?\s*-\s*fri(?:day)?\s*/i, '')
+    .replace(/^\s*sat(?:urday)?\s*/i, '')
+    .replace(/:00(?=\s*[AP]M\b)/gi, '')
+    .trim();
+
+const footerHours = [
+  {
+    label: 'Monday - Friday',
+    value: normalizeFooterHours(client.hours.mondayFriday),
+  },
+  {
+    label: 'Saturday',
+    value: normalizeFooterHours(client.hours.saturday),
+  },
+];
 ---
 
 <footer class="site-footer">
   <div class="footer-shell">
-    <a href="#site-top" class="footer-top-link">{client.ctas.backToTop}</a>
-    <div class="footer-credit"><strong>© Will Made It.</strong></div>
-    <a href="/" class="footer-brand" aria-label={`${client.businessName} home`}>
-      <Image
-        src={parrishLogo}
-        alt=""
-        aria-hidden="true"
-        class="footer-logo"
-        widths={[96, 144, 180]}
-        sizes="120px"
-        loading="lazy"
-        format="webp"
-      />
-    </a>
+    <div class="footer-main">
+      <section class="footer-column footer-column-hours" aria-labelledby="footer-hours-title">
+        <h2 id="footer-hours-title" class="footer-heading">Business Hours</h2>
+        <dl class="footer-hours-list">
+          {footerHours.map((entry) => (
+            <div>
+              <dt>{entry.label}</dt>
+              <dd>- {entry.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section class="footer-column footer-column-social" aria-labelledby="footer-social-title">
+        <h2 id="footer-social-title" class="footer-heading">Follow Us On Social</h2>
+        {socialEntries.length > 0 ? (
+          <ul class="footer-social-list">
+            {socialEntries.map((entry) => (
+              <li>
+                <a href={entry.href} target="_blank" rel="noreferrer">{entry.label}</a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul class="footer-social-list footer-social-list-placeholder" aria-label="Social platforms coming soon">
+            {placeholderSocialEntries.map((entry) => (
+              <li>
+                <span class="footer-social-placeholder" aria-label={entry.label}>
+                  {entry.shortLabel}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </div>
+
+    <div class="footer-meta">
+      <a href="#site-top" class="footer-top-link">{client.ctas.backToTop}</a>
+      <div class="footer-credit"><strong>© Will Made It.</strong></div>
+      <a href="/" class="footer-brand" aria-label={`${client.businessName} home`}>
+        <Image
+          src={parrishLogo}
+          alt=""
+          aria-hidden="true"
+          class="footer-logo"
+          widths={[96, 144, 180]}
+          sizes="120px"
+          loading="lazy"
+          format="webp"
+        />
+      </a>
+    </div>
   </div>
 </footer>

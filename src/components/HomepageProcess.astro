@@ -79,20 +79,206 @@ const {
   </div>
 
   <div class:list={['clone-process-list', `process-variant-${variant}`]} data-block="cards">
-    {steps.map((step) => (
-      <article class="clone-process-card">
-        <div class="clone-process-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-            {step.paths.map((path) => (
-              <path d={path}></path>
-            ))}
-          </svg>
-        </div>
-        <div class="clone-process-copy">
-          <h3>{step.title}</h3>
-          <p>{step.description}</p>
-        </div>
+    {steps.map((step, index) => (
+      <article
+        class="clone-process-card"
+        data-step-index={index + 1}
+        data-timeline-step={variant === 'timeline' ? index + 1 : undefined}
+      >
+        {variant === 'timeline' ? (
+          <>
+            <div class="clone-process-marker" aria-hidden="true">
+              <span class="clone-process-step-number">
+                <span class="clone-process-step-number-fill"></span>
+                <span class="clone-process-step-number-label">{index + 1}</span>
+              </span>
+              {index < steps.length - 1 && (
+                <span class="clone-process-line">
+                  <span class="clone-process-line-base"></span>
+                  <span class="clone-process-line-fill"></span>
+                </span>
+              )}
+            </div>
+            <div class="clone-process-copy">
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div class="clone-process-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                {step.paths.map((path) => (
+                  <path d={path}></path>
+                ))}
+              </svg>
+            </div>
+            <div class="clone-process-copy">
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
+          </>
+        )}
       </article>
     ))}
   </div>
+
+  {variant === 'timeline' && (
+    <div class="clone-process-timeline-cta" data-timeline-cta hidden>
+      <a
+        href={`tel:${templateConfig.business.phone.href}`}
+        class="btn-primary clone-process-timeline-call"
+        aria-label={`Call ${templateConfig.business.businessName} at ${templateConfig.business.phone.display}`}
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+            fill="currentColor"
+          ></path>
+        </svg>
+        <span>{templateConfig.ctas.secondaryButtonLabel}</span>
+      </a>
+      <button
+        type="button"
+        class="btn-primary"
+        data-open-estimate-modal
+        data-process-estimate-trigger
+        aria-haspopup="dialog"
+        aria-controls="estimate-modal"
+      >
+        Schedule Now
+      </button>
+    </div>
+  )}
 </PageSection>
+
+{variant === 'timeline' && (
+  <script is:inline>
+    (() => {
+      const bindTimeline = (timeline) => {
+        if (!(timeline instanceof HTMLElement) || timeline.dataset.timelineBound === 'true') return;
+        timeline.dataset.timelineBound = 'true';
+
+        const steps = Array.from(timeline.querySelectorAll('[data-timeline-step]'));
+        const cta = timeline.parentElement?.querySelector('[data-timeline-cta]');
+        if (steps.length === 0) return;
+        let ctaRevealed = false;
+        let hasScrollInteraction = false;
+
+        const getProgress = (value) => Math.max(0, Math.min(1, value));
+
+        const syncTimeline = () => {
+          const viewportMid = window.innerHeight * 0.55;
+
+          steps.forEach((step, index) => {
+            if (!(step instanceof HTMLElement)) return;
+
+            const marker = step.querySelector('.clone-process-step-number');
+            if (!(marker instanceof HTMLElement)) return;
+
+            const markerRect = marker.getBoundingClientRect();
+            const markerCenter = markerRect.top + markerRect.height / 2;
+            const markerBottom = markerRect.bottom;
+            const nextStep = steps[index + 1];
+            const nextMarker = nextStep instanceof HTMLElement
+              ? nextStep.querySelector('.clone-process-step-number')
+              : null;
+            const nextRect = nextMarker instanceof HTMLElement ? nextMarker.getBoundingClientRect() : null;
+            const nextTop = nextRect ? nextRect.top : markerBottom;
+            const lineLength = nextRect ? Math.max(nextTop - markerBottom + 4, 0) : 0;
+
+            const circleProgress = getProgress((viewportMid - markerCenter) / Math.max(markerRect.height * 0.9, 1));
+            const lineProgress = nextRect
+              ? getProgress((viewportMid - markerBottom) / Math.max(nextTop - markerBottom, 1))
+              : circleProgress;
+
+            step.style.setProperty('--timeline-circle-progress', String(circleProgress));
+            step.style.setProperty('--timeline-line-progress', String(lineProgress));
+            step.style.setProperty('--timeline-line-length', `${lineLength}px`);
+            step.dataset.timelineActive = circleProgress > 0.18 ? 'true' : 'false';
+
+            if (
+              index === steps.length - 1 &&
+              hasScrollInteraction &&
+              circleProgress >= 0.999 &&
+              !ctaRevealed
+            ) {
+              ctaRevealed = true;
+              if (cta instanceof HTMLElement) {
+                cta.hidden = false;
+                window.requestAnimationFrame(() => {
+                  cta.dataset.timelineCtaVisible = 'true';
+                });
+              }
+            }
+          });
+        };
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!(entry.target instanceof HTMLElement)) return;
+              entry.target.dataset.timelineVisible = entry.isIntersecting ? 'true' : 'false';
+            });
+            syncTimeline();
+          },
+          {
+            threshold: [0, 0.2, 0.45, 0.7, 1],
+            rootMargin: '-18% 0px -20% 0px',
+          },
+        );
+
+        steps.forEach((step) => observer.observe(step));
+        syncTimeline();
+
+        let ticking = false;
+        const requestSync = () => {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(() => {
+            ticking = false;
+            syncTimeline();
+          });
+        };
+
+        window.addEventListener('scroll', () => {
+          hasScrollInteraction = true;
+          requestSync();
+        }, { passive: true });
+        window.addEventListener('resize', requestSync);
+      };
+
+      document.querySelectorAll('.process-variant-timeline').forEach((timeline) => bindTimeline(timeline));
+    })();
+  </script>
+
+  <script is:inline>
+    (() => {
+      const triggers = Array.from(document.querySelectorAll('[data-process-estimate-trigger]'));
+      if (triggers.length === 0) return;
+
+      let loaded;
+      const loadEstimateModal = () => loaded ??= import('/scripts/estimate-modal.js');
+
+      triggers.forEach((trigger) => {
+        if (!(trigger instanceof HTMLButtonElement) || trigger.dataset.processEstimateBound === 'true') return;
+        trigger.dataset.processEstimateBound = 'true';
+
+        trigger.addEventListener('click', async (event) => {
+          const modal = document.querySelector('[data-estimate-modal]');
+          if (!(modal instanceof HTMLElement)) return;
+
+          if (loaded) return;
+
+          event.preventDefault();
+          await loadEstimateModal();
+          trigger.click();
+        });
+
+        trigger.addEventListener('pointerenter', () => { void loadEstimateModal(); }, { once: true, passive: true });
+        trigger.addEventListener('touchstart', () => { void loadEstimateModal(); }, { once: true, passive: true });
+        trigger.addEventListener('focus', () => { void loadEstimateModal(); }, { once: true, passive: true });
+      });
+    })();
+  </script>
+)}

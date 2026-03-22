@@ -47,7 +47,9 @@ if (modal instanceof HTMLElement && document.querySelector("[data-open-estimate-
     const target = event.target;
     if (!(target instanceof Element)) return;
 
-    if (target.closest("[data-open-estimate-modal]")) {
+    const openTrigger = target.closest("[data-open-estimate-modal]");
+    if (openTrigger) {
+      event.preventDefault();
       openModal();
       return;
     }

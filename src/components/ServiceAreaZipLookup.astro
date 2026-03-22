@@ -1,0 +1,136 @@
+---
+import { client } from '../data/client';
+import { MANATEE_COUNTY_SERVICE_AREA_ZIPS } from '../data/serviceAreaZips';
+
+interface Props {
+  inputId?: string;
+}
+
+const supportedZips = [...MANATEE_COUNTY_SERVICE_AREA_ZIPS];
+const { inputId = 'service-area-zip-input' } = Astro.props;
+---
+
+<div
+  class="service-area-zip-lookup"
+  data-service-area-lookup
+  data-supported-zips={supportedZips.join(',')}
+>
+  <div class="service-area-zip-copy">
+    <h3>Are We In Your Area?</h3>
+    <p>Enter your zip code.</p>
+  </div>
+
+  <form class="service-area-zip-form" data-zip-form novalidate>
+    <label class="sr-only" for={inputId}>Enter your ZIP code</label>
+    <input
+      id={inputId}
+      name="zip"
+      type="text"
+      inputmode="numeric"
+      autocomplete="postal-code"
+      pattern="[0-9]{5}"
+      maxlength="5"
+      placeholder="ZIP code"
+      class="service-area-zip-input"
+      data-zip-input
+    />
+    <button type="submit" class="service-area-zip-button" data-zip-submit>Submit</button>
+  </form>
+
+  <p class="service-area-zip-message" data-zip-message role="status" aria-live="polite" hidden></p>
+
+  <div class="service-area-zip-actions" data-zip-actions hidden>
+    <a
+      href={`tel:${client.primaryPhoneHref}`}
+      class="service-area-zip-action service-area-zip-action-call"
+      aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24c1.08.36 2.24.54 3.42.54a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.97 21 3 13.03 3 3.99a1 1 0 0 1 1-1H7.5a1 1 0 0 1 1 1c0 1.18.18 2.34.54 3.42a1 1 0 0 1-.24 1z" fill="currentColor"></path>
+      </svg>
+    </a>
+    <button
+      type="button"
+      class="service-area-zip-action service-area-zip-action-estimate"
+      data-open-estimate-modal
+      data-estimate-modal-fallback="/contact"
+      aria-controls="estimate-modal"
+    >
+      Request Estimate
+    </button>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    if (window.__serviceAreaLookupBound) return;
+    window.__serviceAreaLookupBound = true;
+
+    const lookups = document.querySelectorAll('[data-service-area-lookup]');
+
+    lookups.forEach((lookup) => {
+      const form = lookup.querySelector('[data-zip-form]');
+      const input = lookup.querySelector('[data-zip-input]');
+      const message = lookup.querySelector('[data-zip-message]');
+      const actions = lookup.querySelector('[data-zip-actions]');
+      const supported = new Set(
+        (lookup.getAttribute('data-supported-zips') || '')
+          .split(',')
+          .map((zip) => zip.trim())
+          .filter(Boolean),
+      );
+
+      if (!(form instanceof HTMLFormElement) || !(input instanceof HTMLInputElement) || !(message instanceof HTMLElement) || !(actions instanceof HTMLElement)) {
+        return;
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const zip = input.value.trim();
+
+        actions.hidden = true;
+        message.hidden = true;
+        message.classList.remove('is-valid', 'is-invalid');
+
+        if (!/^\d{5}$/.test(zip)) {
+          message.textContent = 'Enter a valid 5-digit ZIP code.';
+          message.classList.add('is-invalid');
+          message.hidden = false;
+          return;
+        }
+
+        if (supported.has(zip)) {
+          message.textContent = "We're in your area.";
+          message.classList.add('is-valid');
+          message.hidden = false;
+          actions.hidden = false;
+          return;
+        }
+
+        message.textContent = "Sorry, we aren't out there yet.";
+        message.classList.add('is-invalid');
+        message.hidden = false;
+      });
+    });
+
+    if (!window.__serviceAreaEstimateFallbackBound) {
+      window.__serviceAreaEstimateFallbackBound = true;
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+
+        const trigger = target.closest('[data-estimate-modal-fallback]');
+        if (!(trigger instanceof HTMLElement)) return;
+
+        if (document.querySelector('[data-estimate-modal]')) return;
+
+        const fallback = trigger.getAttribute('data-estimate-modal-fallback');
+        if (!fallback) return;
+
+        window.location.href = fallback;
+      });
+    }
+  })();
+</script>

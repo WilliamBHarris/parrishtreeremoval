@@ -1,6 +1,7 @@
 ---
 import PageSection from './PageSection.astro';
 import ServiceAreaMap from './ServiceAreaMap.astro';
+import ServiceAreaZipLookup from './ServiceAreaZipLookup.astro';
 import { client } from '../data/client';
 import { templateConfig } from '../data/client-questionnaire';
 import type { SectionTone, ServiceAreaVariant } from '../data/client-questionnaire';
@@ -10,6 +11,7 @@ interface Props {
   copy?: string;
   variant?: ServiceAreaVariant;
   surfaceTone?: SectionTone;
+  lookupInputId?: string;
 }
 
 const {
@@ -17,6 +19,7 @@ const {
   copy = client.serviceAreaCopy,
   variant = templateConfig.presets.serviceArea,
   surfaceTone = 'cool',
+  lookupInputId,
 } = Astro.props;
 ---
 
@@ -34,6 +37,7 @@ const {
     </p>
   </div>
   <div data-block="map">
+    <ServiceAreaZipLookup inputId={lookupInputId} />
     <ServiceAreaMap />
   </div>
 </PageSection>

@@ -1,17 +1,23 @@
 const body = document.body;
-const toggle = document.querySelector(".menu-toggle");
-const drawer = document.querySelector("#mobile-drawer");
-const scrim = document.querySelector(".menu-scrim");
-const submenuToggles = drawer
-  ? Array.from(drawer.querySelectorAll(".drawer-submenu-toggle"))
-  : [];
+const focusableSelector =
+  'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
-if (toggle && drawer && scrim && toggle.dataset.bound !== "true") {
-  toggle.dataset.bound = "true";
+const bindHeaderMenu = (root) => {
+  if (!(root instanceof HTMLElement) || root.dataset.menuBound === "true") return;
 
+  const toggle = root.querySelector(".menu-toggle");
+  const drawerId = toggle instanceof HTMLElement ? toggle.getAttribute("aria-controls") : null;
+  const drawer = drawerId ? root.querySelector(`#${drawerId}`) : null;
+  const scrim = root.querySelector(".menu-scrim");
+
+  if (!(toggle instanceof HTMLElement) || !(drawer instanceof HTMLElement) || !(scrim instanceof HTMLElement)) {
+    return;
+  }
+
+  root.dataset.menuBound = "true";
+
+  const submenuToggles = Array.from(drawer.querySelectorAll(".drawer-submenu-toggle"));
   let lastFocused = null;
-  const focusableSelector =
-    'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
   const getFocusableElements = () =>
     Array.from(drawer.querySelectorAll(focusableSelector)).filter(
@@ -74,7 +80,7 @@ if (toggle && drawer && scrim && toggle.dataset.bound !== "true") {
   };
 
   toggle.addEventListener("click", () => {
-    if (body.classList.contains("menu-open")) {
+    if (body.classList.contains("menu-open") && toggle.getAttribute("aria-expanded") === "true") {
       closeMenu();
     } else {
       openMenu();
@@ -116,8 +122,25 @@ if (toggle && drawer && scrim && toggle.dataset.bound !== "true") {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && body.classList.contains("menu-open")) {
+    if (
+      event.key === "Escape" &&
+      body.classList.contains("menu-open") &&
+      toggle.getAttribute("aria-expanded") === "true"
+    ) {
       closeMenu();
     }
   });
-}
+};
+
+export const bindHeaderMenus = (root = document) => {
+  if (root instanceof HTMLElement && root.matches("[data-header-root]")) {
+    bindHeaderMenu(root);
+    return;
+  }
+
+  root.querySelectorAll("[data-header-root]").forEach((headerRoot) => {
+    bindHeaderMenu(headerRoot);
+  });
+};
+
+bindHeaderMenus();

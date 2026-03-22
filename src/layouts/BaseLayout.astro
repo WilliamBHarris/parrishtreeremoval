@@ -10,6 +10,8 @@ interface Props {
   description?: string;
   schema?: Record<string, unknown> | Array<Record<string, unknown>>;
   ogImage?: string;
+  robots?: string;
+  showSiteChrome?: boolean;
   criticalImage?: {
     src: string;
     srcSet?: string;
@@ -23,12 +25,28 @@ const {
   description = `Tree removal, trimming, stump grinding, and storm cleanup information for homeowners in ${client.primaryLocation}.`,
   schema,
   ogImage = brand.assets.ogImage,
+  robots = 'index,follow,max-image-preview:large',
+  showSiteChrome = true,
   criticalImage,
 } = Astro.props;
 
-const siteUrl = Astro.site?.toString() ?? 'https://parrishtreeremoval.com';
+const siteUrl = Astro.site?.toString() ?? `https://${client.websiteDomain}`;
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const socialProfileLinks = Object.values(client.social.profiles).filter((value): value is string => Boolean(value));
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': `${siteUrl}#localbusiness`,
+  name: client.legalBusinessName,
+  url: siteUrl,
+  telephone: client.primaryPhoneDisplay,
+  areaServed: client.serviceAreas,
+  description,
+  image: ogImageUrl,
+  ...(client.social.serviceTypeSummary ? { serviceType: client.social.serviceTypeSummary } : {}),
+  ...(socialProfileLinks.length > 0 ? { sameAs: socialProfileLinks } : {}),
+};
 const brandCssVars = `
   :root {
     --brand-primary: ${brand.colors.primary};
@@ -58,19 +76,19 @@ const schemaList = [
     name: client.siteName,
     url: siteUrl
   },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': `${siteUrl}#localbusiness`,
-    name: client.businessName,
-    url: siteUrl,
-    telephone: client.primaryPhoneDisplay,
-    areaServed: client.serviceAreas,
-    description,
-    image: ogImageUrl,
-    serviceType: 'Tree removal, trimming, stump grinding, and storm cleanup'
-  },
+  localBusinessSchema,
   ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])
+];
+const bodyClasses = [
+  showSiteChrome ? 'layout-site-chrome' : 'layout-no-site-chrome',
+  `template-color-${brand.presets.colorTemplate}`,
+  `template-heading-${brand.presets.headingTypography}`,
+  `template-body-${brand.presets.bodyTypography}`,
+  `template-section-title-${brand.presets.sectionTitleStyle}`,
+  `template-card-surface-${brand.presets.cardSurface}`,
+  `template-card-border-${brand.presets.cardBorderStyle}`,
+  `template-button-border-${brand.presets.buttonBorderStyle}`,
+  `template-section-frame-${brand.presets.sectionFrameStyle}`,
 ];
 ---
 
@@ -82,7 +100,7 @@ const schemaList = [
     <meta name="format-detection" content="telephone=no,address=no,email=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="robots" content={robots} />
     <meta name="theme-color" content={brand.colors.themeColor} />
     {criticalImage && (
       <link
@@ -107,21 +125,22 @@ const schemaList = [
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={client.siteName} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:alt" content={`${client.businessName} service area map`} />
+    <meta property="og:image:alt" content={brand.assets.ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={brand.assets.ogImageAlt} />
     <link rel="sitemap" href="/sitemap.xml" />
     <script type="application/ld+json" set:html={JSON.stringify(schemaList)}></script>
   </head>
-  <body>
+  <body class={bodyClasses.join(' ')}>
     <div id="site-top" aria-hidden="true"></div>
     <a href="#main-content" class="skip-link">Skip to content</a>
-    <Header />
+    {showSiteChrome && <Header />}
     <main id="main-content">
       <slot />
     </main>
-    <Footer />
+    {showSiteChrome && <Footer />}
   </body>
 </html>

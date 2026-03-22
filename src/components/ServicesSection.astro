@@ -1,6 +1,7 @@
 ---
 import PageSection from './PageSection.astro';
 import type { ServicePageData } from '../data/services';
+import { templateConfig } from '../data/client-questionnaire';
 import type { ServicesVariant, SectionTone } from '../data/client-questionnaire';
 
 interface Props {
@@ -22,7 +23,7 @@ const {
   title = 'Our Services',
   lead,
   services,
-  variant = 'grid-cards',
+  variant = templateConfig.presets.services,
   summaryMode = 'card',
   surfaceTone = 'base',
 } = Astro.props;
@@ -37,20 +38,478 @@ const {
 >
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
-    {lead && <p class="section-lead clone-intro">{lead}</p>}
+    {lead && variant !== 'tabs' && <p class="section-lead clone-intro">{lead}</p>}
   </div>
 
-  <div class:list={['services-section-grid', `services-variant-${variant}`]} data-block="cards">
-    {services.map((service) => (
-      <article class="service-card">
-        <div class="service-icon" aria-hidden="true">{service.icon}</div>
-        <h3>{service.cardTitle}</h3>
-        <p>{summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary}</p>
-        <a href={`/${service.slug}`} class="service-link">
-          Learn more
-          <span class="sr-only"> about {service.heroTitle}</span>
-        </a>
-      </article>
-    ))}
-  </div>
+  {variant === 'tabs' ? (
+    <div class="services-variant-tabs" data-block="cards" data-services-tabs>
+      <div class="services-tabs-list" role="tablist" aria-label={`${title} tabs`}>
+        <div class="services-tabs-active-visual" aria-hidden="true">
+          {services.map((service, index) => {
+            const isActive = index === 0;
+
+            return (
+              <div
+                class:list={['services-tabs-active-icon', isActive && 'is-active']}
+                data-services-active-icon
+                hidden={!isActive}
+              >
+                {service.icon}
+              </div>
+            );
+          })}
+        </div>
+        <div class="services-tab-bubble" data-services-tab-bubble aria-hidden="true"></div>
+        {services.map((service, index) => {
+          const tabId = `${pageId}-${sectionKey}-tab-${index}`;
+          const panelId = `${pageId}-${sectionKey}-panel-${index}`;
+          const isActive = index === 0;
+
+          return (
+            <button
+              id={tabId}
+              type="button"
+              class:list={['services-tab', isActive && 'is-active']}
+              role="tab"
+              aria-selected={isActive ? 'true' : 'false'}
+              aria-controls={panelId}
+              tabindex={isActive ? '0' : '-1'}
+              data-services-tab
+            >
+              {service.cardTitle}
+            </button>
+          );
+        })}
+      </div>
+
+      <div class="services-tabs-panels">
+        {services.map((service, index) => {
+          const tabId = `${pageId}-${sectionKey}-tab-${index}`;
+          const panelId = `${pageId}-${sectionKey}-panel-${index}`;
+          const isActive = index === 0;
+          const detailedSummary = [
+            service.servicesOverviewSummary,
+            service.heroIntro,
+            service.serviceCardSummary,
+          ]
+            .filter((value, valueIndex, allValues) => Boolean(value) && allValues.indexOf(value) === valueIndex)
+            .join(' ');
+
+          return (
+            <article
+              id={panelId}
+              class:list={['service-card', 'service-card-featured', isActive && 'is-active']}
+              role="tabpanel"
+              aria-labelledby={tabId}
+              data-services-panel
+              hidden={!isActive}
+            >
+              <div class="service-featured-body" data-services-panel-body>
+                <div class="service-featured-copy">
+                  <h3>{service.cardTitle}</h3>
+                  <p>{detailedSummary}</p>
+                </div>
+                <a href={`/${service.slug}`} class="service-link">
+                  Learn more
+                  <span class="sr-only"> about {service.heroTitle}</span>
+                </a>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  ) : variant === 'stacked-panels' ? (
+    <div class="services-variant-carousel" data-block="cards" data-services-carousel tabindex="0">
+      <div class="services-carousel-stage">
+        {services.map((service, index) => {
+          const panelId = `${pageId}-${sectionKey}-carousel-panel-${index}`;
+          const isActive = index === 0;
+
+          return (
+            <article
+              id={panelId}
+              class:list={['service-card', 'service-card-featured', 'service-card-carousel', isActive && 'is-active']}
+              data-services-carousel-panel
+              aria-hidden={isActive ? 'false' : 'true'}
+              hidden={!isActive}
+            >
+              <div class="service-icon" aria-hidden="true">{service.icon}</div>
+              <div class="service-featured-copy">
+                <h3>{service.cardTitle}</h3>
+                <p>{summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary}</p>
+              </div>
+              <a href={`/${service.slug}`} class="service-link">
+                Learn more
+                <span class="sr-only"> about {service.heroTitle}</span>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+
+      <div class="services-carousel-controls" aria-label={`${title} carousel controls`}>
+        <button
+          type="button"
+          class="services-carousel-button"
+          data-services-carousel-prev
+          aria-label="Show previous service"
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+        <p class="services-carousel-status" data-services-carousel-status aria-live="polite"></p>
+        <button
+          type="button"
+          class="services-carousel-button"
+          data-services-carousel-next
+          aria-label="Show next service"
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  ) : variant === 'compact-list' ? (
+    <div class="services-variant-compact-list" data-block="cards" data-services-accordion>
+      {services.map((service, index) => {
+        const itemId = `${pageId}-${sectionKey}-service-${index}`;
+        const triggerId = `${itemId}-trigger`;
+        const panelId = `${itemId}-panel`;
+        const isOpen = index === 0;
+
+        return (
+          <article
+            class:list={['service-accordion-item', isOpen && 'is-open']}
+            data-services-accordion-item
+            data-open={isOpen ? 'true' : 'false'}
+          >
+            <h3 class="service-accordion-heading">
+              <button
+                id={triggerId}
+                type="button"
+                class="service-accordion-trigger"
+                aria-expanded={isOpen ? 'true' : 'false'}
+                aria-controls={panelId}
+                data-services-accordion-trigger
+              >
+                <span class="service-accordion-trigger-copy">
+                  <span class="service-accordion-title">{service.cardTitle}</span>
+                  <span class="service-accordion-summary">
+                    {summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary}
+                  </span>
+                </span>
+                <span class="service-accordion-arrow" aria-hidden="true">▾</span>
+              </button>
+            </h3>
+
+            <div
+              id={panelId}
+              class="service-accordion-panel"
+              role="region"
+              aria-labelledby={triggerId}
+              data-services-accordion-panel
+            >
+              <div class="service-accordion-panel-inner">
+                <div class="service-icon service-accordion-icon" aria-hidden="true">{service.icon}</div>
+                <div class="service-featured-copy">
+                  <h4>{service.cardTitle}</h4>
+                  <p>{summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary}</p>
+                  <a href={`/${service.slug}`} class="service-link">
+                    Learn more
+                    <span class="sr-only"> about {service.heroTitle}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  ) : (
+    <div class:list={['services-section-grid', `services-variant-${variant}`]} data-block="cards">
+      {services.map((service) => (
+        <article class="service-card">
+          <div class="service-icon" aria-hidden="true">{service.icon}</div>
+          <h3>{service.cardTitle}</h3>
+          <p>{summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary}</p>
+          <a href={`/${service.slug}`} class="service-link">
+            Learn more
+            <span class="sr-only"> about {service.heroTitle}</span>
+          </a>
+        </article>
+      ))}
+    </div>
+  )}
 </PageSection>
+
+<script is:inline>
+  (() => {
+    const tabGroups = document.querySelectorAll('[data-services-tabs]');
+    const carouselGroups = document.querySelectorAll('[data-services-carousel]');
+    const accordionGroups = document.querySelectorAll('[data-services-accordion]');
+
+    tabGroups.forEach((group) => {
+      if (!(group instanceof HTMLElement) || group.dataset.servicesTabsBound === 'true') return;
+      group.dataset.servicesTabsBound = 'true';
+
+      const tabs = Array.from(group.querySelectorAll('[data-services-tab]'));
+      const panels = Array.from(group.querySelectorAll('[data-services-panel]'));
+      const panelBodies = Array.from(group.querySelectorAll('[data-services-panel-body]'));
+      const icons = Array.from(group.querySelectorAll('[data-services-active-icon]'));
+      const bubble = group.querySelector('[data-services-tab-bubble]');
+      const panelsShell = group.querySelector('.services-tabs-panels');
+
+      const syncPanelHeight = () => {
+        if (!(panelsShell instanceof HTMLElement) || panels.length === 0) return;
+
+        let maxHeight = 0;
+        const previousShellHeight = panelsShell.style.getPropertyValue('--services-tabs-panel-height');
+        panelsShell.style.removeProperty('--services-tabs-panel-height');
+
+        panels.forEach((panel, index) => {
+          if (!(panel instanceof HTMLElement)) return;
+          const panelBody = panelBodies[index];
+          if (!(panelBody instanceof HTMLElement)) return;
+
+          const wasHidden = panel.hidden;
+          const previousPosition = panel.style.position;
+          const previousVisibility = panel.style.visibility;
+          const previousPointerEvents = panel.style.pointerEvents;
+          const previousInset = panel.style.inset;
+          const previousWidth = panel.style.width;
+          const previousHeight = panel.style.height;
+          const previousMinHeight = panel.style.minHeight;
+
+          if (wasHidden) {
+            panel.hidden = false;
+            panel.style.position = 'absolute';
+            panel.style.visibility = 'hidden';
+            panel.style.pointerEvents = 'none';
+            panel.style.inset = '0';
+            panel.style.width = '100%';
+          }
+
+          panel.style.height = 'auto';
+          panel.style.minHeight = '0';
+
+          const computedPanelStyles = window.getComputedStyle(panel);
+          const panelPaddingTop = parseFloat(computedPanelStyles.paddingTop) || 0;
+          const panelPaddingBottom = parseFloat(computedPanelStyles.paddingBottom) || 0;
+          const measuredHeight = panelBody.scrollHeight + panelPaddingTop + panelPaddingBottom;
+          maxHeight = Math.max(maxHeight, measuredHeight);
+
+          if (wasHidden) {
+            panel.hidden = true;
+            panel.style.position = previousPosition;
+            panel.style.visibility = previousVisibility;
+            panel.style.pointerEvents = previousPointerEvents;
+            panel.style.inset = previousInset;
+            panel.style.width = previousWidth;
+          }
+
+          panel.style.height = previousHeight;
+          panel.style.minHeight = previousMinHeight;
+        });
+
+        if (maxHeight > 0) {
+          panelsShell.style.setProperty('--services-tabs-panel-height', `${maxHeight}px`);
+        } else if (previousShellHeight) {
+          panelsShell.style.setProperty('--services-tabs-panel-height', previousShellHeight);
+        }
+      };
+
+      const syncTabBubble = (nextIndex, immediate = false) => {
+        if (!(bubble instanceof HTMLElement)) return;
+        const activeTab = tabs[nextIndex];
+        if (!(activeTab instanceof HTMLElement)) return;
+
+        const bubbleParent = bubble.parentElement;
+        if (!(bubbleParent instanceof HTMLElement)) return;
+
+        const parentRect = bubbleParent.getBoundingClientRect();
+        const tabRect = activeTab.getBoundingClientRect();
+        const applyBubblePosition = () => {
+          bubble.style.width = `${tabRect.width}px`;
+          bubble.style.height = `${tabRect.height}px`;
+          bubble.style.transform = `translate3d(${tabRect.left - parentRect.left}px, ${tabRect.top - parentRect.top}px, 0)`;
+        };
+
+        if (immediate) {
+          bubble.style.transition = 'none';
+          applyBubblePosition();
+          requestAnimationFrame(() => {
+            bubble.classList.add('is-ready');
+            bubble.style.removeProperty('transition');
+          });
+          return;
+        }
+
+        requestAnimationFrame(applyBubblePosition);
+      };
+
+      const activateTab = (nextIndex, immediateBubble = false) => {
+        tabs.forEach((tab, index) => {
+          if (!(tab instanceof HTMLButtonElement)) return;
+          const isActive = index === nextIndex;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          tab.tabIndex = isActive ? 0 : -1;
+        });
+
+        panels.forEach((panel, index) => {
+          if (!(panel instanceof HTMLElement)) return;
+          const isActive = index === nextIndex;
+          panel.hidden = !isActive;
+          panel.classList.toggle('is-active', isActive);
+        });
+
+        icons.forEach((icon, index) => {
+          if (!(icon instanceof HTMLElement)) return;
+          const isActive = index === nextIndex;
+          icon.hidden = !isActive;
+          icon.classList.toggle('is-active', isActive);
+        });
+
+        syncTabBubble(nextIndex, immediateBubble);
+      };
+
+      tabs.forEach((tab, index) => {
+        if (!(tab instanceof HTMLButtonElement)) return;
+
+        tab.addEventListener('click', () => {
+          activateTab(index);
+        });
+
+        tab.addEventListener('keydown', (event) => {
+          const key = event.key;
+          if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(key)) return;
+
+          event.preventDefault();
+          let nextIndex = index;
+
+          if (key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+          if (key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
+          if (key === 'Home') nextIndex = 0;
+          if (key === 'End') nextIndex = tabs.length - 1;
+
+          activateTab(nextIndex);
+          const nextTab = tabs[nextIndex];
+          if (nextTab instanceof HTMLButtonElement) nextTab.focus();
+        });
+      });
+
+      syncPanelHeight();
+      activateTab(0, true);
+      window.addEventListener('resize', () => {
+        const activeIndex = tabs.findIndex(
+          (tab) => tab instanceof HTMLButtonElement && tab.getAttribute('aria-selected') === 'true',
+        );
+        syncPanelHeight();
+        syncTabBubble(activeIndex >= 0 ? activeIndex : 0);
+      });
+    });
+
+    carouselGroups.forEach((group) => {
+      if (!(group instanceof HTMLElement) || group.dataset.servicesCarouselBound === 'true') return;
+      group.dataset.servicesCarouselBound = 'true';
+
+      const panels = Array.from(group.querySelectorAll('[data-services-carousel-panel]'));
+      const previousButton = group.querySelector('[data-services-carousel-prev]');
+      const nextButton = group.querySelector('[data-services-carousel-next]');
+      const status = group.querySelector('[data-services-carousel-status]');
+
+      const setActivePanel = (nextIndex) => {
+        panels.forEach((panel, index) => {
+          if (!(panel instanceof HTMLElement)) return;
+          const isActive = index === nextIndex;
+          panel.hidden = !isActive;
+          panel.classList.toggle('is-active', isActive);
+          panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        });
+
+        if (status instanceof HTMLElement) {
+          status.textContent = `Service ${nextIndex + 1} of ${panels.length}`;
+        }
+
+        group.dataset.activeIndex = String(nextIndex);
+      };
+
+      const moveCarousel = (direction) => {
+        const currentIndex = Number(group.dataset.activeIndex || '0');
+        const nextIndex = (currentIndex + direction + panels.length) % panels.length;
+        setActivePanel(nextIndex);
+      };
+
+      if (previousButton instanceof HTMLButtonElement) {
+        previousButton.addEventListener('click', () => moveCarousel(-1));
+      }
+
+      if (nextButton instanceof HTMLButtonElement) {
+        nextButton.addEventListener('click', () => moveCarousel(1));
+      }
+
+      group.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        moveCarousel(event.key === 'ArrowRight' ? 1 : -1);
+      });
+
+      if (panels.length > 0) {
+        setActivePanel(0);
+      }
+    });
+
+    accordionGroups.forEach((group) => {
+      if (!(group instanceof HTMLElement) || group.dataset.servicesAccordionBound === 'true') return;
+      group.dataset.servicesAccordionBound = 'true';
+
+      const items = Array.from(group.querySelectorAll('[data-services-accordion-item]'));
+
+      const setOpenItem = (nextIndex) => {
+        items.forEach((item, index) => {
+          if (!(item instanceof HTMLElement)) return;
+          const isOpen = index === nextIndex;
+          const trigger = item.querySelector('[data-services-accordion-trigger]');
+
+          item.dataset.open = isOpen ? 'true' : 'false';
+          item.classList.toggle('is-open', isOpen);
+
+          if (trigger instanceof HTMLButtonElement) {
+            trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            trigger.tabIndex = isOpen ? 0 : -1;
+          }
+        });
+      };
+
+      items.forEach((item, index) => {
+        const trigger = item.querySelector('[data-services-accordion-trigger]');
+        if (!(trigger instanceof HTMLButtonElement)) return;
+
+        trigger.addEventListener('click', () => {
+          setOpenItem(index);
+        });
+
+        trigger.addEventListener('keydown', (event) => {
+          const key = event.key;
+          if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(key)) return;
+
+          event.preventDefault();
+          let nextIndex = index;
+
+          if (key === 'ArrowDown') nextIndex = (index + 1) % items.length;
+          if (key === 'ArrowUp') nextIndex = (index - 1 + items.length) % items.length;
+          if (key === 'Home') nextIndex = 0;
+          if (key === 'End') nextIndex = items.length - 1;
+
+          setOpenItem(nextIndex);
+          const nextTrigger = items[nextIndex]?.querySelector('[data-services-accordion-trigger]');
+          if (nextTrigger instanceof HTMLButtonElement) nextTrigger.focus();
+        });
+      });
+
+      if (items.length > 0) {
+        const initiallyOpen = items.findIndex((item) => item instanceof HTMLElement && item.dataset.open === 'true');
+        setOpenItem(initiallyOpen >= 0 ? initiallyOpen : 0);
+      }
+    });
+  })();
+</script>

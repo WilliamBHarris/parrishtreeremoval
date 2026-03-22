@@ -9,6 +9,8 @@ import { templateConfig } from './client-questionnaire';
 export const client = {
   businessName: templateConfig.business.businessName,
   siteName: templateConfig.business.siteName,
+  legalBusinessName: templateConfig.business.legalBusinessName,
+  websiteDomain: templateConfig.business.websiteDomain,
   primaryPhoneDisplay: templateConfig.business.phone.display,
   primaryPhoneHref: templateConfig.business.phone.href,
   email: templateConfig.business.email,
@@ -18,4 +20,5 @@ export const client = {
   serviceAreaCopy: templateConfig.business.serviceAreaCopy,
   ctas: templateConfig.ctas,
   hours: templateConfig.business.hours,
+  social: templateConfig.social,
 } as const;
