@@ -12,14 +12,15 @@ const manateeBounds = [
 
 <style is:global set:html={leafletCss}></style>
 
-<div class="service-area-map-shell">
+<figure class="service-area-map-shell">
   <div
     class="service-area-map-canvas"
     data-service-area-map
     data-lat={parrishLat}
     data-lng={parrishLng}
     data-bounds={JSON.stringify(manateeBounds)}
-    aria-label="Map centered on Parrish, Florida"
+    aria-hidden="true"
+    role="presentation"
   ></div>
   <div class="service-area-map-fade" aria-hidden="true"></div>
   <noscript>
@@ -33,7 +34,10 @@ const manateeBounds = [
       height="720"
     />
   </noscript>
-</div>
+  <figcaption class="service-area-map-attribution">
+    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>
+  </figcaption>
+</figure>
 
 <script>
   import L from 'leaflet';
@@ -53,13 +57,18 @@ const manateeBounds = [
     const bounds = JSON.parse(boundsData);
     const map = L.map(node, {
       zoomControl: false,
+      attributionControl: false,
       scrollWheelZoom: false,
+      dragging: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      touchZoom: false,
       tap: true,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
-      attribution: '&copy; OpenStreetMap contributors',
     }).addTo(map);
 
     L.circle([lat, lng], {
@@ -78,9 +87,11 @@ const manateeBounds = [
       popupAnchor: [0, -24],
     });
 
-    L.marker([lat, lng], { icon: pinIcon })
-      .addTo(map)
-      .bindPopup('Parrish, FL');
+    L.marker([lat, lng], {
+      icon: pinIcon,
+      interactive: false,
+      keyboard: false,
+    }).addTo(map);
 
     map.fitBounds(bounds, {
       padding: [20, 20],

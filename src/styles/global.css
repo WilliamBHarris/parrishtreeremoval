@@ -2608,19 +2608,15 @@ body.template-section-title-boxed-label .clone-kicker::after {
   box-shadow: none;
 }
 
-.service-area-map-shell .leaflet-control-attribution {
-  background: rgba(247, 242, 234, 0.92);
+.service-area-map-attribution {
+  margin-top: 0.5rem;
   color: var(--text-soft);
-  font-size: 0.66rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  text-align: right;
 }
 
-.service-area-map-shell .leaflet-control-attribution a {
-  color: var(--heading);
-}
-
-.service-area-map-shell .leaflet-popup-content-wrapper,
-.service-area-map-shell .leaflet-popup-tip {
-  background: rgba(247, 242, 234, 0.98);
+.service-area-map-attribution a {
   color: var(--heading);
 }
 
