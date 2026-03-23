@@ -198,35 +198,4 @@ const desktopNavLinks = [
   </aside>
 </div>
 
-{!previewMode && (
-  <script is:inline define:vars={{ instanceId }}>
-    (() => {
-      const root = document.querySelector(`[data-header-instance="${instanceId}"]`);
-      if (!(root instanceof HTMLElement) || root.dataset.headerLoaderBound === 'true') return;
-      root.dataset.headerLoaderBound = 'true';
-
-      let loaded;
-      const toggle = root.querySelector('.menu-toggle');
-      const loadHeaderMenu = async () => {
-        const mod = loaded ??= import('/scripts/header-menu.js');
-        const resolved = await mod;
-        resolved.bindHeaderMenus?.(root);
-        return resolved;
-      };
-
-      if (toggle instanceof HTMLElement) {
-        toggle.addEventListener('click', async (event) => {
-          if (!root.dataset.menuBound) {
-            event.preventDefault();
-            await loadHeaderMenu();
-            toggle.click();
-          }
-        }, { once: true });
-
-        toggle.addEventListener('pointerenter', () => { void loadHeaderMenu(); }, { once: true, passive: true });
-        toggle.addEventListener('touchstart', () => { void loadHeaderMenu(); }, { once: true, passive: true });
-        toggle.addEventListener('focus', () => { void loadHeaderMenu(); }, { once: true, passive: true });
-      }
-    })();
-  </script>
-)}
+{!previewMode && <script type="module" src="/scripts/header-menu.js"></script>}
