@@ -1,5 +1,5 @@
 ---
-import leafletCss from 'leaflet/dist/leaflet.css?raw';
+import leafletCssHref from 'leaflet/dist/leaflet.css?url';
 import { brand } from '../data/brand';
 
 const parrishLat = 27.5806;
@@ -9,8 +9,6 @@ const manateeBounds = [
   [27.813, -82.053],
 ];
 ---
-
-<style is:global set:html={leafletCss}></style>
 
 <figure class="service-area-map-shell">
   <div
@@ -39,8 +37,31 @@ const manateeBounds = [
   </figcaption>
 </figure>
 
-<script>
+<script define:vars={{ leafletCssHref }}>
   const mapNodes = document.querySelectorAll('[data-service-area-map]');
+  let leafletCssLoaded;
+
+  const ensureLeafletCss = () => {
+    if (leafletCssLoaded) return leafletCssLoaded;
+
+    const existingLink = document.querySelector('link[data-leaflet-styles]');
+    if (existingLink instanceof HTMLLinkElement) {
+      leafletCssLoaded = Promise.resolve();
+      return leafletCssLoaded;
+    }
+
+    leafletCssLoaded = new Promise((resolve, reject) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = leafletCssHref;
+      link.dataset.leafletStyles = 'true';
+      link.onload = () => resolve();
+      link.onerror = () => reject(new Error('Failed to load Leaflet styles.'));
+      document.head.append(link);
+    });
+
+    return leafletCssLoaded;
+  };
 
   const initializeMap = async (node) => {
     if (!(node instanceof HTMLElement) || node.dataset.mapBound === 'true') return;
@@ -52,6 +73,7 @@ const manateeBounds = [
 
     if (!Number.isFinite(lat) || !Number.isFinite(lng) || !boundsData) return;
 
+    await ensureLeafletCss();
     const { default: L } = await import('leaflet');
     const bounds = JSON.parse(boundsData);
     const map = L.map(node, {

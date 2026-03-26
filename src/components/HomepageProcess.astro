@@ -248,7 +248,25 @@ const {
         window.addEventListener('resize', requestSync);
       };
 
-      document.querySelectorAll('.process-variant-timeline').forEach((timeline) => bindTimeline(timeline));
+      const timelines = document.querySelectorAll('.process-variant-timeline');
+
+      if (!('IntersectionObserver' in window)) {
+        timelines.forEach((timeline) => bindTimeline(timeline));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          bindTimeline(entry.target);
+        });
+      }, { rootMargin: '240px 0px' });
+
+      timelines.forEach((timeline) => {
+        if (!(timeline instanceof HTMLElement)) return;
+        observer.observe(timeline);
+      });
     })();
   </script>
 

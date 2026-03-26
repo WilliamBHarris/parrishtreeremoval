@@ -246,8 +246,27 @@ const {
     const tabGroups = document.querySelectorAll('[data-services-tabs]');
     const carouselGroups = document.querySelectorAll('[data-services-carousel]');
     const accordionGroups = document.querySelectorAll('[data-services-accordion]');
+    const bindWhenNearViewport = (groups, bindGroup) => {
+      if (!('IntersectionObserver' in window)) {
+        groups.forEach((group) => bindGroup(group));
+        return;
+      }
 
-    tabGroups.forEach((group) => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          bindGroup(entry.target);
+        });
+      }, { rootMargin: '240px 0px' });
+
+      groups.forEach((group) => {
+        if (!(group instanceof HTMLElement)) return;
+        observer.observe(group);
+      });
+    };
+
+    const bindTabsGroup = (group) => {
       if (!(group instanceof HTMLElement) || group.dataset.servicesTabsBound === 'true') return;
       group.dataset.servicesTabsBound = 'true';
 
@@ -406,9 +425,9 @@ const {
         syncPanelHeight();
         syncTabBubble(activeIndex >= 0 ? activeIndex : 0);
       });
-    });
+    };
 
-    carouselGroups.forEach((group) => {
+    const bindCarouselGroup = (group) => {
       if (!(group instanceof HTMLElement) || group.dataset.servicesCarouselBound === 'true') return;
       group.dataset.servicesCarouselBound = 'true';
 
@@ -456,9 +475,9 @@ const {
       if (panels.length > 0) {
         setActivePanel(0);
       }
-    });
+    };
 
-    accordionGroups.forEach((group) => {
+    const bindAccordionGroup = (group) => {
       if (!(group instanceof HTMLElement) || group.dataset.servicesAccordionBound === 'true') return;
       group.dataset.servicesAccordionBound = 'true';
 
@@ -510,6 +529,10 @@ const {
         const initiallyOpen = items.findIndex((item) => item instanceof HTMLElement && item.dataset.open === 'true');
         setOpenItem(initiallyOpen >= 0 ? initiallyOpen : 0);
       }
-    });
+    };
+
+    bindWhenNearViewport(tabGroups, bindTabsGroup);
+    bindWhenNearViewport(carouselGroups, bindCarouselGroup);
+    bindWhenNearViewport(accordionGroups, bindAccordionGroup);
   })();
 </script>
