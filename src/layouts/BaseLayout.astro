@@ -105,19 +105,38 @@ const bodyClasses = [
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     <meta name="theme-color" content={brand.colors.themeColor} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
+    <script is:inline>
+      (() => {
+        if (!window.matchMedia('(max-width: 768px)').matches) return;
+
+        const loadFont = () => {
+          if (document.querySelector('link[data-playfair-font]')) return;
+
+          const preconnectFonts = document.createElement('link');
+          preconnectFonts.rel = 'preconnect';
+          preconnectFonts.href = 'https://fonts.googleapis.com';
+
+          const preconnectStatic = document.createElement('link');
+          preconnectStatic.rel = 'preconnect';
+          preconnectStatic.href = 'https://fonts.gstatic.com';
+          preconnectStatic.crossOrigin = 'anonymous';
+
+          const stylesheet = document.createElement('link');
+          stylesheet.rel = 'stylesheet';
+          stylesheet.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap';
+          stylesheet.dataset.playfairFont = 'true';
+
+          document.head.append(preconnectFonts, preconnectStatic, stylesheet);
+        };
+
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(loadFont, { timeout: 1200 });
+          return;
+        }
+
+        window.setTimeout(loadFont, 180);
+      })();
+    </script>
     <noscript>
       <link
         rel="stylesheet"
@@ -195,6 +214,82 @@ const bodyClasses = [
       </div>
     </section>
     {showSiteChrome && <Footer />}
-    <script type="module" src="/scripts/site-interactions.js"></script>
+    <script is:inline>
+      (() => {
+        let interactionsReady = false;
+        let interactionsPromise;
+        const interactionSelectors = [
+          '.menu-toggle',
+          '.drawer-submenu-toggle',
+          '[data-open-estimate-modal]',
+          '[data-close-estimate-modal]',
+          '[data-estimate-form]',
+        ];
+        const matchesInteractionTarget = (target) =>
+          target instanceof Element &&
+          interactionSelectors.some((selector) => target.closest(selector));
+
+        const loadInteractions = () => {
+          if (interactionsReady) return Promise.resolve();
+          interactionsPromise ??= import('/scripts/site-interactions.js').then(() => {
+            interactionsReady = true;
+          });
+          return interactionsPromise;
+        };
+
+        const warmInteractions = (event) => {
+          if (!matchesInteractionTarget(event.target)) return;
+          void loadInteractions();
+        };
+
+        document.addEventListener('pointerdown', warmInteractions, { capture: true, passive: true });
+        document.addEventListener('focusin', warmInteractions, { capture: true });
+        document.addEventListener('keydown', warmInteractions, { capture: true });
+
+        document.addEventListener('click', (event) => {
+          if (interactionsReady || !matchesInteractionTarget(event.target)) return;
+          event.preventDefault();
+          event.stopPropagation();
+
+          const target = event.target instanceof Element
+            ? event.target.closest('.menu-toggle, .drawer-submenu-toggle, [data-open-estimate-modal], [data-close-estimate-modal]')
+            : null;
+
+          void loadInteractions().then(() => {
+            if (target instanceof HTMLElement) {
+              target.click();
+            }
+          });
+        }, { capture: true });
+
+        document.addEventListener('submit', (event) => {
+          const form = event.target;
+          if (interactionsReady || !(form instanceof HTMLFormElement) || !form.matches('[data-estimate-form]')) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          const submitter = event.submitter;
+          void loadInteractions().then(() => {
+            if (submitter instanceof HTMLElement) {
+              form.requestSubmit(submitter);
+              return;
+            }
+
+            form.requestSubmit();
+          });
+        }, { capture: true });
+
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => {
+            void loadInteractions();
+          }, { timeout: 1500 });
+        } else {
+          window.setTimeout(() => {
+            void loadInteractions();
+          }, 400);
+        }
+      })();
+    </script>
   </body>
 </html>
