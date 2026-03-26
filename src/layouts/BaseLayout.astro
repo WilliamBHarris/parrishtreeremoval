@@ -1,5 +1,6 @@
 ---
 import globalCss from '../styles/global.css?raw';
+import siteInteractionsScript from '../lib/site/site-interactions.inline.js?raw';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import EstimateForm from '../components/EstimateForm.astro';
@@ -129,12 +130,21 @@ const bodyClasses = [
           document.head.append(preconnectFonts, preconnectStatic, stylesheet);
         };
 
-        if ('requestIdleCallback' in window) {
-          window.requestIdleCallback(loadFont, { timeout: 1200 });
+        const scheduleFontLoad = () => {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(loadFont, { timeout: 1200 });
+            return;
+          }
+
+          window.setTimeout(loadFont, 300);
+        };
+
+        if (document.readyState === 'complete') {
+          scheduleFontLoad();
           return;
         }
 
-        window.setTimeout(loadFont, 180);
+        window.addEventListener('load', scheduleFontLoad, { once: true });
       })();
     </script>
     <noscript>
@@ -214,82 +224,6 @@ const bodyClasses = [
       </div>
     </section>
     {showSiteChrome && <Footer />}
-    <script is:inline>
-      (() => {
-        let interactionsReady = false;
-        let interactionsPromise;
-        const interactionSelectors = [
-          '.menu-toggle',
-          '.drawer-submenu-toggle',
-          '[data-open-estimate-modal]',
-          '[data-close-estimate-modal]',
-          '[data-estimate-form]',
-        ];
-        const matchesInteractionTarget = (target) =>
-          target instanceof Element &&
-          interactionSelectors.some((selector) => target.closest(selector));
-
-        const loadInteractions = () => {
-          if (interactionsReady) return Promise.resolve();
-          interactionsPromise ??= import('/scripts/site-interactions.js').then(() => {
-            interactionsReady = true;
-          });
-          return interactionsPromise;
-        };
-
-        const warmInteractions = (event) => {
-          if (!matchesInteractionTarget(event.target)) return;
-          void loadInteractions();
-        };
-
-        document.addEventListener('pointerdown', warmInteractions, { capture: true, passive: true });
-        document.addEventListener('focusin', warmInteractions, { capture: true });
-        document.addEventListener('keydown', warmInteractions, { capture: true });
-
-        document.addEventListener('click', (event) => {
-          if (interactionsReady || !matchesInteractionTarget(event.target)) return;
-          event.preventDefault();
-          event.stopPropagation();
-
-          const target = event.target instanceof Element
-            ? event.target.closest('.menu-toggle, .drawer-submenu-toggle, [data-open-estimate-modal], [data-close-estimate-modal]')
-            : null;
-
-          void loadInteractions().then(() => {
-            if (target instanceof HTMLElement) {
-              target.click();
-            }
-          });
-        }, { capture: true });
-
-        document.addEventListener('submit', (event) => {
-          const form = event.target;
-          if (interactionsReady || !(form instanceof HTMLFormElement) || !form.matches('[data-estimate-form]')) return;
-
-          event.preventDefault();
-          event.stopPropagation();
-
-          const submitter = event.submitter;
-          void loadInteractions().then(() => {
-            if (submitter instanceof HTMLElement) {
-              form.requestSubmit(submitter);
-              return;
-            }
-
-            form.requestSubmit();
-          });
-        }, { capture: true });
-
-        if ('requestIdleCallback' in window) {
-          window.requestIdleCallback(() => {
-            void loadInteractions();
-          }, { timeout: 1500 });
-        } else {
-          window.setTimeout(() => {
-            void loadInteractions();
-          }, 400);
-        }
-      })();
-    </script>
+    <script is:inline set:html={siteInteractionsScript}></script>
   </body>
 </html>
