@@ -2,8 +2,10 @@
 import globalCss from '../styles/global.css?raw';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import EstimateForm from '../components/EstimateForm.astro';
 import { client } from '../data/client';
 import { brand } from '../data/brand';
+import { pageContent } from '../data/pages';
 
 interface Props {
   title?: string;
@@ -34,6 +36,7 @@ const siteUrl = Astro.site?.toString() ?? `https://${client.websiteDomain}`;
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const ogImageUrl = new URL(ogImage, siteUrl).toString();
 const socialProfileLinks = Object.values(client.social.profiles).filter((value): value is string => Boolean(value));
+const modalContent = pageContent.home.modal;
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
@@ -102,6 +105,12 @@ const bodyClasses = [
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     <meta name="theme-color" content={brand.colors.themeColor} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap"
+    />
     {criticalImage && (
       <link
         rel="preload"
@@ -141,6 +150,39 @@ const bodyClasses = [
     <main id="main-content">
       <slot />
     </main>
+    <section
+      id="estimate-modal"
+      class="estimate-modal"
+      data-estimate-modal
+      aria-hidden="true"
+      hidden
+      inert
+    >
+      <div class="estimate-modal-scrim" data-close-estimate-modal></div>
+      <div
+        class="estimate-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="estimate-modal-title"
+      >
+        <button
+          type="button"
+          class="estimate-modal-close"
+          aria-label="Close estimate form"
+          data-close-estimate-modal
+        >
+          Close
+        </button>
+        <EstimateForm
+          heading={modalContent.heading}
+          intro={modalContent.intro}
+          buttonLabel={modalContent.buttonLabel}
+          headingId="estimate-modal-title"
+        />
+      </div>
+    </section>
     {showSiteChrome && <Footer />}
+    <script type="module" src="/scripts/estimate-modal.js"></script>
+    <script type="module" src="/scripts/estimate-form.js"></script>
   </body>
 </html>

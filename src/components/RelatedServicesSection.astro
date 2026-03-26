@@ -1,5 +1,6 @@
 ---
 import PageSection from './PageSection.astro';
+import { templateConfig } from '../data/client-questionnaire';
 import type { RelatedServicesVariant, SectionTone } from '../data/client-questionnaire';
 
 interface ServiceLink {
@@ -21,7 +22,7 @@ const {
   links,
   title = 'Services',
   ariaLabel = 'Related service links',
-  variant = 'stacked-buttons',
+  variant = templateConfig.presets.relatedServices,
   surfaceTone = 'base',
 } = Astro.props;
 ---
@@ -38,6 +39,7 @@ const {
     role="navigation"
     aria-label={ariaLabel}
     data-block="links"
+    data-related-services-variant={variant}
   >
     {links.map((service) => (
       <a href={service.href} class="subpage-service-button" aria-label={`Go to ${service.label}`}>

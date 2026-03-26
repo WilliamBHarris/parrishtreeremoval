@@ -8,6 +8,8 @@ interface Props {
 
 const supportedZips = [...MANATEE_COUNTY_SERVICE_AREA_ZIPS];
 const { inputId = 'service-area-zip-input' } = Astro.props;
+const serviceAreaLookupCopy = client.sharedContent.serviceAreaLookup;
+const messageId = `${inputId}-message`;
 ---
 
 <div
@@ -16,12 +18,12 @@ const { inputId = 'service-area-zip-input' } = Astro.props;
   data-supported-zips={supportedZips.join(',')}
 >
   <div class="service-area-zip-copy">
-    <h3>Are We In Your Area?</h3>
-    <p>Enter your zip code.</p>
+    <h3>{serviceAreaLookupCopy.heading}</h3>
+    <p>{serviceAreaLookupCopy.intro}</p>
   </div>
 
   <form class="service-area-zip-form" data-zip-form novalidate>
-    <label class="sr-only" for={inputId}>Enter your ZIP code</label>
+    <label class="sr-only" for={inputId}>{serviceAreaLookupCopy.inputLabel}</label>
     <input
       id={inputId}
       name="zip"
@@ -30,14 +32,17 @@ const { inputId = 'service-area-zip-input' } = Astro.props;
       autocomplete="postal-code"
       pattern="[0-9]{5}"
       maxlength="5"
-      placeholder="ZIP code"
+      placeholder={serviceAreaLookupCopy.inputPlaceholder}
       class="service-area-zip-input"
       data-zip-input
+      aria-describedby={messageId}
+      enterkeyhint="go"
+      required
     />
-    <button type="submit" class="service-area-zip-button" data-zip-submit>Submit</button>
+    <button type="submit" class="service-area-zip-button" data-zip-submit>{serviceAreaLookupCopy.submitButtonLabel}</button>
   </form>
 
-  <p class="service-area-zip-message" data-zip-message role="status" aria-live="polite" hidden></p>
+  <p id={messageId} class="service-area-zip-message" data-zip-message role="status" aria-live="polite" hidden></p>
 
   <div class="service-area-zip-actions" data-zip-actions hidden>
     <a
@@ -56,12 +61,19 @@ const { inputId = 'service-area-zip-input' } = Astro.props;
       data-estimate-modal-fallback="/contact"
       aria-controls="estimate-modal"
     >
-      Request Estimate
+      {serviceAreaLookupCopy.estimateButtonLabel}
     </button>
   </div>
 </div>
 
-<script is:inline>
+<script
+  is:inline
+  define:vars={{
+    invalidZipMessage: serviceAreaLookupCopy.invalidZipMessage,
+    inAreaMessage: serviceAreaLookupCopy.inAreaMessage,
+    outOfAreaMessage: serviceAreaLookupCopy.outOfAreaMessage,
+  }}
+>
   (() => {
     if (window.__serviceAreaLookupBound) return;
     window.__serviceAreaLookupBound = true;
@@ -94,21 +106,21 @@ const { inputId = 'service-area-zip-input' } = Astro.props;
         message.classList.remove('is-valid', 'is-invalid');
 
         if (!/^\d{5}$/.test(zip)) {
-          message.textContent = 'Enter a valid 5-digit ZIP code.';
+          message.textContent = invalidZipMessage;
           message.classList.add('is-invalid');
           message.hidden = false;
           return;
         }
 
         if (supported.has(zip)) {
-          message.textContent = "We're in your area.";
+          message.textContent = inAreaMessage;
           message.classList.add('is-valid');
           message.hidden = false;
           actions.hidden = false;
           return;
         }
 
-        message.textContent = "Sorry, we aren't out there yet.";
+        message.textContent = outOfAreaMessage;
         message.classList.add('is-invalid');
         message.hidden = false;
       });

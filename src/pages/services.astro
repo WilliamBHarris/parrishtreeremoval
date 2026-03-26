@@ -11,13 +11,16 @@ import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { templateConfig } from '../data/client-questionnaire';
 import { serviceCardList } from '../data/services';
+import { getHeroCriticalImage } from '../lib/site/critical-image';
 
 const servicesPage = pageContent.services;
+const criticalImage = await getHeroCriticalImage();
 ---
 
 <BaseLayout
   title={servicesPage.title}
   description={servicesPage.description}
+  criticalImage={criticalImage}
 >
   <HeroSection
     pageId="services"

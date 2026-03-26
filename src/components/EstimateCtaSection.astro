@@ -1,5 +1,6 @@
 ---
 import PageSection from './PageSection.astro';
+import { templateConfig } from '../data/client-questionnaire';
 import type { EstimateCtaVariant, SectionTone } from '../data/client-questionnaire';
 
 interface Props {
@@ -20,7 +21,7 @@ const {
   heading,
   intro,
   buttonLabel,
-  variant = 'single-panel',
+  variant = templateConfig.presets.estimateCta,
   surfaceTone = 'olive',
 } = Astro.props;
 ---

@@ -1,6 +1,7 @@
 ---
 import PageSection from './PageSection.astro';
 import EstimateForm from './EstimateForm.astro';
+import { client } from '../data/client';
 import type { SectionTone } from '../data/client-questionnaire';
 
 interface Props {
@@ -34,7 +35,7 @@ const {
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
     <p class="section-lead section-desktop-lead clone-intro">
-      Share a few job details and the next step stays simple.
+      {client.sharedContent.estimateSectionLead}
     </p>
   </div>
   <div data-block="form">

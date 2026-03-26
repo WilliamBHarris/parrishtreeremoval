@@ -126,18 +126,3 @@ const detailsId = `${instanceBaseId}-details`;
     <p id={statusId} class="form-status" data-form-status aria-live="polite" role="status"></p>
   </form>
 </div>
-
-<script is:inline>
-  (() => {
-    if (window.__estimateFormLoaderBound) return;
-    window.__estimateFormLoaderBound = true;
-
-    let loaded;
-    const loadEstimateForm = () => loaded ??= import('/scripts/estimate-form.js');
-    document.addEventListener('focusin', (event) => {
-      if (event.target instanceof Element && event.target.closest('[data-estimate-form]')) {
-        loadEstimateForm();
-      }
-    });
-  })();
-</script>

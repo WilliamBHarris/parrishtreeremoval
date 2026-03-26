@@ -42,6 +42,22 @@ const desktopIntroBySection: Record<string, string> = {
         {items.map((item) => <li>{typeof item === 'string' ? item : item.description}</li>)}
       </ul>
     </div>
+  ) : layout === 'stack' ? (
+    <div class="page-card when-needed-card" data-block="content">
+      <ul class="list-copy">
+        {items.map((item) => (
+          <li>
+            {typeof item === 'string' ? (
+              item
+            ) : (
+              <>
+                <strong class="list-copy-item-title">{item.title}:</strong> {item.description}
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   ) : (
     <div class:list={['stack-grid', layout === 'grid' && 'stack-grid-two']} data-block="cards">
       {items.map((item) => (

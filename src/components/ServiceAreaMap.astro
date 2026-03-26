@@ -35,16 +35,14 @@ const manateeBounds = [
     />
   </noscript>
   <figcaption class="service-area-map-attribution">
-    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap contributors</a>
+    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>
   </figcaption>
 </figure>
 
 <script>
-  import L from 'leaflet';
-
   const mapNodes = document.querySelectorAll('[data-service-area-map]');
 
-  mapNodes.forEach((node) => {
+  const initializeMap = async (node) => {
     if (!(node instanceof HTMLElement) || node.dataset.mapBound === 'true') return;
     node.dataset.mapBound = 'true';
 
@@ -54,6 +52,7 @@ const manateeBounds = [
 
     if (!Number.isFinite(lat) || !Number.isFinite(lng) || !boundsData) return;
 
+    const { default: L } = await import('leaflet');
     const bounds = JSON.parse(boundsData);
     const map = L.map(node, {
       zoomControl: false,
@@ -98,5 +97,27 @@ const manateeBounds = [
     });
 
     window.setTimeout(() => map.invalidateSize(), 0);
+  };
+
+  const observer =
+    'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            observer.unobserve(entry.target);
+            void initializeMap(entry.target);
+          });
+        }, { rootMargin: '240px 0px' })
+      : null;
+
+  mapNodes.forEach((node) => {
+    if (!(node instanceof HTMLElement)) return;
+
+    if (observer) {
+      observer.observe(node);
+      return;
+    }
+
+    void initializeMap(node);
   });
 </script>

@@ -13,7 +13,7 @@
  *    intentionally want to override the selected preset for one section.
  * 4. Update page copy, SEO, FAQs, and section order after the preset is chosen.
  *
- * Preset A preserves the current Parrish baseline.
+ * Preset A preserves the locked baseline output.
  */
 
 import type { ClientIntake } from '../lib/template/intake-types';
@@ -27,7 +27,7 @@ export const clientIntakeGuide = {
     'Only change a section style label when you intentionally want that section to differ from the preset bundle.',
   ],
   presetGuide: {
-    'Preset A': presetIntentNotes['preset-a-parrish-baseline'],
+    'Preset A': presetIntentNotes['preset-a-baseline'],
     'Preset B': presetIntentNotes['preset-b-premium-modern'],
     'Preset C': presetIntentNotes['preset-c-local-family-owned'],
     'Preset D': presetIntentNotes['preset-d-storm-response-emergency'],
@@ -101,7 +101,7 @@ export const clientIntake = {
   // would normally swap during cloning.
   brandAssets: {
     identityMark: 'PTR',
-    headerLogo: '/images/ptr-header-logo.svg',
+    headerLogo: '../assets/parrish-logo.png',
     heroImage: '../assets/hero-image.png',
     ogImage: '/images/parrish-service-area-map.svg',
     serviceAreaMap: '/images/parrish-service-area-map.svg',
@@ -156,21 +156,21 @@ export const clientIntake = {
   // to control the default presentation. Change them only when you want an
   // intentional override for a shared section style.
   sitewideChoices: {
-    trustBadgesStyle: 'Current Parrish trust badges',
-    headerStyle: 'Current Parrish header',
-    headingTypographyStyle: 'Clean sans headings',
-    bodyTypographyStyle: 'Clean sans body',
-    sectionTitleStyle: 'Current Parrish baseline',
-    colorTemplateStyle: 'Current Parrish palette',
-    cardSurfaceStyle: 'Standard filled cards',
-    cardBorderStyle: 'Current Parrish card borders',
-    buttonBorderStyle: 'Current Parrish buttons',
-    sectionFrameStyle: 'Current Parrish section framing',
-    faqStyle: 'Card-based FAQ',
-    processStyle: 'Standard stacked process',
-    serviceAreaStyle: 'Standard map section',
-    estimateSectionStyle: 'Standard estimate section',
-    relatedServicesStyle: 'Standard service cards',
+    trustBadgesStyle: 'Variant A trust badges',
+    headerStyle: 'Variant A header',
+    headingTypographyStyle: 'Variant A headings',
+    bodyTypographyStyle: 'Variant A body',
+    sectionTitleStyle: 'Variant A section titles',
+    colorTemplateStyle: 'Variant A palette',
+    cardSurfaceStyle: 'Variant A filled cards',
+    cardBorderStyle: 'Variant A card borders',
+    buttonBorderStyle: 'Variant A buttons',
+    sectionFrameStyle: 'Variant A section framing',
+    faqStyle: 'Variant A FAQ',
+    processStyle: 'Variant A stacked process',
+    serviceAreaStyle: 'Variant A map section',
+    estimateSectionStyle: 'Variant A estimate section',
+    relatedServicesStyle: 'Variant A related services',
   },
 
   // STEP 5B: Shared content blocks that are reused by real pages.
@@ -182,6 +182,19 @@ export const clientIntake = {
       'Residential tree work',
       'Clean project follow-through',
     ],
+    footerCredit: '© Will Made It.',
+    estimateSectionLead: 'Share a few job details and the next step stays simple.',
+    serviceAreaLookup: {
+      heading: 'Are We In Your Area?',
+      intro: 'Enter your zip code.',
+      inputLabel: 'Enter your ZIP code',
+      inputPlaceholder: 'ZIP code',
+      submitButtonLabel: 'Submit',
+      estimateButtonLabel: 'Request Estimate',
+      invalidZipMessage: 'Enter a valid 5-digit ZIP code.',
+      inAreaMessage: "We're in your area.",
+      outOfAreaMessage: "Sorry, we aren't out there yet.",
+    },
     homepageModal: {
       heading: 'Tell us about your tree service project',
       intro:
@@ -253,10 +266,10 @@ export const clientIntake = {
     },
     hero: {
       heading: 'Expert Tree Services',
-      supportingText: '',
+      supportingText: 'Right when you need it.',
       primaryButtonLabel: 'Free Estimate',
       secondaryButtonLabel: 'Call Now',
-      backgroundStyle: 'Current Parrish hero',
+      backgroundStyle: 'Variant A hero',
     },
     sectionOrder: ['services', 'whyChooseUs', 'process', 'estimate', 'faq', 'serviceArea'],
     sections: {
@@ -265,35 +278,35 @@ export const clientIntake = {
       // homepage/services override such as tabbed services.
       services: {
         enabled: true,
-        displayStyle: 'Standard service cards',
+        displayStyle: 'Variant A service cards',
         intro:
           'We provide dependable tree services tailored to the needs of local properties.',
         featuredServices: ['Tree Removal', 'Tree Trimming', 'Stump Grinding', 'Storm Cleanup'],
       },
       whyChooseUs: {
         enabled: true,
-        displayStyle: 'Current Parrish why choose us',
+        displayStyle: 'Variant A why choose us',
         intro:
           'Homeowners choose us for responsive service, careful work, and clear communication.',
       },
       // Leave this on "Standard stacked process" to follow the selected preset.
       process: {
         enabled: true,
-        displayStyle: 'Standard stacked process',
+        displayStyle: 'Variant A stacked process',
         intro:
           'Our process keeps your project straightforward from estimate to cleanup.',
       },
       // Leave this on "Standard map section" to follow the selected preset.
       serviceArea: {
         enabled: true,
-        displayStyle: 'Standard map section',
+        displayStyle: 'Variant A map section',
         intro:
           'We proudly serve Parrish and surrounding communities with prompt scheduling and dependable service.',
       },
       // Leave this on "Card-based FAQ" to follow the selected preset.
       faq: {
         enabled: true,
-        displayStyle: 'Card-based FAQ',
+        displayStyle: 'Variant A FAQ',
         items: [
           {
             question: 'Do you provide free estimates?',
@@ -311,7 +324,7 @@ export const clientIntake = {
       },
       estimate: {
         enabled: true,
-        displayStyle: 'Standard estimate section',
+        displayStyle: 'Variant A estimate section',
         heading: 'Need Help With A Tree Project?',
         supportingText:
           'Tell us what is going on at your property and we will follow up about tree removal, trimming, stump grinding, or storm cleanup.',
@@ -330,13 +343,13 @@ export const clientIntake = {
       hero: {
         heading: 'Tree Services',
         supportingText:
-          'Find the right service for your property, from removals and trimming to cleanup and stump grinding.',
+          'Find the right tree service for your property.',
       },
       sectionOrder: ['servicesOverview', 'compareServices', 'whyChooseUs', 'faq', 'estimate', 'serviceArea'],
       sections: {
         servicesOverview: {
           enabled: true,
-          displayStyle: 'Standard service cards',
+          displayStyle: 'Variant A service cards',
           intro: 'Choose the service that best fits your property needs and project goals.',
         },
         compareServices: {
@@ -346,24 +359,24 @@ export const clientIntake = {
         },
         whyChooseUs: {
           enabled: true,
-          displayStyle: 'Current Parrish why choose us',
+          displayStyle: 'Variant A why choose us',
           intro:
             'We focus on responsive communication, careful work, and a smooth customer experience.',
         },
         faq: {
           enabled: true,
-          displayStyle: 'Card-based FAQ',
+          displayStyle: 'Variant A FAQ',
           items: [],
         },
         estimate: {
           enabled: true,
-          displayStyle: 'Standard estimate section',
+          displayStyle: 'Variant A estimate section',
           heading: 'Request a Free Estimate',
           supportingText: 'Let us know what service you need and we’ll help you get started.',
         },
         serviceArea: {
           enabled: true,
-          displayStyle: 'Standard map section',
+          displayStyle: 'Variant A map section',
           intro: 'Serving Parrish and nearby communities with dependable scheduling and service.',
         },
       },
@@ -379,6 +392,7 @@ export const clientIntake = {
         'Send the property address, ZIP code, and a short description of the tree that needs attention.',
         'Add photos if available so height, access, and nearby structures are easier to review.',
         'We follow up about the scope of the work, any related services, and the best next step toward scheduling.',
+        'Once the scope is clear, the job can move forward into quoting and scheduling.',
       ],
       relatedServiceLinks: [
         { href: '/tree-trimming', label: 'Tree Trimming in Parrish, FL' },
@@ -419,28 +433,28 @@ export const clientIntake = {
         },
         whyChooseUs: {
           enabled: true,
-          displayStyle: 'Current Parrish why choose us',
+          displayStyle: 'Variant A why choose us',
           intro:
             'We keep tree removal straightforward with clear communication, careful work, and respect for your property.',
         },
         process: {
           enabled: true,
-          displayStyle: 'Standard stacked process',
+          displayStyle: 'Variant A stacked process',
           intro: 'Our removal process is built to keep your project safe, efficient, and easy to understand.',
         },
         serviceArea: {
           enabled: true,
-          displayStyle: 'Standard map section',
+          displayStyle: 'Variant A map section',
           intro: 'We provide tree removal services in Parrish and surrounding areas.',
         },
         relatedServices: {
           enabled: true,
-          displayStyle: 'Standard service cards',
+          displayStyle: 'Variant A related services',
           items: ['Tree Trimming', 'Stump Grinding', 'Storm Cleanup'],
         },
         faq: {
           enabled: true,
-          displayStyle: 'Card-based FAQ',
+          displayStyle: 'Variant A FAQ',
           items: [
             {
               question: 'What details help with a tree removal estimate?',
@@ -461,7 +475,7 @@ export const clientIntake = {
         },
         estimate: {
           enabled: true,
-          displayStyle: 'Standard estimate section',
+          displayStyle: 'Variant A estimate section',
           heading: 'Get a Tree Removal Estimate',
           supportingText:
             'Tell us about the tree and property conditions, and we’ll help you move forward.',
@@ -479,6 +493,7 @@ export const clientIntake = {
         'Submit the property details and explain what branches or areas need the most attention.',
         'Include photos or notes about roof edges, lanes of access, and the number of trees involved.',
         'We follow up about the scope of the trimming work and the best next step for the property.',
+        'Once the scope is clear, the job can move forward into quoting and scheduling.',
       ],
       relatedServiceLinks: [
         { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
@@ -511,31 +526,35 @@ export const clientIntake = {
         whatsIncluded: {
           enabled: true,
           displayStyle: 'Standard included-items stack',
-          items: [],
+          items: [
+            { title: 'Canopy review', text: 'We look at the tree shape, branch spread, and the areas that need attention before trimming begins.' },
+            { title: 'Clearance-focused trimming', text: 'We plan the work around rooflines, driveways, walkways, and the parts of the canopy that need better clearance.' },
+            { title: 'Cleanup of cut material', text: 'We remove trimmed limbs and leave the area cleaner and easier to maintain when the work is finished.' },
+          ],
         },
         whyChooseUs: {
           enabled: true,
-          displayStyle: 'Current Parrish why choose us',
+          displayStyle: 'Variant A why choose us',
           intro: 'We approach trimming with careful planning and a clean, professional finish.',
         },
         process: {
           enabled: true,
-          displayStyle: 'Standard stacked process',
+          displayStyle: 'Variant A stacked process',
           intro: 'We make tree trimming simple from the first estimate to final cleanup.',
         },
         serviceArea: {
           enabled: true,
-          displayStyle: 'Standard map section',
+          displayStyle: 'Variant A map section',
           intro: 'We offer tree trimming services in Parrish and surrounding communities.',
         },
         relatedServices: {
           enabled: true,
-          displayStyle: 'Standard service cards',
+          displayStyle: 'Variant A related services',
           items: ['Tree Removal', 'Stump Grinding', 'Storm Cleanup'],
         },
         faq: {
           enabled: true,
-          displayStyle: 'Card-based FAQ',
+          displayStyle: 'Variant A FAQ',
           items: [
             {
               question: 'What should I mention in a trimming request?',
@@ -556,7 +575,7 @@ export const clientIntake = {
         },
         estimate: {
           enabled: true,
-          displayStyle: 'Standard estimate section',
+          displayStyle: 'Variant A estimate section',
           heading: 'Get a Tree Trimming Estimate',
           supportingText: 'Let us know what needs trimming and we’ll follow up with the next steps.',
         },
@@ -573,6 +592,7 @@ export const clientIntake = {
         'Send the stump count, size estimate, and the property ZIP code.',
         'Include notes about tight access, fencing, irrigation, or patios near the work area.',
         'We follow up about the scope of the work and whether stump grinding should be paired with another service.',
+        'Once the scope is clear, the job can move forward into quoting and scheduling.',
       ],
       relatedServiceLinks: [
         { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
@@ -605,32 +625,36 @@ export const clientIntake = {
         whatsIncluded: {
           enabled: true,
           displayStyle: 'Standard included-items stack',
-          items: [],
+          items: [
+            { title: 'Stump and access review', text: 'We check stump size, count, and surrounding access so the work area is understood before grinding starts.' },
+            { title: 'Grinding of the remaining stump', text: 'We grind down the visible stump so the area is more usable and the leftover base is no longer the main obstacle.' },
+            { title: 'Surface cleanup', text: 'We clean up the work area so the space feels more finished and ready for whatever comes next.' },
+          ],
         },
         whyChooseUs: {
           enabled: true,
-          displayStyle: 'Current Parrish why choose us',
+          displayStyle: 'Variant A why choose us',
           intro:
             'We help homeowners finish the job cleanly so their property looks more complete and usable.',
         },
         process: {
           enabled: true,
-          displayStyle: 'Standard stacked process',
+          displayStyle: 'Variant A stacked process',
           intro: 'Our process keeps stump grinding straightforward and easy to schedule.',
         },
         serviceArea: {
           enabled: true,
-          displayStyle: 'Standard map section',
+          displayStyle: 'Variant A map section',
           intro: 'We provide stump grinding services in Parrish and nearby areas.',
         },
         relatedServices: {
           enabled: true,
-          displayStyle: 'Standard service cards',
+          displayStyle: 'Variant A related services',
           items: ['Tree Removal', 'Tree Trimming', 'Storm Cleanup'],
         },
         faq: {
           enabled: true,
-          displayStyle: 'Card-based FAQ',
+          displayStyle: 'Variant A FAQ',
           items: [
             {
               question: 'What details help with a stump grinding estimate?',
@@ -651,7 +675,7 @@ export const clientIntake = {
         },
         estimate: {
           enabled: true,
-          displayStyle: 'Standard estimate section',
+          displayStyle: 'Variant A estimate section',
           heading: 'Get a Stump Grinding Estimate',
           supportingText: 'Tell us where the stump is located and what you want to accomplish.',
         },
@@ -668,6 +692,7 @@ export const clientIntake = {
         'Submit the address, service area details, and a quick summary of the storm damage.',
         'Add photos if it is safe to do so, especially if access is blocked or a structure is involved.',
         'We follow up on the immediate next step and whether another tree service should be included.',
+        'Once the scope is clear, the job can move forward into quoting and scheduling.',
       ],
       relatedServiceLinks: [
         { href: '/tree-removal', label: 'Tree Removal in Parrish, FL' },
@@ -700,32 +725,36 @@ export const clientIntake = {
         whatsIncluded: {
           enabled: true,
           displayStyle: 'Standard included-items stack',
-          items: [],
+          items: [
+            { title: 'Damage review', text: 'We assess the fallen limbs, broken trees, blocked areas, and any urgent conditions affecting the property.' },
+            { title: 'Storm debris cleanup planning', text: 'We determine the safest next step for removing debris, clearing access, and dealing with damaged tree material.' },
+            { title: 'Work-area cleanup', text: 'We clear the affected area so the property feels safer, more open, and easier to move through after the storm.' },
+          ],
         },
         whyChooseUs: {
           enabled: true,
-          displayStyle: 'Current Parrish why choose us',
+          displayStyle: 'Variant A why choose us',
           intro:
             'We know urgent jobs need quick response, clear communication, and dependable follow-through.',
         },
         process: {
           enabled: true,
-          displayStyle: 'Standard stacked process',
+          displayStyle: 'Variant A stacked process',
           intro: 'We help move emergency jobs from urgent first contact to clear cleanup planning.',
         },
         serviceArea: {
           enabled: true,
-          displayStyle: 'Standard map section',
+          displayStyle: 'Variant A map section',
           intro: 'We provide emergency tree service in Parrish and nearby communities.',
         },
         relatedServices: {
           enabled: true,
-          displayStyle: 'Standard service cards',
+          displayStyle: 'Variant A related services',
           items: ['Tree Removal', 'Tree Trimming', 'Stump Grinding'],
         },
         faq: {
           enabled: true,
-          displayStyle: 'Card-based FAQ',
+          displayStyle: 'Variant A FAQ',
           items: [
             {
               question: 'What should I report after a storm?',
@@ -746,7 +775,7 @@ export const clientIntake = {
         },
         estimate: {
           enabled: true,
-          displayStyle: 'Standard estimate section',
+          displayStyle: 'Variant A estimate section',
           heading: 'Request Emergency Tree Service',
           supportingText: 'Share the urgent issue and we’ll help you take the next step quickly.',
         },
@@ -761,9 +790,8 @@ export const clientIntake = {
           'Learn more about Parrish Tree Removal and the values behind our local tree service.',
       },
       hero: {
-        heading: 'About Parrish Tree Removal',
-        supportingText:
-          'A local tree service focused on reliable communication, careful work, and a professional customer experience.',
+        heading: 'About',
+        supportingText: 'Reliable local tree service.',
       },
       sectionOrder: ['whatHomeownersNeed', 'faq', 'estimate'],
       sections: {
@@ -804,8 +832,8 @@ export const clientIntake = {
           'Contact Parrish Tree Removal for estimates, service questions, and scheduling in Parrish, FL.',
       },
       hero: {
-        heading: 'Contact Parrish Tree Removal',
-        supportingText: 'Reach out for estimates, service questions, and project planning.',
+        heading: 'Contact',
+        supportingText: 'Get in touch for service and estimates.',
       },
       sectionOrder: ['beforeYouSubmit', 'estimate', 'serviceArea'],
       sections: {

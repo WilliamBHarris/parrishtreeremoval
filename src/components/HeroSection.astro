@@ -2,9 +2,11 @@
 import { Image } from 'astro:assets';
 import HeroOutlineCopy from './HeroOutlineCopy.astro';
 import HeroTitleWords from './HeroTitleWords.astro';
-import heroImage from '../assets/hero-image.png';
+import { brand } from '../data/brand';
+import { templateConfig } from '../data/client-questionnaire';
 import { heroImageTransform } from '../data/heroMedia';
 import type { HeroVariant } from '../data/client-questionnaire';
+import { resolveConfiguredImageAsset } from '../lib/template/runtime-assets';
 
 interface HeroAction {
   kind: 'modal' | 'link' | 'anchor' | 'none';
@@ -29,7 +31,7 @@ const {
   titleSecondary = '',
   intro,
   outlineWords,
-  variant = 'split-image',
+  variant = templateConfig.presets.hero,
   cta = { kind: 'none', label: '' },
 } = Astro.props;
 
@@ -42,6 +44,7 @@ const heroClassName = [
 ]
   .filter(Boolean)
   .join(' ');
+const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
 ---
 
 <section class={heroClassName} data-page={pageId} data-section="hero" data-hero-variant={variant}>
@@ -60,8 +63,8 @@ const heroClassName = [
           quality={heroImageTransform.quality}
           widths={heroImageTransform.widths}
           sizes={heroImageTransform.sizes}
-          priority={pageId === 'home'}
-          fetchpriority={pageId === 'home' ? 'high' : undefined}
+          priority={true}
+          fetchpriority="high"
           loading="eager"
           decoding="async"
         />

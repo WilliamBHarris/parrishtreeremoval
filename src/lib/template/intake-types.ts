@@ -7,20 +7,20 @@
  * Important setup rule:
  * the selected preset provides the default live section variants. The intake's
  * human-facing display labels act as intentional overrides when they are
- * changed away from the Parrish baseline labels.
+ * changed away from the Variant A baseline labels.
  */
 
 export type SectionTone = 'base' | 'warm' | 'cool' | 'olive';
 
 export type SiteStylePresetId =
-  | 'preset-a-parrish-baseline'
+  | 'preset-a-baseline'
   | 'preset-b-premium-modern'
   | 'preset-c-local-family-owned'
   | 'preset-d-storm-response-emergency'
   | 'preset-e-upscale-residential';
 
 export type HeaderVariant =
-  | 'parrish-baseline'
+  | 'baseline-a'
   | 'clean-centered'
   | 'utility-split'
   | 'premium-compact'
@@ -35,14 +35,14 @@ export type ProcessVariant = 'stacked-steps' | 'numbered-cards' | 'timeline';
 export type FaqVariant = 'clean-list' | 'card-grid' | 'accordion';
 export type ServiceAreaVariant = 'map-card' | 'text-first' | 'compact-map';
 export type ColorTemplatePreset =
-  | 'parrish-classic'
+  | 'baseline-a'
   | 'evergreen-premium'
   | 'sunlit-local'
   | 'storm-contrast'
   | 'estate-mineral';
-export type CardSurfacePreset = 'parrish-filled' | 'soft-tint' | 'transparent-surface';
+export type CardSurfacePreset = 'baseline-a' | 'soft-tint' | 'transparent-surface';
 export type CardBorderStylePreset =
-  | 'parrish-baseline'
+  | 'baseline-a'
   | 'none'
   | 'soft-hairline'
   | 'medium-solid'
@@ -52,7 +52,7 @@ export type CardBorderStylePreset =
   | 'accent-edge'
   | 'top-border-accent';
 export type ButtonBorderStylePreset =
-  | 'parrish-baseline'
+  | 'baseline-a'
   | 'none'
   | 'subtle-outline'
   | 'bold-outline'
@@ -62,7 +62,7 @@ export type ButtonBorderStylePreset =
   | 'underline-button'
   | 'framed-cta';
 export type SectionFrameStylePreset =
-  | 'parrish-baseline'
+  | 'baseline-a'
   | 'none'
   | 'subtle-top-rule'
   | 'subtle-bottom-rule'
@@ -72,19 +72,19 @@ export type SectionFrameStylePreset =
   | 'offset-frame'
   | 'side-rails';
 export type HeadingTypographyPreset =
-  | 'parrish-rounded'
+  | 'baseline-a'
   | 'premium-editorial'
   | 'friendly-rounded'
   | 'strong-utility'
   | 'refined-modern';
 export type BodyTypographyPreset =
-  | 'parrish-sans'
+  | 'baseline-a'
   | 'premium-editorial'
   | 'friendly-readable'
   | 'strong-utility'
   | 'refined-modern';
 export type SectionTitleStylePreset =
-  | 'parrish-baseline'
+  | 'baseline-a'
   | 'minimal-stacked'
   | 'underline-accent'
   | 'side-rule'
@@ -104,40 +104,40 @@ export type WritingToneLabel =
   | 'Friendly and reassuring'
   | 'Direct and practical';
 export type HeadingTypographyLabel =
-  | 'Clean sans headings'
+  | 'Variant A headings'
   | 'Premium editorial headings'
   | 'Friendly rounded headings'
   | 'Strong utility headings'
   | 'Refined modern headings';
 export type BodyTypographyLabel =
-  | 'Clean sans body'
+  | 'Variant A body'
   | 'Premium editorial body'
   | 'Friendly readable body'
   | 'Strong utility body'
   | 'Refined modern body';
 export type SectionTitleStyleLabel =
-  | 'Current Parrish baseline'
+  | 'Variant A section titles'
   | 'Minimal stacked'
   | 'Underline accent'
   | 'Side rule'
   | 'Centered divider'
   | 'Boxed label';
 export type HeaderStyleLabel =
-  | 'Current Parrish header'
+  | 'Variant A header'
   | 'Clean centered header'
   | 'Utility split header'
   | 'Premium compact header'
   | 'Strong local CTA header'
   | 'Minimal overlay header';
 export type ColorTemplateLabel =
-  | 'Current Parrish palette'
+  | 'Variant A palette'
   | 'Evergreen premium palette'
   | 'Warm local palette'
   | 'Storm high-contrast palette'
   | 'Estate mineral palette';
-export type CardSurfaceLabel = 'Standard filled cards' | 'Subtle soft cards' | 'Transparent card surfaces';
+export type CardSurfaceLabel = 'Variant A filled cards' | 'Subtle soft cards' | 'Transparent card surfaces';
 export type CardBorderStyleLabel =
-  | 'Current Parrish card borders'
+  | 'Variant A card borders'
   | 'No card border'
   | 'Soft hairline'
   | 'Medium solid'
@@ -147,7 +147,7 @@ export type CardBorderStyleLabel =
   | 'Accent edge'
   | 'Top-border accent';
 export type ButtonBorderStyleLabel =
-  | 'Current Parrish buttons'
+  | 'Variant A buttons'
   | 'No button border'
   | 'Subtle outline'
   | 'Bold outline'
@@ -157,7 +157,7 @@ export type ButtonBorderStyleLabel =
   | 'Underline button'
   | 'Framed CTA';
 export type SectionFrameStyleLabel =
-  | 'Current Parrish section framing'
+  | 'Variant A section framing'
   | 'No section frame'
   | 'Subtle top rule'
   | 'Subtle bottom rule'
@@ -167,28 +167,29 @@ export type SectionFrameStyleLabel =
   | 'Offset frame'
   | 'Side rails';
 export type ServiceDisplayLabel =
-  | 'Standard service cards'
+  | 'Variant A service cards'
   | 'Tabbed services'
   | 'Accordion services'
   | 'Carousel services';
-export type FaqDisplayLabel = 'Card-based FAQ' | 'Expandable questions';
-export type ProcessDisplayLabel = 'Standard stacked process' | 'Connected timeline process';
-export type ServiceAreaDisplayLabel = 'Standard map section' | 'ZIP code service check';
-export type EstimateDisplayLabel = 'Standard estimate section' | 'Highlighted single card';
+export type FaqDisplayLabel = 'Variant A FAQ' | 'Expandable questions';
+export type ProcessDisplayLabel = 'Variant A stacked process' | 'Connected timeline process';
+export type ServiceAreaDisplayLabel = 'Variant A map section' | 'ZIP code service check';
+export type EstimateDisplayLabel = 'Variant A estimate section' | 'Highlighted single card';
 export type RelatedServicesDisplayLabel =
-  | 'Standard service cards'
+  | 'Variant A related services'
+  | 'Variant A service cards'
   | 'Stacked centered buttons'
   | 'Highlighted single card';
 export type WhenNeededDisplayLabel = 'Highlighted single card' | 'Multi-card explanation';
 export type IncludedItemsDisplayLabel = 'Standard included-items stack' | 'Two-column included cards';
-export type WhyChooseDisplayLabel = 'Current Parrish why choose us' | 'Standard reassurance cards';
+export type WhyChooseDisplayLabel = 'Variant A why choose us' | 'Standard reassurance cards';
 export type GenericContentDisplayLabel =
   | 'Standard comparison cards'
   | 'Standard content section'
   | 'Standard info cards'
   | 'Standard reassurance cards'
   | 'Multi-card explanation';
-export type HeroBackgroundLabel = 'Current Parrish hero' | 'Centered feature hero' | 'Abstract no-image hero';
+export type HeroBackgroundLabel = 'Variant A hero' | 'Centered feature hero' | 'Abstract no-image hero';
 
 export type AnyDisplayLabel =
   | ServiceDisplayLabel
@@ -259,6 +260,12 @@ export interface HeroAction {
   target?: string;
 }
 
+export interface NavigationLink {
+  label: string;
+  href: string;
+  children?: NavigationLink[];
+}
+
 export interface HeroContent {
   titlePrimary: string;
   titleSecondary: string;
@@ -300,7 +307,7 @@ export interface SiteStylePresetDefinition {
   writingDirection: string;
   conversionFocus: string;
   colorTemplate: ColorTemplatePreset;
-  typographyPreset: 'parrish-default' | 'modern-sans' | 'heritage-serif';
+  typographyPreset: 'baseline-a' | 'modern-sans' | 'heritage-serif';
   borderPreset: 'layered-angled' | 'straight-clean' | 'soft-panels';
   headingTypography: HeadingTypographyPreset;
   bodyTypography: BodyTypographyPreset;
@@ -481,6 +488,19 @@ export interface ClientIntake {
   };
   sharedContent: {
     trustBadges: string[];
+    footerCredit: string;
+    estimateSectionLead: string;
+    serviceAreaLookup: {
+      heading: string;
+      intro: string;
+      inputLabel: string;
+      inputPlaceholder: string;
+      submitButtonLabel: string;
+      estimateButtonLabel: string;
+      invalidZipMessage: string;
+      inAreaMessage: string;
+      outOfAreaMessage: string;
+    };
     homepageModal: {
       heading: string;
       intro: string;
@@ -560,7 +580,7 @@ export interface TemplateConfig {
       faviconIco: string;
     };
     colorTemplate: ColorTemplatePreset;
-    typographyPreset: 'parrish-default' | 'modern-sans' | 'heritage-serif';
+    typographyPreset: 'baseline-a' | 'modern-sans' | 'heritage-serif';
     borderPreset: 'layered-angled' | 'straight-clean' | 'soft-panels';
     headingTypography: HeadingTypographyPreset;
     bodyTypography: BodyTypographyPreset;
@@ -597,8 +617,28 @@ export interface TemplateConfig {
     sendEstimate: string;
     backToTop: string;
   };
+  footer: {
+    creditText: string;
+  };
+  navigation: {
+    primaryLinks: NavigationLink[];
+  };
   trust: {
     trustBadges: string[];
+  };
+  sharedContent: {
+    estimateSectionLead: string;
+    serviceAreaLookup: {
+      heading: string;
+      intro: string;
+      inputLabel: string;
+      inputPlaceholder: string;
+      submitButtonLabel: string;
+      estimateButtonLabel: string;
+      invalidZipMessage: string;
+      inAreaMessage: string;
+      outOfAreaMessage: string;
+    };
   };
   services: {
     treeRemoval: ServicePageData;

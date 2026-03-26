@@ -66,20 +66,24 @@ if (!is_valid_phone($phone)) {
 
 /*
 |--------------------------------------------------------------------------
-| CONFIGURE THESE 3 VALUES
+| CONFIGURE EMAIL DELIVERY THROUGH ENVIRONMENT VALUES
 |--------------------------------------------------------------------------
 |
-| Replace these with your real values before uploading.
+| Do not store live API keys in this tracked file.
+| Expected server values:
+| - RESEND_API_KEY
+| - RESEND_FROM_EMAIL (optional; falls back to the current sender)
+| - ESTIMATE_TO_EMAIL (optional; falls back to the current inbox)
 |
 */
-$resendApiKey = 're_2q7im6LA_JF4Yk3iM7TbRkdUYxzo957ho';
-$resendFromEmail = 'Parrish Tree Removal <estimates@mail.parrishtreeremoval.com>';
-$estimateToEmail = 'parrishtreeremoval@gmail.com';
+$resendApiKey = trim((string) (getenv('RESEND_API_KEY') ?: ($_SERVER['RESEND_API_KEY'] ?? '')));
+$resendFromEmail = trim((string) (getenv('RESEND_FROM_EMAIL') ?: ($_SERVER['RESEND_FROM_EMAIL'] ?? 'Parrish Tree Removal <estimates@mail.parrishtreeremoval.com>')));
+$estimateToEmail = trim((string) (getenv('ESTIMATE_TO_EMAIL') ?: ($_SERVER['ESTIMATE_TO_EMAIL'] ?? 'parrishtreeremoval@gmail.com')));
 
-if ($resendApiKey === 'REPLACE_WITH_YOUR_RESEND_API_KEY') {
+if ($resendApiKey === '') {
     respond(500, [
         'success' => false,
-        'message' => 'The form is not configured yet. Add your Resend API key to estimate.php.'
+        'message' => 'The form is not configured yet. Add RESEND_API_KEY to the server environment before using the form.'
     ]);
 }
 

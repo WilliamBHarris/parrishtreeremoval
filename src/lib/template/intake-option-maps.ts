@@ -47,7 +47,7 @@ import type {
 } from './intake-types';
 
 export const presetStyleMap: Record<PresetStyleLabel, SiteStylePresetId> = {
-  'Preset A': 'preset-a-parrish-baseline',
+  'Preset A': 'preset-a-baseline',
   'Preset B': 'preset-b-premium-modern',
   'Preset C': 'preset-c-local-family-owned',
   'Preset D': 'preset-d-storm-response-emergency',
@@ -55,9 +55,9 @@ export const presetStyleMap: Record<PresetStyleLabel, SiteStylePresetId> = {
 };
 
 export const visualToneMap: Record<VisualToneLabel, SectionToneFlavor> = {
-  'Clean and trustworthy': 'parrish-classic',
+  'Clean and trustworthy': 'baseline-a',
   'Bold and premium': 'evergreen-premium',
-  'Friendly and approachable': 'parrish-classic',
+  'Friendly and approachable': 'baseline-a',
   'Rugged and local': 'coastal-clean',
   'Modern and high-contrast': 'coastal-clean',
 };
@@ -70,8 +70,8 @@ export const writingToneMap: Record<WritingToneLabel, WritingToneFlavor> = {
 };
 
 export const presetIntentNotes = {
-  'preset-a-parrish-baseline':
-    'Safest no-regression path. Use when the current Parrish look is the desired final output.',
+  'preset-a-baseline':
+    'Safest no-regression path. Use when the locked Variant A baseline is the desired final output.',
   'preset-b-premium-modern':
     'Best for clients who want a more elevated, editorial, and premium-feeling version of the template.',
   'preset-c-local-family-owned':
@@ -83,28 +83,28 @@ export const presetIntentNotes = {
 } as const;
 
 export const presetBaselineDisplayLabels = {
-  header: 'Current Parrish header',
-  headingTypography: 'Clean sans headings',
-  bodyTypography: 'Clean sans body',
-  sectionTitleStyle: 'Current Parrish baseline',
-  colorTemplate: 'Current Parrish palette',
-  cardSurface: 'Standard filled cards',
-  cardBorderStyle: 'Current Parrish card borders',
-  buttonBorderStyle: 'Current Parrish buttons',
-  sectionFrameStyle: 'Current Parrish section framing',
-  services: 'Standard service cards',
-  whyChoose: 'Current Parrish why choose us',
-  process: 'Standard stacked process',
-  faq: 'Card-based FAQ',
-  serviceArea: 'Standard map section',
-  estimate: 'Standard estimate section',
-  relatedServices: 'Standard service cards',
+  header: 'Variant A header',
+  headingTypography: 'Variant A headings',
+  bodyTypography: 'Variant A body',
+  sectionTitleStyle: 'Variant A section titles',
+  colorTemplate: 'Variant A palette',
+  cardSurface: 'Variant A filled cards',
+  cardBorderStyle: 'Variant A card borders',
+  buttonBorderStyle: 'Variant A buttons',
+  sectionFrameStyle: 'Variant A section framing',
+  services: 'Variant A service cards',
+  whyChoose: 'Variant A why choose us',
+  process: 'Variant A stacked process',
+  faq: 'Variant A FAQ',
+  serviceArea: 'Variant A map section',
+  estimate: 'Variant A estimate section',
+  relatedServices: 'Variant A related services',
 } as const;
-// These labels represent the current Parrish worksheet defaults. When an intake
+// These labels represent the locked Variant A worksheet defaults. When an intake
 // keeps these values unchanged, the builder treats them as "follow the preset"
 // instead of as explicit manual overrides.
 
-export type SectionToneFlavor = 'parrish-classic' | 'evergreen-premium' | 'coastal-clean';
+export type SectionToneFlavor = 'baseline-a' | 'evergreen-premium' | 'coastal-clean';
 export type WritingToneFlavor =
   | 'professional-local'
   | 'confident-premium'
@@ -112,14 +112,14 @@ export type WritingToneFlavor =
   | 'direct-practical';
 
 export const serviceDisplayMap: Record<ServiceDisplayLabel, ServicesVariant> = {
-  'Standard service cards': 'grid-cards',
+  'Variant A service cards': 'grid-cards',
   'Tabbed services': 'tabs',
   'Accordion services': 'compact-list',
   'Carousel services': 'stacked-panels',
 };
 
 export const headerStyleMap: Record<HeaderStyleLabel, HeaderVariant> = {
-  'Current Parrish header': 'parrish-baseline',
+  'Variant A header': 'baseline-a',
   'Clean centered header': 'clean-centered',
   'Utility split header': 'utility-split',
   'Premium compact header': 'premium-compact',
@@ -128,7 +128,7 @@ export const headerStyleMap: Record<HeaderStyleLabel, HeaderVariant> = {
 };
 
 export const headingTypographyMap: Record<HeadingTypographyLabel, HeadingTypographyPreset> = {
-  'Clean sans headings': 'parrish-rounded',
+  'Variant A headings': 'baseline-a',
   'Premium editorial headings': 'premium-editorial',
   'Friendly rounded headings': 'friendly-rounded',
   'Strong utility headings': 'strong-utility',
@@ -136,7 +136,7 @@ export const headingTypographyMap: Record<HeadingTypographyLabel, HeadingTypogra
 };
 
 export const bodyTypographyMap: Record<BodyTypographyLabel, BodyTypographyPreset> = {
-  'Clean sans body': 'parrish-sans',
+  'Variant A body': 'baseline-a',
   'Premium editorial body': 'premium-editorial',
   'Friendly readable body': 'friendly-readable',
   'Strong utility body': 'strong-utility',
@@ -144,7 +144,7 @@ export const bodyTypographyMap: Record<BodyTypographyLabel, BodyTypographyPreset
 };
 
 export const sectionTitleStyleMap: Record<SectionTitleStyleLabel, SectionTitleStylePreset> = {
-  'Current Parrish baseline': 'parrish-baseline',
+  'Variant A section titles': 'baseline-a',
   'Minimal stacked': 'minimal-stacked',
   'Underline accent': 'underline-accent',
   'Side rule': 'side-rule',
@@ -153,7 +153,7 @@ export const sectionTitleStyleMap: Record<SectionTitleStyleLabel, SectionTitleSt
 };
 
 export const colorTemplateMap: Record<ColorTemplateLabel, ColorTemplatePreset> = {
-  'Current Parrish palette': 'parrish-classic',
+  'Variant A palette': 'baseline-a',
   'Evergreen premium palette': 'evergreen-premium',
   'Warm local palette': 'sunlit-local',
   'Storm high-contrast palette': 'storm-contrast',
@@ -161,13 +161,13 @@ export const colorTemplateMap: Record<ColorTemplateLabel, ColorTemplatePreset> =
 };
 
 export const cardSurfaceMap: Record<CardSurfaceLabel, CardSurfacePreset> = {
-  'Standard filled cards': 'parrish-filled',
+  'Variant A filled cards': 'baseline-a',
   'Subtle soft cards': 'soft-tint',
   'Transparent card surfaces': 'transparent-surface',
 };
 
 export const cardBorderStyleMap: Record<CardBorderStyleLabel, CardBorderStylePreset> = {
-  'Current Parrish card borders': 'parrish-baseline',
+  'Variant A card borders': 'baseline-a',
   'No card border': 'none',
   'Soft hairline': 'soft-hairline',
   'Medium solid': 'medium-solid',
@@ -179,7 +179,7 @@ export const cardBorderStyleMap: Record<CardBorderStyleLabel, CardBorderStylePre
 };
 
 export const buttonBorderStyleMap: Record<ButtonBorderStyleLabel, ButtonBorderStylePreset> = {
-  'Current Parrish buttons': 'parrish-baseline',
+  'Variant A buttons': 'baseline-a',
   'No button border': 'none',
   'Subtle outline': 'subtle-outline',
   'Bold outline': 'bold-outline',
@@ -191,7 +191,7 @@ export const buttonBorderStyleMap: Record<ButtonBorderStyleLabel, ButtonBorderSt
 };
 
 export const sectionFrameStyleMap: Record<SectionFrameStyleLabel, SectionFrameStylePreset> = {
-  'Current Parrish section framing': 'parrish-baseline',
+  'Variant A section framing': 'baseline-a',
   'No section frame': 'none',
   'Subtle top rule': 'subtle-top-rule',
   'Subtle bottom rule': 'subtle-bottom-rule',
@@ -203,33 +203,34 @@ export const sectionFrameStyleMap: Record<SectionFrameStyleLabel, SectionFrameSt
 };
 
 export const faqDisplayMap: Record<FaqDisplayLabel, FaqVariant> = {
-  'Card-based FAQ': 'clean-list',
+  'Variant A FAQ': 'clean-list',
   'Expandable questions': 'accordion',
 };
 
 export const processDisplayMap: Record<ProcessDisplayLabel, ProcessVariant> = {
-  'Standard stacked process': 'stacked-steps',
+  'Variant A stacked process': 'stacked-steps',
   'Connected timeline process': 'timeline',
 };
 
 export const serviceAreaDisplayMap: Record<ServiceAreaDisplayLabel, ServiceAreaVariant> = {
-  'Standard map section': 'map-card',
+  'Variant A map section': 'map-card',
   'ZIP code service check': 'compact-map',
 };
 
 export const estimateDisplayMap: Record<string, EstimateCtaVariant> = {
-  'Standard estimate section': 'single-panel',
+  'Variant A estimate section': 'single-panel',
   'Highlighted single card': 'emphasized-conversion',
 };
 
 export const relatedServicesDisplayMap: Record<RelatedServicesDisplayLabel, RelatedServicesVariant> = {
-  'Standard service cards': 'grid-links',
+  'Variant A related services': 'stacked-buttons',
+  'Variant A service cards': 'grid-links',
   'Stacked centered buttons': 'stacked-buttons',
   'Highlighted single card': 'card-links',
 };
 
 export const whyChooseDisplayMap: Record<WhyChooseDisplayLabel, WhyChooseVariant> = {
-  'Current Parrish why choose us': 'icon-grid',
+  'Variant A why choose us': 'icon-grid',
   'Standard reassurance cards': 'stacked-panels',
 };
 
@@ -244,19 +245,19 @@ export const includedItemsDisplayMap: Record<IncludedItemsDisplayLabel, 'stack' 
 };
 
 export const heroBackgroundMap: Record<HeroBackgroundLabel, HeroVariant> = {
-  'Current Parrish hero': 'split-image',
+  'Variant A hero': 'split-image',
   'Centered feature hero': 'centered',
   'Abstract no-image hero': 'abstract-no-image',
 };
 
 export const variantOptions = {
   hero: [
-    { value: 'split-image', label: 'Current Parrish hero', description: 'Current Parrish live hero treatment.' },
+    { value: 'split-image', label: 'Variant A hero', description: 'Locked baseline hero treatment.' },
     { value: 'centered', label: 'Centered feature hero', description: 'Centered framed hero layout.' },
     { value: 'abstract-no-image', label: 'Abstract no-image hero', description: 'No-image editorial hero.' },
   ] satisfies ReadonlyArray<VariantOption<HeroVariant>>,
   header: [
-    { value: 'parrish-baseline', label: 'Current Parrish header', description: 'Current Parrish live header treatment.' },
+    { value: 'baseline-a', label: 'Variant A header', description: 'Locked baseline header treatment.' },
     { value: 'clean-centered', label: 'Clean centered header', description: 'Centered two-row header with calmer brand-forward framing.' },
     { value: 'utility-split', label: 'Utility split header', description: 'Sharper split header with more operational structure and stronger utility cues.' },
     { value: 'premium-compact', label: 'Premium compact header', description: 'Contained premium header with a tighter, more editorial footprint.' },
@@ -264,55 +265,55 @@ export const variantOptions = {
     { value: 'minimal-overlay', label: 'Minimal overlay header', description: 'Lighter overlay-capable header with reduced framing and cleaner transparency.' },
   ] satisfies ReadonlyArray<VariantOption<HeaderVariant>>,
   services: [
-    { value: 'grid-cards', label: 'Standard service cards', description: 'Current Parrish baseline services grid.' },
+    { value: 'grid-cards', label: 'Variant A service cards', description: 'Locked baseline services grid.' },
     { value: 'tabs', label: 'Tabbed services', description: 'One featured service panel with tabs above for switching services.' },
     { value: 'stacked-panels', label: 'Carousel services', description: 'One featured service panel with previous/next controls for browsing services horizontally.' },
     { value: 'compact-list', label: 'Accordion services', description: 'One-open-at-a-time services accordion with a revealed featured content panel.' },
   ] satisfies ReadonlyArray<VariantOption<ServicesVariant>>,
   estimateCta: [
-    { value: 'single-panel', label: 'Standard estimate section', description: 'Current Parrish estimate section.' },
+    { value: 'single-panel', label: 'Variant A estimate section', description: 'Locked baseline estimate section.' },
     { value: 'emphasized-conversion', label: 'Highlighted single card', description: 'Stronger conversion card treatment.' },
   ] satisfies ReadonlyArray<VariantOption<EstimateCtaVariant>>,
   relatedServices: [
-    { value: 'grid-links', label: 'Standard service cards', description: 'Card-style service links.' },
-    { value: 'stacked-buttons', label: 'Stacked centered buttons', description: 'Centered button stack.' },
+    { value: 'stacked-buttons', label: 'Variant A related services', description: 'Locked baseline related-services button stack.' },
+    { value: 'grid-links', label: 'Variant A service cards', description: 'Card-style service links.' },
     { value: 'card-links', label: 'Highlighted single card', description: 'Single stronger related-services card treatment.' },
   ] satisfies ReadonlyArray<VariantOption<RelatedServicesVariant>>,
   whyChoose: [
-    { value: 'icon-grid', label: 'Current Parrish why choose us', description: 'Current Parrish why-choose-us icon grid.' },
+    { value: 'icon-grid', label: 'Variant A why choose us', description: 'Locked baseline why-choose-us icon grid.' },
     { value: 'stacked-panels', label: 'Standard reassurance cards', description: 'Stacked reassurance panels for alternate preset directions.' },
   ] satisfies ReadonlyArray<VariantOption<WhyChooseVariant>>,
   faq: [
-    { value: 'clean-list', label: 'Card-based FAQ', description: 'Current Parrish FAQ presentation with stacked card items.' },
+    { value: 'clean-list', label: 'Variant A FAQ', description: 'Locked baseline FAQ presentation with stacked card items.' },
     { value: 'accordion', label: 'Expandable questions', description: 'Accordion rows with one open answer at a time.' },
     { value: 'card-grid', label: 'Card-based FAQ grid', description: 'Multi-column card FAQ for broader desktop layouts.' },
   ] satisfies ReadonlyArray<VariantOption<FaqVariant>>,
   process: [
-    { value: 'stacked-steps', label: 'Standard stacked process', description: 'Current Parrish Process presentation.' },
+    { value: 'stacked-steps', label: 'Variant A stacked process', description: 'Locked baseline Process presentation.' },
     { value: 'numbered-cards', label: 'Numbered card process', description: 'Static numbered step cards with stronger sequence framing.' },
     { value: 'timeline', label: 'Connected timeline process', description: 'Vertical connected timeline with numbered markers.' },
   ] satisfies ReadonlyArray<VariantOption<ProcessVariant>>,
   serviceArea: [
-    { value: 'map-card', label: 'Standard map section', description: 'Standard map-led service area section.' },
+    { value: 'map-card', label: 'Variant A map section', description: 'Locked baseline map-led service area section.' },
     { value: 'compact-map', label: 'ZIP code service check', description: 'Map section with the tighter ZIP-check-led presentation.' },
     { value: 'text-first', label: 'Text-first service area', description: 'Service area copy-forward presentation with a narrower map treatment.' },
   ] satisfies ReadonlyArray<VariantOption<ServiceAreaVariant>>,
   headingTypography: [
-    { value: 'parrish-rounded', label: 'Clean sans headings', description: 'Current Parrish rounded-sans heading direction.' },
+    { value: 'baseline-a', label: 'Variant A headings', description: 'Locked baseline heading direction.' },
     { value: 'premium-editorial', label: 'Premium editorial headings', description: 'Sharper serif-led heading treatment for premium template directions.' },
     { value: 'friendly-rounded', label: 'Friendly rounded headings', description: 'Warmer rounded heading voice with softer local-business tone.' },
     { value: 'strong-utility', label: 'Strong utility headings', description: 'Tighter, more operational heading style for direct service brands.' },
     { value: 'refined-modern', label: 'Refined modern headings', description: 'Clean modern heading system with quieter premium polish.' },
   ] satisfies ReadonlyArray<VariantOption<HeadingTypographyPreset>>,
   bodyTypography: [
-    { value: 'parrish-sans', label: 'Clean sans body', description: 'Current Parrish readable sans body copy.' },
+    { value: 'baseline-a', label: 'Variant A body', description: 'Locked baseline readable body copy.' },
     { value: 'premium-editorial', label: 'Premium editorial body', description: 'More refined editorial body copy for elevated template directions.' },
     { value: 'friendly-readable', label: 'Friendly readable body', description: 'Softer humanist body copy for warmer local-business tone.' },
     { value: 'strong-utility', label: 'Strong utility body', description: 'Compact, practical body copy for operational service brands.' },
     { value: 'refined-modern', label: 'Refined modern body', description: 'Neutral modern body copy with cleaner polish.' },
   ] satisfies ReadonlyArray<VariantOption<BodyTypographyPreset>>,
   sectionTitleStyle: [
-    { value: 'parrish-baseline', label: 'Current Parrish baseline', description: 'Current Parrish divider/title treatment.' },
+    { value: 'baseline-a', label: 'Variant A section titles', description: 'Locked baseline divider/title treatment.' },
     { value: 'minimal-stacked', label: 'Minimal stacked', description: 'Simple stacked heading with minimal divider treatment.' },
     { value: 'underline-accent', label: 'Underline accent', description: 'Compact section title with a stronger underline cue.' },
     { value: 'side-rule', label: 'Side rule', description: 'Left-anchored title style with a short side rule.' },
@@ -320,19 +321,19 @@ export const variantOptions = {
     { value: 'boxed-label', label: 'Boxed label', description: 'Section title styled as a contained label above the heading.' },
   ] satisfies ReadonlyArray<VariantOption<SectionTitleStylePreset>>,
   colorTemplate: [
-    { value: 'parrish-classic', label: 'Current Parrish palette', description: 'Current Parrish blue-green-gold baseline palette.' },
+    { value: 'baseline-a', label: 'Variant A palette', description: 'Locked baseline forest, cream, and natural accent palette.' },
     { value: 'evergreen-premium', label: 'Evergreen premium palette', description: 'Deeper evergreen, mineral, and warm stone palette for elevated brands.' },
     { value: 'sunlit-local', label: 'Warm local palette', description: 'Sunnier warm neutrals and olive accents for approachable local brands.' },
     { value: 'storm-contrast', label: 'Storm high-contrast palette', description: 'Sharper navy, slate, and signal-gold contrast for urgent service brands.' },
     { value: 'estate-mineral', label: 'Estate mineral palette', description: 'Muted mineral, brass, and stone palette for refined residential brands.' },
   ] satisfies ReadonlyArray<VariantOption<ColorTemplatePreset>>,
   cardSurface: [
-    { value: 'parrish-filled', label: 'Standard filled cards', description: 'Current Parrish filled card surfaces with depth and warmth.' },
+    { value: 'baseline-a', label: 'Variant A filled cards', description: 'Locked baseline filled card surfaces with depth and warmth.' },
     { value: 'soft-tint', label: 'Subtle soft cards', description: 'Lighter, quieter card surfaces with softer tint and less weight.' },
     { value: 'transparent-surface', label: 'Transparent card surfaces', description: 'Transparent or near-transparent cards that lean on borders and framing.' },
   ] satisfies ReadonlyArray<VariantOption<CardSurfacePreset>>,
   cardBorderStyle: [
-    { value: 'parrish-baseline', label: 'Current Parrish card borders', description: 'Current Parrish soft borderless card framing.' },
+    { value: 'baseline-a', label: 'Variant A card borders', description: 'Locked baseline soft borderless card framing.' },
     { value: 'none', label: 'No card border', description: 'No visible card border, relying mostly on surface and shadow.' },
     { value: 'soft-hairline', label: 'Soft hairline', description: 'Quiet one-pixel card border for cleaner premium directions.' },
     { value: 'medium-solid', label: 'Medium solid', description: 'More defined solid border for stronger card separation.' },
@@ -343,7 +344,7 @@ export const variantOptions = {
     { value: 'top-border-accent', label: 'Top-border accent', description: 'A top accent band that helps cards feel more editorial.' },
   ] satisfies ReadonlyArray<VariantOption<CardBorderStylePreset>>,
   buttonBorderStyle: [
-    { value: 'parrish-baseline', label: 'Current Parrish buttons', description: 'Current Parrish filled buttons and soft outlines.' },
+    { value: 'baseline-a', label: 'Variant A buttons', description: 'Locked baseline filled buttons and soft outlines.' },
     { value: 'none', label: 'No button border', description: 'Filled buttons with no extra border treatment.' },
     { value: 'subtle-outline', label: 'Subtle outline', description: 'Quiet outline that adds definition without looking heavy.' },
     { value: 'bold-outline', label: 'Bold outline', description: 'Stronger outline for more assertive call-to-action framing.' },
@@ -354,7 +355,7 @@ export const variantOptions = {
     { value: 'framed-cta', label: 'Framed CTA', description: 'Thicker CTA frame suited to premium or editorial directions.' },
   ] satisfies ReadonlyArray<VariantOption<ButtonBorderStylePreset>>,
   sectionFrameStyle: [
-    { value: 'parrish-baseline', label: 'Current Parrish section framing', description: 'Current Parrish open section treatment without extra inner framing.' },
+    { value: 'baseline-a', label: 'Variant A section framing', description: 'Locked baseline open section treatment without extra inner framing.' },
     { value: 'none', label: 'No section frame', description: 'No additional section frame beyond the core section backgrounds.' },
     { value: 'subtle-top-rule', label: 'Subtle top rule', description: 'Light top rule framing within the section shell.' },
     { value: 'subtle-bottom-rule', label: 'Subtle bottom rule', description: 'Light bottom rule framing within the section shell.' },
@@ -367,26 +368,26 @@ export const variantOptions = {
 } as const;
 
 export const siteStylePresets = {
-  'preset-a-parrish-baseline': {
-    id: 'preset-a-parrish-baseline',
-    label: 'Preset A: Current Parrish Baseline',
-    description: 'Matches the live Parrish build and should remain the no-regression baseline.',
-    intendedClient: 'Established local tree-service operator using the current Parrish presentation.',
+  'preset-a-baseline': {
+    id: 'preset-a-baseline',
+    label: 'Preset A: Locked Baseline',
+    description: 'Locked canonical baseline bundle. Preserve this as the no-regression default.',
+    intendedClient: 'Reference baseline for low-risk client swaps and future preset experimentation.',
     useCase: 'Reference implementation and safest starting point for low-risk client swaps.',
     visualIdentity: 'Clean, trustworthy, local-service baseline.',
     writingDirection: 'Professional, direct, and locally grounded.',
     conversionFocus: 'Straightforward estimates with balanced service credibility.',
-    colorTemplate: 'parrish-classic',
-    typographyPreset: 'parrish-default',
+    colorTemplate: 'baseline-a',
+    typographyPreset: 'baseline-a',
     borderPreset: 'layered-angled',
-    headingTypography: 'parrish-rounded',
-    bodyTypography: 'parrish-sans',
-    sectionTitleStyle: 'parrish-baseline',
-    header: 'parrish-baseline',
-    cardSurface: 'parrish-filled',
-    cardBorderStyle: 'parrish-baseline',
-    buttonBorderStyle: 'parrish-baseline',
-    sectionFrameStyle: 'parrish-baseline',
+    headingTypography: 'baseline-a',
+    bodyTypography: 'baseline-a',
+    sectionTitleStyle: 'baseline-a',
+    header: 'baseline-a',
+    cardSurface: 'baseline-a',
+    cardBorderStyle: 'baseline-a',
+    buttonBorderStyle: 'baseline-a',
+    sectionFrameStyle: 'baseline-a',
     hero: 'split-image',
     services: 'grid-cards',
     estimateCta: 'single-panel',

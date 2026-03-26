@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
+import { brand } from '../data/brand';
 import { client } from '../data/client';
-import parrishLogo from '../assets/parrish-logo.png';
+import { resolveConfiguredImageAsset } from '../lib/template/runtime-assets';
 
 const socialLabelMap = {
   googleBusinessProfile: 'Google Business Profile',
@@ -47,6 +48,7 @@ const footerHours = [
     value: normalizeFooterHours(client.hours.saturday),
   },
 ];
+const footerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
 ---
 
 <footer class="site-footer">
@@ -70,7 +72,7 @@ const footerHours = [
           <ul class="footer-social-list">
             {socialEntries.map((entry) => (
               <li>
-                <a href={entry.href} target="_blank" rel="noreferrer">{entry.label}</a>
+                <a href={entry.href} target="_blank" rel="noopener noreferrer">{entry.label}</a>
               </li>
             ))}
           </ul>
@@ -90,10 +92,10 @@ const footerHours = [
 
     <div class="footer-meta">
       <a href="#site-top" class="footer-top-link">{client.ctas.backToTop}</a>
-      <div class="footer-credit"><strong>© Will Made It.</strong></div>
+      <div class="footer-credit"><strong>{client.footer.creditText}</strong></div>
       <a href="/" class="footer-brand" aria-label={`${client.businessName} home`}>
         <Image
-          src={parrishLogo}
+          src={footerLogo}
           alt=""
           aria-hidden="true"
           class="footer-logo"

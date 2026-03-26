@@ -2,8 +2,9 @@
 import { Image } from 'astro:assets';
 import { brand } from '../data/brand';
 import { client } from '../data/client';
-import parrishLogo from '../assets/parrish-logo.png';
+import { templateConfig } from '../data/client-questionnaire';
 import type { HeaderVariant } from '../lib/template/intake-types';
+import { resolveConfiguredImageAsset } from '../lib/template/runtime-assets';
 
 interface Props {
   variant?: HeaderVariant;
@@ -12,34 +13,16 @@ interface Props {
 }
 
 const {
-  variant = brand.presets.headerVariant,
+  variant = templateConfig.presets.header,
   previewMode = false,
   instanceId = 'site-header',
 } = Astro.props;
 
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const drawerId = `${instanceId}-mobile-drawer`;
-const serviceLinks = [
-  { href: '/tree-removal', label: 'Tree Removal' },
-  { href: '/stump-grinding', label: 'Stump Grinding' },
-  { href: '/tree-trimming', label: 'Tree Trimming' },
-  { href: '/emergency-tree-service', label: 'Storm & Emergency' },
-];
-
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/services', label: 'Services', children: serviceLinks },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
-
-const desktopNavLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/services', label: 'Services' },
-  ...serviceLinks,
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
+const navLinks = client.navigation.primaryLinks;
+const desktopNavLinks = navLinks.flatMap((link) => [link, ...(link.children ?? [])]);
+const headerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
 ---
 
 <div
@@ -47,11 +30,14 @@ const desktopNavLinks = [
   data-header-root
   data-header-instance={instanceId}
 >
-  <header class:list={['site-header', `site-header-variant-${variant}`, previewMode && 'site-header--preview']}>
+  <header
+    class:list={['site-header', `site-header-variant-${variant}`, previewMode && 'site-header--preview']}
+    data-header-variant={variant}
+  >
     <div class="site-header-inner">
       <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
         <Image
-          src={parrishLogo}
+          src={headerLogo}
           alt=""
           aria-hidden="true"
           class="site-logo"
@@ -76,13 +62,16 @@ const desktopNavLinks = [
       </nav>
 
       <div class="header-actions">
-        <a
-          href="/contact"
+        <button
+          type="button"
           class="desktop-estimate-link"
           aria-label={`Request an estimate from ${client.businessName}`}
+          data-open-estimate-modal
+          aria-haspopup="dialog"
+          aria-controls="estimate-modal"
         >
           <span>{client.ctas.heroEstimate}</span>
-        </a>
+        </button>
 
         <a
           href={`tel:${client.primaryPhoneHref}`}
@@ -192,7 +181,15 @@ const desktopNavLinks = [
       </nav>
 
       <div class="mobile-drawer-footer">
-        <a href="/contact" class="drawer-cta">{client.ctas.heroEstimate}</a>
+        <button
+          type="button"
+          class="drawer-cta"
+          data-open-estimate-modal
+          aria-haspopup="dialog"
+          aria-controls="estimate-modal"
+        >
+          {client.ctas.heroEstimate}
+        </button>
       </div>
     </div>
   </aside>
@@ -221,6 +218,22 @@ const desktopNavLinks = [
 
       const submenuToggles = Array.from(drawer.querySelectorAll('.drawer-submenu-toggle'));
       let lastFocused = null;
+      let closeTimeout = null;
+      let closePhaseTimeout = null;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const itemLeadDuration = prefersReducedMotion.matches ? 0 : 220;
+      const closeDuration = prefersReducedMotion.matches ? 0 : 540;
+
+      const clearCloseTimers = () => {
+        if (closeTimeout !== null) {
+          window.clearTimeout(closeTimeout);
+          closeTimeout = null;
+        }
+        if (closePhaseTimeout !== null) {
+          window.clearTimeout(closePhaseTimeout);
+          closePhaseTimeout = null;
+        }
+      };
 
       const getFocusableElements = () =>
         Array.from(drawer.querySelectorAll(focusableSelector)).filter(
@@ -251,22 +264,36 @@ const desktopNavLinks = [
       };
 
       const closeMenu = () => {
-        body.classList.remove('menu-open');
+        clearCloseTimers();
         toggle.setAttribute('aria-expanded', 'false');
         toggle.setAttribute('aria-label', 'Open menu');
-        drawer.setAttribute('hidden', '');
-        drawer.setAttribute('inert', '');
-        scrim.setAttribute('hidden', '');
+        body.classList.add('menu-closing-items');
+        closePhaseTimeout = window.setTimeout(() => {
+          body.classList.remove('menu-open');
+          body.classList.remove('menu-closing-items');
+          body.classList.add('menu-closing');
+          closePhaseTimeout = null;
+        }, itemLeadDuration);
+        closeTimeout = window.setTimeout(() => {
+          body.classList.remove('menu-closing');
+          body.classList.remove('menu-closing-items');
+          drawer.setAttribute('hidden', '');
+          drawer.setAttribute('inert', '');
+          scrim.setAttribute('hidden', '');
+          closeTimeout = null;
 
-        if (lastFocused instanceof HTMLElement) {
-          lastFocused.focus();
-        }
+          if (lastFocused instanceof HTMLElement) {
+            lastFocused.focus();
+          }
+        }, closeDuration);
       };
 
       const openMenu = () => {
+        clearCloseTimers();
         lastFocused =
           document.activeElement instanceof HTMLElement ? document.activeElement : null;
-        body.classList.add('menu-open');
+        body.classList.remove('menu-closing');
+        body.classList.remove('menu-closing-items');
         toggle.setAttribute('aria-expanded', 'true');
         toggle.setAttribute('aria-label', 'Close menu');
         drawer.removeAttribute('hidden');
@@ -275,6 +302,7 @@ const desktopNavLinks = [
         resetSubmenus();
 
         window.requestAnimationFrame(() => {
+          body.classList.add('menu-open');
           const firstFocusable = getFocusableElements()[0];
           if (firstFocusable instanceof HTMLElement) {
             firstFocusable.focus();
@@ -291,10 +319,6 @@ const desktopNavLinks = [
       });
 
       scrim.addEventListener('click', closeMenu);
-
-      drawer.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', closeMenu);
-      });
 
       submenuToggles.forEach((submenuToggle) => {
         submenuToggle.addEventListener('click', (event) => {

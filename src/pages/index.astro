@@ -1,7 +1,5 @@
 ---
-import { getImage } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import EstimateForm from '../components/EstimateForm.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
 import HeroSection from '../components/HeroSection.astro';
@@ -12,29 +10,23 @@ import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
 import { templateConfig } from '../data/client-questionnaire';
 import { serviceCardList } from '../data/services';
-import { heroImageTransform } from '../data/heroMedia';
-import heroImage from '../assets/hero-image.png';
+import { getHeroCriticalImage } from '../lib/site/critical-image';
+import { createFaqSchema } from '../lib/site/schema';
 
 const homePage = pageContent.home;
-const homepageCriticalImage = await getImage({
-  src: heroImage,
-  width: 800,
-  height: 480,
-  format: heroImageTransform.format,
-  quality: heroImageTransform.quality,
-  widths: heroImageTransform.widths,
-  sizes: heroImageTransform.sizes,
-});
+const homepageCriticalImage = await getHeroCriticalImage();
+const homeFaqSchema = createFaqSchema(homePage.faq);
 ---
 
 <BaseLayout
   title={homePage.title}
   description={homePage.description}
+  schema={homeFaqSchema ?? undefined}
   criticalImage={{
     src: homepageCriticalImage.src,
-    srcSet: homepageCriticalImage.srcSet.attribute,
-    sizes: heroImageTransform.sizes,
-    type: 'image/avif',
+    srcSet: homepageCriticalImage.srcSet,
+    sizes: homepageCriticalImage.sizes,
+    type: homepageCriticalImage.type,
   }}
 >
   <HeroSection
@@ -82,79 +74,4 @@ const homepageCriticalImage = await getImage({
 
     <ServiceAreaSection pageId="home" surfaceTone="cool" />
   </div>
-
-  <section
-    id="estimate-modal"
-    class="estimate-modal"
-    data-estimate-modal
-    aria-hidden="true"
-    hidden
-    inert
-  >
-    <div class="estimate-modal-scrim" data-close-estimate-modal></div>
-    <div
-      class="estimate-modal-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="estimate-modal-title"
-    >
-      <button
-        type="button"
-        class="estimate-modal-close"
-        aria-label="Close estimate form"
-        data-close-estimate-modal
-      >
-        Close
-      </button>
-      <EstimateForm
-        heading={homePage.modal.heading}
-        intro={homePage.modal.intro}
-        buttonLabel={homePage.modal.buttonLabel}
-        headingId="estimate-modal-title"
-      />
-    </div>
-  </section>
-
-  <script is:inline>
-    (() => {
-      if (window.__estimateModalLoaderBound) return;
-      window.__estimateModalLoaderBound = true;
-
-      let loaded;
-      const loadEstimateModal = () => loaded ??= import('/scripts/estimate-modal.js');
-
-      document.addEventListener('click', async (event) => {
-        const target = event.target;
-        if (!(target instanceof Element)) return;
-
-        const trigger = target.closest('[data-open-estimate-modal]');
-        if (!(trigger instanceof HTMLElement) || loaded) return;
-
-        event.preventDefault();
-        await loadEstimateModal();
-        trigger.click();
-      }, true);
-
-      document.addEventListener('pointerenter', (event) => {
-        const target = event.target;
-        if (!(target instanceof Element)) return;
-        if (!target.closest('[data-open-estimate-modal]')) return;
-        void loadEstimateModal();
-      }, { passive: true, capture: true });
-
-      document.addEventListener('touchstart', (event) => {
-        const target = event.target;
-        if (!(target instanceof Element)) return;
-        if (!target.closest('[data-open-estimate-modal]')) return;
-        void loadEstimateModal();
-      }, { passive: true, capture: true });
-
-      document.addEventListener('focusin', (event) => {
-        const target = event.target;
-        if (!(target instanceof Element)) return;
-        if (!target.closest('[data-open-estimate-modal]')) return;
-        void loadEstimateModal();
-      });
-    })();
-  </script>
 </BaseLayout>

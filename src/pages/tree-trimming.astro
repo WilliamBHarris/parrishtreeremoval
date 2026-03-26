@@ -2,13 +2,19 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ServicePageTemplate from '../components/ServicePageTemplate.astro';
 import { servicePages } from '../data/services';
+import { getHeroCriticalImage } from '../lib/site/critical-image';
+import { createFaqSchema } from '../lib/site/schema';
 
 const service = servicePages.treeTrimming;
+const criticalImage = await getHeroCriticalImage();
+const faqSchema = createFaqSchema(service.faqs);
 ---
 
 <BaseLayout
   title={service.title}
   description={service.description}
+  schema={faqSchema ?? undefined}
+  criticalImage={criticalImage}
 >
   <ServicePageTemplate {...service} />
 </BaseLayout>

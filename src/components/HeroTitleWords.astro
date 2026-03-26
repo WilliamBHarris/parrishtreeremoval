@@ -5,11 +5,19 @@ interface Props {
 
 const { text } = Astro.props;
 const words = text.trim().split(/\s+/);
+const normalizedWords = words.map((word) => word.replace(/[^a-z0-9]+/gi, '').toLowerCase());
+const hasTreeWord = normalizedWords.includes('tree');
 ---
 
 <>
-  {words.map((word) => (
-    <span class={word.replace(/[^a-z0-9]+/gi, '').toLowerCase() === 'tree' ? 'hero-word-tree' : undefined}>
+  {words.map((word, index) => (
+    <span
+      class={
+        normalizedWords[index] === 'tree' || (!hasTreeWord && index === 0)
+          ? 'hero-word-accent'
+          : undefined
+      }
+    >
       {word}
     </span>
   ))}

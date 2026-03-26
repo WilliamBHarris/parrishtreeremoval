@@ -24,31 +24,31 @@ import {
 } from './intake-normalizers';
 import type { ClientIntake, HeroContent, TemplateConfig } from './intake-types';
 
-const parrishDefaults = {
+const baselineDefaults = {
   business: {
     siteName: 'Parrish Tree Removal',
   },
   branding: {
     colorOverrides: {
-      primary: '#0F2143',
-      secondary: '#43572E',
-      accent: '#354E56',
-      highlight: '#8B6212',
-      pageBg: '#182533',
-      pageBgSoft: '#223241',
-      surface: '#f7f2ea',
-      surfaceSoft: '#ebe4d8',
-      text: '#24303a',
-      textSoft: '#4e5c61',
-      heading: '#0f2143',
-      line: 'rgba(15, 33, 67, 0.12)',
-      lineStrong: 'rgba(15, 33, 67, 0.2)',
-      overlay: 'rgba(15, 33, 67, 0.18)',
-      buttonTop: '#0F2143',
-      buttonBottom: '#354E56',
-      accentTop: '#43572E',
-      accentBottom: '#354E56',
-      themeColor: '#0F2143',
+      primary: '#014421',
+      secondary: '#A67B5B',
+      accent: '#FF6700',
+      highlight: '#A67B5B',
+      pageBg: '#F5F5DC',
+      pageBgSoft: '#EEEBD5',
+      surface: '#FFFFFF',
+      surfaceSoft: '#F8F5EA',
+      text: '#1F1F1F',
+      textSoft: '#5C5C5C',
+      heading: '#014421',
+      line: 'rgba(1, 68, 33, 0.10)',
+      lineStrong: 'rgba(1, 68, 33, 0.18)',
+      overlay: 'rgba(1, 68, 33, 0.16)',
+      buttonTop: '#014421',
+      buttonBottom: '#012F17',
+      accentTop: '#014421',
+      accentBottom: '#012F17',
+      themeColor: '#014421',
     },
     styleControls: {
       borderRadius: 'medium',
@@ -64,7 +64,69 @@ const parrishDefaults = {
     sendEstimate: 'Send Estimate Request',
     backToTop: 'Back to Top',
   },
+  sharedContent: {
+    footerCredit: '© Will Made It.',
+    estimateSectionLead: 'Share a few job details and the next step stays simple.',
+    serviceAreaLookup: {
+      heading: 'Are We In Your Area?',
+      intro: 'Enter your zip code.',
+      inputLabel: 'Enter your ZIP code',
+      inputPlaceholder: 'ZIP code',
+      submitButtonLabel: 'Submit',
+      estimateButtonLabel: 'Request Estimate',
+      invalidZipMessage: 'Enter a valid 5-digit ZIP code.',
+      inAreaMessage: "We\'re in your area.",
+      outOfAreaMessage: "Sorry, we aren\'t out there yet.",
+    },
+    homepageModal: {
+      heading: 'Tell us about your tree service project',
+      intro:
+        'Share a few project details and we will follow up about tree removal, trimming, stump work, or storm cleanup.',
+      buttonLabel: 'Send Estimate Request',
+    },
+  },
 };
+
+const defaultProcessClosingStep =
+  'Once the scope is clear, the job can move forward into quoting and scheduling.';
+
+function normalizeText(value: string | undefined | null, fallback: string) {
+  return value && value.trim().length > 0 ? value.trim() : fallback;
+}
+
+function normalizeStringList(values: Array<string | undefined | null>) {
+  return values
+    .map((value) => value?.trim() ?? '')
+    .filter((value): value is string => value.length > 0);
+}
+
+function normalizeFaqItems<T extends { question: string; answer: string }>(items: T[]) {
+  return items.filter((item) => item.question.trim().length > 0 && item.answer.trim().length > 0);
+}
+
+function normalizeRelatedLinks<T extends { href: string; label: string }>(links: T[]) {
+  return links.filter((link) => link.href.trim().length > 0 && link.label.trim().length > 0);
+}
+
+function normalizeCompareCards<T extends { title: string; description: string }>(items: T[]) {
+  return items.filter((item) => item.title.trim().length > 0 && item.description.trim().length > 0);
+}
+
+function normalizeNavigationHref(value: string | undefined | null) {
+  const href = value?.trim() ?? '';
+  if (!href) return '';
+  if (href === '/') return href;
+  return href.startsWith('/') ? href.replace(/\/+$/, '') || '/' : href;
+}
+
+function normalizeNavigationLinks(links: Array<{ label: string; href: string }>) {
+  return links
+    .map((link) => ({
+      label: normalizeText(link.label, ''),
+      href: normalizeNavigationHref(link.href),
+    }))
+    .filter((link) => link.label.length > 0 && link.href.length > 0);
+}
 
 function toHrefFromPhone(phone: string) {
   return `+1${phone.replace(/\D/g, '')}`;
@@ -79,21 +141,22 @@ function makeHero(
   ctaHref?: string,
   ctaTarget?: string,
 ): HeroContent {
-  const words = heading.split(' ');
+  const normalizedHeading = normalizeText(heading, 'Tree Service');
+  const words = normalizedHeading.split(' ');
   const titlePrimary = words.slice(0, Math.max(1, words.length)).join(' ');
 
   return {
     titlePrimary,
     titleSecondary: '',
     outlineWords: words,
-    intro: supportingText,
+    intro: supportingText.trim(),
     variant: resolveHeroVariant(backgroundStyle),
     cta:
       ctaKind === 'none'
         ? { kind: 'none', label: '' }
         : {
             kind: ctaKind,
-            label: ctaLabel,
+            label: normalizeText(ctaLabel, baselineDefaults.ctas.heroEstimate),
             href: ctaHref,
             target: ctaTarget,
           },
@@ -104,33 +167,64 @@ function toSectionDescription(item: { title: string; text?: string; description?
   return item.description ?? item.text ?? '';
 }
 
+function buildPrimaryNavigation(intake: ClientIntake): TemplateConfig['navigation']['primaryLinks'] {
+  const defaultLinks: TemplateConfig['navigation']['primaryLinks'] = [
+    { href: '/', label: 'Home' },
+    {
+      href: '/services',
+      label: 'Services',
+      children: [
+        { href: '/tree-removal', label: 'Tree Removal' },
+        { href: '/stump-grinding', label: 'Stump Grinding' },
+        { href: '/tree-trimming', label: 'Tree Trimming' },
+        { href: '/emergency-tree-service', label: 'Storm & Emergency' },
+      ],
+    },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
+  ];
+
+  if (intake.navigation.useDefaultTemplateOrder || intake.navigation.customLinks.length === 0) {
+    return defaultLinks;
+  }
+
+  const normalizedCustomLinks = normalizeNavigationLinks(intake.navigation.customLinks);
+
+  return normalizedCustomLinks.length > 0 ? normalizedCustomLinks : defaultLinks;
+}
+
 function buildServicePageSource(
   slug: string,
   page: ClientIntake['pages']['treeRemoval'],
   fallbackIcon: string,
 ) {
+  const normalizedProcessSteps =
+    page.processSteps.length >= 4
+      ? [...page.processSteps]
+      : [...page.processSteps, defaultProcessClosingStep].slice(0, 4);
+
   return {
-    cardTitle: page.cardTitle,
-    seoTitle: page.seo.title,
-    seoDescription: page.seo.description,
-    heroTitle: page.hero.heading,
-    heroIntro: page.hero.supportingText,
-    estimateHeading: page.sections.estimate.heading ?? 'Free estimate request',
-    estimateIntro: page.sections.estimate.supportingText ?? '',
-    servicesOverviewSummary: page.servicesOverviewSummary,
+    cardTitle: normalizeText(page.cardTitle, 'Tree Service'),
+    seoTitle: normalizeText(page.seo.title, 'Tree Service'),
+    seoDescription: normalizeText(page.seo.description, 'Local tree service information.'),
+    heroTitle: normalizeText(page.hero.heading, 'Tree Service'),
+    heroIntro: page.hero.supportingText.trim(),
+    estimateHeading: normalizeText(page.sections.estimate.heading, 'Free estimate request'),
+    estimateIntro: page.sections.estimate.supportingText.trim(),
+    servicesOverviewSummary: normalizeText(page.servicesOverviewSummary, page.serviceCardSummary),
     includedLayout:
       resolveSectionVariant(page.sections.whatsIncluded.displayStyle).included,
     whenLayout:
       resolveSectionVariant(page.sections.whenYouNeedThis.displayStyle).whenNeeded,
-    whenYouNeedThisService: page.sections.whenYouNeedThis.bullets ?? [],
+    whenYouNeedThisService: normalizeStringList(page.sections.whenYouNeedThis.bullets ?? []),
     whatsIncluded: (page.sections.whatsIncluded.items ?? []).map((item) => ({
-      title: item.title,
-      description: toSectionDescription(item),
+      title: normalizeText(item.title, 'Included service item'),
+      description: normalizeText(toSectionDescription(item), 'Service details available on request.'),
     })),
-    processSteps: [...page.processSteps],
-    relatedServices: [...page.relatedServiceLinks],
-    faq: [...page.sections.faq.items],
-    serviceCardSummary: page.serviceCardSummary,
+    processSteps: normalizeStringList(normalizedProcessSteps),
+    relatedServices: normalizeRelatedLinks([...page.relatedServiceLinks]),
+    faq: normalizeFaqItems([...page.sections.faq.items]),
+    serviceCardSummary: normalizeText(page.serviceCardSummary, page.cardTitle),
     icon: fallbackIcon,
   };
 }
@@ -144,6 +238,63 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
   }
 
   const selectedPreset = resolveSiteStylePreset(intake);
+  const normalizedTrustBadges = normalizeStringList(intake.sharedContent.trustBadges);
+  const normalizedFooterCredit = normalizeText(
+    intake.sharedContent.footerCredit,
+    baselineDefaults.sharedContent.footerCredit,
+  );
+  const normalizedServiceAreaLookup = {
+    heading: normalizeText(
+      intake.sharedContent.serviceAreaLookup.heading,
+      baselineDefaults.sharedContent.serviceAreaLookup.heading,
+    ),
+    intro: normalizeText(
+      intake.sharedContent.serviceAreaLookup.intro,
+      baselineDefaults.sharedContent.serviceAreaLookup.intro,
+    ),
+    inputLabel: normalizeText(
+      intake.sharedContent.serviceAreaLookup.inputLabel,
+      baselineDefaults.sharedContent.serviceAreaLookup.inputLabel,
+    ),
+    inputPlaceholder: normalizeText(
+      intake.sharedContent.serviceAreaLookup.inputPlaceholder,
+      baselineDefaults.sharedContent.serviceAreaLookup.inputPlaceholder,
+    ),
+    submitButtonLabel: normalizeText(
+      intake.sharedContent.serviceAreaLookup.submitButtonLabel,
+      baselineDefaults.sharedContent.serviceAreaLookup.submitButtonLabel,
+    ),
+    estimateButtonLabel: normalizeText(
+      intake.sharedContent.serviceAreaLookup.estimateButtonLabel,
+      baselineDefaults.sharedContent.serviceAreaLookup.estimateButtonLabel,
+    ),
+    invalidZipMessage: normalizeText(
+      intake.sharedContent.serviceAreaLookup.invalidZipMessage,
+      baselineDefaults.sharedContent.serviceAreaLookup.invalidZipMessage,
+    ),
+    inAreaMessage: normalizeText(
+      intake.sharedContent.serviceAreaLookup.inAreaMessage,
+      baselineDefaults.sharedContent.serviceAreaLookup.inAreaMessage,
+    ),
+    outOfAreaMessage: normalizeText(
+      intake.sharedContent.serviceAreaLookup.outOfAreaMessage,
+      baselineDefaults.sharedContent.serviceAreaLookup.outOfAreaMessage,
+    ),
+  };
+  const normalizedHomepageModal = {
+    heading: normalizeText(
+      intake.sharedContent.homepageModal.heading,
+      baselineDefaults.sharedContent.homepageModal.heading,
+    ),
+    intro: normalizeText(
+      intake.sharedContent.homepageModal.intro,
+      baselineDefaults.sharedContent.homepageModal.intro,
+    ),
+    buttonLabel: normalizeText(
+      intake.sharedContent.homepageModal.buttonLabel,
+      baselineDefaults.sharedContent.homepageModal.buttonLabel,
+    ),
+  };
 
   const homeOrder = filterSectionOrder(intake.homepage.sectionOrder, intake.homepage.sections);
   const servicesOrder = filterSectionOrder(intake.pages.services.sectionOrder, intake.pages.services.sections);
@@ -219,7 +370,7 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       mainFileLabel: 'Primary Client Onboarding Questionnaire',
       templateName: 'Reusable Tree Service Website Template',
       referenceClient: intake.business.name,
-      note: 'Preset A keeps the current Parrish live design/output unchanged.',
+      note: 'Preset A keeps the locked baseline live design/output unchanged.',
       selectedSitePreset: selectedPreset.id,
       cloneSafetyWarnings,
     },
@@ -264,8 +415,8 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       cardBorderStyle,
       buttonBorderStyle,
       sectionFrameStyle,
-      colors: parrishDefaults.branding.colorOverrides,
-      styleControls: parrishDefaults.branding.styleControls,
+      colors: baselineDefaults.branding.colorOverrides,
+      styleControls: baselineDefaults.branding.styleControls,
     },
     presets: {
       header: headerVariant,
@@ -316,14 +467,27 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       iconStyle: selectedPreset.iconStyle,
     },
     ctas: {
-      ...parrishDefaults.ctas,
+      ...baselineDefaults.ctas,
       heroEstimate: intake.contactCallsToAction.primaryButtonLabel,
       homepageEstimate: intake.contactCallsToAction.primaryButtonLabel,
       requestEstimate: intake.contactCallsToAction.primaryButtonLabel,
       secondaryButtonLabel: intake.contactCallsToAction.secondaryButtonLabel,
     } as TemplateConfig['ctas'],
+    footer: {
+      creditText: normalizedFooterCredit,
+    },
+    navigation: {
+      primaryLinks: buildPrimaryNavigation(intake),
+    },
     trust: {
-      trustBadges: intake.sharedContent.trustBadges,
+      trustBadges: normalizedTrustBadges,
+    },
+    sharedContent: {
+      estimateSectionLead: normalizeText(
+        intake.sharedContent.estimateSectionLead,
+        baselineDefaults.sharedContent.estimateSectionLead,
+      ),
+      serviceAreaLookup: normalizedServiceAreaLookup,
     },
     services: {
       treeRemoval: createServicePageData(
@@ -361,16 +525,16 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
           undefined,
           'estimate-modal',
         ),
-        trustBadges: intake.sharedContent.trustBadges,
-        servicesLead: intake.homepage.sections.services.intro ?? '',
+        trustBadges: normalizedTrustBadges,
+        servicesLead: intake.homepage.sections.services.intro?.trim() ?? '',
         estimateCta: {
-          eyebrow: intake.contactCallsToAction.primaryButtonLabel,
-          heading: intake.homepage.sections.estimate.heading ?? 'Get a Free Estimate',
-          intro: intake.homepage.sections.estimate.supportingText ?? intake.contactCallsToAction.estimateIntro,
-          buttonLabel: intake.contactCallsToAction.primaryButtonLabel,
+          eyebrow: normalizeText(intake.contactCallsToAction.primaryButtonLabel, baselineDefaults.ctas.heroEstimate),
+          heading: normalizeText(intake.homepage.sections.estimate.heading, 'Get a Free Estimate'),
+          intro: normalizeText(intake.homepage.sections.estimate.supportingText, intake.contactCallsToAction.estimateIntro),
+          buttonLabel: normalizeText(intake.contactCallsToAction.primaryButtonLabel, baselineDefaults.ctas.heroEstimate),
         },
-        faq: [...(intake.homepage.sections.faq.items as { question: string; answer: string }[])],
-        modal: intake.sharedContent.homepageModal,
+        faq: normalizeFaqItems([...(intake.homepage.sections.faq.items as { question: string; answer: string }[])]),
+        modal: normalizedHomepageModal,
         layout: normalizeLayout('/', homeOrder, intake.homepage.sections, {
           services: 'base',
           whyChooseUs: 'warm',
@@ -388,16 +552,17 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
           intake.pages.services.hero.heading,
           intake.pages.services.hero.supportingText,
           intake.pages.services.hero.backgroundStyle,
-          'link',
+          'modal',
           intake.contactCallsToAction.primaryButtonLabel,
-          '/contact',
+          undefined,
+          'estimate-modal',
         ),
-        compareCards: intake.sharedContent.servicesPage.compareCards,
-        estimateTips: intake.sharedContent.servicesPage.estimateTips,
+        compareCards: normalizeCompareCards(intake.sharedContent.servicesPage.compareCards),
+        estimateTips: normalizeStringList(intake.sharedContent.servicesPage.estimateTips),
         estimateForm: {
-          heading: intake.pages.services.sections.estimate.heading ?? 'Free estimate request',
-          intro: intake.pages.services.sections.estimate.supportingText ?? intake.contactCallsToAction.estimateIntro,
-          buttonLabel: parrishDefaults.ctas.submitEstimate,
+          heading: normalizeText(intake.pages.services.sections.estimate.heading, 'Free estimate request'),
+          intro: normalizeText(intake.pages.services.sections.estimate.supportingText, intake.contactCallsToAction.estimateIntro),
+          buttonLabel: baselineDefaults.ctas.submitEstimate,
         },
         layout: normalizeLayout('/services', servicesOrder, intake.pages.services.sections, {
           servicesOverview: 'base',
@@ -416,12 +581,13 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
           intake.pages.about.hero.heading,
           intake.pages.about.hero.supportingText,
           intake.pages.about.hero.backgroundStyle,
-          'link',
+          'modal',
           intake.contactCallsToAction.primaryButtonLabel,
-          '/contact',
+          undefined,
+          'estimate-modal',
         ),
-        homeownerNeeds: intake.sharedContent.aboutPage.homeownerNeeds,
-        howRequestsWork: intake.sharedContent.aboutPage.howRequestsWork,
+        homeownerNeeds: normalizeCompareCards(intake.sharedContent.aboutPage.homeownerNeeds),
+        howRequestsWork: normalizeStringList(intake.sharedContent.aboutPage.howRequestsWork),
         layout: normalizeLayout('/about', aboutOrder, intake.pages.about.sections, {
           whatHomeownersNeed: 'base',
           faq: 'cool',
@@ -436,8 +602,10 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
           intake.pages.contact.hero.heading,
           intake.pages.contact.hero.supportingText,
           intake.pages.contact.hero.backgroundStyle,
-          'none',
-          '',
+          'modal',
+          intake.contactCallsToAction.primaryButtonLabel,
+          undefined,
+          'estimate-modal',
         ),
         beforeYouSubmit: (
           (intake.pages.contact.sections.beforeYouSubmit.items ?? []) as Array<{
@@ -450,9 +618,9 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
           description: toSectionDescription(item),
         })),
         estimateForm: {
-          heading: intake.pages.contact.sections.estimate.heading ?? 'Free estimate request',
-          intro: intake.pages.contact.sections.estimate.supportingText ?? intake.contactCallsToAction.estimateIntro,
-          buttonLabel: parrishDefaults.ctas.submitEstimate,
+          heading: normalizeText(intake.pages.contact.sections.estimate.heading, 'Free estimate request'),
+          intro: normalizeText(intake.pages.contact.sections.estimate.supportingText, intake.contactCallsToAction.estimateIntro),
+          buttonLabel: baselineDefaults.ctas.submitEstimate,
         },
         layout: normalizeLayout('/contact', contactOrder, intake.pages.contact.sections, {
           beforeYouSubmit: 'warm',

@@ -25,7 +25,7 @@ import type {
   SiteStylePresetId,
 } from './intake-types';
 
-export const DEFAULT_SITE_PRESET_ID: SiteStylePresetId = 'preset-a-parrish-baseline';
+export const DEFAULT_SITE_PRESET_ID: SiteStylePresetId = 'preset-a-baseline';
 
 const sectionComponentMap: Record<string, string> = {
   hero: 'HeroSection',

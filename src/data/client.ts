@@ -19,6 +19,9 @@ export const client = {
   serviceAreas: templateConfig.business.serviceAreas,
   serviceAreaCopy: templateConfig.business.serviceAreaCopy,
   ctas: templateConfig.ctas,
+  footer: templateConfig.footer,
+  navigation: templateConfig.navigation,
   hours: templateConfig.business.hours,
+  sharedContent: templateConfig.sharedContent,
   social: templateConfig.social,
 } as const;

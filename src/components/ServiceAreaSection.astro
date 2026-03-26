@@ -24,7 +24,7 @@ const {
 ---
 
 <PageSection
-  class="section-desktop-split"
+  class:list={['section-desktop-split', `service-area-variant-${variant}`]}
   section="service-area"
   page={pageId}
   borderVariant="straight-bottom"
@@ -32,11 +32,11 @@ const {
 >
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">Service Area</h2>
-    <p class:list={['section-lead', 'subpage-section-lead', 'clone-intro', `service-area-variant-${variant}`]}>
+    <p class:list={['section-lead', 'subpage-section-lead', 'clone-intro']}>
       {copy}
     </p>
   </div>
-  <div data-block="map">
+  <div data-block="map" data-service-area-variant={variant}>
     <ServiceAreaZipLookup inputId={lookupInputId} />
     <ServiceAreaMap />
   </div>
