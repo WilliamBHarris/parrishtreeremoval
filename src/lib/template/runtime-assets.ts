@@ -1,6 +1,9 @@
 import type { ImageMetadata } from 'astro';
 
-const assetModules = import.meta.glob('../../assets/*.{png,PNG,jpg,JPG,jpeg,JPEG,webp,WEBP,avif,AVIF,svg,SVG}', {
+const assetModules = import.meta.glob([
+  '../../assets/*.{png,PNG,jpg,JPG,jpeg,JPEG,webp,WEBP,avif,AVIF,svg,SVG}',
+  '!../../assets/*.original.*',
+], {
   eager: true,
   import: 'default',
 }) as Record<string, ImageMetadata>;
