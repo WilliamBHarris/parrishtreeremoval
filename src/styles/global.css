@@ -1129,6 +1129,10 @@ body.menu-open .mobile-drawer-footer .drawer-cta { transition-delay: 460ms; }
   transform: translate(-50%, 26%);
 }
 
+.hero-cta-inline {
+  display: none;
+}
+
 .btn-primary,
 .hero-cta {
   display: inline-flex;
