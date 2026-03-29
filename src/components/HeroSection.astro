@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import HeroOutlineCopy from './HeroOutlineCopy.astro';
 import HeroTitleWords from './HeroTitleWords.astro';
 import { brand } from '../data/brand';
+import { client } from '../data/client';
 import { templateConfig } from '../data/client-questionnaire';
 import { heroImageTransform } from '../data/heroMedia';
 import type { HeroVariant } from '../data/client-questionnaire';
@@ -20,6 +21,7 @@ interface Props {
   titlePrimary: string;
   titleSecondary?: string;
   intro: string;
+  desktopIntro?: string;
   outlineWords: string[];
   variant?: HeroVariant;
   cta?: HeroAction;
@@ -30,10 +32,28 @@ const {
   titlePrimary,
   titleSecondary = '',
   intro,
+  desktopIntro,
   outlineWords,
   variant = templateConfig.presets.hero,
   cta = { kind: 'none', label: '' },
 } = Astro.props;
+
+const desktopIntroByPageId: Record<string, string> = {
+  home: 'Tree removal, trimming, stump grinding, and storm cleanup in Parrish, FL.',
+  services: 'Find the right tree service for your property in Parrish, FL.',
+  about: 'Dependable local tree service for Parrish-area homeowners.',
+  contact: 'Reach out for estimates, service questions, and scheduling in Parrish, FL.',
+  'tree-removal': 'Safe tree removal for damaged, unsafe, or unwanted trees in Parrish, FL.',
+  'tree-trimming': 'Professional trimming for cleaner canopies, better clearance, and routine upkeep.',
+  'stump-grinding': 'Stump grinding that clears old stumps and opens up usable yard space.',
+  'emergency-tree-service': 'Fast storm cleanup and emergency tree service when damage needs attention.',
+};
+
+const resolvedDesktopIntro = desktopIntro ?? desktopIntroByPageId[pageId];
+const desktopHeroTitle = `${titlePrimary}${titleSecondary ? ` ${titleSecondary}` : ''}`.trim();
+const desktopHeroWords = desktopHeroTitle.split(/\s+/);
+const normalizedDesktopHeroWords = desktopHeroWords.map((word) => word.replace(/[^a-z0-9]+/gi, '').toLowerCase());
+const desktopHeroHasTreeWord = normalizedDesktopHeroWords.includes('tree');
 
 const heroClassName = [
   'page-hero',
@@ -71,10 +91,54 @@ const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
       )}
       <div class="hero-copy" data-block="content">
         <h1 data-block="title">
-          <span class="hero-title-primary"><HeroTitleWords text={titlePrimary} /></span>
-          {titleSecondary && <span class="hero-title-secondary">{titleSecondary}</span>}
+          <span class="hero-title-primary hero-title-primary-mobile"><HeroTitleWords text={titlePrimary} /></span>
+          {titleSecondary && <span class="hero-title-secondary hero-title-secondary-mobile">{titleSecondary}</span>}
+          <span class="hero-title-desktop">
+            {desktopHeroWords.map((word, index) => (
+              <>
+                <span
+                  class={
+                    normalizedDesktopHeroWords[index] === 'tree' || (!desktopHeroHasTreeWord && index === 0)
+                      ? 'hero-word-accent'
+                      : undefined
+                  }
+                >
+                  {word}
+                </span>
+                {index < desktopHeroWords.length - 1 ? ' ' : ''}
+              </>
+            ))}
+          </span>
         </h1>
         {intro && <p class="hero-subcopy" data-block="intro">{intro}</p>}
+        {resolvedDesktopIntro && <p class="hero-subcopy hero-subcopy-desktop" data-block="intro-desktop">{resolvedDesktopIntro}</p>}
+        {cta.kind !== 'none' && (
+          <div class="hero-cta-inline" data-block="cta-inline">
+            {cta.kind === 'modal' ? (
+              <button
+                type="button"
+                class="hero-cta"
+                data-open-estimate-modal
+                aria-haspopup="dialog"
+                aria-controls={cta.target}
+              >
+                {cta.label}
+              </button>
+            ) : (
+              <a href={cta.href} class="hero-cta">
+                {cta.label}
+              </a>
+            )}
+
+            <a
+              href={`tel:${client.primaryPhoneHref}`}
+              class="hero-cta hero-cta-secondary"
+              aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
+            >
+              Call Now
+            </a>
+          </div>
+        )}
       </div>
     </div>
     {cta.kind !== 'none' && (

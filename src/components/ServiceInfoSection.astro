@@ -22,8 +22,10 @@ const {
 } = Astro.props;
 
 const desktopIntroBySection: Record<string, string> = {
-  'when-you-need-this-service': 'Common signs the property is ready for this work.',
-  'whats-included': 'A quick overview of what the service typically covers.',
+  'when-you-need-this-service':
+    'Use these common situations to decide whether this service fits the condition of the tree, the property, and the kind of tree work, cleanup, or scheduling support you need next before the issue gets larger or harder to manage.',
+  'whats-included':
+    'A clearer look at what the service usually covers, how the work is approached, and what homeowners can expect from the overall job scope, cleanup, property care, and next-step planning.',
 };
 ---
 
@@ -51,7 +53,8 @@ const desktopIntroBySection: Record<string, string> = {
               item
             ) : (
               <>
-                <strong class="list-copy-item-title">{item.title}:</strong> {item.description}
+                <strong class="list-copy-item-title">{item.title}:</strong>
+                <span class="list-copy-item-body">{item.description}</span>
               </>
             )}
           </li>

@@ -229,6 +229,7 @@ export interface FaqItem {
 export interface ServiceLink {
   href: string;
   label: string;
+  description?: string;
 }
 
 export interface IncludedItem {
@@ -273,6 +274,11 @@ export interface HeroContent {
   intro: string;
   variant: HeroVariant;
   cta: HeroAction;
+}
+
+export interface TrustBadge {
+  label: string;
+  description: string;
 }
 
 export interface LayoutSectionEntry {
@@ -624,7 +630,7 @@ export interface TemplateConfig {
     primaryLinks: NavigationLink[];
   };
   trust: {
-    trustBadges: string[];
+    trustBadges: TrustBadge[];
   };
   sharedContent: {
     estimateSectionLead: string;
@@ -652,7 +658,7 @@ export interface TemplateConfig {
       title: string;
       description: string;
       hero: HeroContent;
-      trustBadges: string[];
+      trustBadges: TrustBadge[];
       servicesLead: string;
       estimateCta: {
         eyebrow: string;

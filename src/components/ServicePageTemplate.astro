@@ -27,7 +27,7 @@ interface Props {
   whenYouNeedThisService: string[];
   whatsIncluded: Array<string | IncludedItem>;
   processSteps: string[];
-  relatedServices: Array<{ href: string; label: string }>;
+  relatedServices: Array<{ href: string; label: string; description?: string }>;
   faqs: FaqItem[];
   whenLayout?: 'list' | 'cards';
   includedLayout?: 'stack' | 'grid';
@@ -84,7 +84,7 @@ const processStepItems = processSteps.map((item, index) => ({
   <ServiceInfoSection
     pageId={pageId}
     section="when-you-need-this-service"
-    title="When You Need This Service"
+    title="When You Need It"
     items={whenYouNeedThisService}
     layout={whenLayout === 'cards' ? 'grid' : 'list'}
     surfaceTone="base"
@@ -109,6 +109,7 @@ const processStepItems = processSteps.map((item, index) => ({
     links={relatedServices.map((service) => ({
       href: service.href,
       label: getVisibleRelatedLabel(service.label),
+      description: service.description,
     }))}
     surfaceTone="base"
   />

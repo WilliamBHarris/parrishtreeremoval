@@ -90,6 +90,13 @@ const baselineDefaults = {
 const defaultProcessClosingStep =
   'Once the scope is clear, the job can move forward into quoting and scheduling.';
 
+const trustBadgeDescriptions: Record<string, string> = {
+  'Locally focused service': 'Built around Parrish-area homeowners and nearby residential properties.',
+  'Prompt communication': 'Quick follow-up, clear updates, and straightforward scheduling support.',
+  'Residential tree work': 'Practical help for tree service, cleanup, and everyday property needs.',
+  'Clean project follow-through': 'A tidy finish with debris handled and the work area left in order.',
+};
+
 function normalizeText(value: string | undefined | null, fallback: string) {
   return value && value.trim().length > 0 ? value.trim() : fallback;
 }
@@ -100,12 +107,48 @@ function normalizeStringList(values: Array<string | undefined | null>) {
     .filter((value): value is string => value.length > 0);
 }
 
+function normalizeTrustBadges(values: Array<string | undefined | null>) {
+  return normalizeStringList(values).map((label) => ({
+    label,
+    description:
+      trustBadgeDescriptions[label] ??
+      'Clear, dependable service shaped around the property and the next step.',
+  }));
+}
+
 function normalizeFaqItems<T extends { question: string; answer: string }>(items: T[]) {
   return items.filter((item) => item.question.trim().length > 0 && item.answer.trim().length > 0);
 }
 
-function normalizeRelatedLinks<T extends { href: string; label: string }>(links: T[]) {
-  return links.filter((link) => link.href.trim().length > 0 && link.label.trim().length > 0);
+function normalizeRelatedLinks<T extends { href: string; label: string }>(
+  links: T[],
+  validServiceLinks: Array<{ href: string; label: string; description: string }>,
+  currentServiceHref: string,
+) {
+  const allowedServiceLinks = new Map(
+    validServiceLinks.map((link) => [normalizeNavigationHref(link.href), link] as const),
+  );
+  const normalized = links
+    .map((link) => {
+      const href = normalizeNavigationHref(link.href);
+      if (!href || href === currentServiceHref || !allowedServiceLinks.has(href) || link.label.trim().length === 0) {
+        return null;
+      }
+
+      return {
+        href,
+        label: link.label.trim(),
+        description: allowedServiceLinks.get(href)?.description,
+      };
+    })
+    .filter((link): link is { href: string; label: string; description?: string } => link !== null);
+
+  const usedHrefs = new Set(normalized.map((link) => link.href));
+  const fallbackLinks = validServiceLinks.filter(
+    (link) => link.href !== currentServiceHref && !usedHrefs.has(link.href),
+  );
+
+  return [...normalized, ...fallbackLinks].slice(0, Math.max(validServiceLinks.length - 1, 0));
 }
 
 function normalizeCompareCards<T extends { title: string; description: string }>(items: T[]) {
@@ -197,6 +240,7 @@ function buildServicePageSource(
   slug: string,
   page: ClientIntake['pages']['treeRemoval'],
   fallbackIcon: string,
+  validServiceLinks: Array<{ href: string; label: string }>,
 ) {
   const normalizedProcessSteps =
     page.processSteps.length >= 4
@@ -222,7 +266,7 @@ function buildServicePageSource(
       description: normalizeText(toSectionDescription(item), 'Service details available on request.'),
     })),
     processSteps: normalizeStringList(normalizedProcessSteps),
-    relatedServices: normalizeRelatedLinks([...page.relatedServiceLinks]),
+    relatedServices: normalizeRelatedLinks([...page.relatedServiceLinks], validServiceLinks, `/${slug}`),
     faq: normalizeFaqItems([...page.sections.faq.items]),
     serviceCardSummary: normalizeText(page.serviceCardSummary, page.cardTitle),
     icon: fallbackIcon,
@@ -238,7 +282,7 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
   }
 
   const selectedPreset = resolveSiteStylePreset(intake);
-  const normalizedTrustBadges = normalizeStringList(intake.sharedContent.trustBadges);
+  const normalizedTrustBadges = normalizeTrustBadges(intake.sharedContent.trustBadges);
   const normalizedFooterCredit = normalizeText(
     intake.sharedContent.footerCredit,
     baselineDefaults.sharedContent.footerCredit,
@@ -295,6 +339,28 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       baselineDefaults.sharedContent.homepageModal.buttonLabel,
     ),
   };
+  const servicePageLinkPool = [
+    {
+      href: '/tree-removal',
+      label: 'Tree Removal in Parrish, FL',
+      description: 'Remove damaged or unwanted trees safely.',
+    },
+    {
+      href: '/tree-trimming',
+      label: 'Tree Trimming in Parrish, FL',
+      description: 'Trim trees for clearance, shape, and upkeep.',
+    },
+    {
+      href: '/stump-grinding',
+      label: 'Stump Grinding in Parrish, FL',
+      description: 'Clear old stumps and open up the yard.',
+    },
+    {
+      href: '/emergency-tree-service',
+      label: 'Storm Cleanup in Parrish, FL',
+      description: 'Clean up storm damage and fallen debris.',
+    },
+  ];
 
   const homeOrder = filterSectionOrder(intake.homepage.sectionOrder, intake.homepage.sections);
   const servicesOrder = filterSectionOrder(intake.pages.services.sectionOrder, intake.pages.services.sections);
@@ -493,22 +559,22 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       treeRemoval: createServicePageData(
         'tree-removal',
         'tree-removal',
-        buildServicePageSource('tree-removal', intake.pages.treeRemoval, '🪵'),
+        buildServicePageSource('tree-removal', intake.pages.treeRemoval, '🪵', servicePageLinkPool),
       ),
       treeTrimming: createServicePageData(
         'tree-trimming',
         'tree-trimming',
-        buildServicePageSource('tree-trimming', intake.pages.treeTrimming, '🌳'),
+        buildServicePageSource('tree-trimming', intake.pages.treeTrimming, '🌳', servicePageLinkPool),
       ),
       stumpGrinding: createServicePageData(
         'stump-grinding',
         'stump-grinding',
-        buildServicePageSource('stump-grinding', intake.pages.stumpGrinding, '🚜'),
+        buildServicePageSource('stump-grinding', intake.pages.stumpGrinding, '🚜', servicePageLinkPool),
       ),
       stormCleanup: createServicePageData(
         'emergency-tree-service',
         'emergency-tree-service',
-        buildServicePageSource('emergency-tree-service', intake.pages.emergencyTreeService, '⛈️'),
+        buildServicePageSource('emergency-tree-service', intake.pages.emergencyTreeService, '⛈️', servicePageLinkPool),
       ),
     },
     pages: {

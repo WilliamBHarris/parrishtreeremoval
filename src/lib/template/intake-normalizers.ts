@@ -149,7 +149,7 @@ export function createServicePageData(
     whenYouNeedThisService: string[];
     whatsIncluded: Array<string | { title: string; description: string }>;
     processSteps: string[];
-    relatedServices: { href: string; label: string }[];
+    relatedServices: { href: string; label: string; description?: string }[];
     faq: { question: string; answer: string }[];
     serviceCardSummary: string;
     icon: string;

@@ -182,8 +182,9 @@ export const clientIntake = {
       'Residential tree work',
       'Clean project follow-through',
     ],
-    footerCredit: '© Will Made It.',
-    estimateSectionLead: 'Share a few job details and the next step stays simple.',
+    footerCredit: '© FoxScroll 2026',
+    estimateSectionLead:
+      'Share a few project details, the service you need, and anything important about access, timing, or property conditions so the next step stays clear, straightforward, and easier to schedule with the right scope in mind.',
     serviceAreaLookup: {
       heading: 'Are We In Your Area?',
       intro: 'Enter your zip code.',
@@ -414,12 +415,12 @@ export const clientIntake = {
           enabled: true,
           displayStyle: 'Highlighted single card',
           intro:
-            'Tree removal may be the right solution when a tree is unsafe, unhealthy, or causing problems on your property.',
+            'Tree removal makes sense when a tree is unsafe, unhealthy, or causing problems.',
           bullets: [
-            'The tree is dead, leaning, or structurally unsafe.',
-            'Storm damage has made the tree unstable.',
+            'The tree is dead, leaning, or unsafe.',
+            'Storm damage has made it unstable.',
             'Roots or growth are affecting nearby structures.',
-            'The tree no longer fits your property plans.',
+            'The tree no longer fits your plans.',
           ],
         },
         whatsIncluded: {
@@ -515,11 +516,11 @@ export const clientIntake = {
           enabled: true,
           displayStyle: 'Highlighted single card',
           intro:
-            'Tree trimming can help keep trees looking better, growing more cleanly, and reducing problem limbs.',
+            'Tree trimming helps improve shape, clearance, and problem limbs.',
           bullets: [
-            'Branches are hanging too close to your home or driveway.',
+            'Branches hang too close to your home or driveway.',
             'The canopy looks overgrown or uneven.',
-            'You want to improve appearance and maintenance.',
+            'You want easier upkeep and a cleaner look.',
             'You want to reduce risk from weak or crowded limbs.',
           ],
         },
@@ -614,12 +615,12 @@ export const clientIntake = {
           enabled: true,
           displayStyle: 'Highlighted single card',
           intro:
-            'Stump grinding is a practical choice when an old stump is in the way or affecting the look of the property.',
+            'Stump grinding helps when an old stump is in the way or hurting the look of the yard.',
           bullets: [
-            'An old stump is creating an eyesore.',
+            'An old stump is an eyesore.',
             'You want more usable yard space.',
             'The area is harder to mow or maintain.',
-            'You want to fully finish a previous tree removal.',
+            'You want to finish a previous tree removal.',
           ],
         },
         whatsIncluded: {
@@ -714,12 +715,12 @@ export const clientIntake = {
           enabled: true,
           displayStyle: 'Highlighted single card',
           intro:
-            'Emergency tree service is for urgent situations where safety, access, or property protection matters right away.',
+            'Storm cleanup is for urgent situations where safety, access, or property protection matters right away.',
           bullets: [
-            'A tree or large limb has fallen after a storm.',
-            'A damaged tree now poses a safety concern.',
-            'Access to your driveway or property is blocked.',
-            'You need quick cleanup and a clear next step.',
+            'A tree or large limb fell after a storm.',
+            'A damaged tree now creates a safety risk.',
+            'Your driveway or property access is blocked.',
+            'You need fast cleanup and a clear next step.',
           ],
         },
         whatsIncluded: {
@@ -776,7 +777,7 @@ export const clientIntake = {
         estimate: {
           enabled: true,
           displayStyle: 'Variant A estimate section',
-          heading: 'Request Emergency Tree Service',
+          heading: 'Request Emergency Tree Service',  
           supportingText: 'Share the urgent issue and we’ll help you take the next step quickly.',
         },
       },

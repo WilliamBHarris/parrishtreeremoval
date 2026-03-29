@@ -42,7 +42,12 @@ const homeFaqSchema = createFaqSchema(homePage.faq);
   <div class="page-shell" data-page="home">
     <section class="page-section trust-badges-section" aria-label="Helpful project highlights" data-section="trust-badges" data-page="home">
       <div class="badge-row">
-        {homePage.trustBadges.map((badge) => <span>{badge}</span>)}
+        {homePage.trustBadges.map((badge) => (
+          <article class="badge-item">
+            <span class="badge-title">{badge.label}</span>
+            <span class="badge-description">{badge.description}</span>
+          </article>
+        ))}
       </div>
     </section>
 

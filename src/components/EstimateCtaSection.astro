@@ -9,6 +9,7 @@ interface Props {
   eyebrow: string;
   heading: string;
   intro: string;
+  desktopIntro?: string;
   buttonLabel: string;
   variant?: EstimateCtaVariant;
   surfaceTone?: SectionTone;
@@ -20,10 +21,18 @@ const {
   eyebrow,
   heading,
   intro,
+  desktopIntro,
   buttonLabel,
   variant = templateConfig.presets.estimateCta,
   surfaceTone = 'olive',
 } = Astro.props;
+
+const desktopIntroByPageId: Record<string, string> = {
+  home:
+    'Tell us what is happening at the property, which tree service you need, and any timing, access, or storm-related details so we can help you move toward the right next step without unnecessary back-and-forth or guesswork.',
+};
+
+const resolvedDesktopIntro = desktopIntro ?? desktopIntroByPageId[pageId];
 ---
 
 <PageSection
@@ -36,7 +45,8 @@ const {
   <div class:list={['estimate-cta-card', `estimate-cta-variant-${variant}`]} data-block="content">
     <h2 class="clone-kicker section-divider-title" data-block="heading">{eyebrow}</h2>
     <p class="estimate-cta-heading" data-block="title">{heading}</p>
-    <p data-block="intro">{intro}</p>
+    <p class="section-mobile-lead" data-block="intro">{intro}</p>
+    <p class="section-desktop-lead" data-block="intro-desktop">{resolvedDesktopIntro ?? intro}</p>
     <button
       type="button"
       class="btn-primary"

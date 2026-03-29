@@ -6,6 +6,7 @@ import type { RelatedServicesVariant, SectionTone } from '../data/client-questio
 interface ServiceLink {
   href: string;
   label: string;
+  description?: string;
 }
 
 interface Props {
@@ -31,7 +32,7 @@ const {
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
     <p class="section-lead section-desktop-lead clone-intro">
-      Explore the other core services available for Parrish properties.
+      Explore the other core tree services available for Parrish properties so it is easier to pair related work, compare options, or move to the next service that best fits the job, the cleanup, or the property goals.
     </p>
   </div>
   <div
@@ -43,7 +44,10 @@ const {
   >
     {links.map((service) => (
       <a href={service.href} class="subpage-service-button" aria-label={`Go to ${service.label}`}>
-        {service.label}
+        <span class="subpage-service-button-copy">
+          <span class="subpage-service-button-title">{service.label}</span>
+          {service.description && <span class="subpage-service-button-description">{service.description}</span>}
+        </span>
       </a>
     ))}
   </div>

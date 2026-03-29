@@ -10,6 +10,7 @@ interface Props {
   sectionKey?: string;
   title?: string;
   lead?: string;
+  desktopLead?: string;
   services: ServicePageData[];
   variant?: ServicesVariant;
   summaryMode?: 'card' | 'overview';
@@ -22,11 +23,21 @@ const {
   sectionKey = 'services',
   title = 'Our Services',
   lead,
+  desktopLead,
   services,
   variant = templateConfig.presets.services,
   summaryMode = 'card',
   surfaceTone = 'base',
 } = Astro.props;
+
+const desktopLeadBySectionKey: Record<string, string> = {
+  services:
+    'Explore the core tree services we handle most often for Parrish properties, from routine tree trimming and stump work to larger removals and storm-related cleanup, so it is easier to understand which service best fits the property, the safety concern, and the kind of work the job actually needs.',
+  'services-overview':
+    'Use this overview to compare the main service types, understand where each one fits, and choose the best next step for the property based on safety concerns, cleanup needs, maintenance goals, storm damage, and overall yard use.',
+};
+
+const resolvedDesktopLead = desktopLead ?? desktopLeadBySectionKey[sectionKey];
 ---
 
 <PageSection
@@ -38,7 +49,10 @@ const {
 >
   <div class="clone-heading" data-block="heading">
     <h2 class="clone-kicker section-divider-title">{title}</h2>
-    {lead && variant !== 'tabs' && <p class="section-lead clone-intro">{lead}</p>}
+    {lead && variant !== 'tabs' && <p class="section-lead clone-intro section-mobile-lead">{lead}</p>}
+    {resolvedDesktopLead && variant !== 'tabs' && (
+      <p class="section-lead section-desktop-lead clone-intro">{resolvedDesktopLead}</p>
+    )}
   </div>
 
   {variant === 'tabs' ? (
@@ -226,17 +240,30 @@ const {
     </div>
   ) : (
     <div class:list={['services-section-grid', `services-variant-${variant}`]} data-block="cards">
-      {services.map((service) => (
-        <article class="service-card">
-          <div class="service-icon" aria-hidden="true">{service.icon}</div>
-          <h3>{service.cardTitle}</h3>
-          <p>{summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary}</p>
-          <a href={`/${service.slug}`} class="service-link">
-            Learn more
-            <span class="sr-only"> about {service.heroTitle}</span>
-          </a>
-        </article>
-      ))}
+      {services.map((service) => {
+        const mobileSummary = summaryMode === 'card' ? service.serviceCardSummary : service.servicesOverviewSummary;
+        const desktopSummary =
+          summaryMode === 'card'
+            ? [service.serviceCardSummary, service.servicesOverviewSummary]
+                .filter((value, index, values) => Boolean(value) && values.indexOf(value) === index)
+                .join(' ')
+            : service.servicesOverviewSummary;
+
+        return (
+          <article class="service-card">
+            <div class="service-icon" aria-hidden="true">{service.icon}</div>
+            <h3>{service.cardTitle}</h3>
+            <p>
+              <span class="service-card-copy-mobile">{mobileSummary}</span>
+              <span class="service-card-copy-desktop">{desktopSummary}</span>
+            </p>
+            <a href={`/${service.slug}`} class="service-link">
+              Learn more
+              <span class="sr-only"> about {service.heroTitle}</span>
+            </a>
+          </article>
+        );
+      })}
     </div>
   )}
 </PageSection>

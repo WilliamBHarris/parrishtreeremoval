@@ -11,14 +11,17 @@ const hasTreeWord = normalizedWords.includes('tree');
 
 <>
   {words.map((word, index) => (
-    <span
-      class={
-        normalizedWords[index] === 'tree' || (!hasTreeWord && index === 0)
-          ? 'hero-word-accent'
-          : undefined
-      }
-    >
-      {word}
-    </span>
+    <>
+      <span
+        class={
+          normalizedWords[index] === 'tree' || (!hasTreeWord && index === 0)
+            ? 'hero-word-accent'
+            : undefined
+        }
+      >
+        {word}
+      </span>
+      {index < words.length - 1 ? ' ' : ''}
+    </>
   ))}
 </>
