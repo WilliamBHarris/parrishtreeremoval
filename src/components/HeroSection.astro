@@ -66,6 +66,9 @@ const heroClassName = [
   .filter(Boolean)
   .join(' ');
 const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
+
+const isHome = pageId === 'home';
+const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || client.googleRating);
 ---
 
 <section class={heroClassName} data-page={pageId} data-section="hero" data-hero-variant={variant}>
@@ -89,6 +92,20 @@ const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
           loading="eager"
           decoding="async"
         />
+      )}
+      {isHome && (
+        <>
+          <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+          <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+          <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+          <div class="hero-grid-overlay" aria-hidden="true"></div>
+          <div class="hero-particle hero-particle-1" aria-hidden="true"></div>
+          <div class="hero-particle hero-particle-2" aria-hidden="true"></div>
+          <div class="hero-particle hero-particle-3" aria-hidden="true"></div>
+          <div class="hero-particle hero-particle-4" aria-hidden="true"></div>
+          <div class="hero-particle hero-particle-5" aria-hidden="true"></div>
+          <div class="hero-particle hero-particle-6" aria-hidden="true"></div>
+        </>
       )}
       <div class="hero-copy" data-block="content">
         <h1 data-block="title">
@@ -141,6 +158,70 @@ const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
           </div>
         )}
       </div>
+      {isHome && (
+        <div class="hero-mobile-panel" data-mobile-panel>
+          <div class="hero-mobile-headline">
+            <span class="hero-mobile-line-1">Local Tree</span>
+            <span class="hero-mobile-line-2">Service</span>
+            <span class="hero-mobile-line-3">Done Right.</span>
+          </div>
+          <p class="hero-mobile-subheading">Tree removal, trimming, stump grinding &amp; storm cleanup — handled by your local crew.</p>
+          <div class="hero-mobile-ctas">
+            {cta.kind === 'modal' ? (
+              <button
+                type="button"
+                class="hero-cta hero-mobile-cta-primary"
+                data-open-estimate-modal
+                aria-haspopup="dialog"
+                aria-controls={cta.target}
+              >
+                Get a Free Estimate →
+              </button>
+            ) : (cta.kind === 'link' || cta.kind === 'anchor') ? (
+              <a href={cta.href} class="hero-cta hero-mobile-cta-primary">Get a Free Estimate →</a>
+            ) : null}
+            <a href={`tel:${client.primaryPhoneHref}`} class="hero-mobile-call">
+              or call us: <strong>{client.ctas.secondaryButtonLabel}</strong>
+            </a>
+          </div>
+          {hasStats && (
+            <div class="hero-stats-row" data-stats>
+              {client.jobsCompleted ? (
+                <div class="hero-stat" data-target={client.jobsCompleted}>
+                  <span class="hero-stat-number">
+                    <span class="hero-stat-count">0</span><span class="hero-stat-suffix">+</span>
+                  </span>
+                  <div class="hero-stat-underline"></div>
+                  <span class="hero-stat-label">Happy Clients</span>
+                </div>
+              ) : null}
+              {client.yearsInBusiness ? (
+                <div class="hero-stat" data-target={client.yearsInBusiness}>
+                  <span class="hero-stat-number">
+                    <span class="hero-stat-count">0</span><span class="hero-stat-suffix">yr</span>
+                  </span>
+                  <div class="hero-stat-underline"></div>
+                  <span class="hero-stat-label">Experience</span>
+                </div>
+              ) : null}
+              {client.googleRating ? (
+                <div class="hero-stat" data-target={client.googleRating}>
+                  <span class="hero-stat-number">
+                    <span class="hero-stat-count">0</span><span class="hero-stat-suffix">★</span>
+                  </span>
+                  <div class="hero-stat-underline"></div>
+                  <span class="hero-stat-label">Star Rated</span>
+                </div>
+              ) : null}
+            </div>
+          )}
+          <div class="hero-diagonal-clip" aria-hidden="true">
+            <svg viewBox="0 0 300 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0 L300 16 L300 24 L0 24 Z" fill="#c8965a" />
+            </svg>
+          </div>
+        </div>
+      )}
     </div>
     {cta.kind !== 'none' && (
       <div class="hero-cta-wrap" data-block="cta">
@@ -165,4 +246,75 @@ const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
       </div>
     )}
   </div>
+  {isHome && client.trustTicker.length > 0 && (
+    <div class="hero-ticker-wrap" aria-label="Trust highlights">
+      <div class="hero-ticker-track">
+        {[...client.trustTicker, ...client.trustTicker].map((item) => (
+          <span class="hero-ticker-item">
+            <span class="hero-ticker-check" aria-hidden="true">✓</span>
+            {item}
+            <span class="hero-ticker-dot" aria-hidden="true"></span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )}
 </section>
+{isHome && (
+  <script is:inline>
+    (function () {
+      var statsRow = document.querySelector('[data-stats]');
+      if (!statsRow) return;
+
+      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReduced) {
+        statsRow.querySelectorAll('[data-target]').forEach(function (stat) {
+          var target = parseInt(stat.dataset.target, 10);
+          var countEl = stat.querySelector('.hero-stat-count');
+          if (countEl) countEl.textContent = target;
+          var underline = stat.querySelector('.hero-stat-underline');
+          if (underline) underline.classList.add('active');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            observer.disconnect();
+            var stats = statsRow.querySelectorAll('[data-target]');
+            stats.forEach(function (stat, index) {
+              var target = parseInt(stat.dataset.target, 10);
+              var countEl = stat.querySelector('.hero-stat-count');
+              var underline = stat.querySelector('.hero-stat-underline');
+              var delay = index * 200;
+              var duration = 1800;
+              var start = null;
+              setTimeout(function () {
+                function animate(timestamp) {
+                  if (!start) start = timestamp;
+                  var progress = Math.min((timestamp - start) / duration, 1);
+                  var eased = 1 - Math.pow(1 - progress, 3);
+                  var current = Math.round(target * eased);
+                  if (countEl) countEl.textContent = current;
+                  if (progress < 1) {
+                    requestAnimationFrame(animate);
+                  } else {
+                    if (countEl) countEl.textContent = target;
+                    if (underline) underline.classList.add('active');
+                  }
+                }
+                requestAnimationFrame(animate);
+              }, delay);
+            });
+          });
+        },
+        { threshold: 0.3 }
+      );
+
+      observer.observe(statsRow);
+    })();
+  </script>
+)}
