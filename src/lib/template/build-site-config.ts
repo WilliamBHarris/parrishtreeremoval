@@ -470,7 +470,14 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       serviceAreas: intake.businessOperations.serviceAreasCovered,
       serviceAreaCopy: intake.business.serviceAreaSummary,
       serviceAreaZipCodes: intake.businessOperations.serviceAreaZipCodes,
+      jobsCompleted: intake.business.jobsCompleted || undefined,
+      yearsInBusiness: intake.business.yearsInBusiness || undefined,
+      googleRating: intake.business.googleRating || undefined,
     },
+    colorTheme: intake.brandDirection.colorTheme ?? 'forest',
+    trustTicker: intake.sharedContent.trustTicker.length > 0
+      ? intake.sharedContent.trustTicker
+      : ['Licensed & Insured', 'Free Estimates', 'Same-Day Available', 'Local & Trusted', 'Storm Response', 'Free Cleanup Included'],
     branding: {
       identity: {
         mark: intake.brandAssets.identityMark,

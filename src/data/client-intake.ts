@@ -84,6 +84,9 @@ export const clientIntake = {
     emergencyServiceOffered: true,
     residentialOnly: false,
     licenseAndInsuranceNote: 'Licensed and insured.',
+    jobsCompleted: 500,
+    yearsInBusiness: 10,
+    googleRating: 5,
   },
 
   // STEP 1B: Operational defaults that a future client will likely replace.
@@ -140,6 +143,7 @@ export const clientIntake = {
     writingTone: 'Professional and local',
     primaryEmphasis: 'Fast estimates and reliable service',
     secondaryEmphasis: 'Safe, respectful work around your property',
+    colorTheme: 'forest',
   },
 
   // STEP 3: Adjust sitewide CTA wording if needed.
@@ -187,6 +191,14 @@ export const clientIntake = {
       'Prompt communication',
       'Residential tree work',
       'Clean project follow-through',
+    ],
+    trustTicker: [
+      'Licensed & Insured',
+      'Free Estimates',
+      'Same-Day Available',
+      'Local & Trusted',
+      'Storm Response',
+      'Free Cleanup Included',
     ],
     footerCredit: '© FoxScroll 2026',
     estimateSectionLead:

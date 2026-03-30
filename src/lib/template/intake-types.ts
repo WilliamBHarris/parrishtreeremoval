@@ -425,6 +425,9 @@ export interface ClientIntake {
     emergencyServiceOffered: boolean;
     residentialOnly: boolean;
     licenseAndInsuranceNote: string;
+    jobsCompleted?: number;
+    yearsInBusiness?: number;
+    googleRating?: number;
   };
   businessOperations: {
     state: string;
@@ -465,6 +468,7 @@ export interface ClientIntake {
     writingTone: WritingToneLabel;
     primaryEmphasis: string;
     secondaryEmphasis: string;
+    colorTheme?: 'forest' | 'storm' | 'terrain' | 'sunlit';
   };
   contactCallsToAction: {
     primaryButtonLabel: string;
@@ -495,6 +499,7 @@ export interface ClientIntake {
   };
   sharedContent: {
     trustBadges: string[];
+    trustTicker: string[];
     footerCredit: string;
     estimateSectionLead: string;
     serviceAreaLookup: {
@@ -573,7 +578,12 @@ export interface TemplateConfig {
     serviceAreas: string[];
     serviceAreaCopy: string;
     serviceAreaZipCodes: string[];
+    jobsCompleted?: number;
+    yearsInBusiness?: number;
+    googleRating?: number;
   };
+  colorTheme: 'forest' | 'storm' | 'terrain' | 'sunlit';
+  trustTicker: string[];
   branding: {
     identity: {
       mark: string;
