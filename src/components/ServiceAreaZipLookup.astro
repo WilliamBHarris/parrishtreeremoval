@@ -1,12 +1,11 @@
 ---
 import { client } from '../data/client';
-import { MANATEE_COUNTY_SERVICE_AREA_ZIPS } from '../data/serviceAreaZips';
 
 interface Props {
   inputId?: string;
 }
 
-const supportedZips = [...MANATEE_COUNTY_SERVICE_AREA_ZIPS];
+const supportedZips = client.serviceAreaZipCodes;
 const { inputId = 'service-area-zip-input' } = Astro.props;
 const serviceAreaLookupCopy = client.sharedContent.serviceAreaLookup;
 const messageId = `${inputId}-message`;

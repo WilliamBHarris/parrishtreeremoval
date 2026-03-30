@@ -166,7 +166,7 @@ const minifiedCss = transformSync(`${brandCssVars}\n${fontFaceCss}\n${globalCss}
     <main id="main-content">
       <slot />
     </main>
-    <section
+    <div
       id="estimate-modal"
       class="estimate-modal"
       data-estimate-modal
@@ -196,7 +196,7 @@ const minifiedCss = transformSync(`${brandCssVars}\n${fontFaceCss}\n${globalCss}
           headingId="estimate-modal-title"
         />
       </div>
-    </section>
+    </div>
     {showSiteChrome && <Footer />}
     <script is:inline set:html={siteInteractionsScript}></script>
   </body>

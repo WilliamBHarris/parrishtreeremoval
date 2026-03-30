@@ -18,6 +18,7 @@ export const client = {
   state: templateConfig.business.state,
   serviceAreas: templateConfig.business.serviceAreas,
   serviceAreaCopy: templateConfig.business.serviceAreaCopy,
+  serviceAreaZipCodes: templateConfig.business.serviceAreaZipCodes,
   ctas: templateConfig.ctas,
   footer: templateConfig.footer,
   navigation: templateConfig.navigation,

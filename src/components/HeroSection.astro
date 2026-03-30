@@ -38,12 +38,13 @@ const {
   cta = { kind: 'none', label: '' },
 } = Astro.props;
 
+const loc = client.primaryLocation;
 const desktopIntroByPageId: Record<string, string> = {
-  home: 'Tree removal, trimming, stump grinding, and storm cleanup in Parrish, FL.',
-  services: 'Find the right tree service for your property in Parrish, FL.',
-  about: 'Dependable local tree service for Parrish-area homeowners.',
-  contact: 'Reach out for estimates, service questions, and scheduling in Parrish, FL.',
-  'tree-removal': 'Safe tree removal for damaged, unsafe, or unwanted trees in Parrish, FL.',
+  home: `Tree removal, trimming, stump grinding, and storm cleanup in ${loc}.`,
+  services: `Find the right tree service for your property in ${loc}.`,
+  about: `Dependable local tree service for homeowners in ${loc}.`,
+  contact: `Reach out for estimates, service questions, and scheduling in ${loc}.`,
+  'tree-removal': `Safe tree removal for damaged, unsafe, or unwanted trees in ${loc}.`,
   'tree-trimming': 'Professional trimming for cleaner canopies, better clearance, and routine upkeep.',
   'stump-grinding': 'Stump grinding that clears old stumps and opens up usable yard space.',
   'emergency-tree-service': 'Fast storm cleanup and emergency tree service when damage needs attention.',
@@ -135,7 +136,7 @@ const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
               class="hero-cta hero-cta-secondary"
               aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
             >
-              Call Now
+              {client.ctas.secondaryButtonLabel}
             </a>
           </div>
         )}

@@ -94,6 +94,12 @@ export const clientIntake = {
       saturday: 'Sat 9:00 AM - 2:00 PM',
     },
     serviceAreasCovered: ['Parrish, FL', 'Bradenton, FL', 'Palmetto, FL', 'Lakewood Ranch, FL'],
+    serviceAreaZipCodes: [
+      '33598',
+      '34201', '34202', '34203', '34205', '34207', '34208', '34209', '34210',
+      '34211', '34212', '34215', '34217', '34219', '34221', '34222', '34228',
+      '34240', '34243', '34251',
+    ],
   },
 
   // STEP 1C: Client-owned brand assets and identity references.
@@ -794,7 +800,7 @@ export const clientIntake = {
         heading: 'About',
         supportingText: 'Reliable local tree service.',
       },
-      sectionOrder: ['whatHomeownersNeed', 'faq', 'estimate'],
+      sectionOrder: ['companyStory', 'whatHomeownersNeed', 'faq', 'estimate'],
       sections: {
         companyStory: {
           enabled: true,

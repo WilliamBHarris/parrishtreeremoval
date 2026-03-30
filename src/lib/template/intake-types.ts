@@ -433,6 +433,7 @@ export interface ClientIntake {
       saturday: string;
     };
     serviceAreasCovered: string[];
+    serviceAreaZipCodes: string[];
   };
   brandAssets: {
     identityMark: string;
@@ -571,6 +572,7 @@ export interface TemplateConfig {
     };
     serviceAreas: string[];
     serviceAreaCopy: string;
+    serviceAreaZipCodes: string[];
   };
   branding: {
     identity: {
@@ -622,6 +624,7 @@ export interface TemplateConfig {
     requestEstimate: string;
     sendEstimate: string;
     backToTop: string;
+    secondaryButtonLabel: string;
   };
   footer: {
     creditText: string;

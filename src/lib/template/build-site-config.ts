@@ -75,8 +75,8 @@ const baselineDefaults = {
       submitButtonLabel: 'Submit',
       estimateButtonLabel: 'Request Estimate',
       invalidZipMessage: 'Enter a valid 5-digit ZIP code.',
-      inAreaMessage: "We\'re in your area.",
-      outOfAreaMessage: "Sorry, we aren\'t out there yet.",
+      inAreaMessage: "We're in your area.",
+      outOfAreaMessage: "Sorry, we aren't out there yet.",
     },
     homepageModal: {
       heading: 'Tell us about your tree service project',
@@ -90,12 +90,14 @@ const baselineDefaults = {
 const defaultProcessClosingStep =
   'Once the scope is clear, the job can move forward into quoting and scheduling.';
 
-const trustBadgeDescriptions: Record<string, string> = {
-  'Locally focused service': 'Built around Parrish-area homeowners and nearby residential properties.',
-  'Prompt communication': 'Quick follow-up, clear updates, and straightforward scheduling support.',
-  'Residential tree work': 'Practical help for tree service, cleanup, and everyday property needs.',
-  'Clean project follow-through': 'A tidy finish with debris handled and the work area left in order.',
-};
+function buildTrustBadgeDescriptions(primaryServiceArea: string): Record<string, string> {
+  return {
+    'Locally focused service': `Built around ${primaryServiceArea} homeowners and nearby residential properties.`,
+    'Prompt communication': 'Quick follow-up, clear updates, and straightforward scheduling support.',
+    'Residential tree work': 'Practical help for tree service, cleanup, and everyday property needs.',
+    'Clean project follow-through': 'A tidy finish with debris handled and the work area left in order.',
+  };
+}
 
 function normalizeText(value: string | undefined | null, fallback: string) {
   return value && value.trim().length > 0 ? value.trim() : fallback;
@@ -107,7 +109,8 @@ function normalizeStringList(values: Array<string | undefined | null>) {
     .filter((value): value is string => value.length > 0);
 }
 
-function normalizeTrustBadges(values: Array<string | undefined | null>) {
+function normalizeTrustBadges(values: Array<string | undefined | null>, primaryServiceArea: string) {
+  const trustBadgeDescriptions = buildTrustBadgeDescriptions(primaryServiceArea);
   return normalizeStringList(values).map((label) => ({
     label,
     description:
@@ -282,7 +285,7 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
   }
 
   const selectedPreset = resolveSiteStylePreset(intake);
-  const normalizedTrustBadges = normalizeTrustBadges(intake.sharedContent.trustBadges);
+  const normalizedTrustBadges = normalizeTrustBadges(intake.sharedContent.trustBadges, intake.business.primaryServiceArea);
   const normalizedFooterCredit = normalizeText(
     intake.sharedContent.footerCredit,
     baselineDefaults.sharedContent.footerCredit,
@@ -339,33 +342,42 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       baselineDefaults.sharedContent.homepageModal.buttonLabel,
     ),
   };
+  const location = intake.business.primaryServiceArea;
   const servicePageLinkPool = [
     {
       href: '/tree-removal',
-      label: 'Tree Removal in Parrish, FL',
+      label: `Tree Removal in ${location}`,
       description: 'Remove damaged or unwanted trees safely.',
     },
     {
       href: '/tree-trimming',
-      label: 'Tree Trimming in Parrish, FL',
+      label: `Tree Trimming in ${location}`,
       description: 'Trim trees for clearance, shape, and upkeep.',
     },
     {
       href: '/stump-grinding',
-      label: 'Stump Grinding in Parrish, FL',
+      label: `Stump Grinding in ${location}`,
       description: 'Clear old stumps and open up the yard.',
     },
     {
       href: '/emergency-tree-service',
-      label: 'Storm Cleanup in Parrish, FL',
+      label: `Storm Cleanup in ${location}`,
       description: 'Clean up storm damage and fallen debris.',
     },
   ];
 
-  const homeOrder = filterSectionOrder(intake.homepage.sectionOrder, intake.homepage.sections);
-  const servicesOrder = filterSectionOrder(intake.pages.services.sectionOrder, intake.pages.services.sections);
-  const aboutOrder = filterSectionOrder(intake.pages.about.sectionOrder, intake.pages.about.sections);
-  const contactOrder = filterSectionOrder(intake.pages.contact.sectionOrder, intake.pages.contact.sections);
+  function withAutoDisabledFaq<T extends Record<string, { enabled: boolean }>>(
+    sections: T & { faq?: { enabled: boolean; items?: unknown[] } },
+  ): T {
+    const faq = sections.faq;
+    if (!faq || (faq.items ?? []).length > 0) return sections;
+    return { ...sections, faq: { ...faq, enabled: false } };
+  }
+
+  const homeOrder = filterSectionOrder(intake.homepage.sectionOrder, withAutoDisabledFaq(intake.homepage.sections));
+  const servicesOrder = filterSectionOrder(intake.pages.services.sectionOrder, withAutoDisabledFaq(intake.pages.services.sections));
+  const aboutOrder = filterSectionOrder(intake.pages.about.sectionOrder, withAutoDisabledFaq(intake.pages.about.sections));
+  const contactOrder = filterSectionOrder(intake.pages.contact.sectionOrder, withAutoDisabledFaq(intake.pages.contact.sections));
 
   const homeSectionVariants = {
     services: resolveSectionVariant(intake.homepage.sections.services.displayStyle),
@@ -457,6 +469,7 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       hours: intake.businessOperations.businessHours,
       serviceAreas: intake.businessOperations.serviceAreasCovered,
       serviceAreaCopy: intake.business.serviceAreaSummary,
+      serviceAreaZipCodes: intake.businessOperations.serviceAreaZipCodes,
     },
     branding: {
       identity: {
@@ -538,7 +551,7 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       homepageEstimate: intake.contactCallsToAction.primaryButtonLabel,
       requestEstimate: intake.contactCallsToAction.primaryButtonLabel,
       secondaryButtonLabel: intake.contactCallsToAction.secondaryButtonLabel,
-    } as TemplateConfig['ctas'],
+    },
     footer: {
       creditText: normalizedFooterCredit,
     },
