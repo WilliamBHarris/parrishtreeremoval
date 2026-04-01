@@ -69,11 +69,146 @@ const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
 
 const isHome = pageId === 'home';
 const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || client.googleRating);
+
+// v2 mobile hero computed values
+const city = client.primaryLocation.split(',')[0];
+const estYear = client.yearsInBusiness ? new Date().getFullYear() - client.yearsInBusiness : null;
+const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` : ''}`;
 ---
 
 <section class={heroClassName} data-page={pageId} data-section="hero" data-hero-variant={variant}>
   <div class="hero-frame" data-block="frame">
     <div class="hero-bleed subpage-hero-bleed" data-block="background">
+
+      {isHome && (
+        <>
+          <!-- v2 Mobile: layered gradient background -->
+          <div class="hm-bg" aria-hidden="true">
+            <div class="hm-bg-l1"></div>
+            <div class="hm-bg-l2"></div>
+            <div class="hm-bg-l3"></div>
+            <div class="hm-sunburst"></div>
+            <div class="hm-grain"></div>
+          </div>
+
+          <!-- v2 Mobile: orbs -->
+          <div class="hm-orb hm-orb-gold" aria-hidden="true"></div>
+          <div class="hm-orb hm-orb-green" aria-hidden="true"></div>
+
+          <!-- v2 Mobile: particles -->
+          <div class="hm-p hm-p1" aria-hidden="true"></div>
+          <div class="hm-p hm-p2" aria-hidden="true"></div>
+          <div class="hm-p hm-p3" aria-hidden="true"></div>
+          <div class="hm-p hm-p4" aria-hidden="true"></div>
+
+          <!-- v2 Mobile: content panel -->
+          <div class="hm-panel">
+            <div class="hm-top" aria-hidden="true"></div>
+
+            <div class="hm-middle">
+              <div class="hm-eyebrow">
+                <span class="hm-eyebrow-dot" aria-hidden="true"></span>
+                {eyebrowText}
+              </div>
+
+              <h1 class="hm-headline">
+                <span class="hm-hl-line">Local Tree</span>
+                <span class="hm-hl-line">Service</span>
+                <span class="hm-hl-line hm-hl-gold">
+                  Done Right.
+                  <span class="hm-hl-underline" aria-hidden="true"></span>
+                </span>
+              </h1>
+
+              <p class="hm-sub">
+                <span class="hm-sub-text">When a tree becomes a problem, we make it disappear — clean site, clear communication, every time.</span>
+              </p>
+
+              <div class="hm-ctas">
+                {cta.kind === 'modal' ? (
+                  <button
+                    type="button"
+                    class="hm-btn-primary"
+                    data-open-estimate-modal
+                    aria-haspopup="dialog"
+                    aria-controls={cta.target}
+                  >
+                    Get a Free Estimate →
+                  </button>
+                ) : (cta.kind === 'link' || cta.kind === 'anchor') ? (
+                  <a href={cta.href} class="hm-btn-primary">Get a Free Estimate →</a>
+                ) : null}
+                <a
+                  href={`tel:${client.primaryPhoneHref}`}
+                  class="hm-call"
+                  aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
+                >
+                  <span class="hm-call-label">or:</span>
+                  <strong class="hm-call-num">{client.ctas.secondaryButtonLabel}</strong>
+                </a>
+              </div>
+            </div>
+
+            <div class="hm-bottom">
+              {hasStats && (
+                <div class="hm-stats" data-stats>
+                  {client.jobsCompleted ? (
+                    <div class="hm-stat" data-target={client.jobsCompleted}>
+                      <span class="hm-stat-num">
+                        <span class="hm-stat-count">0</span><sup class="hm-stat-suffix">+</sup>
+                      </span>
+                      <div class="hm-stat-bar"></div>
+                      <span class="hm-stat-label">{city} Properties</span>
+                    </div>
+                  ) : null}
+                  {client.yearsInBusiness ? (
+                    <div class="hm-stat" data-target={client.yearsInBusiness}>
+                      <span class="hm-stat-num">
+                        <span class="hm-stat-count">0</span><sup class="hm-stat-suffix">yr</sup>
+                      </span>
+                      <div class="hm-stat-bar"></div>
+                      <span class="hm-stat-label">In Business</span>
+                    </div>
+                  ) : null}
+                  {client.googleRating ? (
+                    <div class="hm-stat" data-target={client.googleRating}>
+                      <span class="hm-stat-num">
+                        <span class="hm-stat-count">0</span><sup class="hm-stat-suffix">★</sup>
+                      </span>
+                      <div class="hm-stat-bar"></div>
+                      <span class="hm-stat-label">Google Rating</span>
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {client.trustTicker.length > 0 && (
+            <div class="hm-ticker-zone">
+              <div class="hm-ticker-wrap" aria-label="Trust highlights">
+                <div class="hm-ticker-track">
+                  {[...client.trustTicker, ...client.trustTicker].map((item) => (
+                    <span class="hm-ticker-item">
+                      <span class="hm-ticker-check" aria-hidden="true">✓</span>
+                      {item}
+                      <span class="hm-ticker-dot" aria-hidden="true"></span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div class="hm-bridge" aria-hidden="true">
+                <svg viewBox="0 0 320 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="320" height="36" fill="#c8965a" />
+                  <rect width="320" height="36" fill="#012a14" />
+                </svg>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      <!-- Desktop / subpage elements -->
       <HeroOutlineCopy words={outlineWords} />
       {variant !== 'abstract-no-image' && (
         <Image
@@ -92,20 +227,6 @@ const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || 
           loading="eager"
           decoding="async"
         />
-      )}
-      {isHome && (
-        <>
-          <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
-          <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
-          <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
-          <div class="hero-grid-overlay" aria-hidden="true"></div>
-          <div class="hero-particle hero-particle-1" aria-hidden="true"></div>
-          <div class="hero-particle hero-particle-2" aria-hidden="true"></div>
-          <div class="hero-particle hero-particle-3" aria-hidden="true"></div>
-          <div class="hero-particle hero-particle-4" aria-hidden="true"></div>
-          <div class="hero-particle hero-particle-5" aria-hidden="true"></div>
-          <div class="hero-particle hero-particle-6" aria-hidden="true"></div>
-        </>
       )}
       <div class="hero-copy" data-block="content">
         <h1 data-block="title">
@@ -147,7 +268,6 @@ const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || 
                 {cta.label}
               </a>
             )}
-
             <a
               href={`tel:${client.primaryPhoneHref}`}
               class="hero-cta hero-cta-secondary"
@@ -158,71 +278,8 @@ const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || 
           </div>
         )}
       </div>
-      {isHome && (
-        <div class="hero-mobile-panel" data-mobile-panel>
-          <div class="hero-mobile-headline">
-            <span class="hero-mobile-line-1">Local Tree</span>
-            <span class="hero-mobile-line-2">Service</span>
-            <span class="hero-mobile-line-3">Done Right.</span>
-          </div>
-          <p class="hero-mobile-subheading">Tree removal, trimming, stump grinding &amp; storm cleanup — handled by your local crew.</p>
-          <div class="hero-mobile-ctas">
-            {cta.kind === 'modal' ? (
-              <button
-                type="button"
-                class="hero-cta hero-mobile-cta-primary"
-                data-open-estimate-modal
-                aria-haspopup="dialog"
-                aria-controls={cta.target}
-              >
-                Get a Free Estimate →
-              </button>
-            ) : (cta.kind === 'link' || cta.kind === 'anchor') ? (
-              <a href={cta.href} class="hero-cta hero-mobile-cta-primary">Get a Free Estimate →</a>
-            ) : null}
-            <a href={`tel:${client.primaryPhoneHref}`} class="hero-mobile-call">
-              or call us: <strong>{client.ctas.secondaryButtonLabel}</strong>
-            </a>
-          </div>
-          {hasStats && (
-            <div class="hero-stats-row" data-stats>
-              {client.jobsCompleted ? (
-                <div class="hero-stat" data-target={client.jobsCompleted}>
-                  <span class="hero-stat-number">
-                    <span class="hero-stat-count">0</span><span class="hero-stat-suffix">+</span>
-                  </span>
-                  <div class="hero-stat-underline"></div>
-                  <span class="hero-stat-label">Happy Clients</span>
-                </div>
-              ) : null}
-              {client.yearsInBusiness ? (
-                <div class="hero-stat" data-target={client.yearsInBusiness}>
-                  <span class="hero-stat-number">
-                    <span class="hero-stat-count">0</span><span class="hero-stat-suffix">yr</span>
-                  </span>
-                  <div class="hero-stat-underline"></div>
-                  <span class="hero-stat-label">Experience</span>
-                </div>
-              ) : null}
-              {client.googleRating ? (
-                <div class="hero-stat" data-target={client.googleRating}>
-                  <span class="hero-stat-number">
-                    <span class="hero-stat-count">0</span><span class="hero-stat-suffix">★</span>
-                  </span>
-                  <div class="hero-stat-underline"></div>
-                  <span class="hero-stat-label">Star Rated</span>
-                </div>
-              ) : null}
-            </div>
-          )}
-          <div class="hero-diagonal-clip" aria-hidden="true">
-            <svg viewBox="0 0 300 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0 L300 16 L300 24 L0 24 Z" fill="#c8965a" />
-            </svg>
-          </div>
-        </div>
-      )}
     </div>
+
     {cta.kind !== 'none' && (
       <div class="hero-cta-wrap" data-block="cta">
         {cta.kind === 'modal' ? (
@@ -236,30 +293,16 @@ const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || 
             {cta.label}
           </button>
         ) : (
-          <a
-            href={cta.href}
-            class="hero-cta"
-          >
+          <a href={cta.href} class="hero-cta">
             {cta.label}
           </a>
         )}
       </div>
     )}
   </div>
-  {isHome && client.trustTicker.length > 0 && (
-    <div class="hero-ticker-wrap" aria-label="Trust highlights">
-      <div class="hero-ticker-track">
-        {[...client.trustTicker, ...client.trustTicker].map((item) => (
-          <span class="hero-ticker-item">
-            <span class="hero-ticker-check" aria-hidden="true">✓</span>
-            {item}
-            <span class="hero-ticker-dot" aria-hidden="true"></span>
-          </span>
-        ))}
-      </div>
-    </div>
-  )}
+
 </section>
+
 {isHome && (
   <script is:inline>
     (function () {
@@ -271,10 +314,10 @@ const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || 
       if (prefersReduced) {
         statsRow.querySelectorAll('[data-target]').forEach(function (stat) {
           var target = parseInt(stat.dataset.target, 10);
-          var countEl = stat.querySelector('.hero-stat-count');
+          var countEl = stat.querySelector('.hm-stat-count');
           if (countEl) countEl.textContent = target;
-          var underline = stat.querySelector('.hero-stat-underline');
-          if (underline) underline.classList.add('active');
+          var bar = stat.querySelector('.hm-stat-bar');
+          if (bar) bar.classList.add('on');
         });
         return;
       }
@@ -287,8 +330,8 @@ const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || 
             var stats = statsRow.querySelectorAll('[data-target]');
             stats.forEach(function (stat, index) {
               var target = parseInt(stat.dataset.target, 10);
-              var countEl = stat.querySelector('.hero-stat-count');
-              var underline = stat.querySelector('.hero-stat-underline');
+              var countEl = stat.querySelector('.hm-stat-count');
+              var bar = stat.querySelector('.hm-stat-bar');
               var delay = index * 200;
               var duration = 1800;
               var start = null;
@@ -303,7 +346,7 @@ const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || 
                     requestAnimationFrame(animate);
                   } else {
                     if (countEl) countEl.textContent = target;
-                    if (underline) underline.classList.add('active');
+                    if (bar) bar.classList.add('on');
                   }
                 }
                 requestAnimationFrame(animate);
