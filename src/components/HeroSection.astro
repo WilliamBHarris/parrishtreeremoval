@@ -84,9 +84,9 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
         <>
           <!-- v2 Mobile: layered gradient background -->
           <div class="hm-bg" aria-hidden="true">
-            <div class="hm-bg-l1"></div>
-            <div class="hm-bg-l2"></div>
-            <div class="hm-bg-l3"></div>
+            <div class="bg-g1"></div>
+            <div class="bg-g2"></div>
+            <div class="bg-g3"></div>
             <div class="hm-sunburst"></div>
             <div class="hm-grain"></div>
           </div>
@@ -143,8 +143,7 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
                   class="hm-call"
                   aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
                 >
-                  <span class="hm-call-label">or:</span>
-                  <strong class="hm-call-num">{client.ctas.secondaryButtonLabel}</strong>
+                  <strong class="hm-call-num">{client.primaryPhoneDisplay}</strong>
                 </a>
               </div>
             </div>
@@ -186,7 +185,7 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
 
           {client.trustTicker.length > 0 && (
             <div class="hm-ticker-zone">
-              <div class="hm-ticker-wrap" aria-label="Trust highlights">
+              <div class="hm-ticker-wrap ticker" aria-label="Trust highlights">
                 <div class="hm-ticker-track">
                   {[...client.trustTicker, ...client.trustTicker].map((item) => (
                     <span class="hm-ticker-item">
@@ -196,6 +195,12 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
                     </span>
                   ))}
                 </div>
+              </div>
+              <div class="ticker-bridge" aria-hidden="true">
+                <svg viewBox="0 0 320 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="320" height="36" fill="#c8965a" />
+                  <rect width="320" height="36" fill="#012a14" />
+                </svg>
               </div>
               <div class="hm-bridge" aria-hidden="true">
                 <svg viewBox="0 0 320 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">

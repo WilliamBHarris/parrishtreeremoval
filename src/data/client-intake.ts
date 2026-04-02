@@ -406,7 +406,7 @@ export const clientIntake = {
       cardTitle: 'Tree Removal',
       serviceCardSummary: 'Remove damaged or unwanted trees safely.',
       servicesOverviewSummary:
-        'Projects involving damaged, unwanted, unstable, or awkwardly placed trees.',
+        'Tree removal is the right fit when a tree is dead, storm-damaged, leaning, overcrowded, or simply in the wrong place for the property. We help homeowners deal with unsafe trees, difficult access situations, trees close to roofs or fences, and removals that need to be handled carefully to protect the surrounding yard, structures, and cleanup expectations.',
       processSteps: [
         'Send the property address, ZIP code, and a short description of the tree that needs attention.',
         'Add photos if available so height, access, and nearby structures are easier to review.',
@@ -507,7 +507,7 @@ export const clientIntake = {
       cardTitle: 'Tree Trimming',
       serviceCardSummary: 'Trim trees for clearance, shape, and upkeep.',
       servicesOverviewSummary:
-        'Pruning, shaping, branch reduction, and maintenance planning for growth control.',
+        'Tree trimming helps improve clearance, shape, and long-term upkeep when branches start crowding the roofline, hanging over driveways, or making the canopy look heavy and uneven. This service is ideal for routine maintenance, branch reduction, storm-prep cleanup, and restoring a cleaner, healthier-looking structure without removing the tree entirely.',
       processSteps: [
         'Submit the property details and explain what branches or areas need the most attention.',
         'Include photos or notes about roof edges, lanes of access, and the number of trees involved.',
@@ -606,7 +606,7 @@ export const clientIntake = {
       cardTitle: 'Stump Grinding',
       serviceCardSummary: 'Clear old stumps and open up the yard.',
       servicesOverviewSummary:
-        'Post-removal cleanup when a leftover stump still affects the yard.',
+        'Stump grinding is the finishing step when an old stump is still in the way, hard to mow around, or keeping part of the yard from feeling usable. It works well for post-removal cleanup, reclaiming open space, improving the look of the landscape, and clearing problem stumps that still interrupt maintenance, planting plans, or general yard use.',
       processSteps: [
         'Send the stump count, size estimate, and the property ZIP code.',
         'Include notes about tight access, fencing, irrigation, or patios near the work area.',
@@ -706,7 +706,7 @@ export const clientIntake = {
       cardTitle: 'Storm Cleanup',
       serviceCardSummary: 'Clean up storm damage and fallen debris.',
       servicesOverviewSummary:
-        'Tree and debris concerns after severe weather, broken limbs, or blocked access.',
+        'Storm cleanup is for fallen limbs, broken tops, hanging branches, blocked driveways, and other urgent tree-related debris after severe weather. This service helps restore access, reduce immediate hazards, and sort out the safest next step when storm damage leaves part of the property unsafe, cluttered, or too risky to ignore.',
       processSteps: [
         'Submit the address, service area details, and a quick summary of the storm damage.',
         'Add photos if it is safe to do so, especially if access is blocked or a structure is involved.',
