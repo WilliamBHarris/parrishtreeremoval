@@ -62,13 +62,21 @@ const svmCardHintBySlug: Record<string, string> = {
 };
 
 const homeServicesCards = pageId === 'home'
-  ? services.slice(0, 4).map((service) => ({
+  ? services.filter((service) => service.slug !== 'emergency-tree-service').slice(0, 3).map((service) => ({
       service,
-      toneClass: service.slug === 'emergency-tree-service'
-        ? 'card-storm'
-        : svmCardToneBySlug[service.slug] ?? 'card-removal',
+      toneClass: svmCardToneBySlug[service.slug] ?? 'card-removal',
     }))
   : [];
+
+const homeStormService = pageId === 'home'
+  ? services.find((service) => service.slug === 'emergency-tree-service')
+  : undefined;
+
+const homeRefinedCardSummaryBySlug: Record<string, string> = {
+  'tree-removal': 'Safe removal of any tree — full cleanup included every time.',
+  'tree-trimming': 'Cleaner canopy, better clearance, healthier trees.',
+  'stump-grinding': 'Gone below grade. Nothing left to mow around or regrow.',
+};
 ---
 
 {pageId === 'home' && (
@@ -102,7 +110,7 @@ const homeServicesCards = pageId === 'home'
           const num = String(index + 1).padStart(2, '0');
 
           return (
-            <a href={`/${service.slug}`} class:list={['svc-card', toneClass]}>
+            <a href={`/${service.slug}`} class:list={['svc-card', toneClass, index === 0 && 'is-active']} data-svc-card>
               <span class="svc-card-glow" aria-hidden="true"></span>
               <div class="svc-card-top">
                 <span class="svc-card-num-badge">{num}</span>
@@ -110,17 +118,30 @@ const homeServicesCards = pageId === 'home'
               </div>
               <div class="svc-card-mid">
                 <span class="svc-card-title">{service.cardTitle.replace(' ', '\n')}</span>
-                <p class="svc-card-desc">{service.servicesOverviewSummary}</p>
+                <p class="svc-card-desc">{homeRefinedCardSummaryBySlug[service.slug] ?? service.serviceCardSummary}</p>
               </div>
               <div class="svc-card-cta">
-                <span class="svc-card-cta-label">View Service →</span>
-                <span class="svc-card-cta-btn" aria-hidden="true">→</span>
+                <span class="svc-card-cta-label">{`View ${service.cardTitle} →`}</span>
+                <span class="svc-card-cta-btn" aria-hidden="true">›</span>
               </div>
             </a>
           );
         })}
       </div>
     </div>
+
+    {homeStormService && (
+      <a href={`/${homeStormService.slug}`} class="svc-storm-card">
+        <span class="svc-storm-pulse" aria-hidden="true"></span>
+        <span class="svc-storm-icon" set:html={svmIconBySlugs[homeStormService.slug] ?? ''}></span>
+        <span class="svc-storm-copy">
+          <span class="svc-storm-badge">Emergency Response</span>
+          <span class="svc-storm-title">Storm Cleanup</span>
+          <span class="svc-storm-desc">Fast response, any damage</span>
+        </span>
+        <span class="svc-storm-arrow" aria-hidden="true">View →</span>
+      </a>
+    )}
 
     <div class="svc-bottom">
       <div class="svc-bottom-line" aria-hidden="true"></div>
@@ -675,6 +696,7 @@ const homeServicesCards = pageId === 'home'
     if (!track) return;
 
     var dots = Array.prototype.slice.call(document.querySelectorAll('[data-svc-dot]'));
+    var cards = Array.prototype.slice.call(track.querySelectorAll('[data-svc-card]'));
     if (!dots.length) return;
 
     var syncDots = function () {
@@ -688,6 +710,10 @@ const homeServicesCards = pageId === 'home'
 
       dots.forEach(function (dot, dotIndex) {
         dot.classList.toggle('active', dotIndex === index);
+      });
+
+      cards.forEach(function (card, cardIndex) {
+        card.classList.toggle('is-active', cardIndex === index);
       });
     };
 
