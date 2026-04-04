@@ -21,26 +21,236 @@ const {
   surfaceTone = 'cool',
   lookupInputId,
 } = Astro.props;
+
+const isHome = pageId === 'home';
 ---
 
-<PageSection
-  class:list={['section-desktop-split', `service-area-variant-${variant}`]}
-  section="service-area"
-  page={pageId}
-  borderVariant="straight-bottom"
-  surfaceTone={surfaceTone}
->
-  <div class="clone-heading" data-block="heading">
-    <h2 class="clone-kicker section-divider-title">Service Area</h2>
-    <p class:list={['section-lead', 'subpage-section-lead', 'clone-intro', 'section-mobile-lead']}>
-      {copy}
-    </p>
-    <p class:list={['section-lead', 'section-desktop-lead', 'subpage-section-lead', 'clone-intro']}>
-      {`${copy} Use the ZIP lookup for a quick coverage check, then request an estimate for tree removal, tree trimming, stump grinding, or storm cleanup if the project is in range and ready for scheduling.`}
-    </p>
-  </div>
-  <div data-block="map" data-service-area-variant={variant}>
-    <ServiceAreaZipLookup inputId={lookupInputId} />
-    <ServiceAreaMap />
-  </div>
-</PageSection>
+{isHome ? (
+  <PageSection
+    class="home-area-section"
+    section="service-area"
+    page={pageId}
+    borderVariant="straight-bottom"
+    surfaceTone={surfaceTone}
+  >
+    <div class="home-area">
+      <div class="home-area-eye">
+        <span class="home-area-eye-dot"></span>
+        <span>Where We Work</span>
+      </div>
+      <h2 class="home-area-title">
+        Serving {client.primaryLocation}
+        <em>& Beyond.</em>
+      </h2>
+      <p class="home-area-intro">{copy}</p>
+
+      <div class="home-area-map-wrap">
+        <ServiceAreaMap />
+      </div>
+
+      <div class="home-area-zip-wrap">
+        <ServiceAreaZipLookup inputId={lookupInputId ?? 'home-service-area-zip-input'} />
+      </div>
+    </div>
+  </PageSection>
+) : (
+  <PageSection
+    class:list={['section-desktop-split', `service-area-variant-${variant}`]}
+    section="service-area"
+    page={pageId}
+    borderVariant="straight-bottom"
+    surfaceTone={surfaceTone}
+  >
+    <div class="clone-heading" data-block="heading">
+      <h2 class="clone-kicker section-divider-title">Service Area</h2>
+      <p class:list={['section-lead', 'subpage-section-lead', 'clone-intro', 'section-mobile-lead']}>
+        {copy}
+      </p>
+      <p class:list={['section-lead', 'section-desktop-lead', 'subpage-section-lead', 'clone-intro']}>
+        {`${copy} Use the ZIP lookup for a quick coverage check, then request an estimate for tree removal, tree trimming, stump grinding, or storm cleanup if the project is in range and ready for scheduling.`}
+      </p>
+    </div>
+    <div data-block="map" data-service-area-variant={variant}>
+      <ServiceAreaZipLookup inputId={lookupInputId} />
+      <ServiceAreaMap />
+    </div>
+  </PageSection>
+)}
+
+<style>
+  :global(.page-section.home-area-section[data-page="home"][data-section="service-area"]) {
+    padding: 0;
+    background: #eae7de;
+  }
+
+  .home-area {
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px 44px;
+    background: #eae7de;
+  }
+
+  .home-area::before {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(1,42,20,0.05) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .home-area-eye {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+    color: #8a6840;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+
+  .home-area-eye-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8965a;
+    flex-shrink: 0;
+    animation: hmDotPulse 2.2s ease-in-out infinite 0.5s;
+  }
+
+  .home-area-title {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 10px;
+    color: #012a14;
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .home-area-title em {
+    display: block;
+    color: #c8965a;
+    font-style: normal;
+  }
+
+  .home-area-intro {
+    position: relative;
+    z-index: 1;
+    max-width: 240px;
+    margin: 0 0 22px;
+    color: #7a7a66;
+    font-size: 11px;
+    line-height: 1.68;
+  }
+
+  .home-area-map-wrap {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 14px;
+  }
+
+  .home-area-map-wrap :global(.service-area-map-shell) {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(1,42,20,0.12);
+  }
+
+  .home-area-map-wrap :global(.service-area-map),
+  .home-area-map-wrap :global(.service-area-map-shell) {
+    min-height: 170px;
+  }
+
+  .home-area-zip-wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-lookup) {
+    padding: 16px 18px;
+    border: 1px solid rgba(1,42,20,0.08);
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-copy h3) {
+    margin: 0 0 4px;
+    color: #012a14;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-copy p) {
+    margin: 0 0 14px;
+    color: #7a7a66;
+    font-size: 10.5px;
+    line-height: 1.55;
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-form) {
+    gap: 8px;
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-input) {
+    padding: 11px 14px;
+    border: 1px solid rgba(1,42,20,0.1);
+    border-radius: 10px;
+    background: #f9f7f2;
+    color: #012a14;
+    font-family: var(--font-body);
+    font-size: 12px;
+    min-height: 0;
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-input::placeholder) {
+    color: rgba(1,42,20,0.3);
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-button) {
+    border-radius: 10px;
+    background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(180,110,40,0.3), inset 0 1px 0 rgba(255,255,255,0.16);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 11px 16px;
+    white-space: nowrap;
+    min-height: 0;
+  }
+
+  .home-area-zip-wrap :global(.service-area-zip-action-estimate) {
+    background: linear-gradient(180deg, #d4a060 0%, #b07840 100%) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 6px 16px rgba(180,110,40,0.3), inset 0 1px 0 rgba(255,255,255,0.16) !important;
+  }
+
+  @media (min-width: 768px) {
+    .home-area {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 28px 56px;
+    }
+
+    .home-area-title {
+      font-size: 56px;
+    }
+
+    .home-area-intro {
+      max-width: 360px;
+      font-size: 13px;
+    }
+  }
+</style>

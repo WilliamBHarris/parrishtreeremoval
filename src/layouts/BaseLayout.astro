@@ -98,22 +98,6 @@ const fontFaceCss = `
     font-style: normal;
     font-display: swap;
   }
-
-  @font-face {
-    font-family: 'Playfair Display';
-    src: url('/fonts/playfair-display-latin.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Playfair Display';
-    src: url('/fonts/playfair-display-latin.woff2') format('woff2');
-    font-weight: 800;
-    font-style: normal;
-    font-display: swap;
-  }
 `;
 const schemaList = [
   {
@@ -128,8 +112,6 @@ const schemaList = [
 const bodyClasses = [
   showSiteChrome ? 'layout-site-chrome' : 'layout-no-site-chrome',
   `template-color-${brand.presets.colorTemplate}`,
-  `template-heading-${brand.presets.headingTypography}`,
-  `template-body-${brand.presets.bodyTypography}`,
   `template-section-title-${brand.presets.sectionTitleStyle}`,
   `template-card-surface-${brand.presets.cardSurface}`,
   `template-card-border-${brand.presets.cardBorderStyle}`,

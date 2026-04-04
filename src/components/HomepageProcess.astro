@@ -1,5 +1,6 @@
 ---
 import PageSection from './PageSection.astro';
+import { client } from '../data/client';
 import { templateConfig } from '../data/client-questionnaire';
 import type { ProcessVariant, SectionTone } from '../data/client-questionnaire';
 
@@ -63,96 +64,262 @@ const {
   variant = templateConfig.presets.process,
   surfaceTone = 'olive',
 } = Astro.props;
+
+const isHome = pageId === 'home';
+
+const homeProcessSteps = [
+  {
+    number: '1',
+    title: 'Reach Out',
+    description: 'Call or request online. Tell us the tree, the property, and the urgency.',
+  },
+  {
+    number: '2',
+    title: 'Share a Photo',
+    description: 'A quick photo helps us assess size, access, and exactly what is involved.',
+  },
+  {
+    number: '3',
+    title: 'Get Your Estimate',
+    description: 'We follow up with clear, straightforward pricing. No vague ranges.',
+  },
+  {
+    number: '4',
+    title: 'We Handle It',
+    description: 'Show up on time, do the work, clean up completely. Done right, first time.',
+  },
+];
 ---
 
-<PageSection
-  class="page-section-emphasis section-clone-showcase section-desktop-split"
-  section="our-process"
-  page={pageId}
-  surfaceTone={surfaceTone}
->
-  <div class="clone-heading" data-block="heading">
-    <h2 class="clone-kicker section-divider-title">Our Process</h2>
-    <p class="section-lead section-desktop-lead clone-intro">
-      A clear step-by-step path that helps homeowners move from the first request to quoting, scheduling, and finished work without unnecessary confusion, especially when the property needs quick answers, clear expectations, and a dependable plan.
-    </p>
-  </div>
+{isHome ? (
+  <PageSection
+    class="home-process-section"
+    section="our-process"
+    page={pageId}
+    surfaceTone={surfaceTone}
+  >
+    <div class="home-process">
+      <div class="home-process-orb" aria-hidden="true"></div>
 
-  <div class:list={['clone-process-list', `process-variant-${variant}`]} data-block="cards">
-    {steps.map((step, index) => (
-      <article
-        class="clone-process-card"
-        data-step-index={index + 1}
-        data-timeline-step={variant === 'timeline' ? index + 1 : undefined}
-      >
-        {variant === 'timeline' ? (
-          <>
-            <div class="clone-process-marker" aria-hidden="true">
-              <span class="clone-process-step-number">
-                <span class="clone-process-step-number-fill"></span>
-                <span class="clone-process-step-number-label">{index + 1}</span>
+      <div class="home-process-eye">
+        <span class="home-process-eye-dot"></span>
+        <span>How It Works</span>
+      </div>
+
+      <h2 class="home-process-title">
+        Simple Process.
+        <em>No Guesswork.</em>
+      </h2>
+
+      <p class="home-process-intro">From your first call to a clean yard, here is exactly what to expect.</p>
+
+      <div class="home-process-timeline">
+        {homeProcessSteps.map((step, index) => (
+          <article class="home-process-step" data-home-process-step={index + 1}>
+            <div class="home-process-marker" aria-hidden="true">
+              <span class="home-process-circle">
+                <span class="home-process-circle-fill"></span>
+                <span class="home-process-circle-label">{step.number}</span>
               </span>
-              {index < steps.length - 1 && (
-                <span class="clone-process-line">
-                  <span class="clone-process-line-base"></span>
-                  <span class="clone-process-line-fill"></span>
+              {index < homeProcessSteps.length - 1 && (
+                <span class="home-process-line">
+                  <span class="home-process-line-base"></span>
+                  <span class="home-process-line-fill"></span>
                 </span>
               )}
             </div>
-            <div class="clone-process-copy">
+            <div class="home-process-body">
               <h3>{step.title}</h3>
               <p>{step.description}</p>
             </div>
-          </>
-        ) : (
-          <>
-            <div class="clone-process-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
-                {step.paths.map((path) => (
-                  <path d={path}></path>
-                ))}
-              </svg>
-            </div>
-            <div class="clone-process-copy">
-              <h3>{step.title}</h3>
-              <p>{step.description}</p>
-            </div>
-          </>
-        )}
-      </article>
-    ))}
-  </div>
+          </article>
+        ))}
+      </div>
 
-  {variant === 'timeline' && (
-    <div class="clone-process-timeline-cta" data-timeline-cta hidden>
-      <a
-        href={`tel:${templateConfig.business.phone.href}`}
-        class="btn-primary clone-process-timeline-call"
-        aria-label={`Call ${templateConfig.business.businessName} at ${templateConfig.business.phone.display}`}
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path
-            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
-            fill="currentColor"
-          ></path>
-        </svg>
-        <span>{templateConfig.ctas.secondaryButtonLabel}</span>
-      </a>
-      <button
-        type="button"
-        class="btn-primary"
-        data-open-estimate-modal
-        data-process-estimate-trigger
-        aria-haspopup="dialog"
-        aria-controls="estimate-modal"
-      >
-        Schedule Now
-      </button>
+      <div class="home-process-cta-wrap">
+        <button
+          type="button"
+          class="home-process-cta-btn"
+          data-home-process-cta
+          aria-hidden="true"
+          data-open-estimate-modal
+          aria-haspopup="dialog"
+          aria-controls="estimate-modal"
+        >
+          Get a Free Estimate →
+        </button>
+      </div>
+
     </div>
-  )}
-</PageSection>
+  </PageSection>
+) : (
+  <PageSection
+    class="page-section-emphasis section-clone-showcase section-desktop-split"
+    section="our-process"
+    page={pageId}
+    surfaceTone={surfaceTone}
+  >
+    <div class="clone-heading" data-block="heading">
+      <h2 class="clone-kicker section-divider-title">Our Process</h2>
+      <p class="section-lead section-desktop-lead clone-intro">
+        A clear step-by-step path that helps homeowners move from the first request to quoting, scheduling, and finished work without unnecessary confusion, especially when the property needs quick answers, clear expectations, and a dependable plan.
+      </p>
+    </div>
 
-{variant === 'timeline' && (
+    <div class:list={['clone-process-list', `process-variant-${variant}`]} data-block="cards">
+      {steps.map((step, index) => (
+        <article
+          class="clone-process-card"
+          data-step-index={index + 1}
+          data-timeline-step={variant === 'timeline' ? index + 1 : undefined}
+        >
+          {variant === 'timeline' ? (
+            <>
+              <div class="clone-process-marker" aria-hidden="true">
+                <span class="clone-process-step-number">
+                  <span class="clone-process-step-number-fill"></span>
+                  <span class="clone-process-step-number-label">{index + 1}</span>
+                </span>
+                {index < steps.length - 1 && (
+                  <span class="clone-process-line">
+                    <span class="clone-process-line-base"></span>
+                    <span class="clone-process-line-fill"></span>
+                  </span>
+                )}
+              </div>
+              <div class="clone-process-copy">
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div class="clone-process-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  {step.paths.map((path) => (
+                    <path d={path}></path>
+                  ))}
+                </svg>
+              </div>
+              <div class="clone-process-copy">
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            </>
+          )}
+        </article>
+      ))}
+    </div>
+
+    {variant === 'timeline' && (
+      <div class="clone-process-timeline-cta" data-timeline-cta hidden>
+        <a
+          href={`tel:${templateConfig.business.phone.href}`}
+          class="btn-primary clone-process-timeline-call"
+          aria-label={`Call ${templateConfig.business.businessName} at ${templateConfig.business.phone.display}`}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <span>{templateConfig.ctas.secondaryButtonLabel}</span>
+        </a>
+        <button
+          type="button"
+          class="btn-primary"
+          data-open-estimate-modal
+          data-process-estimate-trigger
+          aria-haspopup="dialog"
+          aria-controls="estimate-modal"
+        >
+          Schedule Now
+        </button>
+      </div>
+    )}
+  </PageSection>
+)}
+
+{isHome && (
+  <script is:inline>
+    (() => {
+      const bindHomeTimeline = (timeline) => {
+        if (!(timeline instanceof HTMLElement) || timeline.dataset.homeTimelineBound === 'true') return;
+        timeline.dataset.homeTimelineBound = 'true';
+
+        const steps = Array.from(timeline.querySelectorAll('[data-home-process-step]'));
+        const cta = timeline.parentElement?.querySelector('[data-home-process-cta]');
+        if (steps.length === 0) return;
+        let ctaRevealed = false;
+        let hasScrollInteraction = false;
+
+        const getProgress = (value) => Math.max(0, Math.min(1, value));
+
+        const syncTimeline = () => {
+          const viewportMid = window.innerHeight * 0.82;
+
+          steps.forEach((step, index) => {
+            if (!(step instanceof HTMLElement)) return;
+
+            const marker = step.querySelector('.home-process-circle');
+            if (!(marker instanceof HTMLElement)) return;
+
+            const markerRect = marker.getBoundingClientRect();
+            const markerCenter = markerRect.top + markerRect.height / 2;
+            const markerBottom = markerRect.bottom;
+            const nextStep = steps[index + 1];
+            const nextMarker = nextStep instanceof HTMLElement
+              ? nextStep.querySelector('.home-process-circle')
+              : null;
+            const nextRect = nextMarker instanceof HTMLElement ? nextMarker.getBoundingClientRect() : null;
+            const nextTop = nextRect ? nextRect.top : markerBottom;
+            const lineLength = nextRect ? Math.max(nextTop - markerBottom + 4, 0) : 0;
+
+            const circleProgress = getProgress((viewportMid - markerCenter) / Math.max(markerRect.height * 0.9, 1));
+            const lineProgress = nextRect
+              ? getProgress((viewportMid - markerBottom) / Math.max(nextTop - markerBottom, 1))
+              : circleProgress;
+
+            step.style.setProperty('--home-process-circle-progress', String(circleProgress));
+            step.style.setProperty('--home-process-line-progress', String(lineProgress));
+            step.style.setProperty('--home-process-line-length', `${lineLength}px`);
+            step.dataset.homeProcessActive = circleProgress > 0.18 ? 'true' : 'false';
+
+            if (
+              index === steps.length - 1 &&
+              hasScrollInteraction &&
+              circleProgress >= 0.999 &&
+              !ctaRevealed
+            ) {
+              ctaRevealed = true;
+              if (cta instanceof HTMLElement) {
+                cta.removeAttribute('aria-hidden');
+                window.requestAnimationFrame(() => {
+                  cta.dataset.homeProcessCtaVisible = 'true';
+                });
+              }
+            }
+          });
+        };
+
+        const requestSync = () => window.requestAnimationFrame(syncTimeline);
+
+        syncTimeline();
+        window.addEventListener('scroll', () => {
+          hasScrollInteraction = true;
+          requestSync();
+        }, { passive: true });
+        window.addEventListener('resize', requestSync);
+      };
+
+      const timelines = document.querySelectorAll('.home-process-timeline');
+      timelines.forEach((timeline) => bindHomeTimeline(timeline));
+    })();
+  </script>
+)}
+
+{variant === 'timeline' && !isHome && (
   <script is:inline>
     (() => {
       const bindTimeline = (timeline) => {
@@ -258,45 +425,287 @@ const {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          observer.unobserve(entry.target);
+          if (!(entry.target instanceof HTMLElement)) return;
           bindTimeline(entry.target);
+          observer.unobserve(entry.target);
         });
-      }, { rootMargin: '240px 0px' });
+      }, { rootMargin: '220px 0px' });
 
-      timelines.forEach((timeline) => {
-        if (!(timeline instanceof HTMLElement)) return;
-        observer.observe(timeline);
-      });
-    })();
-  </script>
-
-  <script is:inline>
-    (() => {
-      const triggers = Array.from(document.querySelectorAll('[data-process-estimate-trigger]'));
-      if (triggers.length === 0) return;
-
-      let loaded;
-      const loadEstimateModal = () => loaded ??= import('/scripts/estimate-modal.js');
-
-      triggers.forEach((trigger) => {
-        if (!(trigger instanceof HTMLButtonElement) || trigger.dataset.processEstimateBound === 'true') return;
-        trigger.dataset.processEstimateBound = 'true';
-
-        trigger.addEventListener('click', async (event) => {
-          const modal = document.querySelector('[data-estimate-modal]');
-          if (!(modal instanceof HTMLElement)) return;
-
-          if (loaded) return;
-
-          event.preventDefault();
-          await loadEstimateModal();
-          trigger.click();
-        });
-
-        trigger.addEventListener('pointerenter', () => { void loadEstimateModal(); }, { once: true, passive: true });
-        trigger.addEventListener('touchstart', () => { void loadEstimateModal(); }, { once: true, passive: true });
-        trigger.addEventListener('focus', () => { void loadEstimateModal(); }, { once: true, passive: true });
-      });
+      timelines.forEach((timeline) => observer.observe(timeline));
     })();
   </script>
 )}
+
+<style>
+  :global(.page-section.home-process-section[data-page="home"][data-section="our-process"]) {
+    padding: 0;
+    background: transparent;
+  }
+
+  .home-process {
+    position: relative;
+    overflow: hidden;
+    margin-top: -18px;
+    padding: 58px 20px 28px;
+    background: #012a14;
+    clip-path: polygon(0 18px, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .home-process-orb {
+    position: absolute;
+    bottom: -60px;
+    left: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,150,90,0.07) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .home-process-eye {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 12px;
+    color: rgba(200,150,90,0.72);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+
+  .home-process-eye-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8965a;
+    flex-shrink: 0;
+    animation: hmDotPulse 2.2s ease-in-out infinite 0.2s;
+  }
+
+  .home-process-title {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 12px;
+    color: #fff;
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.88;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .home-process-title em {
+    display: block;
+    color: #c8965a;
+    font-style: normal;
+  }
+
+  .home-process-intro {
+    position: relative;
+    z-index: 1;
+    max-width: 230px;
+    margin: 0 0 32px;
+    color: #f0e9de;
+    font-size: 11px;
+    line-height: 1.68;
+  }
+
+  .home-process-timeline {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-process-step {
+    --home-process-circle-progress: 0;
+    --home-process-line-progress: 0;
+    --home-process-line-length: 0px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0 16px;
+    padding-bottom: 24px;
+  }
+
+  .home-process-step:last-child {
+    padding-bottom: 0;
+  }
+
+  .home-process-marker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+  }
+
+  .home-process-circle {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1.5px solid rgba(200,150,90,0.35);
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+    background: rgba(200,150,90,0.08);
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: 0 0 0 4px rgba(200,150,90,0.06);
+  }
+
+  .home-process-circle-fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(212,160,96,0.95) 0%, rgba(176,120,64,0.92) 100%);
+    transform-origin: bottom center;
+    transform: scaleY(var(--home-process-circle-progress));
+    transition: transform 180ms linear;
+  }
+
+  .home-process-circle-label {
+    position: relative;
+    z-index: 1;
+    color: color-mix(in srgb, #c8965a calc(100% - (var(--home-process-circle-progress) * 100%)), #fff calc(var(--home-process-circle-progress) * 100%));
+    transition: color 180ms linear;
+  }
+
+  .home-process-step[data-home-process-active='true'] .home-process-circle {
+    border-color: rgba(200,150,90,0.55);
+    box-shadow: 0 0 0 4px rgba(200,150,90,0.1), 0 0 16px rgba(200,150,90,0.2);
+  }
+
+  .home-process-line {
+    position: absolute;
+    top: 36px;
+    bottom: -24px;
+    left: 50%;
+    width: 1.5px;
+    transform: translateX(-50%);
+    height: var(--home-process-line-length);
+  }
+
+  .home-process-line-base,
+  .home-process-line-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    border-radius: 999px;
+  }
+
+  .home-process-line-base {
+    display: none;
+  }
+
+  .home-process-line-fill {
+    background: linear-gradient(180deg, rgba(212,160,96,0.95) 0%, rgba(176,120,64,0.85) 100%);
+    transform-origin: top center;
+    transform: scaleY(var(--home-process-line-progress));
+    transition: transform 180ms linear;
+  }
+
+  .home-process-body {
+    padding-top: 6px;
+    padding-bottom: 4px;
+  }
+
+  .home-process-body h3 {
+    margin: 0 0 5px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .home-process-body p {
+    margin: 0;
+    color: #f0e9de;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .home-process-cta-wrap {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 28px 0 18px;
+    min-height: 74px;
+  }
+
+  .home-process-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    border: 0;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(180,110,40,0.35), inset 0 1px 0 rgba(255,255,255,0.16);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    padding: 12px 20px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 280ms ease, transform 280ms ease;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .home-process-cta-btn[data-home-process-cta-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  @media (min-width: 768px) {
+    .home-process {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 56px 28px 0;
+    }
+
+    .home-process-title {
+      font-size: 56px;
+    }
+
+    .home-process-intro {
+      max-width: 360px;
+      font-size: 13px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-process-circle-fill,
+    .home-process-line-fill {
+      transition: none;
+      transform: none;
+    }
+
+    .home-process-circle-label {
+      transition: none;
+      color: #fff;
+    }
+
+    .home-process-cta-btn {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

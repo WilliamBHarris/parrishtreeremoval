@@ -1,10 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import { brand } from '../data/brand';
 import { client } from '../data/client';
 import { templateConfig } from '../data/client-questionnaire';
 import type { HeaderVariant } from '../lib/template/intake-types';
-import { resolveConfiguredImageAsset } from '../lib/template/runtime-assets';
 
 interface Props {
   variant?: HeaderVariant;
@@ -22,7 +19,9 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const drawerId = `${instanceId}-mobile-drawer`;
 const navLinks = client.navigation.primaryLinks;
 const desktopNavLinks = navLinks.flatMap((link) => [link, ...(link.children ?? [])]);
-const headerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
+const brandWords = client.businessName.split(' ');
+const brandLead = brandWords[0] ?? client.businessName;
+const brandAccent = brandWords.slice(1).join(' ');
 ---
 
 <div
@@ -36,16 +35,10 @@ const headerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
   >
     <div class="site-header-inner">
       <a href="/" class="site-brand" aria-label={`${client.businessName} home`}>
-        <Image
-          src={headerLogo}
-          alt=""
-          aria-hidden="true"
-          class="site-logo"
-          widths={[96, 144, 180]}
-          sizes="160px"
-          fetchpriority="low"
-          format="png"
-        />
+        <span class="site-wordmark" aria-hidden="true">
+          <span class="site-wordmark-base">{brandLead}</span>
+          <span class="site-wordmark-accent">{brandAccent}</span>
+        </span>
       </a>
 
       <nav class="desktop-nav" aria-label="Primary navigation">

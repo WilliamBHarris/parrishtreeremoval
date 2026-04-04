@@ -17,69 +17,133 @@ const {
   variant = templateConfig.presets.faq,
   surfaceTone = 'warm',
 } = Astro.props;
+
+const isHome = pageId === 'home';
 ---
 
-<PageSection id="faq" class="section-desktop-split" section="faq" page={pageId} surfaceTone={surfaceTone}>
-  <div class="clone-heading" data-block="heading">
-    <h2 class="clone-kicker section-divider-title">FAQ</h2>
-    <p class="section-lead section-desktop-lead clone-intro">
-      Quick answers to the questions homeowners ask most when they are comparing tree services, planning the work, or deciding what information to send for an estimate in Parrish, FL and the surrounding service area.
-    </p>
-  </div>
+{isHome ? (
+  <PageSection id="faq" class="home-faq-section" section="faq" page={pageId} surfaceTone={surfaceTone}>
+    <div class="home-faq">
+      <div class="home-faq-head">
+        <div class="home-faq-eye">
+          <span class="home-faq-eye-dot"></span>
+          <span>Common Questions</span>
+        </div>
+        <h2 class="home-faq-title">
+          Got
+          <em>Questions?</em>
+        </h2>
+      </div>
 
-  {variant === 'accordion' ? (
-    <div class:list={['faq-list', 'faq-variant-accordion']} data-block="items" data-faq-accordion>
-      {items.map((item, index) => {
-        const itemId = `${pageId}-faq-${index}`;
-        const triggerId = `${itemId}-trigger`;
-        const panelId = `${itemId}-panel`;
-        const isOpen = index === 0;
-
-        return (
-          <article class:list={['faq-item', 'faq-accordion-item', isOpen && 'is-open']} data-faq-item data-open={isOpen ? 'true' : 'false'}>
-            <h3 class="faq-accordion-heading">
-              <button
-                id={triggerId}
-                class="faq-accordion-trigger"
-                type="button"
-                aria-expanded={isOpen ? 'true' : 'false'}
-                aria-controls={panelId}
-                data-faq-trigger
-              >
-                <span class="faq-accordion-question">{item.question}</span>
-                <span class="faq-accordion-arrow" aria-hidden="true">▾</span>
-              </button>
-            </h3>
-            <div
-              id={panelId}
-              class="faq-accordion-panel"
-              role="region"
-              aria-labelledby={triggerId}
-              data-faq-panel
-              hidden={!isOpen}
-            >
-              <div class="faq-accordion-answer">
+      <div class="home-faq-list" data-home-faq>
+        {items.map((item, index) => (
+          <article class:list={['home-faq-item', index === 0 && 'is-open']} data-home-faq-item>
+            <button class="home-faq-trigger" type="button" data-home-faq-trigger aria-expanded={index === 0 ? 'true' : 'false'}>
+              <span class="home-faq-question">{item.question}</span>
+              <span class="home-faq-toggle" aria-hidden="true">+</span>
+            </button>
+            <div class="home-faq-body" data-home-faq-body>
+              <div class="home-faq-inner">
                 <p>{item.answer}</p>
               </div>
             </div>
           </article>
-        );
-      })}
+        ))}
+      </div>
     </div>
-  ) : (
-    <div class:list={['faq-list', `faq-variant-${variant}`]} data-block="items">
-      {items.map((item) => (
-        <article class="faq-item">
-          <h3>{item.question}</h3>
-          <p>{item.answer}</p>
-        </article>
-      ))}
+  </PageSection>
+) : (
+  <PageSection id="faq" class="section-desktop-split" section="faq" page={pageId} surfaceTone={surfaceTone}>
+    <div class="clone-heading" data-block="heading">
+      <h2 class="clone-kicker section-divider-title">FAQ</h2>
+      <p class="section-lead section-desktop-lead clone-intro">
+        Quick answers to the questions homeowners ask most when they are comparing tree services, planning the work, or deciding what information to send for an estimate in Parrish, FL and the surrounding service area.
+      </p>
     </div>
-  )}
-</PageSection>
+
+    {variant === 'accordion' ? (
+      <div class:list={['faq-list', 'faq-variant-accordion']} data-block="items" data-faq-accordion>
+        {items.map((item, index) => {
+          const itemId = `${pageId}-faq-${index}`;
+          const triggerId = `${itemId}-trigger`;
+          const panelId = `${itemId}-panel`;
+          const isOpen = index === 0;
+
+          return (
+            <article class:list={['faq-item', 'faq-accordion-item', isOpen && 'is-open']} data-faq-item data-open={isOpen ? 'true' : 'false'}>
+              <h3 class="faq-accordion-heading">
+                <button
+                  id={triggerId}
+                  class="faq-accordion-trigger"
+                  type="button"
+                  aria-expanded={isOpen ? 'true' : 'false'}
+                  aria-controls={panelId}
+                  data-faq-trigger
+                >
+                  <span class="faq-accordion-question">{item.question}</span>
+                  <span class="faq-accordion-arrow" aria-hidden="true">▾</span>
+                </button>
+              </h3>
+              <div
+                id={panelId}
+                class="faq-accordion-panel"
+                role="region"
+                aria-labelledby={triggerId}
+                data-faq-panel
+                hidden={!isOpen}
+              >
+                <div class="faq-accordion-answer">
+                  <p>{item.answer}</p>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    ) : (
+      <div class:list={['faq-list', `faq-variant-${variant}`]} data-block="items">
+        {items.map((item) => (
+          <article class="faq-item">
+            <h3>{item.question}</h3>
+            <p>{item.answer}</p>
+          </article>
+        ))}
+      </div>
+    )}
+  </PageSection>
+)}
 
 <script is:inline>
   (() => {
+    const homeFaqGroups = document.querySelectorAll('[data-home-faq]');
+
+    homeFaqGroups.forEach((group) => {
+      if (!(group instanceof HTMLElement) || group.dataset.homeFaqBound === 'true') return;
+      group.dataset.homeFaqBound = 'true';
+      const items = Array.from(group.querySelectorAll('[data-home-faq-item]'));
+
+      items.forEach((item) => {
+        const trigger = item.querySelector('[data-home-faq-trigger]');
+        if (!(trigger instanceof HTMLButtonElement)) return;
+
+        trigger.addEventListener('click', () => {
+          const wasOpen = item.classList.contains('is-open');
+          items.forEach((entry) => {
+            entry.classList.remove('is-open');
+            const entryTrigger = entry.querySelector('[data-home-faq-trigger]');
+            if (entryTrigger instanceof HTMLButtonElement) {
+              entryTrigger.setAttribute('aria-expanded', 'false');
+            }
+          });
+
+          if (!wasOpen) {
+            item.classList.add('is-open');
+            trigger.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    });
+
     const accordions = document.querySelectorAll('[data-faq-accordion]');
 
     accordions.forEach((accordion) => {
@@ -123,3 +187,153 @@ const {
     });
   })();
 </script>
+
+<style>
+  :global(.page-section.home-faq-section[data-page="home"][data-section="faq"]) {
+    padding: 0;
+    background: #f2efe6;
+  }
+
+  .home-faq {
+    background: #f2efe6;
+    padding: 0 20px 44px;
+  }
+
+  .home-faq-head {
+    margin-bottom: 22px;
+  }
+
+  .home-faq-eye {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+    color: #8a6840;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+  }
+
+  .home-faq-eye-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8965a;
+    flex-shrink: 0;
+    animation: hmDotPulse 2.2s ease-in-out infinite 0.35s;
+  }
+
+  .home-faq-title {
+    margin: 0;
+    color: #012a14;
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .home-faq-title em {
+    display: block;
+    color: #c8965a;
+    font-style: normal;
+  }
+
+  .home-faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .home-faq-item {
+    overflow: hidden;
+    border: 1px solid rgba(1,42,20,0.07);
+    border-radius: 14px;
+    background: #fff;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .home-faq-item.is-open {
+    border-color: rgba(200,150,90,0.22);
+    box-shadow: inset 0 2px 0 rgba(200,150,90,0.35);
+  }
+
+  .home-faq-trigger {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 16px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .home-faq-question {
+    flex: 1;
+    color: #012a14;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .home-faq-toggle {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin-top: 1px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(1,42,20,0.06);
+    color: #c8965a;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1;
+    transition: transform 240ms cubic-bezier(0.22,1,0.36,1), background 200ms ease;
+  }
+
+  .home-faq-item.is-open .home-faq-toggle {
+    transform: rotate(45deg);
+    background: rgba(200,150,90,0.12);
+  }
+
+  .home-faq-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 300ms cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .home-faq-item.is-open .home-faq-body {
+    grid-template-rows: 1fr;
+  }
+
+  .home-faq-inner {
+    overflow: hidden;
+    padding: 0 16px;
+  }
+
+  .home-faq-inner p {
+    margin: 0;
+    padding-bottom: 15px;
+    color: #7a7a66;
+    font-size: 11px;
+    line-height: 1.68;
+  }
+
+  @media (min-width: 768px) {
+    .home-faq {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 28px 56px;
+    }
+
+    .home-faq-title {
+      font-size: 56px;
+    }
+  }
+</style>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services Section — Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0e0e0e;
+  display: flex; flex-direction: column;
+  align-items: center; min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem 1rem; gap: 12px;
+}
+.label { color: rgba(255,255,255,0.3); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+.phone {
+  width: 320px; border-radius: 42px;
+  border: 7px solid #1c1c1c; background: #1c1c1c;
+  overflow: hidden; box-shadow: 0 48px 96px rgba(0,0,0,0.7);
+}
+.screen { background: #012a14; overflow: hidden; }
+
+/* ── SECTION HEADER ── */
+.sec-head {
+  padding: 36px 20px 24px;
+  position: relative;
+}
+.sec-eye {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: rgba(200,150,90,0.72); margin-bottom: 12px;
+}
+.sec-eye-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #c8965a; flex-shrink: 0;
+  animation: dotPulse 2.2s ease-in-out infinite;
+}
+@keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.35;transform:scale(0.55)} }
+.sec-h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px; font-weight: 800;
+  text-transform: uppercase; line-height: 0.88;
+  color: #fff; letter-spacing: -0.01em; margin-bottom: 10px;
+}
+.sec-h2 em { color: #c8965a; font-style: normal; display: block; }
+.sec-intro {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.52);
+  line-height: 1.65; max-width: 240px;
+}
+
+/* ── CARDS ── */
+.cards {
+  padding: 0 16px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+/* Base card */
+.card {
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.card:active { transform: scale(0.98); }
+
+/* ── COLLAPSED STATE ── */
+.card-collapsed {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  transition: background 240ms ease, border-color 240ms ease;
+}
+
+/* Large icon — much more presence */
+.card-icon-wrap {
+  width: 44px; height: 44px; min-width: 44px;
+  border-radius: 13px;
+  display: grid; place-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+/* Each service gets its own icon background color */
+.icon-removal {
+  background: linear-gradient(135deg, rgba(1,68,33,0.6) 0%, rgba(1,42,20,0.8) 100%);
+  border: 1px solid rgba(200,150,90,0.2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.icon-trimming {
+  background: linear-gradient(135deg, rgba(26,58,26,0.6) 0%, rgba(15,42,15,0.8) 100%);
+  border: 1px solid rgba(200,150,90,0.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.icon-stump {
+  background: linear-gradient(135deg, rgba(42,30,10,0.7) 0%, rgba(30,18,5,0.8) 100%);
+  border: 1px solid rgba(200,150,90,0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.icon-storm {
+  background: linear-gradient(135deg, rgba(10,28,50,0.7) 0%, rgba(5,18,35,0.8) 100%);
+  border: 1px solid rgba(200,150,90,0.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.card-text { flex: 1; min-width: 0; }
+.card-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px; font-weight: 800;
+  color: rgba(200,150,90,0.45);
+  letter-spacing: 0.08em;
+  margin-bottom: 2px; display: block;
+}
+.card-title {
+  font-size: 14px; font-weight: 800;
+  color: #fff; letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.card-hint {
+  font-size: 10px; color: rgba(255,255,255,0.35);
+  margin-top: 2px; line-height: 1.3;
+}
+
+/* Plus toggle — right side */
+.card-tog {
+  width: 26px; height: 26px; min-width: 26px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: grid; place-items: center;
+  color: rgba(200,150,90,0.5);
+  font-size: 16px; font-weight: 300; line-height: 1;
+  transition: transform 280ms cubic-bezier(0.22,1,0.36,1),
+              background 240ms ease, color 240ms ease;
+  flex-shrink: 0;
+}
+
+/* ── EXPANDED STATE ── */
+.card.is-open .card-collapsed {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(200,150,90,0.28);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+/* Gold top accent line on open */
+.card.is-open .card-collapsed::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, #c8965a 30%, #c8965a 70%, transparent);
+  border-radius: 18px 18px 0 0;
+}
+.card.is-open .card-num { color: #c8965a; }
+.card.is-open .card-icon-wrap { box-shadow: 0 0 0 2px rgba(200,150,90,0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
+.card.is-open .card-tog {
+  transform: rotate(45deg);
+  background: rgba(200,150,90,0.12);
+  border-color: rgba(200,150,90,0.25);
+  color: #c8965a;
+}
+
+/* Expandable body */
+.card-body {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows 340ms cubic-bezier(0.22,1,0.36,1);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(200,150,90,0.2);
+  border-top: 0;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+}
+.card.is-open .card-body { grid-template-rows: 1fr; }
+.card-inner { overflow: hidden; padding: 0 16px; }
+
+/* Description */
+.card-desc {
+  font-size: 11.5px; font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.68; padding: 14px 0 4px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 2px;
+}
+
+/* Full width gold CTA button */
+.card-cta {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+  color: #fff; font-size: 12px; font-weight: 800;
+  padding: 13px 16px; margin: 14px 0 16px;
+  border-radius: 11px;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 20px rgba(180,110,40,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+  letter-spacing: -0.01em;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 220ms ease 100ms, transform 220ms ease 100ms;
+}
+.card.is-open .card-cta { opacity: 1; transform: translateY(0); }
+.card-cta::before {
+  content: ''; position: absolute; inset: 0 0 55% 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18), transparent);
+}
+.card-cta-arrow {
+  width: 26px; height: 26px; border-radius: 8px;
+  background: rgba(255,255,255,0.15);
+  display: grid; place-items: center;
+  font-size: 14px; flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+.card-cta-text { position: relative; z-index: 1; }
+
+/* ── BOTTOM CTA STRIP ── */
+.sec-bottom {
+  padding: 20px 16px 36px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+}
+.sec-bottom-text {
+  font-size: 10px; color: rgba(255,255,255,0.35);
+  text-align: center; line-height: 1.5;
+}
+.sec-bottom-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px; padding: 10px 20px;
+  color: rgba(255,255,255,0.7);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* Clip to light */
+.sec-clip { line-height: 0; position: relative; z-index: 2; }
+.sec-clip svg { display: block; width: 100%; }
+</style>
+</head>
+<body>
+<div class="label">Services Section — Premium Cards</div>
+<div class="phone">
+  <div class="screen">
+
+    <!-- Section header -->
+    <div class="sec-head">
+      <div class="sec-eye"><div class="sec-eye-dot"></div>What We Do</div>
+      <h2 class="sec-h2">Whatever The Tree.<br><em>Whatever The Job.</em></h2>
+      <p class="sec-intro">Four services. One local crew. We handle it from first call to final cleanup.</p>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards">
+
+      <!-- Tree Removal — open by default -->
+      <div class="card is-open" id="c1">
+        <div class="card-collapsed" onclick="toggle('c1')">
+          <div class="card-icon-wrap icon-removal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22v-7"/><path d="M9 15c-3-1-5-4-4-7 2 0 4 1 5 3"/><path d="M15 15c3-1 5-4 4-7-2 0-4 1-5 3"/><path d="M8 22h8"/><path d="M5 9l2-2"/><path d="M19 5l-6 6"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <span class="card-num">01</span>
+            <div class="card-title">Tree Removal</div>
+            <div class="card-hint">Damaged, dead, or unwanted</div>
+          </div>
+          <div class="card-tog">+</div>
+        </div>
+        <div class="card-body">
+          <div class="card-inner">
+            <p class="card-desc">Safe removal of any tree regardless of size or access — full debris cleanup included on every job.</p>
+            <div class="card-cta">
+              <span class="card-cta-text">View Tree Removal</span>
+              <div class="card-cta-arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tree Trimming -->
+      <div class="card" id="c2">
+        <div class="card-collapsed" onclick="toggle('c2')">
+          <div class="card-icon-wrap icon-trimming">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+              <path d="M20 4L8.12 15.88"/><path d="M14.47 14.48L20 20"/><path d="M8.12 8.12L12 12"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <span class="card-num">02</span>
+            <div class="card-title">Tree Trimming</div>
+            <div class="card-hint">Clearance, shape & health</div>
+          </div>
+          <div class="card-tog">+</div>
+        </div>
+        <div class="card-body">
+          <div class="card-inner">
+            <p class="card-desc">Cleaner canopy, better clearance, healthier trees — routine trimming that keeps your property looking sharp.</p>
+            <div class="card-cta">
+              <span class="card-cta-text">View Tree Trimming</span>
+              <div class="card-cta-arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stump Grinding -->
+      <div class="card" id="c3">
+        <div class="card-collapsed" onclick="toggle('c3')">
+          <div class="card-icon-wrap icon-stump">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/>
+              <path d="M12 5V3M12 21v-2M5 12H3M21 12h-2M7.05 7.05L5.64 5.64M18.36 18.36l-1.41-1.41"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <span class="card-num">03</span>
+            <div class="card-title">Stump Grinding</div>
+            <div class="card-hint">Gone below grade</div>
+          </div>
+          <div class="card-tog">+</div>
+        </div>
+        <div class="card-body">
+          <div class="card-inner">
+            <p class="card-desc">Stumps ground below grade — nothing left to trip on, mow around, or regrow. Yard fully reclaimed.</p>
+            <div class="card-cta">
+              <span class="card-cta-text">View Stump Grinding</span>
+              <div class="card-cta-arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Storm Cleanup -->
+      <div class="card" id="c4">
+        <div class="card-collapsed" onclick="toggle('c4')">
+          <div class="card-icon-wrap icon-storm">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+              <path d="M11 13l-2 3h4l-2 3"/>
+            </svg>
+          </div>
+          <div class="card-text">
+            <span class="card-num">04</span>
+            <div class="card-title">Storm Cleanup</div>
+            <div class="card-hint">Fast response, any damage</div>
+          </div>
+          <div class="card-tog">+</div>
+        </div>
+        <div class="card-body">
+          <div class="card-inner">
+            <p class="card-desc">Fast response when storm damage needs immediate attention. Fallen limbs, blocked driveways, hazardous trees.</p>
+            <div class="card-cta">
+              <span class="card-cta-text">View Storm Cleanup</span>
+              <div class="card-cta-arrow">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom strip -->
+    <div class="sec-bottom">
+      <p class="sec-bottom-text">Not sure which service you need?</p>
+      <div class="sec-bottom-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(200,150,90,0.8)"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/></svg>
+        Call and we'll figure it out
+      </div>
+    </div>
+
+    <!-- Clip to light -->
+    <div class="sec-clip">
+      <svg viewBox="0 0 320 36" preserveAspectRatio="none">
+        <path d="M0 36 L320 0 L320 36 Z" fill="#f2efe6"/>
+      </svg>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggle(id) {
+  const card = document.getElementById(id);
+  const wasOpen = card.classList.contains('is-open');
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('is-open'));
+  if (!wasOpen) card.classList.add('is-open');
+}
+</script>
+</body>
+</html>
