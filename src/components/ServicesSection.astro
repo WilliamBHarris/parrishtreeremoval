@@ -61,25 +61,53 @@ const svmCardHintBySlug: Record<string, string> = {
   'emergency-tree-service': 'Fast response, any damage',
 };
 
-const homeServicesCards = pageId === 'home'
-  ? services.filter((service) => service.slug !== 'emergency-tree-service').slice(0, 3).map((service) => ({
+const usePremiumServicesSection = pageId === 'home' || pageId === 'services';
+
+const homeServicesCards = usePremiumServicesSection
+  ? services.slice(0, 4).map((service) => ({
       service,
-      toneClass: svmCardToneBySlug[service.slug] ?? 'card-removal',
+      toneClass:
+        service.slug === 'tree-removal'
+          ? 'c1'
+          : service.slug === 'tree-trimming'
+            ? 'c2'
+            : service.slug === 'stump-grinding'
+              ? 'c3'
+              : 'c4',
     }))
   : [];
 
-const homeStormService = pageId === 'home'
-  ? services.find((service) => service.slug === 'emergency-tree-service')
-  : undefined;
-
-const homeRefinedCardSummaryBySlug: Record<string, string> = {
-  'tree-removal': 'Safe removal of any tree — full cleanup included every time.',
-  'tree-trimming': 'Cleaner canopy, better clearance, healthier trees.',
-  'stump-grinding': 'Gone below grade. Nothing left to mow around or regrow.',
+const homeUltimateCardTagBySlug: Record<string, string> = {
+  'tree-removal': 'Same-Day Available',
+  'tree-trimming': 'Cleanup Included',
+  'stump-grinding': 'Ground Below Grade',
+  'emergency-tree-service': 'Emergency Response',
 };
+
+const homeUltimateCardStatBySlug: Record<string, { num: string; label: string }> = {
+  'tree-removal': { num: '500+', label: 'Trees removed' },
+  'tree-trimming': { num: '10yr', label: 'Local experience' },
+  'stump-grinding': { num: '100%', label: 'Below grade' },
+  'emergency-tree-service': { num: 'Fast', label: 'Same-day response' },
+};
+
+const homeUltimateCardSummaryBySlug: Record<string, string> = {
+  'tree-removal': 'Safe removal of any tree. Full cleanup every time — your yard left clean before we leave.',
+  'tree-trimming': 'Cleaner canopy, better clearance, healthier trees. Keeps your property looking sharp year round.',
+  'stump-grinding': 'Nothing left to trip on, mow around, or regrow. Your yard fully reclaimed in one visit.',
+  'emergency-tree-service': 'When storm damage needs immediate attention — fallen limbs, blocked driveways, hazardous trees.',
+};
+
+const homeUltimateCardMicroBySlug: Record<string, string> = {
+  'tree-removal': 'Free estimate · No obligation',
+  'tree-trimming': 'Free estimate · No obligation',
+  'stump-grinding': 'Free estimate · No obligation',
+  'emergency-tree-service': 'Emergency line available',
+};
+
 ---
 
-{pageId === 'home' && (
+{usePremiumServicesSection && (
   <div class="svm-home" id="svm-services">
     <div class="svm-header">
       <div class="svm-eyebrow">
@@ -91,6 +119,15 @@ const homeRefinedCardSummaryBySlug: Record<string, string> = {
         <span class="svm-headline-line svm-headline-line-accent">Whatever the job.</span>
       </h2>
       <p class="svm-intro"><span class="svm-intro-text">From routine trimming to full removal — we handle it all across {client.primaryLocation}.</span></p>
+      <div class="svc-strip" aria-hidden="true">
+        <span class="svc-strip-text">Tree Removal</span>
+        <span class="svc-strip-dot"></span>
+        <span class="svc-strip-text">Trimming</span>
+        <span class="svc-strip-dot"></span>
+        <span class="svc-strip-text">Stump Grinding</span>
+        <span class="svc-strip-dot"></span>
+        <span class="svc-strip-text">Storm Cleanup</span>
+      </div>
       <div class="svm-scroll-cue" aria-hidden="true"></div>
     </div>
 
@@ -98,7 +135,9 @@ const homeRefinedCardSummaryBySlug: Record<string, string> = {
       <span class="svc-scroll-hint-text">Swipe</span>
       <div class="svc-scroll-hint-dots">
         {homeServicesCards.map((_, index) => (
-          <span class:list={['svc-scroll-dot', index === 0 && 'active']} data-svc-dot></span>
+          <span class:list={['svc-scroll-dot', index === 0 && 'active']} data-svc-dot data-card={index}>
+            <span class="svc-scroll-dot-fill"></span>
+          </span>
         ))}
       </div>
     </div>
@@ -107,22 +146,36 @@ const homeRefinedCardSummaryBySlug: Record<string, string> = {
       <div class="svc-track" data-svc-track>
         {homeServicesCards.map(({ service, toneClass }, index) => {
           const iconHtml = svmIconBySlugs[service.slug] ?? '';
-          const num = String(index + 1).padStart(2, '0');
+          const isStorm = service.slug === 'emergency-tree-service';
+          const cardTag = homeUltimateCardTagBySlug[service.slug] ?? 'Service';
+          const cardStat = homeUltimateCardStatBySlug[service.slug];
 
           return (
             <a href={`/${service.slug}`} class:list={['svc-card', toneClass, index === 0 && 'is-active']} data-svc-card>
+              <span class="svc-card-border" aria-hidden="true"></span>
               <span class="svc-card-glow" aria-hidden="true"></span>
               <div class="svc-card-top">
-                <span class="svc-card-num-badge">{num}</span>
-                <span class="svc-card-icon" set:html={iconHtml}></span>
+                <span class="svc-card-num-badge">{cardTag}</span>
+                <span class="svc-card-icon-wrap">
+                  <span class="svc-card-icon">
+                    <span set:html={iconHtml}></span>
+                  </span>
+                  {isStorm && <span class="svc-card-storm-dot" aria-hidden="true"></span>}
+                </span>
               </div>
               <div class="svc-card-mid">
                 <span class="svc-card-title">{service.cardTitle.replace(' ', '\n')}</span>
-                <p class="svc-card-desc">{homeRefinedCardSummaryBySlug[service.slug] ?? service.serviceCardSummary}</p>
+                {cardStat && (
+                  <span class="svc-card-stat">
+                    <span class="svc-card-stat-num">{cardStat.num}</span>
+                    <span class="svc-card-stat-label">{cardStat.label}</span>
+                  </span>
+                )}
+                <p class="svc-card-desc">{homeUltimateCardSummaryBySlug[service.slug] ?? service.serviceCardSummary}</p>
               </div>
               <div class="svc-card-cta">
                 <span class="svc-card-cta-label">{`View ${service.cardTitle} →`}</span>
-                <span class="svc-card-cta-btn" aria-hidden="true">›</span>
+                <span class="svc-card-cta-micro">{homeUltimateCardMicroBySlug[service.slug] ?? 'Free estimate · No obligation'}</span>
               </div>
             </a>
           );
@@ -130,37 +183,16 @@ const homeRefinedCardSummaryBySlug: Record<string, string> = {
       </div>
     </div>
 
-    {homeStormService && (
-      <a href={`/${homeStormService.slug}`} class="svc-storm-card">
-        <span class="svc-storm-pulse" aria-hidden="true"></span>
-        <span class="svc-storm-icon" set:html={svmIconBySlugs[homeStormService.slug] ?? ''}></span>
-        <span class="svc-storm-copy">
-          <span class="svc-storm-badge">Emergency Response</span>
-          <span class="svc-storm-title">Storm Cleanup</span>
-          <span class="svc-storm-desc">Fast response, any damage</span>
-        </span>
-        <span class="svc-storm-arrow" aria-hidden="true">View →</span>
-      </a>
-    )}
-
-    <div class="svc-bottom">
-      <div class="svc-bottom-line" aria-hidden="true"></div>
-      <p class="svc-bottom-text">Not sure which service you need?</p>
-      <a
-        href={`tel:${client.primaryPhoneHref}`}
-        class="svc-bottom-btn"
-        aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.12.37 2.33.57 3.59.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1H7.5a1 1 0 0 1 1 1c0 1.26.2 2.47.57 3.59a1 1 0 0 1-.45 1z" fill="currentColor"></path>
-        </svg>
-        Call and we'll figure it out
-      </a>
+    <div class="svc-helper">
+      <p class="svc-helper-text">
+        Not sure which service you need?
+        <a href={`tel:${client.primaryPhoneHref}`} aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}>Call us →</a>
+      </p>
     </div>
 
     <div class="svm-clip" aria-hidden="true">
       <svg viewBox="0 0 320 36" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 36 L320 0 L320 36 Z" fill="#f2efe6" />
+        <path d="M0 37 L320 0 L320 37 Z" fill="#f2efe6" />
       </svg>
     </div>
   </div>
@@ -692,34 +724,134 @@ const homeRefinedCardSummaryBySlug: Record<string, string> = {
 
 <script is:inline>
   (function () {
+    var mobileQuery = window.matchMedia('(max-width: 767px)');
+    if (!mobileQuery.matches) return;
+
     var track = document.querySelector('[data-svc-track]');
     if (!track) return;
 
     var dots = Array.prototype.slice.call(document.querySelectorAll('[data-svc-dot]'));
     var cards = Array.prototype.slice.call(track.querySelectorAll('[data-svc-card]'));
     if (!dots.length) return;
+    if (cards.length < 2) return;
 
-    var syncDots = function () {
+    var AUTO_ADVANCE_MS = 4000;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var activeIndex = 0;
+    var autoplayStart = performance.now();
+    var scrollSettleTimer = 0;
+
+    var getCardStep = function () {
       var firstCard = track.querySelector('.svc-card');
-      if (!(firstCard instanceof HTMLElement)) return;
+      if (!(firstCard instanceof HTMLElement)) return 1;
 
-      var cardWidth = firstCard.offsetWidth + 10;
-      var index = Math.round(track.scrollLeft / cardWidth);
-      if (index < 0) index = 0;
-      if (index > dots.length - 1) index = dots.length - 1;
+      var trackStyles = window.getComputedStyle(track);
+      var gap = parseFloat(trackStyles.columnGap || trackStyles.gap || '0') || 0;
+      return firstCard.offsetWidth + gap;
+    };
 
+    var clampIndex = function (value) {
+      if (value < 0) return 0;
+      if (value > cards.length - 1) return cards.length - 1;
+      return value;
+    };
+
+    var updateDots = function (index, progress) {
       dots.forEach(function (dot, dotIndex) {
         dot.classList.toggle('active', dotIndex === index);
+        var fill = dot.querySelector('.svc-scroll-dot-fill');
+        if (!fill) return;
+        fill.style.width = dotIndex === index ? String(Math.max(0, Math.min(1, progress)) * 100) + '%' : '0%';
       });
+    };
 
+    var updateCards = function (index) {
       cards.forEach(function (card, cardIndex) {
         card.classList.toggle('is-active', cardIndex === index);
       });
     };
 
-    track.addEventListener('scroll', syncDots, { passive: true });
-    window.addEventListener('resize', syncDots);
-    syncDots();
+    var revealCards = function () {
+      cards.forEach(function (card, index) {
+        window.setTimeout(function () {
+          card.classList.add('visible');
+        }, 70 * index);
+      });
+    };
+
+    var syncActiveIndexFromScroll = function () {
+      var step = getCardStep();
+      var rawIndex = track.scrollLeft / step;
+      activeIndex = clampIndex(Math.round(rawIndex));
+      updateCards(activeIndex);
+      updateDots(activeIndex, 0);
+    };
+
+    var resetAutoplay = function () {
+      autoplayStart = performance.now();
+      updateDots(activeIndex, 0);
+    };
+
+    var scrollToIndex = function (index) {
+      var nextIndex = clampIndex(index);
+      var step = getCardStep();
+      activeIndex = nextIndex;
+      updateCards(activeIndex);
+      updateDots(activeIndex, 0);
+      track.scrollTo({
+        left: nextIndex * step,
+        behavior: reducedMotion ? 'auto' : 'smooth',
+      });
+      resetAutoplay();
+    };
+
+    var handleScroll = function () {
+      syncActiveIndexFromScroll();
+      window.clearTimeout(scrollSettleTimer);
+      scrollSettleTimer = window.setTimeout(function () {
+        syncActiveIndexFromScroll();
+        resetAutoplay();
+      }, 140);
+    };
+
+    track.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', function () {
+      syncActiveIndexFromScroll();
+      resetAutoplay();
+    });
+
+    track.addEventListener('touchstart', function () {
+      window.clearTimeout(scrollSettleTimer);
+    }, { passive: true });
+
+    track.addEventListener('pointerdown', function () {
+      window.clearTimeout(scrollSettleTimer);
+    }, { passive: true });
+
+    revealCards();
+    syncActiveIndexFromScroll();
+    resetAutoplay();
+
+    var autoplayTick = function (now) {
+      if (!document.hidden && !reducedMotion) {
+        var elapsed = now - autoplayStart;
+        var progress = Math.max(0, Math.min(1, elapsed / AUTO_ADVANCE_MS));
+        updateDots(activeIndex, progress);
+
+        if (progress >= 1) {
+          scrollToIndex((activeIndex + 1) % cards.length);
+        }
+      }
+      window.requestAnimationFrame(autoplayTick);
+    };
+    window.requestAnimationFrame(autoplayTick);
+
+    var angleTick = function () {
+      var activeCard = track.querySelector('.svc-card.is-active');
+      if (activeCard) activeCard.style.setProperty('--svc-angle', String((Date.now() / 28) % 360) + 'deg');
+      window.requestAnimationFrame(angleTick);
+    };
+    window.requestAnimationFrame(angleTick);
   })();
 </script>
 

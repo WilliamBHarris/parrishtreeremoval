@@ -16,7 +16,7 @@ const {
   surfaceTone = 'cool',
 } = Astro.props;
 
-const isHome = pageId === 'home';
+const usePremiumWhySection = Boolean(pageId) && !String(pageId).startsWith('preview');
 
 const whyChooseUsItems = [
   {
@@ -62,41 +62,31 @@ const whyChooseUsItems = [
 
 const homeWhyItems = [
   {
-    number: '01',
-    title: 'Licensed & Fully Insured',
-    description: 'Every job covered. No liability on your property, no surprises after the work is done.',
+    headline: '<em>Licensed</em> &<br>Fully Insured.',
+    body: 'Every job fully covered. No liability on your property, no surprises once the work is done.',
   },
   {
-    number: '02',
-    title: 'We Show Up On Time',
-    description: 'We set a window and we keep it. No all-day waits, no last-minute cancellations.',
+    headline: 'We Show Up<br><em>On Time.</em>',
+    body: 'We set a window and we keep it. No all-day waits, no last-minute cancellations, no excuses.',
   },
   {
-    number: '03',
-    title: 'Full Cleanup, Every Job',
-    description: 'Debris removed, yard left clean. We do not leave until it looks right.',
+    headline: 'Full Cleanup<br><em>Every Job.</em>',
+    body: "Debris removed, yard left clean. We don't leave until it looks exactly right.",
   },
   {
-    number: '04',
-    title: 'Clear Communication',
-    description: 'One point of contact from estimate through final cleanup. No runaround.',
+    headline: 'One Call.<br><em>Clear Answer.</em>',
+    body: 'One point of contact from estimate through final cleanup. Clear communication every step.',
   },
 ];
 ---
 
-{isHome ? (
+{usePremiumWhySection ? (
   <PageSection
     class="home-why-section"
     section="why-choose-us"
     page={pageId}
     surfaceTone={surfaceTone}
   >
-    <div class="home-entry-clip" aria-hidden="true">
-      <svg viewBox="0 0 320 36" preserveAspectRatio="none">
-        <path d="M0 36 L320 0 L320 36 Z" fill="#f2efe6"></path>
-      </svg>
-    </div>
-
     <div class="home-why">
       <div class="home-why-eye">
         <span class="home-why-eye-dot"></span>
@@ -110,49 +100,57 @@ const homeWhyItems = [
 
       <p class="home-why-intro">Four specific reasons {client.primaryLocation} homeowners keep calling us back.</p>
 
-      <div class="home-why-list">
+      <div class="home-why-overlay" aria-hidden="true"></div>
+      <div class="home-why-dark-light" aria-hidden="true"></div>
+      <div class="home-why-dark-orb1" aria-hidden="true"></div>
+      <div class="home-why-dark-orb2" aria-hidden="true"></div>
+      <div class="home-why-dark-grain" aria-hidden="true"></div>
+      <div class="home-why-orb-warm" aria-hidden="true"></div>
+      <div class="home-why-grain" aria-hidden="true"></div>
+
+      <div class="home-why-list" id="home-why-statements">
         {homeWhyItems.map((item) => (
-          <article class="home-why-item">
-            <div class="home-why-check-wrap" aria-hidden="true">
-              <span class="home-why-check">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M6.5 12.5l3.2 3.2 7.8-7.8"></path>
-                </svg>
-              </span>
-            </div>
+          <article class="home-why-item" data-home-why-statement>
             <div class="home-why-copy">
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
+              <div class="home-why-statement-headline" set:html={item.headline}></div>
+              <div class="home-why-statement-line"></div>
+              <p>{item.body}</p>
             </div>
           </article>
         ))}
       </div>
 
-      <button
-        type="button"
-        class="home-why-accent"
-        data-open-estimate-modal
-        aria-haspopup="dialog"
-        aria-controls="estimate-modal"
-      >
-        <span class="home-why-accent-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.19 18.85 19.5 19.5 0 0 1 3.5 9.5 19.79 19.79 0 0 1 .43.83 2 2 0 0 1 2.44 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11l-1.79 1.28a16 16 0 0 0 6.29 6.29l1.27-.78a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path>
+      <div class="home-why-accent">
+        <div class="home-why-accent-flood" aria-hidden="true"></div>
+        <div class="home-why-accent-grain"></div>
+        <div class="home-why-accent-eyebrow">Free Estimate · No Obligation</div>
+        <div class="home-why-accent-copy">
+          <strong>
+            Ready to Get
+            <em>Started?</em>
+          </strong>
+          <span>Tell us what's going on. We'll get back to you fast — usually same day.</span>
+        </div>
+        <button
+          type="button"
+          class="home-why-accent-btn"
+          data-open-estimate-modal
+          aria-haspopup="dialog"
+          aria-controls="estimate-modal"
+        >
+          <span class="home-why-accent-btn-label">Request a Free Estimate →</span>
+        </button>
+        <div class="home-why-accent-divider" aria-hidden="true">
+          <div class="home-why-accent-divider-line"></div>
+          <div class="home-why-accent-divider-line"></div>
+        </div>
+        <a class="home-why-accent-phone" href="tel:+19414006500" aria-label="Call us at (941) 400-6500">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(200,150,90,0.75)" aria-hidden="true">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"></path>
           </svg>
-        </span>
-        <span class="home-why-accent-copy">
-          <strong>Ready to get started?</strong>
-          <span>Call or request a free estimate online</span>
-        </span>
-        <span class="home-why-accent-arrow" aria-hidden="true">→</span>
-      </button>
+          <strong>(941) 400-6500</strong>
+        </a>
+      </div>
     </div>
   </PageSection>
 ) : (
@@ -192,44 +190,102 @@ const homeWhyItems = [
 )}
 
 <style>
-  :global(.page-section.home-why-section[data-page="home"][data-section="why-choose-us"]) {
+  :global(.page-section.home-why-section[data-section="why-choose-us"]) {
     padding: 0;
     background: #f2efe6;
-  }
-
-  .home-entry-clip {
-    background: transparent;
-    line-height: 0;
-  }
-
-  .home-entry-clip svg {
-    display: block;
-    width: 100%;
-    height: 18px;
+    overflow-x: clip;
   }
 
   .home-why {
     position: relative;
     overflow: hidden;
-    padding: 22px 20px 64px;
+    overflow-x: clip;
+    padding: 36px 20px 64px;
     background: #f2efe6;
+    box-sizing: border-box;
   }
 
-  .home-why::before {
-    content: '';
+  .home-why-overlay {
+    position: absolute;
+    bottom: -2px;
+    left: -1px;
+    right: -1px;
+    top: 0;
+    background: #012a14;
+    pointer-events: none;
+    z-index: 0;
+    transform-origin: bottom center;
+    transform: scaleY(0);
+    will-change: transform;
+  }
+
+  .home-why-dark-light {
+    display: none;
+  }
+
+  @keyframes homeWhyDarkLightPulse {
+    0% { opacity: 0.55; }
+    100% { opacity: 1; }
+  }
+
+  .home-why-dark-orb1 {
+    display: none;
+  }
+
+  .home-why-dark-orb2 {
+    display: none;
+  }
+
+  @keyframes homeWhyDarkOrb1 {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+    100% { transform: translate(-16px, 20px) scale(1.1); opacity: 1; }
+  }
+
+  @keyframes homeWhyDarkOrb2 {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+    100% { transform: translate(20px, -14px) scale(1.08); opacity: 0.7; }
+  }
+
+  .home-why-dark-grain {
+    display: none;
+  }
+
+  .home-why-orb-warm {
     position: absolute;
     top: -60px;
     right: -60px;
-    width: 280px;
-    height: 280px;
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,150,90,0.07) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(200,150,90,0.09) 0%, transparent 65%);
     pointer-events: none;
+    z-index: 1;
+    animation: homeWhyWarmOrb 9s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,0) 78%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 48%, rgba(0,0,0,0) 78%, rgba(0,0,0,0) 100%);
+  }
+
+  @keyframes homeWhyWarmOrb {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+    100% { transform: translate(-18px, 24px) scale(1.12); opacity: 1; }
+  }
+
+  .home-why-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 56%, rgba(0,0,0,0.18) 78%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 56%, rgba(0,0,0,0.18) 78%, rgba(0,0,0,0) 100%);
   }
 
   .home-why-eye {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     gap: 7px;
@@ -252,7 +308,7 @@ const homeWhyItems = [
 
   .home-why-title {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     margin: 0 0 12px;
     color: #012a14;
     font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
@@ -271,7 +327,7 @@ const homeWhyItems = [
 
   .home-why-intro {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     max-width: 240px;
     margin: 0 0 28px;
     color: #6b6b58;
@@ -282,130 +338,332 @@ const homeWhyItems = [
 
   .home-why-list {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     flex-direction: column;
+    padding: 30px 0 0;
   }
 
   .home-why-item {
-    display: grid;
-    grid-template-columns: 44px 1fr;
-    gap: 0 16px;
-    padding: 18px 0;
-    border-bottom: 1px solid rgba(1,42,20,0.07);
+    padding: 22px 0;
+    border-top: 1px solid rgba(1,42,20,0.1);
+    position: relative;
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+      transform 0.65s cubic-bezier(0.22,1,0.36,1);
   }
 
-  .home-why-item:first-child {
+  .home-why-item:last-child { border-bottom: 1px solid rgba(1,42,20,0.1); }
+  .home-why-item.revealed { opacity: 1; transform: translateY(0); }
+  .home-why-item:nth-child(1) { transition-delay: 0s; }
+  .home-why-item:nth-child(2) { transition-delay: 0.1s; }
+  .home-why-item:nth-child(3) { transition-delay: 0.2s; }
+  .home-why-item:nth-child(4) { transition-delay: 0.3s; }
+
+  .home-why-copy {
     padding-top: 0;
   }
 
-  .home-why-item:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
-
-  .home-why-check-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 1px;
-  }
-
-  .home-why-check {
-    width: 28px;
-    height: 28px;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    color: #c8965a;
-    border: 1px solid rgba(200,150,90,0.28);
-    background: rgba(200,150,90,0.08);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
-  }
-
-  .home-why-check svg {
-    width: 14px;
-    height: 14px;
-    display: block;
-  }
-
-  .home-why-copy {
-    padding-top: 1px;
-  }
-
-  .home-why-copy h3 {
-    margin: 0 0 5px;
-    color: #012a14;
-    font-size: 14px;
+  .home-why-statement-headline {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 32px;
     font-weight: 800;
-    line-height: 1.15;
+    text-transform: uppercase;
+    line-height: 0.9;
     letter-spacing: -0.02em;
+    color: #012a14;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
   }
+
+  .home-why-statement-headline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #f2efe6;
+    transform: translateX(0%);
+    transition: transform 0.75s cubic-bezier(0.77,0,0.18,1);
+    z-index: 1;
+  }
+
+  .home-why-item.revealed .home-why-statement-headline::before { transform: translateX(101%); }
+
+  .home-why-statement-headline :global(em) {
+    color: #c8965a;
+    font-style: normal;
+  }
+
+  .home-why-statement-line {
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #c8965a 0%, rgba(200,150,90,0.35) 60%, transparent 100%);
+    box-shadow: 0 0 8px rgba(200,150,90,0.2);
+    width: 0%;
+    margin-bottom: 10px;
+    transition: width 0.85s cubic-bezier(0.22,1,0.36,1) 0.35s;
+  }
+
+  .home-why-item.revealed .home-why-statement-line { width: 100%; }
 
   .home-why-copy p {
     margin: 0;
+    max-width: 238px;
     color: #7a7a66;
     font-size: 11px;
-    line-height: 1.6;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s ease 0.55s, transform 0.5s ease 0.55s;
+  }
+
+  .home-why-item.revealed .home-why-copy p {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .home-why-accent {
+    --why-accent-flood-progress: 0;
+    --why-accent-split: calc(var(--why-accent-flood-progress) * 100%);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 36px;
+    padding: 28px 22px 24px;
+    box-sizing: border-box;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(246,240,229,0.98) 100%);
+    border: 1px solid #c8965a;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .home-why-accent-flood {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--why-accent-flood-progress) * 100%);
+    background:
+      radial-gradient(ellipse 70% 48% at 50% 0%, rgba(210,140,60,0.16) 0%, transparent 52%),
+      linear-gradient(180deg, rgba(1,42,20,0.9) 0%, #012a14 100%);
+    z-index: 0;
+    pointer-events: none;
+    will-change: height;
+  }
+
+  .home-why-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,150,90,0.6), transparent);
+  }
+
+  .home-why-accent::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 55% at 50% -8%, rgba(200,150,90,0.14) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .home-why-accent-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px;
+    border-radius: 22px;
+  }
+
+  .home-why-accent-eyebrow {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    background: linear-gradient(
+      to top,
+      rgba(200,150,90,0.6) 0 var(--why-accent-split),
+      rgba(1,42,20,0.58) var(--why-accent-split) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 12px;
     position: relative;
     z-index: 1;
-    width: 100%;
-    margin-top: 28px;
-    padding: 16px 18px;
-    border: 0;
-    border-radius: 14px;
-    background: #012a14;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .home-why-accent-icon {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    border-radius: 10px;
-    border: 1px solid rgba(200,150,90,0.25);
-    background: rgba(200,150,90,0.15);
-    display: grid;
-    place-items: center;
-    color: #c8965a;
-  }
-
-  .home-why-accent-icon svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-  }
-
-  .home-why-accent-copy {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
   }
 
   .home-why-accent-copy strong {
-    margin-bottom: 2px;
-    color: #fff;
-    font-size: 12px;
+    display: block;
+    background: linear-gradient(
+      to top,
+      #ffffff 0 var(--why-accent-split),
+      #012a14 var(--why-accent-split) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 36px;
     font-weight: 800;
     letter-spacing: -0.01em;
+    line-height: 0.88;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-why-accent-copy strong em {
+    color: #c8965a;
+    font-style: normal;
+    display: block;
   }
 
   .home-why-accent-copy span {
-    color: rgba(255,255,255,0.5);
-    font-size: 10px;
-    line-height: 1.4;
+    display: block;
+    max-width: 205px;
+    margin: 0 auto 22px;
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.45) 0 var(--why-accent-split),
+      rgba(1,42,20,0.62) var(--why-accent-split) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 11px;
+    line-height: 1.65;
+    position: relative;
+    z-index: 1;
   }
 
-  .home-why-accent-arrow {
-    color: #c8965a;
-    font-size: 14px;
+  .home-why-accent-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #012f17 0%, #014421 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 14px;
+    border-radius: 11px;
+    width: 100%;
+    border: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    z-index: 1;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    box-shadow: 0 10px 24px rgba(1,42,20,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+    cursor: pointer;
+  }
+
+  .home-why-accent-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 56% 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent);
+    z-index: 0;
+  }
+
+  .home-why-accent-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--why-accent-split);
+    background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .home-why-accent-btn-label {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .home-why-accent-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-why-accent-divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.07) 0 var(--why-accent-split),
+      rgba(1,42,20,0.12) var(--why-accent-split) 100%
+    );
+  }
+
+  .home-why-accent-divider span {
+    font-size: 9px;
+    color: rgba(255,255,255,0.2);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .home-why-accent-phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    gap: 7px;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.05) 0 var(--why-accent-split),
+      rgba(1,42,20,0.03) var(--why-accent-split) 100%
+    );
+    border: 1px solid rgba(1,42,20,0.09);
+    border-radius: 11px;
+    padding: 12px;
+    text-decoration: none;
+  }
+
+  .home-why-accent-phone span {
+    font-size: 11px;
+    color: rgba(255,255,255,0.38);
+    overflow-wrap: anywhere;
+  }
+
+  .home-why-accent-phone strong {
+    font-size: 11px;
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.72) 0 var(--why-accent-split),
+      rgba(1,42,20,0.78) var(--why-accent-split) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     font-weight: 700;
   }
 
@@ -426,3 +684,93 @@ const homeWhyItems = [
     }
   }
 </style>
+
+{usePremiumWhySection && (
+  <script is:inline>
+    (() => {
+      const why = document.querySelector('.home-why');
+      const overlay = why?.querySelector('.home-why-overlay');
+      const cta = why?.querySelector('.home-why-accent');
+      const statements = Array.from(document.querySelectorAll('[data-home-why-statement]'));
+      if (!(why instanceof HTMLElement) || !(overlay instanceof HTMLElement) || statements.length === 0) return;
+
+      let targetOverlayProgress = 0;
+      let renderedOverlayProgress = 0;
+      let rafId = 0;
+
+      const measureOverlay = () => {
+        const rect = why.getBoundingClientRect();
+        const viewport = window.innerHeight || document.documentElement.clientHeight;
+        const sectionHeight = why.offsetHeight || 1;
+        const progress = Math.min(Math.max((viewport - rect.top) / (viewport + sectionHeight), 0), 1);
+        const start = 0.58;
+        const end = 0.97;
+        const baseOverlayProgress = Math.min(Math.max((progress - start) / (end - start), 0), 1);
+
+        let ctaOverlayProgress = 0;
+        if (cta instanceof HTMLElement) {
+          const ctaRect = cta.getBoundingClientRect();
+          const ctaEntryProgress = Math.min(
+            Math.max(
+              (viewport - ctaRect.top) / Math.max(viewport * 0.96, 1),
+              0,
+            ),
+            1,
+          );
+          ctaOverlayProgress = baseOverlayProgress + ((1 - baseOverlayProgress) * Math.pow(ctaEntryProgress, 2.1) * 0.7);
+        }
+
+        targetOverlayProgress = Math.min(Math.max(Math.max(baseOverlayProgress, ctaOverlayProgress), 0), 1);
+      };
+
+      const renderOverlay = () => {
+        renderedOverlayProgress += (targetOverlayProgress - renderedOverlayProgress) * 0.22;
+        if (Math.abs(targetOverlayProgress - renderedOverlayProgress) < 0.001) {
+          renderedOverlayProgress = targetOverlayProgress;
+        }
+
+        overlay.style.transform = `scaleY(${renderedOverlayProgress})`;
+
+        if (cta instanceof HTMLElement) {
+          const overlayTop = why.offsetHeight * (1 - renderedOverlayProgress);
+          const ctaTop = cta.offsetTop;
+          const ctaHeight = cta.offsetHeight || 1;
+          const localFloodProgress = Math.min(
+            Math.max((ctaTop + ctaHeight - overlayTop) / ctaHeight, 0),
+            1,
+          );
+          cta.style.setProperty('--why-accent-flood-progress', `${localFloodProgress}`);
+        }
+
+        if (Math.abs(targetOverlayProgress - renderedOverlayProgress) >= 0.001) {
+          rafId = window.requestAnimationFrame(renderOverlay);
+        } else {
+          rafId = 0;
+        }
+      };
+
+      const updateOverlay = () => {
+        measureOverlay();
+        if (!rafId) {
+          rafId = window.requestAnimationFrame(renderOverlay);
+        }
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        });
+      }, {
+        threshold: 0.25,
+        rootMargin: '0px 0px -30px 0px',
+      });
+
+      statements.forEach((statement) => observer.observe(statement));
+      window.addEventListener('scroll', updateOverlay, { passive: true });
+      window.addEventListener('resize', updateOverlay);
+      updateOverlay();
+    })();
+  </script>
+)}

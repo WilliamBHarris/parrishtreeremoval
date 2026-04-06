@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ · Service Area · Footer — Premium Final</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #0e0e0e;
+  display: flex; flex-direction: column;
+  align-items: center; min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem 1rem; gap: 12px;
+}
+.label {
+  color: rgba(255,255,255,0.3);
+  font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.phone {
+  width: 320px; border-radius: 42px;
+  border: 7px solid #1c1c1c; background: #1c1c1c;
+  overflow: hidden; box-shadow: 0 48px 96px rgba(0,0,0,0.7);
+}
+.screen {
+  overflow-y: scroll; max-height: 680px;
+  background: #012a14;
+}
+.screen::-webkit-scrollbar { display: none; }
+
+/* ─── Shared animations ─── */
+@keyframes dot {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.35; transform:scale(0.55); }
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ════════════════════════════════════════
+   CONTEXT STUB
+════════════════════════════════════════ */
+.stub {
+  background: #012a14;
+  padding: 24px 20px 0;
+}
+.stub-label {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.15); text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ════════════════════════════════════════
+   FAQ SECTION
+   Dark green — editorial, confident.
+   Large Barlow questions. Consistent
+   animation language with Why Choose Us.
+════════════════════════════════════════ */
+.faq {
+  background: #012a14;
+  padding: 44px 20px 0;
+  position: relative; overflow: hidden;
+}
+
+/* Two breathing orbs — depth */
+.faq-orb1 {
+  position: absolute; top: -50px; right: -50px;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,150,90,0.07) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+  animation: orb1 12s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+.faq-orb2 {
+  position: absolute; bottom: 80px; left: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(1,70,32,0.4) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+  animation: orb2 15s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+@keyframes orb1 { 0%{transform:translate(0,0) scale(1);opacity:.5} 100%{transform:translate(-14px,18px) scale(1.1);opacity:1} }
+@keyframes orb2 { 0%{transform:translate(0,0) scale(1);opacity:.35} 100%{transform:translate(18px,-14px) scale(1.08);opacity:.7} }
+
+/* Grain — same as hero */
+.faq-grain {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0; opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+}
+
+/* ── Header ── */
+.faq-head {
+  position: relative; z-index: 1;
+  margin-bottom: 8px;
+}
+.faq-eye {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: rgba(200,150,90,0.72); margin-bottom: 10px;
+}
+.faq-eye-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #c8965a; flex-shrink: 0;
+  animation: dot 2.2s ease-in-out infinite;
+}
+.faq-h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px; font-weight: 800;
+  text-transform: uppercase; line-height: 0.88;
+  color: #fff; letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+.faq-h2 em { color: #c8965a; font-style: normal; display: block; }
+/* Intro copy — grounds the section, gives context */
+.faq-intro {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.45); line-height: 1.65;
+  max-width: 240px; margin-bottom: 28px;
+}
+
+/* ── Items ── */
+.faq-list {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+}
+.faq-item {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  cursor: pointer;
+  opacity: 0; transform: translateY(16px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22,1,0.36,1),
+    transform 0.55s cubic-bezier(0.22,1,0.36,1),
+    background 200ms ease;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+.faq-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.07); }
+.faq-item.visible { opacity:1; transform:translateY(0); }
+/* Staggered entrance */
+.faq-item:nth-child(1){transition-delay:0s}
+.faq-item:nth-child(2){transition-delay:.07s}
+.faq-item:nth-child(3){transition-delay:.14s}
+.faq-item:nth-child(4){transition-delay:.21s}
+.faq-item:nth-child(5){transition-delay:.28s}
+
+/* Subtle bg tint when open — differentiates clearly */
+.faq-item.open {
+  background: rgba(200,150,90,0.04);
+  border-top-color: rgba(200,150,90,0.2);
+}
+/* Gold left accent bar on open item */
+.faq-item.open::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #c8965a, rgba(200,150,90,0.2));
+  border-radius: 999px;
+}
+
+.faq-trigger {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 14px;
+  padding: 20px 0 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Question — large, bold, declarative */
+.faq-q {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 800;
+  text-transform: uppercase; line-height: 0.95;
+  letter-spacing: -0.01em; color: #fff;
+  flex: 1;
+  transition: color 220ms ease;
+}
+.faq-item.open .faq-q { color: #c8965a; }
+
+/* Toggle — consistent with services */
+.faq-tog {
+  width: 26px; height: 26px; min-width: 26px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  display: grid; place-items: center;
+  color: rgba(200,150,90,0.4);
+  font-size: 18px; font-weight: 300; line-height: 1;
+  flex-shrink: 0; margin-top: 1px;
+  transition:
+    transform 280ms cubic-bezier(0.22,1,0.36,1),
+    background 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease;
+}
+.faq-item.open .faq-tog {
+  transform: rotate(45deg);
+  background: rgba(200,150,90,0.1);
+  border-color: rgba(200,150,90,0.25);
+  color: #c8965a;
+}
+
+/* Gold sweep line — same as Why Choose Us */
+.faq-line {
+  height: 2px; border-radius: 999px;
+  background: linear-gradient(90deg,
+    #c8965a 0%, rgba(200,150,90,0.3) 60%, transparent 100%);
+  box-shadow: 0 0 8px rgba(200,150,90,0.18);
+  width: 0%;
+  transition: width 0.75s cubic-bezier(0.22,1,0.36,1);
+}
+.faq-item.open .faq-line { width: 100%; }
+
+/* Answer body — grid reveal */
+.faq-body {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows 340ms cubic-bezier(0.22,1,0.36,1);
+}
+.faq-item.open .faq-body { grid-template-rows: 1fr; }
+.faq-inner { overflow: hidden; }
+.faq-answer {
+  font-size: 11.5px; font-weight: 400;
+  color: rgba(255,255,255,0.58); line-height: 1.72;
+  padding: 12px 0 22px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 300ms ease 120ms, transform 300ms ease 120ms;
+}
+.faq-item.open .faq-answer { opacity:1; transform:translateY(0); }
+
+/* ── FAQ bottom CTA — generous spacing ── */
+.faq-cta {
+  position: relative; z-index: 1;
+  padding: 36px 0 48px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 12px;
+}
+.faq-cta-label {
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,255,255,0.3); letter-spacing: 0.04em;
+  margin-bottom: -4px;
+}
+.faq-cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+  color: #fff; font-size: 13px; font-weight: 800;
+  padding: 14px 24px; border-radius: 12px;
+  position: relative; overflow: hidden;
+  letter-spacing: -0.01em;
+  box-shadow: 0 10px 28px rgba(180,110,40,0.38),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.faq-cta-btn::before {
+  content: '';
+  position: absolute; inset: 0 0 56% 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent);
+}
+.faq-cta-phone {
+  font-size: 11px; color: rgba(255,255,255,0.32);
+  display: flex; align-items: center; gap: 5px;
+}
+.faq-cta-phone strong { color: rgba(255,255,255,0.62); font-weight: 700; }
+
+/* ════════════════════════════════════════
+   SERVICE AREA
+   Light warm section. Typographic town
+   map. Hyper-local personality.
+   Clear contrast on all town names.
+════════════════════════════════════════ */
+
+/* Clip from dark FAQ to light area — consistent 36px */
+.faq-clip { background: #012a14; line-height: 0; }
+.faq-clip svg { display: block; width: 100%; }
+
+.area {
+  background: #f2efe6;
+  padding: 44px 20px 0;
+  position: relative; overflow: hidden;
+}
+/* Warm depth orb */
+.area-orb {
+  position: absolute; bottom: -40px; right: -40px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,150,90,0.08) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+  animation: orb1 13s ease-in-out infinite alternate;
+}
+
+/* ── Header ── */
+.area-head {
+  position: relative; z-index: 1; margin-bottom: 28px;
+}
+.area-eye {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: #8a6840; margin-bottom: 10px;
+}
+.area-eye-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #c8965a; flex-shrink: 0;
+  animation: dot 2.2s ease-in-out infinite 0.5s;
+}
+.area-h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px; font-weight: 800;
+  text-transform: uppercase; line-height: 0.88;
+  color: #012a14; letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+.area-h2 em { color: #c8965a; font-style: normal; display: block; }
+.area-intro {
+  font-size: 11px; color: #6b6b58;
+  line-height: 1.65; max-width: 240px;
+}
+
+/* ── Typographic map ── */
+.area-towns {
+  position: relative; z-index: 1;
+  padding: 24px 0;
+  border-top: 1px solid rgba(1,42,20,0.1);
+  border-bottom: 1px solid rgba(1,42,20,0.1);
+  margin-bottom: 22px;
+}
+
+/* Primary town */
+.town-primary {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px; font-weight: 800;
+  text-transform: uppercase; line-height: 0.85;
+  letter-spacing: -0.02em; color: #012a14;
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 12px;
+}
+/* Pulsing gold map pin */
+.town-pin {
+  width: 10px; height: 10px; min-width: 10px;
+  border-radius: 50%; background: #c8965a;
+  flex-shrink: 0;
+  animation: pinPulse 2.5s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(200,150,90,0.5);
+}
+@keyframes pinPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(200,150,90,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(200,150,90,0); }
+  100% { box-shadow: 0 0 0 0 rgba(200,150,90,0); }
+}
+.town-primary-tag {
+  font-size: 8.5px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #c8965a; margin-bottom: 16px;
+  padding-left: 22px;
+}
+
+/* Secondary towns — much better contrast */
+.town-row {
+  display: flex; flex-wrap: wrap;
+  align-items: baseline; gap: 0;
+  margin-bottom: 5px;
+}
+.town {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; text-transform: uppercase;
+  letter-spacing: -0.01em;
+  /* Strong contrast — not dull olive */
+  color: #2a4a30;
+  line-height: 1.05;
+}
+.town-sep {
+  color: rgba(1,42,20,0.25);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 400; padding: 0 8px;
+  line-height: 1; align-self: center;
+}
+/* Size scale — proximity to Parrish */
+.t-xl { font-size: 32px; }
+.t-lg { font-size: 26px; }
+.t-md { font-size: 21px; }
+.t-sm { font-size: 16px; color: #4a6448; }
+.t-xs { font-size: 13px; color: #6a7a68; }
+.town-sep.sep-sm { font-size: 14px; }
+.town-sep.sep-xs { font-size: 11px; padding: 0 5px; }
+
+/* ── Coverage card ── */
+.area-coverage {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  background: rgba(1,42,20,0.05);
+  border: 1px solid rgba(1,42,20,0.1);
+  border-radius: 14px; margin-bottom: 14px;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+}
+.area-coverage.visible { opacity:1; transform:translateY(0); }
+.area-coverage-ico {
+  width: 32px; height: 32px; min-width: 32px;
+  border-radius: 10px;
+  background: rgba(200,150,90,0.1);
+  border: 1px solid rgba(200,150,90,0.2);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.area-coverage-text {
+  font-size: 11px; color: #5a5a48;
+  line-height: 1.55; font-weight: 500;
+}
+.area-coverage-text strong { color: #012a14; font-weight: 800; }
+
+/* ── ZIP checker ── */
+.area-zip {
+  position: relative; z-index: 1;
+  background: #fff;
+  /* Warmer border — not stark white-on-beige */
+  border: 1px solid rgba(1,42,20,0.1);
+  border-radius: 18px;
+  padding: 18px 18px 20px;
+  margin-bottom: 48px;
+  box-shadow: 0 4px 20px rgba(1,42,20,0.06);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.5s ease 0.1s, transform 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s;
+}
+.area-zip.visible { opacity:1; transform:translateY(0); }
+.area-zip-h {
+  font-size: 14px; font-weight: 800;
+  color: #012a14; letter-spacing: -0.01em; margin-bottom: 4px;
+}
+.area-zip-sub {
+  font-size: 11px; color: #7a7a66;
+  line-height: 1.55; margin-bottom: 14px;
+}
+.area-zip-row { display: flex; gap: 8px; }
+.area-zip-input {
+  flex: 1; padding: 12px 14px;
+  border: 1px solid rgba(1,42,20,0.1);
+  border-radius: 11px;
+  font-size: 14px; color: #012a14;
+  background: #f9f7f2; font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 200ms ease;
+}
+.area-zip-input:focus { border-color: rgba(200,150,90,0.4); }
+.area-zip-input::placeholder { color: rgba(1,42,20,0.3); }
+.area-zip-btn {
+  background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+  color: #fff; font-size: 12px; font-weight: 800;
+  padding: 12px 18px; border-radius: 11px;
+  white-space: nowrap; cursor: pointer;
+  box-shadow: 0 6px 16px rgba(180,110,40,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+  position: relative; overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+.area-zip-btn::before {
+  content: '';
+  position: absolute; inset: 0 0 55% 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent);
+}
+
+/* ════════════════════════════════════════
+   FOOTER
+   Opens with atmospheric brand statement.
+   Then grid. Then meta.
+   Every element has presence.
+════════════════════════════════════════ */
+.footer { background: #011a0d; }
+
+/* ── Closing statement — atmospheric ── */
+.footer-statement {
+  background: #011a0d;
+  padding: 44px 20px 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative; overflow: hidden;
+}
+/* Gold light burst — same as hero and CTA card */
+.footer-statement::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 20% 0%,
+    rgba(200,150,90,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+/* Gold top accent line */
+.footer-statement::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,
+    rgba(200,150,90,0.5) 0%, rgba(200,150,90,0.15) 50%, transparent 100%);
+}
+/* Grain */
+.footer-grain {
+  position: absolute; inset: 0;
+  pointer-events: none; opacity: 0.04; z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px;
+}
+/* Floating orb behind statement */
+.footer-orb {
+  position: absolute; top: -40px; right: -40px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,150,90,0.07) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+
+.footer-stmt-label {
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.24em; text-transform: uppercase;
+  color: rgba(200,150,90,0.45);
+  display: block; margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.footer-stmt-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px; font-weight: 800;
+  text-transform: uppercase; line-height: 0.9;
+  letter-spacing: -0.01em; color: #fff;
+  position: relative; z-index: 1;
+  /* Scroll entrance */
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+}
+.footer-stmt-text.visible { opacity:1; transform:translateY(0); }
+.footer-stmt-text em { color: #c8965a; font-style: normal; display: block; }
+
+/* ── Brand row ── */
+.footer-brand {
+  padding: 26px 20px 22px;
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.footer-brand-left {}
+.footer-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: #fff; line-height: 1; margin-bottom: 4px;
+}
+.footer-name em { color: #c8965a; font-style: normal; }
+.footer-tagline {
+  font-size: 8.5px; color: rgba(255,255,255,0.25);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  line-height: 1.6;
+}
+/* Call pill — refined */
+.footer-call {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(200,150,90,0.1);
+  border: 1px solid rgba(200,150,90,0.2);
+  border-radius: 999px; padding: 8px 14px;
+  color: #c8965a; font-size: 10px; font-weight: 800;
+  white-space: nowrap; flex-shrink: 0;
+  letter-spacing: 0.02em;
+  transition: background 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.footer-call:active { background: rgba(200,150,90,0.18); }
+
+/* ── Grid — larger tap targets ── */
+.footer-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 26px 16px;
+  padding: 26px 20px 28px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.footer-col-head {
+  font-size: 7.5px; font-weight: 800;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.28); margin-bottom: 12px;
+}
+.footer-col-body {
+  display: flex; flex-direction: column; gap: 9px;
+}
+/* 13px minimum for mobile tap targets */
+.footer-col-body a {
+  font-size: 12.5px; color: rgba(255,255,255,0.55);
+  text-decoration: none; line-height: 1.3; display: block;
+  transition: color 180ms ease;
+}
+.footer-col-body a:active { color: rgba(255,255,255,0.85); }
+
+/* Fading divider */
+.footer-divider {
+  height: 1px; margin: 0 20px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.07) 25%,
+    rgba(255,255,255,0.07) 75%,
+    rgba(255,255,255,0) 100%);
+}
+
+/* ── Meta row — readable contrast ── */
+.footer-meta {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 28px;
+}
+/* Bumped from 0.18 to 0.32 — readable */
+.footer-copy {
+  font-size: 9px; color: rgba(255,255,255,0.32);
+  line-height: 1.5;
+}
+.footer-copy span {
+  display: block; color: rgba(255,255,255,0.42);
+  margin-top: 2px;
+}
+.footer-top {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 9px; color: rgba(255,255,255,0.38);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px 12px; border-radius: 999px;
+  cursor: pointer; white-space: nowrap;
+  transition: border-color 200ms ease, color 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.footer-top:active { border-color: rgba(200,150,90,0.35); color: rgba(200,150,90,0.7); }
+</style>
+</head>
+<body>
+<div class="label">FAQ · Service Area · Footer — Premium Final</div>
+<div class="phone">
+  <div class="screen" id="screen">
+
+    <!-- Context -->
+    <div class="stub">
+      <div class="stub-label">↑ Process section above</div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         FAQ
+    ══════════════════════════════════ -->
+    <div class="faq" id="faq">
+      <div class="faq-orb1"></div>
+      <div class="faq-orb2"></div>
+      <div class="faq-grain"></div>
+
+      <div class="faq-head">
+        <div class="faq-eye"><div class="faq-eye-dot"></div>Common Questions</div>
+        <h2 class="faq-h2">Got<br><em>Questions?</em></h2>
+        <p class="faq-intro">Everything homeowners ask before they call us — answered straight.</p>
+      </div>
+
+      <div class="faq-list" id="faqList">
+
+        <div class="faq-item">
+          <div class="faq-trigger">
+            <div class="faq-q">Do you give free estimates?</div>
+            <div class="faq-tog">+</div>
+          </div>
+          <div class="faq-line"></div>
+          <div class="faq-body"><div class="faq-inner">
+            <p class="faq-answer">Yes — always. Reach out by phone or online and we'll follow up to review your project at no cost and no obligation. Usually same day.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger">
+            <div class="faq-q">Do you handle storm damage?</div>
+            <div class="faq-tog">+</div>
+          </div>
+          <div class="faq-line"></div>
+          <div class="faq-body"><div class="faq-inner">
+            <p class="faq-answer">Yes. We respond to storm-damaged trees, fallen limbs, and blocked driveways as quickly as possible — including same-day when available.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger">
+            <div class="faq-q">Is cleanup included on every job?</div>
+            <div class="faq-tog">+</div>
+          </div>
+          <div class="faq-line"></div>
+          <div class="faq-body"><div class="faq-inner">
+            <p class="faq-answer">Always. We remove all debris and leave your yard clean before we leave. We don't consider the job done until the site looks right.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger">
+            <div class="faq-q">Are you licensed and insured?</div>
+            <div class="faq-tog">+</div>
+          </div>
+          <div class="faq-line"></div>
+          <div class="faq-body"><div class="faq-inner">
+            <p class="faq-answer">Fully licensed and insured on every job. We're happy to provide proof of insurance before we start — just ask.</p>
+          </div></div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-trigger">
+            <div class="faq-q">How fast can you get here?</div>
+            <div class="faq-tog">+</div>
+          </div>
+          <div class="faq-line"></div>
+          <div class="faq-body"><div class="faq-inner">
+            <p class="faq-answer">Standard jobs typically schedule within a few days. Storm damage and emergencies — we aim for same day whenever possible.</p>
+          </div></div>
+        </div>
+
+      </div>
+
+      <!-- FAQ CTA — generous breathing room -->
+      <div class="faq-cta">
+        <span class="faq-cta-label">Still have a question?</span>
+        <div class="faq-cta-btn">Get a Free Estimate →</div>
+        <div class="faq-cta-phone">or call: <strong>(941) 400-6500</strong></div>
+      </div>
+    </div>
+
+    <!-- Clip — consistent 36px depth -->
+    <div class="faq-clip">
+      <svg viewBox="0 0 320 36" preserveAspectRatio="none">
+        <path d="M0 36 L320 0 L320 36 Z" fill="#f2efe6"/>
+      </svg>
+    </div>
+
+    <!-- ══════════════════════════════════
+         SERVICE AREA
+    ══════════════════════════════════ -->
+    <div class="area" id="area">
+      <div class="area-orb"></div>
+
+      <div class="area-head">
+        <div class="area-eye"><div class="area-eye-dot"></div>Where We Work</div>
+        <h2 class="area-h2">Serving Parrish<br><em>& Beyond.</em></h2>
+        <p class="area-intro">Proud to serve homeowners across Manatee County and surrounding communities.</p>
+      </div>
+
+      <!-- Typographic map -->
+      <div class="area-towns" id="areaTowns">
+        <div class="town-primary">
+          <div class="town-pin"></div>
+          Parrish
+        </div>
+        <div class="town-primary-tag">Our Home · Manatee County, FL</div>
+
+        <div class="town-row">
+          <span class="town t-xl">Ellenton</span>
+          <span class="town-sep">·</span>
+          <span class="town t-lg">Palmetto</span>
+        </div>
+        <div class="town-row">
+          <span class="town t-xl">Bradenton</span>
+        </div>
+        <div class="town-row">
+          <span class="town t-lg">Sarasota</span>
+          <span class="town-sep">·</span>
+          <span class="town t-md">Ruskin</span>
+        </div>
+        <div class="town-row">
+          <span class="town t-sm">Sun City Center</span>
+          <span class="town-sep sep-sm">·</span>
+          <span class="town t-sm">Wimauma</span>
+        </div>
+        <div class="town-row">
+          <span class="town t-xs">Gibsonton</span>
+          <span class="town-sep sep-xs">·</span>
+          <span class="town t-xs">Apollo Beach</span>
+          <span class="town-sep sep-xs">·</span>
+          <span class="town t-xs">Riverview</span>
+        </div>
+      </div>
+
+      <!-- Coverage card -->
+      <div class="area-coverage" id="areaCoverage">
+        <div class="area-coverage-ico">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <p class="area-coverage-text"><strong>Not sure we cover your area?</strong> Enter your ZIP below — we'll confirm in seconds.</p>
+      </div>
+
+      <!-- ZIP checker -->
+      <div class="area-zip" id="areaZip">
+        <div class="area-zip-h">Check Your ZIP Code</div>
+        <p class="area-zip-sub">Enter your ZIP to confirm we serve your neighborhood.</p>
+        <div class="area-zip-row">
+          <input class="area-zip-input" type="text" placeholder="e.g. 34219" maxlength="5" inputmode="numeric"/>
+          <div class="area-zip-btn">Check →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         FOOTER
+    ══════════════════════════════════ -->
+    <div class="footer">
+
+      <!-- Atmospheric closing statement -->
+      <div class="footer-statement">
+        <div class="footer-grain"></div>
+        <div class="footer-orb"></div>
+        <span class="footer-stmt-label">Our Promise</span>
+        <div class="footer-stmt-text" id="footerStmt">
+          Show up. Do the work.<br>
+          <em>Leave it right.</em>
+        </div>
+      </div>
+
+      <!-- Brand row -->
+      <div class="footer-brand">
+        <div class="footer-brand-left">
+          <div class="footer-name">PARRISH <em>TREE</em></div>
+          <div class="footer-tagline">
+            Removal · Trimming · Grinding<br>
+            Parrish, FL · Est. 2016
+          </div>
+        </div>
+        <div class="footer-call">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="#c8965a">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/>
+          </svg>
+          Call Now
+        </div>
+      </div>
+
+      <!-- Grid — 13px+ tap targets -->
+      <div class="footer-grid">
+        <div>
+          <div class="footer-col-head">Services</div>
+          <div class="footer-col-body">
+            <a>Tree Removal</a>
+            <a>Tree Trimming</a>
+            <a>Stump Grinding</a>
+            <a>Storm Cleanup</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-head">Contact</div>
+          <div class="footer-col-body">
+            <a>(941) 400-6500</a>
+            <a>Free Estimates</a>
+            <a>Emergency Line</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-head">Hours</div>
+          <div class="footer-col-body">
+            <a>Mon–Fri 7am–6pm</a>
+            <a>Sat 8am–4pm</a>
+            <a>Storm 24/7</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-head">Follow Us</div>
+          <div class="footer-col-body">
+            <a>Facebook</a>
+            <a>Google</a>
+            <a>Instagram</a>
+            <a>Nextdoor</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <!-- Meta — readable contrast -->
+      <div class="footer-meta">
+        <div class="footer-copy">
+          © 2025 Parrish Tree Removal
+          <span>Will Made It · All rights reserved</span>
+        </div>
+        <div class="footer-top" id="backTop">↑ Top</div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function() {
+  const screen = document.getElementById('screen');
+
+  // ── FAQ accordion
+  document.querySelectorAll('.faq-trigger').forEach((trigger, index) => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      // Open clicked if it was closed
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // ── Shared IntersectionObserver factory
+  function makeObserver(callback, options = {}) {
+    return new IntersectionObserver(callback, {
+      root: screen,
+      threshold: options.threshold || 0.2,
+      rootMargin: options.margin || '0px 0px -20px 0px'
+    });
+  }
+
+  // ── FAQ items — staggered fade up
+  const faqItems = document.querySelectorAll('.faq-item');
+  const faqObs = makeObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        faqObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  faqItems.forEach(item => faqObs.observe(item));
+
+  // ── Area towns — staggered entrance
+  const townEls = document.querySelectorAll('.town-primary, .town-primary-tag, .town-row');
+  townEls.forEach((el, i) => {
+    el.style.cssText = `opacity:0; transform:translateY(14px); transition: opacity 0.55s ease ${i*0.07}s, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${i*0.07}s`;
+  });
+  const townObs = makeObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        townEls.forEach(el => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+        townObs.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+  const areaTowns = document.getElementById('areaTowns');
+  if (areaTowns) townObs.observe(areaTowns);
+
+  // ── Coverage card + ZIP — sequential entrance
+  const coverageEl = document.getElementById('areaCoverage');
+  const zipEl = document.getElementById('areaZip');
+  const cardObs = makeObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        cardObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  if (coverageEl) cardObs.observe(coverageEl);
+  if (zipEl) cardObs.observe(zipEl);
+
+  // ── Footer statement entrance
+  const footerStmt = document.getElementById('footerStmt');
+  const footerObs = makeObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        footerObs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  if (footerStmt) footerObs.observe(footerStmt);
+
+  // ── Back to top
+  const backTop = document.getElementById('backTop');
+  if (backTop) {
+    backTop.addEventListener('click', () => {
+      screen.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+})();
+</script>
+</body>
+</html>

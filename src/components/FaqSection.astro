@@ -18,12 +18,41 @@ const {
   surfaceTone = 'warm',
 } = Astro.props;
 
-const isHome = pageId === 'home';
+const usePremiumFaqSection = Boolean(pageId) && !String(pageId).startsWith('preview');
+
+const homeFaqItems = [
+  {
+    question: 'Do you give free estimates?',
+    answer: "Yes — always. Reach out by phone or online and we'll follow up to review your project at no cost and no obligation. Usually same day.",
+  },
+  {
+    question: 'Do you handle storm damage?',
+    answer: 'Yes. We respond to storm-damaged trees, fallen limbs, and blocked driveways as quickly as possible — including same-day when available.',
+  },
+  {
+    question: 'Is cleanup included on every job?',
+    answer: "Always. We remove all debris and leave your yard clean before we leave. We don't consider the job done until the site looks right.",
+  },
+  {
+    question: 'Are you licensed and insured?',
+    answer: "Fully licensed and insured on every job. We're happy to provide proof of insurance before we start — just ask.",
+  },
+  {
+    question: 'How fast can you get here?',
+    answer: 'Standard jobs typically schedule within a few days. Storm damage and emergencies — we aim for same day whenever possible.',
+  },
+];
+
+const premiumFaqItems = pageId === 'home' ? homeFaqItems : items;
 ---
 
-{isHome ? (
+{usePremiumFaqSection ? (
   <PageSection id="faq" class="home-faq-section" section="faq" page={pageId} surfaceTone={surfaceTone}>
     <div class="home-faq">
+      <div class="home-faq-orb1" aria-hidden="true"></div>
+      <div class="home-faq-orb2" aria-hidden="true"></div>
+      <div class="home-faq-grain" aria-hidden="true"></div>
+
       <div class="home-faq-head">
         <div class="home-faq-eye">
           <span class="home-faq-eye-dot"></span>
@@ -33,22 +62,38 @@ const isHome = pageId === 'home';
           Got
           <em>Questions?</em>
         </h2>
+        <p class="home-faq-intro">Everything homeowners ask before they call us — answered straight.</p>
       </div>
 
-      <div class="home-faq-list" data-home-faq>
-        {items.map((item, index) => (
+      <div class="home-faq-list" data-home-faq-list>
+        {premiumFaqItems.map((item, index) => (
           <article class:list={['home-faq-item', index === 0 && 'is-open']} data-home-faq-item>
             <button class="home-faq-trigger" type="button" data-home-faq-trigger aria-expanded={index === 0 ? 'true' : 'false'}>
               <span class="home-faq-question">{item.question}</span>
               <span class="home-faq-toggle" aria-hidden="true">+</span>
             </button>
-            <div class="home-faq-body" data-home-faq-body>
+            <div class="home-faq-line"></div>
+            <div class="home-faq-body">
               <div class="home-faq-inner">
-                <p>{item.answer}</p>
+                <p class="home-faq-answer">{item.answer}</p>
               </div>
             </div>
           </article>
         ))}
+      </div>
+
+      <div class="home-faq-cta">
+        <span class="home-faq-cta-label">Still have a question?</span>
+        <button
+          type="button"
+          class="home-faq-cta-btn"
+          data-open-estimate-modal
+          aria-haspopup="dialog"
+          aria-controls="estimate-modal"
+        >
+          Get a Free Estimate →
+        </button>
+        <div class="home-faq-cta-phone"><strong>(941) 400-6500</strong></div>
       </div>
     </div>
   </PageSection>
@@ -56,7 +101,7 @@ const isHome = pageId === 'home';
   <PageSection id="faq" class="section-desktop-split" section="faq" page={pageId} surfaceTone={surfaceTone}>
     <div class="clone-heading" data-block="heading">
       <h2 class="clone-kicker section-divider-title">FAQ</h2>
-      <p class="section-lead section-desktop-lead clone-intro">
+      <p class:list={['section-lead', 'section-desktop-lead', 'clone-intro']}>
         Quick answers to the questions homeowners ask most when they are comparing tree services, planning the work, or deciding what information to send for an estimate in Parrish, FL and the surrounding service area.
       </p>
     </div>
@@ -115,12 +160,23 @@ const isHome = pageId === 'home';
 
 <script is:inline>
   (() => {
-    const homeFaqGroups = document.querySelectorAll('[data-home-faq]');
+    const homeFaqGroups = document.querySelectorAll('[data-home-faq-list]');
 
     homeFaqGroups.forEach((group) => {
       if (!(group instanceof HTMLElement) || group.dataset.homeFaqBound === 'true') return;
       group.dataset.homeFaqBound = 'true';
+
       const items = Array.from(group.querySelectorAll('[data-home-faq-item]'));
+
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        });
+      }, { threshold: 0.15 });
+
+      items.forEach((item) => revealObserver.observe(item));
 
       items.forEach((item) => {
         const trigger = item.querySelector('[data-home-faq-trigger]');
@@ -189,30 +245,84 @@ const isHome = pageId === 'home';
 </script>
 
 <style>
-  :global(.page-section.home-faq-section[data-page="home"][data-section="faq"]) {
+  :global(.page-section.home-faq-section[data-section="faq"]) {
     padding: 0;
     background: #f2efe6;
+    overflow-x: clip;
   }
 
   .home-faq {
-    background: #f2efe6;
-    padding: 0 20px 44px;
+    background: #012a14;
+    padding: 44px 20px 0;
+    position: relative;
+    overflow: hidden;
+    overflow-x: clip;
+    clip-path: polygon(0 18px, 100% 0, 100% calc(100% - 18px), 0 100%);
+    box-sizing: border-box;
+  }
+
+  .home-faq-orb1 {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,150,90,0.07) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    animation: homeFaqOrb1 12s ease-in-out infinite alternate;
+  }
+
+  .home-faq-orb2 {
+    position: absolute;
+    bottom: 80px;
+    left: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(1,70,32,0.4) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    animation: homeFaqOrb2 15s ease-in-out infinite alternate;
+  }
+
+  @keyframes homeFaqOrb1 {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+    100% { transform: translate(-14px, 18px) scale(1.1); opacity: 1; }
+  }
+
+  @keyframes homeFaqOrb2 {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.35; }
+    100% { transform: translate(18px, -14px) scale(1.08); opacity: 0.7; }
+  }
+
+  .home-faq-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px;
   }
 
   .home-faq-head {
-    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 8px;
   }
 
   .home-faq-eye {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin-bottom: 10px;
-    color: #8a6840;
     font-size: 8px;
     font-weight: 700;
     letter-spacing: 0.26em;
     text-transform: uppercase;
+    color: rgba(200,150,90,0.72);
+    margin-bottom: 10px;
   }
 
   .home-faq-eye-dot {
@@ -221,12 +331,12 @@ const isHome = pageId === 'home';
     border-radius: 50%;
     background: #c8965a;
     flex-shrink: 0;
-    animation: hmDotPulse 2.2s ease-in-out infinite 0.35s;
+    animation: hmDotPulse 2.2s ease-in-out infinite;
   }
 
   .home-faq-title {
-    margin: 0;
-    color: #012a14;
+    margin: 0 0 10px;
+    color: #fff;
     font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
     font-size: 40px;
     font-weight: 800;
@@ -241,71 +351,144 @@ const isHome = pageId === 'home';
     font-style: normal;
   }
 
+  .home-faq-intro {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
+    max-width: 240px;
+    margin: 0 0 28px;
+  }
+
   .home-faq-list {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   .home-faq-item {
-    overflow: hidden;
-    border: 1px solid rgba(1,42,20,0.07);
-    border-radius: 14px;
-    background: #fff;
-    transition: border-color 200ms ease, box-shadow 200ms ease;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1), transform 0.55s cubic-bezier(0.22,1,0.36,1), background 200ms ease;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    padding-inline: 14px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
 
+  .home-faq-item:last-child {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .home-faq-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .home-faq-item:nth-child(1) { transition-delay: 0s; }
+  .home-faq-item:nth-child(2) { transition-delay: 0.07s; }
+  .home-faq-item:nth-child(3) { transition-delay: 0.14s; }
+  .home-faq-item:nth-child(4) { transition-delay: 0.21s; }
+  .home-faq-item:nth-child(5) { transition-delay: 0.28s; }
+
   .home-faq-item.is-open {
-    border-color: rgba(200,150,90,0.22);
-    box-shadow: inset 0 2px 0 rgba(200,150,90,0.35);
+    background: rgba(200,150,90,0.04);
+    border-top-color: rgba(200,150,90,0.2);
+  }
+
+  .home-faq-item.is-open::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #c8965a, rgba(200,150,90,0.2));
+    border-radius: 999px;
   }
 
   .home-faq-trigger {
     width: 100%;
-    border: 0;
-    background: transparent;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 12px;
-    padding: 15px 16px;
+    gap: 14px;
+    padding: 20px 0 16px;
+    border: 0;
+    background: transparent;
     text-align: left;
+    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
+    min-width: 0;
   }
 
   .home-faq-question {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: #fff;
     flex: 1;
-    color: #012a14;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.35;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    transition: color 220ms ease;
+  }
+
+  .home-faq-item.is-open .home-faq-question {
+    color: #c8965a;
   }
 
   .home-faq-toggle {
-    width: 20px;
-    height: 20px;
-    min-width: 20px;
-    margin-top: 1px;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
     display: grid;
     place-items: center;
-    border-radius: 50%;
-    background: rgba(1,42,20,0.06);
-    color: #c8965a;
-    font-size: 14px;
+    color: rgba(200,150,90,0.4);
+    font-size: 18px;
     font-weight: 300;
     line-height: 1;
-    transition: transform 240ms cubic-bezier(0.22,1,0.36,1), background 200ms ease;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: transform 280ms cubic-bezier(0.22,1,0.36,1), background 220ms ease, border-color 220ms ease, color 220ms ease;
   }
 
   .home-faq-item.is-open .home-faq-toggle {
     transform: rotate(45deg);
-    background: rgba(200,150,90,0.12);
+    background: rgba(200,150,90,0.1);
+    border-color: rgba(200,150,90,0.25);
+    color: #c8965a;
+  }
+
+  .home-faq-line {
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #c8965a 0%, rgba(200,150,90,0.3) 60%, transparent 100%);
+    box-shadow: 0 0 8px rgba(200,150,90,0.18);
+    width: 0%;
+    transition: width 0.75s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .home-faq-item.is-open .home-faq-line {
+    width: 100%;
   }
 
   .home-faq-body {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 300ms cubic-bezier(0.22,1,0.36,1);
+    transition: grid-template-rows 340ms cubic-bezier(0.22,1,0.36,1);
   }
 
   .home-faq-item.is-open .home-faq-body {
@@ -314,22 +497,88 @@ const isHome = pageId === 'home';
 
   .home-faq-inner {
     overflow: hidden;
-    padding: 0 16px;
+    min-width: 0;
   }
 
-  .home-faq-inner p {
+  .home-faq-answer {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.58);
+    line-height: 1.72;
+    padding: 12px 0 22px;
+    max-width: 236px;
+    overflow-wrap: anywhere;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 300ms ease 120ms, transform 300ms ease 120ms;
     margin: 0;
-    padding-bottom: 15px;
-    color: #7a7a66;
+  }
+
+  .home-faq-item.is-open .home-faq-answer {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .home-faq-cta {
+    position: relative;
+    z-index: 1;
+    padding: 36px 0 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .home-faq-cta-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.04em;
+    margin-bottom: -4px;
+  }
+
+  .home-faq-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 14px 24px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: -0.01em;
+    box-shadow: 0 10px 28px rgba(180,110,40,0.38), inset 0 1px 0 rgba(255,255,255,0.18);
+    border: 0;
+    cursor: pointer;
+  }
+
+  .home-faq-cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 56% 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent);
+  }
+
+  .home-faq-cta-phone {
     font-size: 11px;
-    line-height: 1.68;
+    color: rgba(255,255,255,0.32);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .home-faq-cta-phone strong {
+    color: rgba(255,255,255,0.62);
+    font-weight: 700;
   }
 
   @media (min-width: 768px) {
     .home-faq {
       max-width: 760px;
       margin: 0 auto;
-      padding: 0 28px 56px;
     }
 
     .home-faq-title {

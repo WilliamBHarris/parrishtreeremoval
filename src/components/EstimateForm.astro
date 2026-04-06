@@ -7,6 +7,8 @@ interface Props {
   buttonLabel?: string;
   serviceLabel?: string;
   headingId?: string;
+  variant?: 'default' | 'premium-modal';
+  hideIntro?: boolean;
 }
 
 let estimateFormInstanceCount = 0;
@@ -17,6 +19,8 @@ const {
   buttonLabel = "Submit Estimate Request",
   serviceLabel = "Service Needed",
   headingId,
+  variant = 'default',
+  hideIntro = false,
 } = Astro.props;
 
 const instanceBaseId = headingId
@@ -33,96 +37,157 @@ const serviceId = `${instanceBaseId}-service`;
 const detailsId = `${instanceBaseId}-details`;
 ---
 
-<div class="estimate-form-shell form-card">
-  <div class="estimate-form-intro">
-    <h3 id={resolvedHeadingId}>{heading}</h3>
-    <p id={introId}>{intro}</p>
-  </div>
-
-  <form
-    class="form-grid estimate-form"
-    method="post"
-    action="/api/estimate.php"
-    data-estimate-form
-    aria-describedby={`${introId} ${statusId}`}
-    novalidate
-  >
-    <input type="hidden" name="website" value="" autocomplete="off" />
-
-    <div class="form-field">
-      <label for={nameId}>Name</label>
-      <input
-        id={nameId}
-        type="text"
-        name="name"
-        placeholder="Your name"
-        required
-        autocomplete="name"
-      />
+<div class:list={['estimate-form-shell', 'form-card', variant === 'premium-modal' && 'estimate-form-shell--premium-modal']}>
+  {!hideIntro && (
+    <div class="estimate-form-intro">
+      <h3 id={resolvedHeadingId}>{heading}</h3>
+      <p id={introId}>{intro}</p>
     </div>
+  )}
 
-    <div class="form-field">
-      <label for={emailId}>Email</label>
-      <input
-        id={emailId}
-        type="email"
-        name="email"
-        placeholder="you@example.com"
-        required
-        autocomplete="email"
-      />
-    </div>
-
-    <div class="form-field">
-      <label for={phoneId}>Phone</label>
-      <input
-        id={phoneId}
-        type="tel"
-        name="phone"
-        placeholder="(555) 555-0199"
-        required
-        autocomplete="tel"
-        inputmode="tel"
-      />
-    </div>
-
-    <div class="form-field">
-      <label for={zipId}>ZIP Code</label>
-      <input
-        id={zipId}
-        type="text"
-        name="zip"
-        placeholder="Parrish-area ZIP code"
-        required
-        autocomplete="postal-code"
-        inputmode="numeric"
-        pattern="[0-9]{5}(-[0-9]{4})?"
-      />
-    </div>
-
-    <div class="form-field">
-      <label for={serviceId}>{serviceLabel}</label>
-      <select id={serviceId} name="service" required>
-        <option value="">Select a service</option>
-        {estimateServiceOptions.map((option) => (
-          <option value={option}>{option}</option>
-        ))}
-      </select>
-    </div>
-
-    <div class="form-field">
-      <label for={detailsId}>Project Details</label>
-      <textarea
-        id={detailsId}
-        name="details"
-        placeholder="Describe the tree, the property location, and anything urgent or access-related."
-        required
-      ></textarea>
-    </div>
-
-    <button type="submit" class="btn-primary" data-submit-button
-      >{buttonLabel}</button
+  {variant === 'premium-modal' ? (
+    <form
+      class="estimate-form estimate-form--premium-modal"
+      method="post"
+      action="/api/estimate.php"
+      data-estimate-form
+      aria-describedby={statusId}
+      novalidate
     >
-    <p id={statusId} class="form-status" data-form-status aria-live="polite" role="status"></p>
-  </form>
+      <input type="hidden" name="website" value="" autocomplete="off" />
+
+      <div class="estimate-modal-field-row">
+        <div class="estimate-modal-field">
+          <label for={nameId}>Name</label>
+          <input id={nameId} class="estimate-modal-input" type="text" name="name" placeholder="Your name" required autocomplete="name" />
+        </div>
+        <div class="estimate-modal-field">
+          <label for={phoneId}>Phone</label>
+          <input id={phoneId} class="estimate-modal-input" type="tel" name="phone" placeholder="(941) ···" required autocomplete="tel" inputmode="tel" />
+        </div>
+      </div>
+
+      <div class="estimate-modal-field">
+        <label for={emailId}>Email</label>
+        <input id={emailId} class="estimate-modal-input" type="email" name="email" placeholder="you@email.com" required autocomplete="email" />
+      </div>
+
+      <div class="estimate-modal-field">
+        <label for={zipId}>ZIP Code</label>
+        <input
+          id={zipId}
+          class="estimate-modal-input"
+          type="text"
+          name="zip"
+          placeholder="Parrish-area ZIP code"
+          required
+          autocomplete="postal-code"
+          inputmode="numeric"
+          pattern="[0-9]{5}(-[0-9]{4})?"
+        />
+      </div>
+
+      <div class="estimate-modal-field">
+        <label for={serviceId}>{serviceLabel}</label>
+        <div class="estimate-modal-select-wrap">
+          <select id={serviceId} class="estimate-modal-select" name="service" required>
+            <option value="">Select a service</option>
+            {estimateServiceOptions.map((option) => (
+              <option value={option}>{option}</option>
+            ))}
+          </select>
+          <span class="estimate-modal-select-arrow" aria-hidden="true">⌄</span>
+        </div>
+      </div>
+
+      <div class="estimate-modal-field">
+        <label for={detailsId}>Project Details</label>
+        <textarea
+          id={detailsId}
+          class="estimate-modal-textarea"
+          name="details"
+          placeholder="Brief description — size of tree, location on property, any urgency..."
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="estimate-modal-submit" data-submit-button>
+        <span class="estimate-modal-submit-text">Estimate Request</span>
+        <span class="estimate-modal-submit-icon" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </span>
+      </button>
+
+      <p id={statusId} class="form-status" data-form-status aria-live="polite" role="status"></p>
+      <div class="estimate-modal-privacy">
+        We respect your privacy. <strong>No spam, ever.</strong><br />
+        Your info is only used to follow up on your request.
+      </div>
+    </form>
+  ) : (
+    <form
+      class="form-grid estimate-form"
+      method="post"
+      action="/api/estimate.php"
+      data-estimate-form
+      aria-describedby={`${introId} ${statusId}`}
+      novalidate
+    >
+      <input type="hidden" name="website" value="" autocomplete="off" />
+
+      <div class="form-field">
+        <label for={nameId}>Name</label>
+        <input id={nameId} type="text" name="name" placeholder="Your name" required autocomplete="name" />
+      </div>
+
+      <div class="form-field">
+        <label for={emailId}>Email</label>
+        <input id={emailId} type="email" name="email" placeholder="you@example.com" required autocomplete="email" />
+      </div>
+
+      <div class="form-field">
+        <label for={phoneId}>Phone</label>
+        <input id={phoneId} type="tel" name="phone" placeholder="(555) 555-0199" required autocomplete="tel" inputmode="tel" />
+      </div>
+
+      <div class="form-field">
+        <label for={zipId}>ZIP Code</label>
+        <input
+          id={zipId}
+          type="text"
+          name="zip"
+          placeholder="Parrish-area ZIP code"
+          required
+          autocomplete="postal-code"
+          inputmode="numeric"
+          pattern="[0-9]{5}(-[0-9]{4})?"
+        />
+      </div>
+
+      <div class="form-field">
+        <label for={serviceId}>{serviceLabel}</label>
+        <select id={serviceId} name="service" required>
+          <option value="">Select a service</option>
+          {estimateServiceOptions.map((option) => (
+            <option value={option}>{option}</option>
+          ))}
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for={detailsId}>Project Details</label>
+        <textarea
+          id={detailsId}
+          name="details"
+          placeholder="Describe the tree, the property location, and anything urgent or access-related."
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary" data-submit-button>{buttonLabel}</button>
+      <p id={statusId} class="form-status" data-form-status aria-live="polite" role="status"></p>
+    </form>
+  )}
 </div>

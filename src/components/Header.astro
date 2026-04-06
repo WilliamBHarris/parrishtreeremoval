@@ -120,6 +120,15 @@ const brandAccent = brandWords.slice(1).join(' ');
     inert
   >
     <div class="mobile-drawer-panel">
+      <div class="menu-bg-orb1" aria-hidden="true"></div>
+      <div class="menu-bg-orb2" aria-hidden="true"></div>
+      <div class="menu-grain" aria-hidden="true"></div>
+
+      <div class="menu-location">
+        <div class="menu-location-dot"></div>
+        <span class="menu-location-text">Parrish, FL · Est. 2016</span>
+      </div>
+
       <nav class="mobile-drawer-nav" aria-label="Primary navigation">
         {navLinks.map((link) => {
           const normalizedHref = link.href.replace(/\/+$/, '') || '/';
@@ -128,37 +137,28 @@ const brandAccent = brandWords.slice(1).join(' ');
           const isSectionCurrent = hasChildren
             ? link.children.some((child) => currentPath === (child.href.replace(/\/+$/, '') || '/'))
             : false;
-          const submenuId = hasChildren
-            ? `${instanceId}-drawer-submenu-${link.label.toLowerCase().replace(/\s+/g, '-')}`
-            : undefined;
 
           return hasChildren ? (
-            <div class="drawer-submenu-group" data-submenu-default-open="true">
-              <div class="drawer-submenu-row">
-                <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
-                  {link.label}
-                </a>
-                <button
-                  class="drawer-submenu-toggle"
-                  type="button"
-                  aria-expanded={isCurrent || isSectionCurrent ? 'true' : 'false'}
-                  aria-controls={submenuId}
-                  aria-label={`Toggle ${link.label} submenu`}
-                >
-                  <span class="drawer-submenu-caret" aria-hidden="true"></span>
-                </button>
-              </div>
-              <div
-                id={submenuId}
-                class="drawer-submenu"
-                hidden={!(isCurrent || isSectionCurrent)}
+            <div class="drawer-submenu-group">
+              <a
+                href={link.href}
+                class:list={['menu-link', (isCurrent || isSectionCurrent) && 'active']}
+                aria-current={isCurrent ? 'page' : undefined}
               >
+                <span class="menu-link-text">{link.label}</span>
+                <span class="menu-link-arrow" aria-hidden="true">→</span>
+              </a>
+              <div class="menu-sub">
                 {link.children.map((child) => {
                   const childPath = child.href.replace(/\/+$/, '') || '/';
                   const isChildCurrent = currentPath === childPath;
 
                   return (
-                    <a href={child.href} aria-current={isChildCurrent ? 'page' : undefined}>
+                    <a
+                      href={child.href}
+                      class="menu-sub-link"
+                      aria-current={isChildCurrent ? 'page' : undefined}
+                    >
                       {child.label}
                     </a>
                   );
@@ -166,24 +166,41 @@ const brandAccent = brandWords.slice(1).join(' ');
               </div>
             </div>
           ) : (
-            <a href={link.href} aria-current={isCurrent ? 'page' : undefined}>
-              {link.label}
+            <a
+              href={link.href}
+              class:list={['menu-link', isCurrent && 'active']}
+              aria-current={isCurrent ? 'page' : undefined}
+            >
+              <span class="menu-link-text">{link.label}</span>
+              <span class="menu-link-arrow" aria-hidden="true">→</span>
             </a>
           );
         })}
       </nav>
 
-      <div class="mobile-drawer-footer">
+      <div class="mobile-drawer-footer menu-cta">
+        <div class="menu-cta-rule"></div>
         <button
           type="button"
-          class="drawer-cta"
+          class="drawer-cta menu-cta-btn"
           data-open-estimate-modal
           aria-haspopup="dialog"
           aria-controls="estimate-modal"
         >
           {client.ctas.heroEstimate}
         </button>
-        <a href="tel:5555555555" class="drawer-call-now">or: Call Now</a>
+        <a
+          href={`tel:${client.primaryPhoneHref}`}
+          class="menu-cta-phone"
+          aria-label={`Call ${client.businessName} at ${client.primaryPhoneDisplay}`}
+        >
+          <span class="menu-cta-phone-icon" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)">
+              <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"></path>
+            </svg>
+          </span>
+          <strong>{client.primaryPhoneDisplay}</strong>
+        </a>
       </div>
     </div>
   </aside>

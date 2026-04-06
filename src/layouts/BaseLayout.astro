@@ -190,20 +190,43 @@ const minifiedCss = transformSync(`${brandCssVars}\n${fontFaceCss}\n${globalCss}
         aria-modal="true"
         aria-labelledby="estimate-modal-title"
       >
-        <button
-          type="button"
-          class="estimate-modal-close"
-          aria-label="Close estimate form"
-          data-close-estimate-modal
-        >
-          Close
-        </button>
+        <div class="estimate-modal-sheet">
+          <div class="estimate-modal-handle-wrap" aria-hidden="true">
+            <div class="estimate-modal-handle"></div>
+          </div>
+          <div class="estimate-modal-header">
+            <div class="estimate-modal-header-left">
+              <div class="estimate-modal-eyebrow">
+                <span class="estimate-modal-eyebrow-dot"></span>
+                Free Estimate
+              </div>
+              <h2 id="estimate-modal-title" class="estimate-modal-title">
+                Tell Us
+                <em>About Your</em>
+                Project.
+              </h2>
+            </div>
+            <button
+              type="button"
+              class="estimate-modal-close"
+              aria-label="Close estimate form"
+              data-close-estimate-modal
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(1,42,20,0.5)" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+                <path d="M18 6L6 18M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <p class="estimate-modal-sub">We'll follow up same day — usually within a few hours.</p>
         <EstimateForm
           heading={modalContent.heading}
           intro={modalContent.intro}
           buttonLabel={modalContent.buttonLabel}
           headingId="estimate-modal-title"
+          variant="premium-modal"
+          hideIntro={true}
         />
+        </div>
       </div>
     </div>
     {showSiteChrome && <Footer />}

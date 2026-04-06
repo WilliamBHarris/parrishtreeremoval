@@ -180,6 +180,51 @@ const bindEstimateModal = () => {
   modal.dataset.bound = "true";
 
   let lastFocused = null;
+  let closeTimeout = null;
+  let dragStartY = 0;
+  let dragOffsetY = 0;
+  let isDragging = false;
+  let lockedScrollY = 0;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const sheet = modal.querySelector(".estimate-modal-sheet");
+  const handleWrap = modal.querySelector(".estimate-modal-handle-wrap");
+  const pageContext = modal.querySelector(".estimate-modal-page-context");
+  const header = modal.querySelector(".estimate-modal-header");
+  const closeDuration = prefersReducedMotion.matches ? 0 : 320;
+
+  const clearCloseTimeout = () => {
+    if (closeTimeout !== null) {
+      window.clearTimeout(closeTimeout);
+      closeTimeout = null;
+    }
+  };
+
+  const resetDrag = () => {
+    dragOffsetY = 0;
+    isDragging = false;
+    if (modal instanceof HTMLElement) {
+      modal.style.setProperty("--estimate-modal-drag-y", "0px");
+      modal.classList.remove("is-dragging");
+    }
+  };
+
+  const lockBodyScroll = () => {
+    lockedScrollY = window.scrollY;
+    body.style.position = "fixed";
+    body.style.top = `-${lockedScrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+  };
+
+  const unlockBodyScroll = () => {
+    body.style.position = "";
+    body.style.top = "";
+    body.style.left = "";
+    body.style.right = "";
+    body.style.width = "";
+    window.scrollTo(0, lockedScrollY);
+  };
 
   const getFocusableElements = () =>
     Array.from(modal.querySelectorAll(focusableSelector)).filter(
@@ -194,26 +239,37 @@ const bindEstimateModal = () => {
   };
 
   const openModal = () => {
+    clearCloseTimeout();
+    resetDrag();
     lastFocused =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
     modal.removeAttribute("hidden");
     modal.removeAttribute("inert");
-    modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
     body.classList.add("modal-open");
+    lockBodyScroll();
+    window.requestAnimationFrame(() => {
+      modal.classList.add("is-open");
+    });
     focusFirstField();
   };
 
   const closeModal = () => {
+    clearCloseTimeout();
+    resetDrag();
     modal.classList.remove("is-open");
     modal.setAttribute("aria-hidden", "true");
-    modal.setAttribute("hidden", "");
-    modal.setAttribute("inert", "");
     body.classList.remove("modal-open");
+    closeTimeout = window.setTimeout(() => {
+      modal.setAttribute("hidden", "");
+      modal.setAttribute("inert", "");
+      unlockBodyScroll();
+      closeTimeout = null;
 
-    if (lastFocused instanceof HTMLElement) {
-      lastFocused.focus();
-    }
+      if (lastFocused instanceof HTMLElement) {
+        lastFocused.focus();
+      }
+    }, closeDuration);
   };
 
   document.addEventListener("click", (event) => {
@@ -249,6 +305,79 @@ const bindEstimateModal = () => {
       firstElement.focus();
     }
   });
+
+  if (handleWrap instanceof HTMLElement && sheet instanceof HTMLElement) {
+    const isDragZoneTarget = (target) =>
+      target instanceof Element &&
+      Boolean(
+        target.closest(".estimate-modal-page-context") ||
+        target.closest(".estimate-modal-handle-wrap") ||
+        target.closest(".estimate-modal-header"),
+      );
+
+    const startDrag = (clientY) => {
+      if (window.innerWidth >= 900) return;
+
+      dragOffsetY = 0;
+      isDragging = true;
+      dragStartY = clientY;
+      modal.classList.add("is-dragging");
+    };
+
+    const moveDrag = (clientY) => {
+      if (!isDragging) return;
+
+      dragOffsetY = Math.max(0, clientY - dragStartY);
+      modal.style.setProperty("--estimate-modal-drag-y", `${dragOffsetY}px`);
+    };
+
+    const finishDrag = () => {
+      if (!isDragging) return;
+      const shouldClose = dragOffsetY > 110;
+      resetDrag();
+
+      if (shouldClose) {
+        closeModal();
+      }
+    };
+
+    sheet.addEventListener("touchstart", (event) => {
+      if (!isDragZoneTarget(event.target)) return;
+      const touch = event.touches[0];
+      if (!touch) return;
+      startDrag(touch.clientY);
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (event) => {
+      if (!isDragging) return;
+      const touch = event.touches[0];
+      if (!touch) return;
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+      moveDrag(touch.clientY);
+    }, { passive: false });
+
+    window.addEventListener("touchend", finishDrag);
+    window.addEventListener("touchcancel", finishDrag);
+
+    sheet.addEventListener("pointerdown", (event) => {
+      if (window.innerWidth >= 900 || event.pointerType === "touch") return;
+      if (!isDragZoneTarget(event.target)) return;
+      startDrag(event.clientY);
+    });
+
+    window.addEventListener("pointermove", (event) => {
+      if (!isDragging || event.pointerType === "touch") return;
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+      moveDrag(event.clientY);
+    });
+
+    window.addEventListener("pointerup", finishDrag);
+    window.addEventListener("pointercancel", finishDrag);
+  }
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && modal.classList.contains("is-open")) {

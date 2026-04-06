@@ -62,11 +62,12 @@ const isHome = pageId === 'home';
         </button>
         <div class="home-estimate-divider" aria-hidden="true">
           <span class="home-estimate-divider-line"></span>
-          <span>or call directly</span>
           <span class="home-estimate-divider-line"></span>
         </div>
         <a href={`tel:${client.primaryPhoneHref}`} class="home-estimate-call">
-          <span>Call us:</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(200,150,90,0.75)" aria-hidden="true">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"></path>
+          </svg>
           <strong>{client.primaryPhoneDisplay}</strong>
         </a>
       </div>
@@ -107,13 +108,17 @@ const isHome = pageId === 'home';
 
   .home-estimate-wrap {
     background: #f2efe6;
-    margin-top: -1px;
+    margin-top: 0;
     padding: 37px 20px 40px;
+    box-sizing: border-box;
   }
 
   .home-estimate-card {
     position: relative;
     overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     border-radius: 8px;
     padding: 30px 22px 26px;
     background: #012a14;
@@ -195,6 +200,7 @@ const isHome = pageId === 'home';
     border: 0;
     border-radius: 12px;
     padding: 15px 32px;
+    box-sizing: border-box;
     background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
     color: #fff;
     box-shadow: 0 12px 32px rgba(180,110,40,0.45), inset 0 1px 0 rgba(255,255,255,0.2);
@@ -230,6 +236,9 @@ const isHome = pageId === 'home';
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     gap: 8px;
     padding: 13px;
     border-radius: 12px;

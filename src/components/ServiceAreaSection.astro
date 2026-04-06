@@ -1,6 +1,5 @@
 ---
 import PageSection from './PageSection.astro';
-import ServiceAreaMap from './ServiceAreaMap.astro';
 import ServiceAreaZipLookup from './ServiceAreaZipLookup.astro';
 import { client } from '../data/client';
 import { templateConfig } from '../data/client-questionnaire';
@@ -22,10 +21,10 @@ const {
   lookupInputId,
 } = Astro.props;
 
-const isHome = pageId === 'home';
+const usePremiumAreaSection = Boolean(pageId) && !String(pageId).startsWith('preview');
 ---
 
-{isHome ? (
+{usePremiumAreaSection ? (
   <PageSection
     class="home-area-section"
     section="service-area"
@@ -34,21 +33,68 @@ const isHome = pageId === 'home';
     surfaceTone={surfaceTone}
   >
     <div class="home-area">
-      <div class="home-area-eye">
-        <span class="home-area-eye-dot"></span>
-        <span>Where We Work</span>
-      </div>
-      <h2 class="home-area-title">
-        Serving {client.primaryLocation}
-        <em>& Beyond.</em>
-      </h2>
-      <p class="home-area-intro">{copy}</p>
+      <div class="home-area-orb" aria-hidden="true"></div>
 
-      <div class="home-area-map-wrap">
-        <ServiceAreaMap />
+      <div class="home-area-head">
+        <div class="home-area-eye">
+          <span class="home-area-eye-dot"></span>
+          <span>Where We Work</span>
+        </div>
+        <h2 class="home-area-title">
+          Serving Parrish
+          <em>& Beyond.</em>
+        </h2>
+        <p class="home-area-intro">Proud to serve homeowners across Manatee County and surrounding communities.</p>
       </div>
 
-      <div class="home-area-zip-wrap">
+      <div class="home-area-towns" id="home-area-towns">
+        <div class="home-town-primary">
+          <div class="home-town-pin"></div>
+          Parrish
+        </div>
+        <div class="home-town-primary-tag">Our Home · Manatee County, FL</div>
+
+        <div class="home-town-row">
+          <span class="home-town home-t-xl">Ellenton</span>
+          <span class="home-town-sep">·</span>
+          <span class="home-town home-t-lg">Palmetto</span>
+        </div>
+        <div class="home-town-row">
+          <span class="home-town home-t-xl">Bradenton</span>
+        </div>
+        <div class="home-town-row">
+          <span class="home-town home-t-lg">Sarasota</span>
+          <span class="home-town-sep">·</span>
+          <span class="home-town home-t-md">Ruskin</span>
+        </div>
+        <div class="home-town-row">
+          <span class="home-town home-t-sm">Sun City Center</span>
+          <span class="home-town-sep home-sep-sm">·</span>
+          <span class="home-town home-t-sm">Wimauma</span>
+        </div>
+        <div class="home-town-row">
+          <span class="home-town home-t-xs">Gibsonton</span>
+          <span class="home-town-sep home-sep-xs">·</span>
+          <span class="home-town home-t-xs">Apollo Beach</span>
+          <span class="home-town-sep home-sep-xs">·</span>
+          <span class="home-town home-t-xs">Riverview</span>
+        </div>
+      </div>
+
+      <div class="home-area-coverage" id="home-area-coverage">
+        <div class="home-area-coverage-ico">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <p class="home-area-coverage-text">
+          <strong>Not sure we cover your area?</strong>
+          <span>Enter your ZIP below — we'll confirm in seconds.</span>
+        </p>
+      </div>
+
+      <div class="home-area-zip" id="home-area-zip">
         <ServiceAreaZipLookup inputId={lookupInputId ?? 'home-service-area-zip-input'} />
       </div>
     </div>
@@ -72,48 +118,97 @@ const isHome = pageId === 'home';
     </div>
     <div data-block="map" data-service-area-variant={variant}>
       <ServiceAreaZipLookup inputId={lookupInputId} />
-      <ServiceAreaMap />
     </div>
   </PageSection>
 )}
 
+{usePremiumAreaSection && (
+  <script is:inline>
+    (() => {
+      const townEls = document.querySelectorAll('.home-town-primary, .home-town-primary-tag, .home-town-row');
+      townEls.forEach((el, i) => {
+        if (!(el instanceof HTMLElement)) return;
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(14px)';
+        el.style.transition = `opacity 0.55s ease ${i * 0.07}s, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${i * 0.07}s`;
+      });
+
+      const areaTowns = document.getElementById('home-area-towns');
+      if (areaTowns instanceof HTMLElement) {
+        const townObs = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            townEls.forEach((el) => {
+              if (!(el instanceof HTMLElement)) return;
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            });
+            townObs.disconnect();
+          });
+        }, { threshold: 0.1 });
+        townObs.observe(areaTowns);
+      }
+
+      const coverageEl = document.getElementById('home-area-coverage');
+      const zipEl = document.getElementById('home-area-zip');
+      const cardObs = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('visible');
+          cardObs.unobserve(entry.target);
+        });
+      }, { threshold: 0.3 });
+
+      if (coverageEl) cardObs.observe(coverageEl);
+      if (zipEl) cardObs.observe(zipEl);
+    })();
+  </script>
+)}
+
 <style>
-  :global(.page-section.home-area-section[data-page="home"][data-section="service-area"]) {
+  :global(.page-section.home-area-section[data-section="service-area"]) {
     padding: 0;
-    background: #eae7de;
+    background: #f2efe6;
+    overflow-x: clip;
   }
 
   .home-area {
+    background: #f2efe6;
+    padding: 44px 20px 0;
     position: relative;
     overflow: hidden;
-    padding: 40px 20px 44px;
-    background: #eae7de;
+    overflow-x: clip;
   }
 
-  .home-area::before {
-    content: '';
+  .home-area-orb {
     position: absolute;
     bottom: -40px;
     right: -40px;
-    width: 220px;
-    height: 220px;
+    width: 260px;
+    height: 260px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(1,42,20,0.05) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(200,150,90,0.08) 0%, transparent 65%);
     pointer-events: none;
+    z-index: 0;
+    animation: homeFaqOrb1 13s ease-in-out infinite alternate;
+  }
+
+  .home-area-head {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 28px;
   }
 
   .home-area-eye {
-    position: relative;
-    z-index: 1;
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    margin-bottom: 10px;
-    color: #8a6840;
     font-size: 8px;
     font-weight: 700;
     letter-spacing: 0.26em;
     text-transform: uppercase;
+    color: #8a6840;
+    margin-bottom: 10px;
   }
 
   .home-area-eye-dot {
@@ -126,131 +221,273 @@ const isHome = pageId === 'home';
   }
 
   .home-area-title {
-    position: relative;
-    z-index: 1;
-    margin: 0 0 10px;
-    color: #012a14;
     font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
     font-size: 40px;
     font-weight: 800;
-    line-height: 0.88;
-    letter-spacing: -0.01em;
     text-transform: uppercase;
+    line-height: 0.88;
+    color: #012a14;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
   }
 
   .home-area-title em {
-    display: block;
     color: #c8965a;
     font-style: normal;
+    display: block;
   }
 
   .home-area-intro {
-    position: relative;
-    z-index: 1;
-    max-width: 240px;
-    margin: 0 0 22px;
-    color: #7a7a66;
     font-size: 11px;
-    line-height: 1.68;
+    color: #6b6b58;
+    line-height: 1.65;
+    max-width: 240px;
+    margin: 0;
   }
 
-  .home-area-map-wrap {
+  .home-area-towns {
     position: relative;
     z-index: 1;
-    margin-bottom: 14px;
+    padding: 24px 0;
+    border-top: 1px solid rgba(1,42,20,0.1);
+    border-bottom: 1px solid rgba(1,42,20,0.1);
+    margin-bottom: 22px;
   }
 
-  .home-area-map-wrap :global(.service-area-map-shell) {
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 12px 28px rgba(1,42,20,0.12);
-  }
-
-  .home-area-map-wrap :global(.service-area-map),
-  .home-area-map-wrap :global(.service-area-map-shell) {
-    min-height: 170px;
-  }
-
-  .home-area-zip-wrap {
-    position: relative;
-    z-index: 1;
-  }
-
-  .home-area-zip-wrap :global(.service-area-zip-lookup) {
-    padding: 16px 18px;
-    border: 1px solid rgba(1,42,20,0.08);
-    border-radius: 16px;
-    background: #fff;
-  }
-
-  .home-area-zip-wrap :global(.service-area-zip-copy h3) {
-    margin: 0 0 4px;
-    color: #012a14;
-    font-size: 13px;
+  .home-town-primary {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 56px;
     font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: #012a14;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .home-town-pin {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    border-radius: 50%;
+    background: #c8965a;
+    flex-shrink: 0;
+    animation: homeTownPinPulse 2.5s ease-in-out infinite;
+    box-shadow: 0 0 0 0 rgba(200,150,90,0.5);
+  }
+
+  @keyframes homeTownPinPulse {
+    0% { box-shadow: 0 0 0 0 rgba(200,150,90,0.5); }
+    70% { box-shadow: 0 0 0 8px rgba(200,150,90,0); }
+    100% { box-shadow: 0 0 0 0 rgba(200,150,90,0); }
+  }
+
+  .home-town-primary-tag {
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #c8965a;
+    margin-bottom: 16px;
+    padding-left: 22px;
+  }
+
+  .home-town-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0;
+    margin-bottom: 5px;
+  }
+
+  .home-town {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
     letter-spacing: -0.01em;
+    color: #2a4a30;
+    line-height: 1.05;
   }
 
-  .home-area-zip-wrap :global(.service-area-zip-copy p) {
-    margin: 0 0 14px;
-    color: #7a7a66;
-    font-size: 10.5px;
+  .home-town-sep {
+    color: rgba(1,42,20,0.25);
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-weight: 400;
+    padding: 0 8px;
+    line-height: 1;
+    align-self: center;
+  }
+
+  .home-t-xl { font-size: 32px; }
+  .home-t-lg { font-size: 26px; }
+  .home-t-md { font-size: 21px; }
+  .home-t-sm { font-size: 16px; color: #4a6448; }
+  .home-t-xs { font-size: 13px; color: #6a7a68; }
+  .home-sep-sm { font-size: 14px; }
+  .home-sep-xs { font-size: 11px; padding: 0 5px; }
+
+  .home-area-coverage {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(1,42,20,0.05);
+    border: 1px solid rgba(1,42,20,0.1);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  .home-area-coverage.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .home-area-coverage-ico {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 10px;
+    background: rgba(200,150,90,0.1);
+    border: 1px solid rgba(200,150,90,0.2);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .home-area-coverage-text {
+    font-size: 11px;
+    color: #5a5a48;
     line-height: 1.55;
+    font-weight: 500;
+    margin: 0;
   }
 
-  .home-area-zip-wrap :global(.service-area-zip-form) {
+  .home-area-coverage-text strong {
+    display: block;
+    color: #012a14;
+    font-weight: 800;
+  }
+
+  .home-area-coverage-text span {
+    display: block;
+  }
+
+  .home-area-zip {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease 0.1s, transform 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s;
+    margin-bottom: 48px;
+  }
+
+  .home-area-zip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .home-area-zip :global(.service-area-zip-lookup) {
+    background: #fff;
+    border: 1px solid rgba(1,42,20,0.1);
+    border-radius: 18px;
+    padding: 18px 18px 20px;
+    box-shadow: 0 4px 20px rgba(1,42,20,0.06);
+  }
+
+  .home-area-zip :global(.service-area-zip-copy) {
+    display: none;
+  }
+
+  .home-area-zip :global(.service-area-zip-copy h3) {
+    font-size: 14px;
+    font-weight: 800;
+    color: #012a14;
+    letter-spacing: -0.01em;
+    margin: 0 0 4px;
+  }
+
+  .home-area-zip :global(.service-area-zip-copy p) {
+    font-size: 11px;
+    color: #7a7a66;
+    line-height: 1.55;
+    margin: 0 0 14px;
+  }
+
+  .home-area-zip :global(.service-area-zip-form) {
+    display: flex;
     gap: 8px;
   }
 
-  .home-area-zip-wrap :global(.service-area-zip-input) {
-    padding: 11px 14px;
+  .home-area-zip :global(.service-area-zip-input) {
+    flex: 1;
+    padding: 12px 14px;
     border: 1px solid rgba(1,42,20,0.1);
-    border-radius: 10px;
-    background: #f9f7f2;
+    border-radius: 11px;
+    font-size: 16px;
     color: #012a14;
+    background: #f9f7f2;
     font-family: var(--font-body);
-    font-size: 12px;
-    min-height: 0;
+    outline: none;
+    transition: border-color 200ms ease;
   }
 
-  .home-area-zip-wrap :global(.service-area-zip-input::placeholder) {
+  .home-area-zip :global(.service-area-zip-input:focus) {
+    border-color: rgba(200,150,90,0.4);
+  }
+
+  .home-area-zip :global(.service-area-zip-input::placeholder) {
     color: rgba(1,42,20,0.3);
   }
 
-  .home-area-zip-wrap :global(.service-area-zip-button) {
-    border-radius: 10px;
+  .home-area-zip :global(.service-area-zip-button) {
     background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
     color: #fff;
-    box-shadow: 0 6px 16px rgba(180,110,40,0.3), inset 0 1px 0 rgba(255,255,255,0.16);
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
-    padding: 11px 16px;
+    padding: 12px 18px;
+    border-radius: 11px;
     white-space: nowrap;
-    min-height: 0;
+    box-shadow: 0 6px 16px rgba(180,110,40,0.3), inset 0 1px 0 rgba(255,255,255,0.18);
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .home-area-zip-wrap :global(.service-area-zip-action-estimate) {
-    background: linear-gradient(180deg, #d4a060 0%, #b07840 100%) !important;
-    color: #fff !important;
-    border: 0 !important;
-    border-radius: 10px !important;
-    box-shadow: 0 6px 16px rgba(180,110,40,0.3), inset 0 1px 0 rgba(255,255,255,0.16) !important;
+  .home-area-zip :global(.service-area-zip-button::before) {
+    content: '';
+    position: absolute;
+    inset: 0 0 55% 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.16), transparent);
+  }
+
+  .home-area-zip :global(.service-area-zip-actions) {
+    margin-top: 12px;
+  }
+
+  .home-area-zip :global(.service-area-zip-action-estimate) {
+    background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
+    color: #fff;
+    border: 0;
+    border-radius: 11px;
+    box-shadow: 0 6px 16px rgba(180,110,40,0.3), inset 0 1px 0 rgba(255,255,255,0.18);
   }
 
   @media (min-width: 768px) {
     .home-area {
       max-width: 760px;
       margin: 0 auto;
-      padding: 48px 28px 56px;
     }
 
     .home-area-title {
       font-size: 56px;
-    }
-
-    .home-area-intro {
-      max-width: 360px;
-      font-size: 13px;
     }
   }
 </style>
