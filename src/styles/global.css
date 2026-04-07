@@ -4736,12 +4736,12 @@ body.template-section-title-boxed-label .clone-kicker::after {
 
 .svc-helper-text {
   font-size: 11px;
-  color: rgba(255,255,255,0.62);
+  color: rgba(255,255,255,0.78);
   line-height: 1.5;
 }
 
 .svc-helper-text a {
-  color: rgba(200,150,90,0.72);
+  color: #d5a66c;
   font-weight: 700;
   text-decoration: none;
 }
