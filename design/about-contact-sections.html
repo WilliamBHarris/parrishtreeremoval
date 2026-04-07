@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About & Contact — New Sections</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#0a0a0a;font-family:'Inter',sans-serif;
+  display:flex;flex-direction:column;align-items:center;
+  padding:2rem 1rem;gap:28px;min-height:100vh;
+}
+.page-label{
+  color:rgba(255,255,255,0.5);
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  width:320px;padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.section-label{
+  color:rgba(255,255,255,0.25);
+  font-size:9px;letter-spacing:.14em;text-transform:uppercase;width:320px;
+}
+.phone{
+  width:320px;border-radius:42px;
+  border:7px solid #1c1c1c;background:#1c1c1c;
+  overflow:hidden;box-shadow:0 48px 96px rgba(0,0,0,0.7);
+}
+.screen{overflow-y:scroll;max-height:680px;}
+.screen::-webkit-scrollbar{display:none;}
+
+@keyframes dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+@keyframes lp{0%{opacity:.55}100%{opacity:1}}
+@keyframes o1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-14px,18px) scale(1.08)}}
+@keyframes o2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(18px,-14px) scale(1.07)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes wipe{from{transform:translateX(0%)}to{transform:translateX(101%)}}
+
+/* ── Shared clip ── */
+.clip-light{background:#012a14;line-height:0;}
+.clip-light svg{display:block;width:100%;}
+.clip-dark{background:#f2efe6;line-height:0;}
+.clip-dark svg{display:block;width:100%;}
+
+/* ── Shared section eye ── */
+.eye{display:inline-flex;align-items:center;gap:7px;font-size:8px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;margin-bottom:10px;}
+.eye-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;animation:dot 2.2s ease-in-out infinite;}
+.eye.light{color:rgba(200,150,90,.72);}
+.eye.light .eye-dot{background:#c8965a;}
+.eye.dark{color:#8a6840;}
+.eye.dark .eye-dot{background:#c8965a;}
+
+/* ── Shared section h2 ── */
+.sec-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:38px;font-weight:800;
+  text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
+  margin-bottom:10px;
+}
+.sec-h2 em{font-style:normal;display:block;}
+.sec-h2.on-dark{color:#fff;}
+.sec-h2.on-dark em{color:#c8965a;}
+.sec-h2.on-light{color:#012a14;}
+.sec-h2.on-light em{color:#c8965a;}
+
+/* ── Grain ── */
+.grain{
+  position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.042;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px;
+}
+
+/* ══════════════════════════════════════
+   ABOUT — COMPANY STORY
+   Dark. Conversational. Human.
+   Not corporate — personal.
+══════════════════════════════════════ */
+.story{
+  background:#012a14;
+  padding:44px 22px 0;
+  position:relative;overflow:hidden;
+}
+.story-orb-a{
+  position:absolute;top:-50px;right:-50px;
+  width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.07) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:o1 14s ease-in-out infinite alternate;will-change:transform;
+}
+.story-orb-b{
+  position:absolute;bottom:40px;left:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(1,70,32,.4) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:o2 18s ease-in-out infinite alternate;will-change:transform;
+}
+
+.story-inner{position:relative;z-index:1;}
+
+/* Opening paragraph — conversational, warm */
+.story-p{
+  font-size:14px;font-weight:400;
+  color:rgba(255,255,255,.65);line-height:1.8;
+  margin-bottom:24px;
+}
+.story-p em{
+  color:#c8965a;font-style:normal;font-weight:700;
+}
+
+/* Pull quote — the brand statement lives here */
+.story-pull{
+  padding:22px 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  margin-bottom:22px;
+  position:relative;
+}
+/* Gold left bar on pull quote */
+.story-pull::before{
+  content:'';
+  position:absolute;left:-22px;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,#c8965a,rgba(200,150,90,.2));
+  border-radius:0 999px 999px 0;
+}
+.story-pull-text{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:30px;font-weight:800;font-style:italic;
+  text-transform:uppercase;line-height:.9;
+  letter-spacing:-.015em;color:#fff;
+}
+.story-pull-text em{
+  color:#c8965a;font-style:italic;display:block;
+}
+
+/* Second paragraph */
+.story-p2{
+  font-size:12px;font-weight:400;
+  color:rgba(255,255,255,.48);line-height:1.75;
+  padding-bottom:40px;
+}
+
+/* ══════════════════════════════════════
+   ABOUT — TEAM / FACE
+   Light section. Human element.
+   The person behind the business.
+   Even a small crew shot or one face
+   makes a homeowner far more likely
+   to call than a faceless service.
+══════════════════════════════════════ */
+.team{
+  background:#f2efe6;
+  padding:44px 22px 44px;
+  position:relative;overflow:hidden;
+}
+.team-orb{
+  position:absolute;bottom:-40px;right:-40px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.06) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+.team-inner{position:relative;z-index:1;}
+
+/* Photo placeholder — where the real photo goes */
+.team-photo{
+  width:100%;
+  height:180px;
+  border-radius:18px;
+  background:linear-gradient(145deg,#012a14,#014a22);
+  position:relative;overflow:hidden;
+  margin-bottom:20px;
+  border:1px solid rgba(1,42,20,.1);
+}
+/* Photo inner atmosphere */
+.team-photo::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(200,150,90,.12) 0%,transparent 65%);
+}
+.team-photo-label{
+  position:absolute;bottom:14px;left:16px;right:16px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.team-photo-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.06em;
+  color:rgba(255,255,255,.5);
+}
+.team-photo-tag{
+  font-size:8px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(200,150,90,.5);
+  background:rgba(200,150,90,.08);
+  border:1px solid rgba(200,150,90,.15);
+  padding:3px 9px;border-radius:999px;
+}
+/* Photo placeholder icon */
+.team-photo-icon{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-60%);
+  opacity:.15;
+}
+
+/* Team bio */
+.team-bio-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:800;
+  text-transform:uppercase;line-height:.9;
+  letter-spacing:-.01em;color:#012a14;
+  margin-bottom:4px;
+}
+.team-bio-role{
+  font-size:9px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:#c8965a;margin-bottom:12px;
+}
+.team-bio-text{
+  font-size:12px;color:#7a7a66;
+  line-height:1.7;
+}
+.team-bio-text em{color:#012a14;font-style:normal;font-weight:700;}
+
+/* Years / stat strip */
+.team-stats{
+  display:flex;gap:0;
+  margin-top:18px;
+  background:#fff;
+  border:1px solid rgba(1,42,20,.08);
+  border-radius:14px;overflow:hidden;
+}
+.team-stat{
+  flex:1;padding:14px 12px;text-align:center;
+}
+.team-stat+.team-stat{border-left:1px solid rgba(1,42,20,.07);}
+.team-stat-n{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:800;
+  color:#012a14;line-height:1;margin-bottom:3px;
+  letter-spacing:-.02em;
+}
+.team-stat-n em{font-style:normal;color:#c8965a;font-size:18px;}
+.team-stat-l{
+  font-size:8.5px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(1,42,20,.4);line-height:1.3;
+}
+
+/* ══════════════════════════════════════
+   ABOUT — SERVICE AREA (BRIEF)
+   Dark section. Compact version of the
+   homepage town map. Enough to confirm
+   coverage without being a full section.
+   ZIP checker included.
+══════════════════════════════════════ */
+.area-brief{
+  background:#012a14;
+  padding:44px 22px 0;
+  position:relative;overflow:hidden;
+}
+.area-brief-orb{
+  position:absolute;top:-40px;right:-40px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.07) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:o1 12s ease-in-out infinite alternate;will-change:transform;
+}
+
+.area-brief-inner{position:relative;z-index:1;}
+
+/* Coverage statement — bold, immediate */
+.area-coverage-stmt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;
+  text-transform:uppercase;line-height:.95;
+  letter-spacing:-.01em;color:#fff;
+  margin-bottom:16px;
+}
+.area-coverage-stmt em{color:#c8965a;font-style:normal;}
+
+/* Towns — compact horizontal flow */
+.area-towns-compact{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:0;
+  margin-bottom:22px;
+  padding:18px 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.area-town{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;text-transform:uppercase;
+  letter-spacing:-.005em;color:rgba(255,255,255,.55);
+  line-height:1.1;
+}
+.area-town.primary{
+  font-size:36px;color:#fff;
+  display:flex;align-items:center;gap:8px;
+  width:100%;margin-bottom:4px;
+}
+.area-pin{
+  width:8px;height:8px;border-radius:50%;
+  background:#c8965a;flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(200,150,90,.5);
+  animation:pinPulse 2.5s ease-in-out infinite;
+}
+@keyframes pinPulse{
+  0%{box-shadow:0 0 0 0 rgba(200,150,90,.5)}
+  70%{box-shadow:0 0 0 7px rgba(200,150,90,0)}
+  100%{box-shadow:0 0 0 0 rgba(200,150,90,0)}
+}
+.area-town.lg{font-size:22px;}
+.area-town.md{font-size:18px;color:rgba(255,255,255,.4);}
+.area-town.sm{font-size:14px;color:rgba(255,255,255,.28);}
+.area-sep{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:400;color:rgba(255,255,255,.18);
+  padding:0 7px;align-self:center;
+}
+.area-sep.lg{font-size:18px;}
+.area-sep.sm{font-size:13px;padding:0 5px;}
+
+/* ZIP checker */
+.area-zip-wrap{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:16px 18px;
+  margin-bottom:40px;
+}
+.area-zip-label{
+  font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.55);
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
+}
+.area-zip-label-ico{
+  width:16px;height:16px;border-radius:50%;
+  background:rgba(200,150,90,.12);
+  border:1px solid rgba(200,150,90,.2);
+  display:grid;place-items:center;flex-shrink:0;
+}
+.area-zip-row{display:flex;gap:8px;}
+.area-zip-input{
+  flex:1;padding:11px 13px;
+  border:1.5px solid rgba(255,255,255,.1);
+  border-radius:10px;
+  font-size:13px;color:#fff;
+  background:rgba(255,255,255,.06);
+  font-family:'Inter',sans-serif;outline:none;
+  transition:border-color 200ms ease;
+}
+.area-zip-input::placeholder{color:rgba(255,255,255,.25);}
+.area-zip-input:focus{border-color:rgba(200,150,90,.4);}
+.area-zip-btn{
+  background:linear-gradient(180deg,#d4a060,#b07840);
+  color:#fff;font-size:11px;font-weight:800;
+  padding:11px 16px;border-radius:10px;
+  white-space:nowrap;
+  box-shadow:0 5px 14px rgba(180,110,40,.32),inset 0 1px 0 rgba(255,255,255,.18);
+  position:relative;overflow:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+.area-zip-btn::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);}
+
+/* ══════════════════════════════════════
+   CONTACT — FULL FORM
+   Light background.
+   Complete form — not a modal.
+   Clean, spacious, gold focus states.
+   The person is ready to reach out —
+   just make it frictionless.
+══════════════════════════════════════ */
+.contact-form-sec{
+  background:#f2efe6;
+  padding:44px 22px 44px;
+  position:relative;overflow:hidden;
+}
+.contact-form-orb{
+  position:absolute;top:-40px;right:-40px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.06) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+.contact-form-inner{position:relative;z-index:1;}
+
+.cf-form{
+  display:flex;flex-direction:column;gap:13px;
+  margin-top:24px;
+}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cf-field{display:flex;flex-direction:column;gap:5px;}
+.cf-label{
+  font-size:9.5px;font-weight:700;
+  color:#012a14;letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.cf-input{
+  background:#fff;
+  border:1.5px solid rgba(1,42,20,.1);
+  border-radius:12px;padding:13px 14px;
+  font-size:13px;color:#012a14;
+  font-family:'Inter',sans-serif;outline:none;width:100%;
+  transition:border-color 200ms ease,box-shadow 200ms ease;
+}
+.cf-input::placeholder{color:rgba(1,42,20,.28);}
+.cf-input:focus{
+  border-color:rgba(200,150,90,.45);
+  box-shadow:0 0 0 3px rgba(200,150,90,.08);
+}
+.cf-select{
+  background:#fff;
+  border:1.5px solid rgba(1,42,20,.1);
+  border-radius:12px;padding:13px 14px;
+  font-size:13px;color:rgba(1,42,20,.4);
+  font-family:'Inter',sans-serif;
+  width:100%;appearance:none;outline:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='rgba(1,42,20,0.3)' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:16px;
+}
+.cf-textarea{
+  background:#fff;
+  border:1.5px solid rgba(1,42,20,.1);
+  border-radius:12px;padding:13px 14px;
+  font-size:13px;color:#012a14;
+  font-family:'Inter',sans-serif;
+  resize:none;height:96px;outline:none;width:100%;
+  transition:border-color 200ms ease,box-shadow 200ms ease;
+}
+.cf-textarea::placeholder{color:rgba(1,42,20,.28);}
+.cf-textarea:focus{
+  border-color:rgba(200,150,90,.45);
+  box-shadow:0 0 0 3px rgba(200,150,90,.08);
+}
+.cf-submit{
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(180deg,#d4a060,#b07840);
+  color:#fff;font-size:13px;font-weight:800;
+  padding:15px 18px;border-radius:13px;width:100%;
+  position:relative;overflow:hidden;letter-spacing:-.01em;
+  box-shadow:0 10px 28px rgba(180,110,40,.35),inset 0 1px 0 rgba(255,255,255,.18);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;
+}
+.cf-submit::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);}
+.cf-submit-txt{position:relative;z-index:1;}
+.cf-submit-ico{
+  width:28px;height:28px;border-radius:8px;
+  background:rgba(255,255,255,.18);
+  display:grid;place-items:center;
+  flex-shrink:0;position:relative;z-index:1;font-size:14px;
+}
+.cf-privacy{
+  font-size:9.5px;color:rgba(1,42,20,.3);
+  text-align:center;line-height:1.5;margin-top:2px;
+}
+.cf-privacy strong{color:rgba(1,42,20,.5);}
+
+/* ══════════════════════════════════════
+   CONTACT — DIRECT OPTIONS
+   Dark section below the form.
+   Four tap-to-action rows — call, text,
+   email, service area. For people who
+   don't want to fill out a form.
+   Each row is full-width, large enough
+   to tap easily, has an icon, label,
+   detail, and arrow.
+══════════════════════════════════════ */
+.direct{
+  background:#012a14;
+  padding:44px 22px 0;
+  position:relative;overflow:hidden;
+}
+.direct-orb{
+  position:absolute;top:-40px;right:-40px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.07) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:o1 13s ease-in-out infinite alternate;will-change:transform;
+}
+
+.direct-inner{position:relative;z-index:1;}
+
+.direct-intro{
+  font-size:11px;color:rgba(255,255,255,.42);
+  line-height:1.65;max-width:235px;margin-bottom:24px;
+}
+
+.direct-options{
+  display:flex;flex-direction:column;
+  margin-bottom:40px;
+}
+.direct-opt{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 0;
+  border-top:1px solid rgba(255,255,255,.07);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:background 180ms ease;
+  /* Entrance animation */
+  opacity:0;transform:translateY(14px);
+  transition:
+    opacity .55s cubic-bezier(.22,1,.36,1),
+    transform .55s cubic-bezier(.22,1,.36,1);
+}
+.direct-opt:last-child{border-bottom:1px solid rgba(255,255,255,.07);}
+.direct-opt.in{opacity:1;transform:translateY(0);}
+.direct-opt:nth-child(1){transition-delay:0s}
+.direct-opt:nth-child(2){transition-delay:.07s}
+.direct-opt:nth-child(3){transition-delay:.14s}
+.direct-opt:nth-child(4){transition-delay:.21s}
+
+/* Icon */
+.direct-ico{
+  width:42px;height:42px;min-width:42px;
+  border-radius:13px;
+  background:rgba(200,150,90,.1);
+  border:1px solid rgba(200,150,90,.2);
+  display:grid;place-items:center;flex-shrink:0;
+  transition:background 200ms ease;
+}
+.direct-opt:active .direct-ico{background:rgba(200,150,90,.18);}
+
+/* Copy */
+.direct-copy{flex:1;}
+.direct-copy strong{
+  display:block;font-size:14px;font-weight:800;
+  color:#fff;letter-spacing:-.01em;margin-bottom:2px;
+}
+.direct-copy span{
+  font-size:11px;color:rgba(255,255,255,.42);
+}
+
+/* Arrow */
+.direct-arrow{
+  font-size:16px;color:rgba(200,150,90,.4);
+  font-weight:700;flex-shrink:0;
+  transition:transform 220ms ease,color 180ms ease;
+}
+.direct-opt:active .direct-arrow{
+  transform:translateX(4px);
+  color:rgba(200,150,90,.8);
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════
+     ABOUT PAGE SECTIONS
+════════════════════════════════════ -->
+<div class="page-label">About Page — New Sections</div>
+
+<!-- Company Story -->
+<div class="section-label">01 — Company Story</div>
+<div class="phone">
+<div class="screen">
+  <div class="story">
+    <div class="grain"></div>
+    <div class="story-orb-a"></div>
+    <div class="story-orb-b"></div>
+    <div class="story-inner">
+      <div class="eye light"><div class="eye-dot"></div>Our Story</div>
+      <h2 class="sec-h2 on-dark">Who We<br><em>Are.</em></h2>
+      <p class="story-p">
+        Parrish Tree Removal started in <em>2016</em> because we saw too many homeowners getting taken advantage of — overcharged, underserved, left with a mess and no explanation.
+      </p>
+      <div class="story-pull">
+        <div class="story-pull-text">
+          Show up.<br>Do the work.<br>
+          <em>Leave it right.</em>
+        </div>
+      </div>
+      <p class="story-p2">
+        That's not a tagline. It's how we've operated every single job since day one. No shortcuts. No surprises. No leaving until the yard looks right. That's why homeowners across Parrish keep calling us back — and why they send their neighbors.
+      </p>
+    </div>
+    <div class="clip-light">
+      <svg viewBox="0 0 320 36" preserveAspectRatio="none">
+        <path d="M0 36 L320 0 L320 36 Z" fill="#f2efe6"/>
+      </svg>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Team / Face -->
+<div class="section-label">02 — Team / Face</div>
+<div class="phone">
+<div class="screen">
+  <div class="team">
+    <div class="team-orb"></div>
+    <div class="team-inner">
+      <div class="eye dark"><div class="eye-dot"></div>The Crew</div>
+      <h2 class="sec-h2 on-light">Real People.<br><em>Real Work.</em></h2>
+
+      <!-- Photo placeholder -->
+      <div class="team-photo">
+        <div class="team-photo-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="team-photo-label">
+          <div class="team-photo-name">Your photo here</div>
+          <div class="team-photo-tag">Parrish, FL</div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="team-bio-name">[Owner Name]</div>
+      <div class="team-bio-role">Owner & Lead — Parrish Tree Removal</div>
+      <p class="team-bio-text">
+        Born and raised in Manatee County. Started this business because I wanted to do tree work <em>the right way</em> — show up on time, do it clean, charge a fair price, and leave the yard better than I found it.
+      </p>
+
+      <!-- Stats -->
+      <div class="team-stats">
+        <div class="team-stat">
+          <div class="team-stat-n">10<em>+</em></div>
+          <div class="team-stat-l">Years in<br>Business</div>
+        </div>
+        <div class="team-stat">
+          <div class="team-stat-n">500<em>+</em></div>
+          <div class="team-stat-l">Properties<br>Served</div>
+        </div>
+        <div class="team-stat">
+          <div class="team-stat-n">5<em>★</em></div>
+          <div class="team-stat-l">Google<br>Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Service Area Brief -->
+<div class="section-label">03 — Service Area (Brief)</div>
+<div class="phone">
+<div class="screen">
+  <div class="clip-dark">
+    <svg viewBox="0 0 320 36" preserveAspectRatio="none">
+      <path d="M0 0 L320 36 L0 36 Z" fill="#012a14"/>
+    </svg>
+  </div>
+  <div class="area-brief">
+    <div class="grain"></div>
+    <div class="area-brief-orb"></div>
+    <div class="area-brief-inner">
+      <div class="eye light"><div class="eye-dot"></div>Where We Work</div>
+      <h2 class="sec-h2 on-dark" style="margin-bottom:14px;">Serving Parrish<br><em>& Beyond.</em></h2>
+      <p style="font-size:11px;color:rgba(255,255,255,.42);line-height:1.65;max-width:230px;margin-bottom:22px;">
+        Based in Parrish, FL. Serving Manatee County and surrounding communities.
+      </p>
+
+      <!-- Compact town map -->
+      <div class="area-towns-compact">
+        <div class="area-town primary">
+          <div class="area-pin"></div>
+          Parrish
+        </div>
+        <div class="area-town lg">Ellenton</div>
+        <div class="area-sep lg">·</div>
+        <div class="area-town lg">Palmetto</div>
+        <div style="width:100%;height:4px;"></div>
+        <div class="area-town lg">Bradenton</div>
+        <div style="width:100%;height:4px;"></div>
+        <div class="area-town md">Sarasota</div>
+        <div class="area-sep sm">·</div>
+        <div class="area-town md">Ruskin</div>
+        <div class="area-sep sm">·</div>
+        <div class="area-town sm">Sun City Ctr</div>
+      </div>
+
+      <!-- ZIP checker -->
+      <div class="area-zip-wrap">
+        <div class="area-zip-label">
+          <div class="area-zip-label-ico">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          Check your ZIP code
+        </div>
+        <div class="area-zip-row">
+          <input class="area-zip-input" type="text" placeholder="e.g. 34219" maxlength="5" inputmode="numeric"/>
+          <div class="area-zip-btn">Check →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     CONTACT PAGE SECTIONS
+════════════════════════════════════ -->
+<div class="page-label">Contact Page — New Sections</div>
+
+<!-- Contact Form -->
+<div class="section-label">01 — Full Contact Form</div>
+<div class="phone">
+<div class="screen">
+  <div class="contact-form-sec">
+    <div class="contact-form-orb"></div>
+    <div class="contact-form-inner">
+      <div class="eye dark"><div class="eye-dot"></div>Get In Touch</div>
+      <h2 class="sec-h2 on-light">Send Us a<br><em>Message.</em></h2>
+      <p style="font-size:11px;color:#7a7a66;line-height:1.65;max-width:230px;margin-top:8px;">
+        We'll follow up same day — usually within a few hours.
+      </p>
+
+      <div class="cf-form">
+        <div class="cf-row">
+          <div class="cf-field">
+            <label class="cf-label">Name</label>
+            <input class="cf-input" type="text" placeholder="Your name"/>
+          </div>
+          <div class="cf-field">
+            <label class="cf-label">Phone</label>
+            <input class="cf-input" type="tel" placeholder="(941) ···"/>
+          </div>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Email</label>
+          <input class="cf-input" type="email" placeholder="you@email.com"/>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Service Needed</label>
+          <select class="cf-select">
+            <option value="" disabled selected>Select a service</option>
+            <option>Tree Removal</option>
+            <option>Tree Trimming</option>
+            <option>Stump Grinding</option>
+            <option>Storm Cleanup</option>
+            <option>Not Sure</option>
+          </select>
+        </div>
+        <div class="cf-field">
+          <label class="cf-label">Project Details</label>
+          <textarea class="cf-textarea" placeholder="Brief description — size of tree, location on property, any urgency..."></textarea>
+        </div>
+        <div class="cf-submit">
+          <span class="cf-submit-txt">Send Message</span>
+          <div class="cf-submit-ico">→</div>
+        </div>
+        <p class="cf-privacy">We respect your privacy. <strong>No spam, ever.</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Direct Contact Options -->
+<div class="section-label">02 — Direct Contact Options</div>
+<div class="phone">
+<div class="screen">
+  <div class="clip-dark">
+    <svg viewBox="0 0 320 36" preserveAspectRatio="none">
+      <path d="M0 0 L320 36 L0 36 Z" fill="#012a14"/>
+    </svg>
+  </div>
+  <div class="direct">
+    <div class="grain"></div>
+    <div class="direct-orb"></div>
+    <div class="direct-inner">
+      <div class="eye light"><div class="eye-dot"></div>Or Reach Us Directly</div>
+      <h2 class="sec-h2 on-dark" style="margin-bottom:10px;">Prefer to<br><em>Call or Text?</em></h2>
+      <p class="direct-intro">Skip the form. Reach us directly — we pick up.</p>
+
+      <div class="direct-options" id="directOpts">
+
+        <div class="direct-opt">
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Call Us</strong>
+            <span>(941) 400-6500</span>
+          </div>
+          <div class="direct-arrow">→</div>
+        </div>
+
+        <div class="direct-opt">
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Text Us</strong>
+            <span>(941) 400-6500</span>
+          </div>
+          <div class="direct-arrow">→</div>
+        </div>
+
+        <div class="direct-opt">
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Email Us</strong>
+            <span>info@parrishtreeremoval.com</span>
+          </div>
+          <div class="direct-arrow">→</div>
+        </div>
+
+        <div class="direct-opt">
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="10" r="3"/>
+              <path d="M12 2a8 8 0 00-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 001.3 0C13 21.5 20 15.4 20 10a8 8 0 00-8-8z"/>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Service Area</strong>
+            <span>Parrish, FL & Manatee County</span>
+          </div>
+          <div class="direct-arrow">→</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  // Animate direct options in on scroll per phone
+  document.querySelectorAll('.phone').forEach(phone => {
+    const screen = phone.querySelector('.screen');
+    if (!screen) return;
+    const opts = screen.querySelectorAll('.direct-opt');
+    if (!opts.length) return;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+      });
+    }, { root: screen, threshold: 0.25 });
+    opts.forEach(o => obs.observe(o));
+  });
+})();
+</script>
+</body>
+</html>

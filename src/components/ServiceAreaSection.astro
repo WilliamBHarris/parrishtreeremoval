@@ -33,7 +33,6 @@ const usePremiumAreaSection = Boolean(pageId) && !String(pageId).startsWith('pre
     surfaceTone={surfaceTone}
   >
     <div class="home-area">
-      <div class="home-area-orb" aria-hidden="true"></div>
 
       <div class="home-area-head">
         <div class="home-area-eye">
@@ -180,18 +179,6 @@ const usePremiumAreaSection = Boolean(pageId) && !String(pageId).startsWith('pre
     overflow-x: clip;
   }
 
-  .home-area-orb {
-    position: absolute;
-    bottom: -40px;
-    right: -40px;
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,150,90,0.08) 0%, transparent 65%);
-    pointer-events: none;
-    z-index: 0;
-    animation: homeFaqOrb1 13s ease-in-out infinite alternate;
-  }
 
   .home-area-head {
     position: relative;

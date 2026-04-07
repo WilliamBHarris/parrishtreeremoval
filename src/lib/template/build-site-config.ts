@@ -448,7 +448,7 @@ export function buildSiteConfig(intake: ClientIntake): TemplateConfig {
       mainFileLabel: 'Primary Client Onboarding Questionnaire',
       templateName: 'Reusable Tree Service Website Template',
       referenceClient: intake.business.name,
-      note: 'Preset A keeps the locked baseline live design/output unchanged.',
+      note: 'Preset A keeps the current live public design/output unchanged.',
       selectedSitePreset: selectedPreset.id,
       cloneSafetyWarnings,
     },

@@ -339,6 +339,21 @@ export const clientIntake = {
             question: 'Do you work on both small and large jobs?',
             answer: 'Yes. We handle everything from trimming smaller trees to larger removals.',
           },
+          {
+            question: 'Do you offer more than one service on the same project?',
+            answer:
+              'Yes. Some properties need a mix of removal, trimming, stump grinding, or cleanup, and that can be discussed as part of the same scope.',
+          },
+          {
+            question: 'What helps speed up the estimate process?',
+            answer:
+              'The best starting details are the service you think you need, your ZIP code, photos if available, and any access or urgency notes.',
+          },
+          {
+            question: 'Do you clean up the work area afterward?',
+            answer:
+              'Cleanup expectations can be discussed as part of the estimate so the finished result matches the needs of the property.',
+          },
         ],
       },
       estimate: {
@@ -360,9 +375,9 @@ export const clientIntake = {
           'Explore tree removal, trimming, stump grinding, and storm cleanup services in Parrish, FL.',
       },
       hero: {
-        heading: 'Tree Services',
+        heading: 'Choose The Right Tree Service',
         supportingText:
-          'Find the right tree service for your property.',
+          'Compare tree removal, trimming, stump grinding, and storm cleanup so you can choose the service that actually fits the property, the problem, and the next step.',
       },
       sectionOrder: ['servicesOverview', 'compareServices', 'whyChooseUs', 'faq', 'estimate', 'serviceArea'],
       sections: {
@@ -385,7 +400,38 @@ export const clientIntake = {
         faq: {
           enabled: true,
           displayStyle: 'Variant A FAQ',
-          items: [],
+          items: [
+            {
+              question: 'How do I know which tree service I actually need?',
+              answer:
+                'Start with the main problem: removal for unsafe or unwanted trees, trimming for overgrowth and clearance, stump grinding for leftover stumps, and storm cleanup for urgent damage or debris.',
+            },
+            {
+              question: 'Can one project include more than one service?',
+              answer:
+                'Yes. Many jobs combine services, such as tree removal with stump grinding or storm cleanup that leads into removal or trimming.',
+            },
+            {
+              question: 'What should I send when asking about a service?',
+              answer:
+                'Include the property ZIP code, the part of the yard involved, a short description of the issue, and photos if they help show access, size, or damage.',
+            },
+            {
+              question: 'Which service is best for an old stump left in the yard?',
+              answer:
+                'That is usually a stump grinding request, especially if the goal is to reclaim yard space or finish an older removal job.',
+            },
+            {
+              question: 'What if the problem started after a storm?',
+              answer:
+                'If the issue is urgent, blocked access, or visible damage from weather, storm cleanup is usually the right starting point.',
+            },
+            {
+              question: 'Can you help if I am not completely sure yet?',
+              answer:
+                'Yes. The estimate request is a good place to explain what you are seeing so the next step can be narrowed down more clearly.',
+            },
+          ],
         },
         estimate: {
           enabled: true,
@@ -424,8 +470,8 @@ export const clientIntake = {
           'Safe and professional tree removal in Parrish, FL for damaged, dangerous, or unwanted trees.',
       },
       hero: {
-        heading: 'Tree Removal',
-        supportingText: 'Removal for unsafe or unwanted trees.',
+        heading: 'Remove The Tree',
+        supportingText: 'When a tree is dead, damaged, leaning, or simply in the wrong place, we help you handle the removal safely, clearly, and without the project turning into a bigger mess around the property.',
       },
       sectionOrder: ['whenYouNeedThis', 'whatsIncluded', 'whyChooseUs', 'process', 'relatedServices', 'faq', 'estimate', 'serviceArea'],
       sections: {
@@ -490,6 +536,21 @@ export const clientIntake = {
               answer:
                 'Yes. A few wide and close photos can make the first review much faster, especially when access is limited or storm damage is involved.',
             },
+            {
+              question: 'What usually makes a tree removal more urgent?',
+              answer:
+                'The biggest urgency triggers are visible leaning, storm damage, dead sections, root failure, or a tree that is threatening a structure, driveway, or high-use area.',
+            },
+            {
+              question: 'Can removal help when a tree is too close to the house?',
+              answer:
+                'Yes. Tree removal is often the right solution when the tree placement is creating recurring risk, clearance problems, or long-term concerns near the home.',
+            },
+            {
+              question: 'Should I mention fences, roofs, or tight access?',
+              answer:
+                'Yes. Nearby structures and restricted access matter a lot for planning, so those details help make the first estimate more accurate.',
+            },
           ],
         },
         estimate: {
@@ -525,8 +586,8 @@ export const clientIntake = {
           'Tree trimming in Parrish, FL to improve safety, appearance, and healthy growth.',
       },
       hero: {
-        heading: 'Tree Trimming',
-        supportingText: 'Cleaner canopies. Better clearance.',
+        heading: 'Trim Back Growth',
+        supportingText: 'If the canopy is overgrown, hanging too close, or making the yard feel heavy and unmanaged, trimming can restore cleaner lines, better clearance, and a sharper overall look.',
       },
       sectionOrder: ['whenYouNeedThis', 'whatsIncluded', 'whyChooseUs', 'process', 'relatedServices', 'faq', 'estimate', 'serviceArea'],
       sections: {
@@ -590,6 +651,21 @@ export const clientIntake = {
               answer:
                 'Cleanup can be discussed as part of the estimate so the final result matches how you want the yard to look.',
             },
+            {
+              question: 'When is trimming better than removing the tree?',
+              answer:
+                'Trimming is usually the better fit when the tree is healthy overall but needs clearance, shape correction, weight reduction, or general maintenance.',
+            },
+            {
+              question: 'Can trimming help branches over the roof or driveway?',
+              answer:
+                'Yes. Roof clearance, driveway clearance, and overhanging limbs are some of the most common reasons homeowners request trimming.',
+            },
+            {
+              question: 'Should I mention if the canopy feels too heavy or uneven?',
+              answer:
+                'Yes. Uneven growth, sagging limbs, and an overly dense canopy help explain the goal of the trimming work and what areas need the most attention.',
+            },
           ],
         },
         estimate: {
@@ -624,8 +700,8 @@ export const clientIntake = {
           'Professional stump grinding in Parrish, FL to clear old stumps and improve usable yard space.',
       },
       hero: {
-        heading: 'Stump Grinding',
-        supportingText: 'Clear old stumps and reclaim space.',
+        heading: 'Remove The Stump',
+        supportingText: 'When the tree is gone but the stump is still in the way, grinding clears the leftover obstacle so the space feels cleaner, easier to use, and ready for whatever comes next.',
       },
       sectionOrder: ['whenYouNeedThis', 'whatsIncluded', 'whyChooseUs', 'process', 'relatedServices', 'faq', 'estimate', 'serviceArea'],
       sections: {
@@ -690,6 +766,21 @@ export const clientIntake = {
               answer:
                 'Yes. It helps to know whether the area will be replanted, seeded, landscaped, or simply cleaned up for open yard space.',
             },
+            {
+              question: 'Is stump grinding the right choice if the tree is already gone?',
+              answer:
+                'Yes. If the remaining issue is the stump itself, grinding is usually the cleanest way to finish the job and make the space more usable.',
+            },
+            {
+              question: 'Can you grind more than one stump in the same visit?',
+              answer:
+                'Yes. If there are multiple stumps on the property, include that in the request so the scope of the work is clear from the start.',
+            },
+            {
+              question: 'Should I mention fences, irrigation, or nearby hardscape?',
+              answer:
+                'Yes. Anything close to the stump helps explain access and site conditions, especially when the area is tight or landscaped.',
+            },
           ],
         },
         estimate: {
@@ -724,8 +815,8 @@ export const clientIntake = {
           'Emergency tree service in Parrish, FL for storm damage, fallen limbs, and urgent cleanup needs.',
       },
       hero: {
-        heading: 'Storm Cleanup',
-        supportingText: 'Fast cleanup after storms and damage.',
+        heading: 'Clear The Storm Damage',
+        supportingText: 'When limbs are down, access is blocked, or storm damage is creating a safety issue, we help move the cleanup forward fast so the property can start getting back to normal.',
       },
       sectionOrder: ['whenYouNeedThis', 'whatsIncluded', 'whyChooseUs', 'process', 'relatedServices', 'faq', 'estimate', 'serviceArea'],
       sections: {
@@ -790,6 +881,21 @@ export const clientIntake = {
               answer:
                 'Yes, if the area is safe. Photos can quickly show scale, access, and whether the issue is affecting a structure or driveway.',
             },
+            {
+              question: 'What should I do before calling about storm damage?',
+              answer:
+                'Focus on safety first. Stay clear of unstable limbs, blocked areas, and anything touching structures or utilities, then report the conditions as clearly as possible.',
+            },
+            {
+              question: 'Can storm cleanup include debris blocking the driveway or access point?',
+              answer:
+                'Yes. Blocked access is one of the most common reasons homeowners request emergency tree service after a storm.',
+            },
+            {
+              question: 'Should I mention whether the damage is still getting worse?',
+              answer:
+                'Yes. If the tree is shifting, splitting further, or creating a growing safety concern, that helps explain the urgency of the request.',
+            },
           ],
         },
         estimate: {
@@ -809,8 +915,8 @@ export const clientIntake = {
           'Learn more about Parrish Tree Removal and the values behind our local tree service.',
       },
       hero: {
-        heading: 'About',
-        supportingText: 'Reliable local tree service.',
+        heading: 'A Company That Cares',
+        supportingText: 'Learn what drives the way we work, how we handle communication, and why local homeowners keep coming back when they need tree service done carefully and cleanly.',
       },
       sectionOrder: ['companyStory', 'whatHomeownersNeed', 'faq', 'estimate'],
       sections: {
@@ -851,8 +957,8 @@ export const clientIntake = {
           'Contact Parrish Tree Removal for estimates, service questions, and scheduling in Parrish, FL.',
       },
       hero: {
-        heading: 'Contact',
-        supportingText: 'Get in touch for service and estimates.',
+        heading: 'Tell Us About The Job',
+        supportingText: 'Share the service you need, the timing, and anything important about the property, and we will get back to you with a clear next step instead of leaving you guessing.',
       },
       sectionOrder: ['beforeYouSubmit', 'estimate', 'serviceArea'],
       sections: {

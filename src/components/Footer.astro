@@ -53,11 +53,11 @@ const footerServices = serviceCardList.map((service) => ({
 }));
 
 const footerCreditLabel = client.footer.creditText;
-const isHomePage = Astro.url.pathname === '/';
+const usePremiumFooter = !Astro.url.pathname.startsWith('/internal/template-preview');
 const footerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
 ---
 
-{isHomePage ? (
+{usePremiumFooter ? (
   <footer class="home-footer">
     <div class="home-footer-statement">
       <div class="home-footer-grain"></div>
@@ -174,7 +174,7 @@ const footerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
   </footer>
 )}
 
-{isHomePage && (
+{usePremiumFooter && (
   <script is:inline>
     (() => {
       const footerStmt = document.getElementById('home-footer-stmt');

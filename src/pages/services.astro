@@ -1,25 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/HeroSection.astro';
+import SubpageIntroSection from '../components/SubpageIntroSection.astro';
+import ServicesSection from '../components/ServicesSection.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import ServicesSection from '../components/ServicesSection.astro';
-import CardGridSection from '../components/CardGridSection.astro';
-import InfoListSection from '../components/InfoListSection.astro';
-import EstimateFormSection from '../components/EstimateFormSection.astro';
+import EstimateCtaSection from '../components/EstimateCtaSection.astro';
+import FaqSection from '../components/FaqSection.astro';
 import ServiceAreaSection from '../components/ServiceAreaSection.astro';
 import { pageContent } from '../data/pages';
+import { client } from '../data/client';
+import { clientIntake } from '../data/client-intake';
 import { templateConfig } from '../data/client-questionnaire';
 import { serviceCardList } from '../data/services';
 import { getHeroCriticalImage } from '../lib/site/critical-image';
+import { createFaqSchema } from '../lib/site/schema';
 
 const servicesPage = pageContent.services;
 const criticalImage = await getHeroCriticalImage();
+const servicesFaqSchema = createFaqSchema(clientIntake.pages.services.sections.faq.items);
 ---
 
 <BaseLayout
   title={servicesPage.title}
   description={servicesPage.description}
+  schema={servicesFaqSchema ?? undefined}
   criticalImage={criticalImage}
 >
   <HeroSection
@@ -33,6 +38,15 @@ const criticalImage = await getHeroCriticalImage();
   />
 
   <div class="page-shell" data-page="services">
+    <SubpageIntroSection
+      pageId="services"
+      eyebrow="Services Overview"
+      lines={['Find the right service.', 'Get clear answers.']}
+      accentLine="Start with confidence."
+      body="Compare the main tree service options, understand what fits the property, and move into the next step with a clearer picture of the work."
+      surfaceTone="olive"
+    />
+
     <ServicesSection
       pageId="services"
       sectionKey="services-overview"
@@ -43,35 +57,20 @@ const criticalImage = await getHeroCriticalImage();
       surfaceTone="base"
     />
 
-    <CardGridSection
-      pageId="services"
-      section="compare-services"
-      title="Compare Services"
-      items={servicesPage.compareCards}
-      surfaceTone="warm"
-    />
-
     <HomepageWhyChoose pageId="services" surfaceTone="cool" />
 
     <HomepageProcess pageId="services" surfaceTone="olive" />
 
-    <InfoListSection
+    <EstimateCtaSection
       pageId="services"
-      section="estimate-tips"
-      title="Estimate Tips"
-      items={servicesPage.estimateTips}
-      softCard={true}
+      eyebrow="Free Estimate"
+      heading="Tell Us About The Job"
+      intro={client.sharedContent.estimateSectionLead}
+      buttonLabel={client.ctas.heroEstimate}
       surfaceTone="base"
     />
 
-    <EstimateFormSection
-      pageId="services"
-      title="Request A Free Estimate"
-      heading={servicesPage.estimateForm.heading}
-      intro={servicesPage.estimateForm.intro}
-      buttonLabel={servicesPage.estimateForm.buttonLabel}
-      surfaceTone="warm"
-    />
+    <FaqSection pageId="services" items={clientIntake.pages.services.sections.faq.items} surfaceTone="base" />
 
     <ServiceAreaSection pageId="services" surfaceTone="cool" />
   </div>

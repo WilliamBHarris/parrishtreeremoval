@@ -1,14 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/HeroSection.astro';
-import HomepageProcess from '../components/HomepageProcess.astro';
-import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
-import CardGridSection from '../components/CardGridSection.astro';
-import EstimateFormSection from '../components/EstimateFormSection.astro';
-import RelatedServicesSection from '../components/RelatedServicesSection.astro';
-import ServiceAreaSection from '../components/ServiceAreaSection.astro';
+import SubpageIntroSection from '../components/SubpageIntroSection.astro';
+import ContactFormSection from '../components/ContactFormSection.astro';
+import ContactDirectSection from '../components/ContactDirectSection.astro';
 import { pageContent } from '../data/pages';
-import { servicePages } from '../data/services';
 import { getHeroCriticalImage } from '../lib/site/critical-image';
 
 const contactPage = pageContent.contact;
@@ -31,39 +27,17 @@ const criticalImage = await getHeroCriticalImage();
   />
 
   <div class="page-shell" data-page="contact">
-    <EstimateFormSection
+    <SubpageIntroSection
       pageId="contact"
-      title="Send Project Details"
-      heading={contactPage.estimateForm.heading}
-      intro={contactPage.estimateForm.intro}
-      buttonLabel={contactPage.estimateForm.buttonLabel}
-      surfaceTone="base"
+      eyebrow="Contact"
+      lines={['Tell us the job.', 'Share the details.']}
+      accentLine="We follow up fast."
+      body="Reach out with the service, timing, and property details. We will review it quickly and get you a clear next step without the runaround."
+      surfaceTone="olive"
     />
 
-    <CardGridSection
-      pageId="contact"
-      section="before-you-submit"
-      title="Before You Submit"
-      items={contactPage.beforeYouSubmit}
-      surfaceTone="warm"
-    />
+    <ContactFormSection pageId="contact" surfaceTone="base" />
 
-    <HomepageWhyChoose pageId="contact" surfaceTone="cool" />
-
-    <HomepageProcess pageId="contact" surfaceTone="olive" />
-
-    <RelatedServicesSection
-      pageId="contact"
-      ariaLabel="Service links"
-      links={[
-        { href: `/${servicePages.treeRemoval.slug}`, label: servicePages.treeRemoval.cardTitle },
-        { href: `/${servicePages.stumpGrinding.slug}`, label: servicePages.stumpGrinding.cardTitle },
-        { href: `/${servicePages.treeTrimming.slug}`, label: servicePages.treeTrimming.cardTitle },
-        { href: `/${servicePages.stormCleanup.slug}`, label: servicePages.stormCleanup.cardTitle },
-      ]}
-      surfaceTone="base"
-    />
-
-    <ServiceAreaSection pageId="contact" surfaceTone="cool" />
+    <ContactDirectSection pageId="contact" surfaceTone="olive" />
   </div>
 </BaseLayout>

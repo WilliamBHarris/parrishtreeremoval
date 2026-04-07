@@ -55,11 +55,79 @@ const desktopHeroTitle = `${titlePrimary}${titleSecondary ? ` ${titleSecondary}`
 const desktopHeroWords = desktopHeroTitle.split(/\s+/);
 const normalizedDesktopHeroWords = desktopHeroWords.map((word) => word.replace(/[^a-z0-9]+/gi, '').toLowerCase());
 const desktopHeroHasTreeWord = normalizedDesktopHeroWords.includes('tree');
+const isHome = pageId === 'home';
+const usePremiumMobileHero = Boolean(pageId) && !String(pageId).startsWith('preview');
+const mobilePrimaryWords = titlePrimary.trim().split(/\s+/).filter(Boolean);
+const mobileTitleLines = (() => {
+  if (isHome) {
+    return {
+      lineOne: 'Local Tree',
+      lineTwo: 'Service',
+      accent: 'Done Right.',
+    };
+  }
+
+  if (titleSecondary) {
+    if (mobilePrimaryWords.length <= 1) {
+      return {
+        lineOne: titlePrimary,
+        lineTwo: '',
+        accent: titleSecondary,
+      };
+    }
+
+    const splitIndex = Math.ceil(mobilePrimaryWords.length / 2);
+    return {
+      lineOne: mobilePrimaryWords.slice(0, splitIndex).join(' '),
+      lineTwo: mobilePrimaryWords.slice(splitIndex).join(' '),
+      accent: titleSecondary,
+    };
+  }
+
+  if (mobilePrimaryWords.length === 1) {
+    return {
+      lineOne: mobilePrimaryWords[0],
+      lineTwo: '',
+      accent: '',
+    };
+  }
+
+  if (mobilePrimaryWords.length === 2) {
+    return {
+      lineOne: mobilePrimaryWords[0],
+      lineTwo: '',
+      accent: mobilePrimaryWords[1],
+    };
+  }
+
+  return {
+    lineOne: mobilePrimaryWords.slice(0, -1).join(' '),
+    lineTwo: '',
+    accent: mobilePrimaryWords.at(-1) ?? '',
+  };
+})();
+const mobileHeroCtaLabel = cta.label || 'Get a Free Estimate';
+const breadcrumbLabelByPageId: Record<string, string> = {
+  services: 'Services',
+  about: 'About',
+  contact: 'Contact',
+  'tree-removal': 'Tree Removal',
+  'tree-trimming': 'Tree Trimming',
+  'stump-grinding': 'Stump Grinding',
+  'emergency-tree-service': 'Storm Cleanup',
+};
+const heroCurrentLabel = breadcrumbLabelByPageId[pageId] ?? `${titlePrimary}${titleSecondary ? ` ${titleSecondary}` : ''}`.trim();
+const heroBreadcrumbs = isHome
+  ? []
+  : pageId === 'services' || pageId === 'about' || pageId === 'contact'
+    ? ['Home', heroCurrentLabel]
+    : ['Home', 'Services', heroCurrentLabel];
 
 const heroClassName = [
   'page-hero',
   'internal-hero',
   'service-hero',
+  usePremiumMobileHero && 'premium-mobile-hero',
   pageId === 'home' && 'homepage-hero',
   `hero-variant-${variant}`,
 ]
@@ -67,7 +135,6 @@ const heroClassName = [
   .join(' ');
 const heroImage = resolveConfiguredImageAsset(brand.assets.heroImage);
 
-const isHome = pageId === 'home';
 const hasStats = isHome && !!(client.jobsCompleted || client.yearsInBusiness || client.googleRating);
 
 // v2 mobile hero computed values
@@ -80,7 +147,7 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
   <div class="hero-frame" data-block="frame">
     <div class="hero-bleed subpage-hero-bleed" data-block="background">
 
-      {isHome && (
+      {usePremiumMobileHero && (
         <>
           <!-- v2 Mobile: layered gradient background -->
           <div class="hm-bg" aria-hidden="true">
@@ -106,22 +173,34 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
             <div class="hm-top" aria-hidden="true"></div>
 
             <div class="hm-middle">
+              {!isHome && heroBreadcrumbs.length > 0 && (
+                <div class="hm-breadcrumb" aria-label="Breadcrumb">
+                  {heroBreadcrumbs.map((crumb, index) => (
+                    <>
+                      <span class:list={['hm-bc', index === heroBreadcrumbs.length - 1 ? 'hm-bc-cur' : 'hm-bc-link']}>{crumb}</span>
+                      {index < heroBreadcrumbs.length - 1 && <span class="hm-bc-sep" aria-hidden="true">›</span>}
+                    </>
+                  ))}
+                </div>
+              )}
               <div class="hm-eyebrow">
                 <span class="hm-eyebrow-dot" aria-hidden="true"></span>
                 {eyebrowText}
               </div>
 
               <h1 class="hm-headline">
-                <span class="hm-hl-line">Local Tree</span>
-                <span class="hm-hl-line">Service</span>
-                <span class="hm-hl-line hm-hl-gold">
-                  Done Right.
-                  <span class="hm-hl-underline" aria-hidden="true"></span>
-                </span>
+                <span class="hm-hl-line">{mobileTitleLines.lineOne}</span>
+                {mobileTitleLines.lineTwo && <span class="hm-hl-line">{mobileTitleLines.lineTwo}</span>}
+                {mobileTitleLines.accent && (
+                  <span class="hm-hl-line hm-hl-gold">
+                    {mobileTitleLines.accent}
+                    <span class="hm-hl-underline" aria-hidden="true"></span>
+                  </span>
+                )}
               </h1>
 
               <p class="hm-sub">
-                <span class="hm-sub-text">When a tree becomes a problem, we make it disappear — clean site, clear communication, every time.</span>
+                <span class="hm-sub-text">{isHome ? 'When a tree becomes a problem, we make it disappear — clean site, clear communication, every time.' : intro}</span>
               </p>
 
               <div class="hm-ctas">
@@ -133,10 +212,10 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
                     aria-haspopup="dialog"
                     aria-controls={cta.target}
                   >
-                    Get a Free Estimate →
+                    {isHome ? 'Get a Free Estimate' : mobileHeroCtaLabel} →
                   </button>
                 ) : (cta.kind === 'link' || cta.kind === 'anchor') ? (
-                  <a href={cta.href} class="hm-btn-primary">Get a Free Estimate →</a>
+                  <a href={cta.href} class="hm-btn-primary">{isHome ? 'Get a Free Estimate' : mobileHeroCtaLabel} →</a>
                 ) : null}
                 <a
                   href={`tel:${client.primaryPhoneHref}`}
@@ -214,8 +293,8 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
       )}
 
       <!-- Desktop / subpage elements -->
-      <HeroOutlineCopy words={outlineWords} />
-      {variant !== 'abstract-no-image' && (
+      {!usePremiumMobileHero && <HeroOutlineCopy words={outlineWords} />}
+      {!usePremiumMobileHero && variant !== 'abstract-no-image' && (
         <Image
           src={heroImage}
           alt=""
@@ -256,7 +335,7 @@ const eyebrowText = `${client.primaryLocation}${estYear ? ` · Est. ${estYear}` 
         </h1>
         {intro && <p class="hero-subcopy" data-block="intro">{intro}</p>}
         {resolvedDesktopIntro && <p class="hero-subcopy hero-subcopy-desktop" data-block="intro-desktop">{resolvedDesktopIntro}</p>}
-        {cta.kind !== 'none' && (
+        {!usePremiumMobileHero && cta.kind !== 'none' && (
           <div class="hero-cta-inline" data-block="cta-inline">
             {cta.kind === 'modal' ? (
               <button

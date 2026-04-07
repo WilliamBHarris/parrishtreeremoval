@@ -1,0 +1,286 @@
+---
+import PageSection from './PageSection.astro';
+import type { SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  surfaceTone = 'base',
+} = Astro.props;
+---
+
+<PageSection class="about-team-section" section="team" page={pageId} surfaceTone={surfaceTone}>
+  <div class="team">
+    <div class="team-inner">
+      <div class="eye dark"><div class="eye-dot"></div>The Crew</div>
+      <h2 class="sec-h2 on-light">Real People.<br /><em>Real Work.</em></h2>
+
+      <div class="team-photo">
+        <div class="team-photo-icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="team-photo-label">
+          <div class="team-photo-name">Your photo here</div>
+          <div class="team-photo-tag">Parrish, FL</div>
+        </div>
+      </div>
+
+      <div class="team-bio-name">[Owner Name]</div>
+      <div class="team-bio-role">Owner & Lead — Parrish Tree Removal</div>
+      <p class="team-bio-text">
+        Born and raised in Manatee County. Started this business because I wanted to do tree work <em>the right way</em> show up on time,
+        do it clean, charge a fair price, and leave the yard better than I found it.
+      </p>
+
+      <div class="team-stats">
+        <div class="team-stat">
+          <div class="team-stat-n">10<em>+</em></div>
+          <div class="team-stat-l">Years in<br />Business</div>
+        </div>
+        <div class="team-stat">
+          <div class="team-stat-n">500<em>+</em></div>
+          <div class="team-stat-l">Properties<br />Served</div>
+        </div>
+        <div class="team-stat">
+          <div class="team-stat-n">5<em>★</em></div>
+          <div class="team-stat-l">Google<br />Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</PageSection>
+
+<style>
+  :global(.page-section.about-team-section[data-section="team"]) {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-top: 0;
+    padding: 0;
+    background: #f2efe6;
+    overflow-x: clip;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  :global(.page-section.about-team-section[data-section="team"])::before,
+  :global(.page-section.about-team-section[data-section="team"])::after {
+    content: none;
+    background: none;
+    box-shadow: none;
+  }
+
+  @keyframes teamDot {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.35;
+      transform: scale(0.55);
+    }
+  }
+
+  .team {
+    background: #f2efe6;
+    padding: 44px 22px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+
+
+  .team-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eye {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .eye.dark {
+    color: #8a6840;
+  }
+
+  .eye-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #c8965a;
+    animation: teamDot 2.2s ease-in-out infinite 0.4s;
+  }
+
+  .sec-h2 {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  .sec-h2.on-light {
+    color: #012a14;
+  }
+
+  .sec-h2.on-light em {
+    color: #c8965a;
+  }
+
+  .sec-h2 em {
+    font-style: normal;
+    display: block;
+  }
+
+  .team-photo {
+    width: 100%;
+    height: 180px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, #012a14, #014a22);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(1, 42, 20, 0.1);
+  }
+
+  .team-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(200, 150, 90, 0.12) 0%, transparent 65%);
+  }
+
+  .team-photo-label {
+    position: absolute;
+    bottom: 14px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .team-photo-name {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .team-photo-tag {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(200, 150, 90, 0.5);
+    background: rgba(200, 150, 90, 0.08);
+    border: 1px solid rgba(200, 150, 90, 0.15);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  .team-photo-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    opacity: 0.15;
+  }
+
+  .team-bio-name {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: #012a14;
+    margin-bottom: 4px;
+  }
+
+  .team-bio-role {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #c8965a;
+    margin-bottom: 12px;
+  }
+
+  .team-bio-text {
+    font-size: 12px;
+    color: #7a7a66;
+    line-height: 1.7;
+  }
+
+  .team-bio-text em {
+    color: #012a14;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .team-stats {
+    display: flex;
+    gap: 0;
+    margin-top: 18px;
+    background: #fff;
+    border: 1px solid rgba(1, 42, 20, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .team-stat {
+    flex: 1;
+    padding: 14px 12px;
+    text-align: center;
+  }
+
+  .team-stat + .team-stat {
+    border-left: 1px solid rgba(1, 42, 20, 0.07);
+  }
+
+  .team-stat-n {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #012a14;
+    line-height: 1;
+    margin-bottom: 3px;
+    letter-spacing: -0.02em;
+  }
+
+  .team-stat-n em {
+    font-style: normal;
+    color: #c8965a;
+    font-size: 18px;
+  }
+
+  .team-stat-l {
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(1, 42, 20, 0.4);
+    line-height: 1.3;
+  }
+</style>

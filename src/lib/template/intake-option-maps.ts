@@ -371,9 +371,9 @@ export const siteStylePresets = {
   'preset-a-baseline': {
     id: 'preset-a-baseline',
     label: 'Preset A: Locked Baseline',
-    description: 'Locked canonical baseline bundle. Preserve this as the no-regression default.',
-    intendedClient: 'Reference baseline for low-risk client swaps and future preset experimentation.',
-    useCase: 'Reference implementation and safest starting point for low-risk client swaps.',
+    description: 'Locked canonical public-site bundle. Preserve this as the current live no-regression default.',
+    intendedClient: 'Reference baseline for low-risk client swaps when the live Parrish build is the expected output.',
+    useCase: 'Reference implementation and safest starting point when the current live build should remain intact.',
     visualIdentity: 'Clean, trustworthy, local-service baseline.',
     writingDirection: 'Professional, direct, and locally grounded.',
     conversionFocus: 'Straightforward estimates with balanced service credibility.',

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's Included — Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#0a0a0a; font-family:'Inter',sans-serif;
+  display:flex;flex-direction:column;align-items:center;
+  padding:2rem 1rem;gap:12px;min-height:100vh;
+}
+.label{color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:.14em;text-transform:uppercase;}
+.phone{
+  width:320px;border-radius:42px;
+  border:7px solid #1c1c1c;background:#1c1c1c;
+  overflow:hidden;box-shadow:0 48px 96px rgba(0,0,0,0.7);
+}
+.screen{overflow-y:scroll;max-height:680px;background:#012a14;}
+.screen::-webkit-scrollbar{display:none;}
+
+/* Keyframes */
+@keyframes dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+@keyframes lp{0%{opacity:.55}100%{opacity:1}}
+@keyframes o1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-14px,18px) scale(1.08)}}
+@keyframes o2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(18px,-14px) scale(1.07)}}
+@keyframes sweepLine{from{width:0;opacity:.4}to{width:100%;opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes countUp{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+
+/* ── Context stubs ── */
+.stub{background:#012a14;padding:18px 20px 0;}
+.stub p{font-size:9px;color:rgba(255,255,255,.14);letter-spacing:.08em;
+  text-transform:uppercase;text-align:center;padding-bottom:16px;
+  border-bottom:1px solid rgba(255,255,255,.05);}
+.stub-light{background:#f2efe6;padding:22px 20px;text-align:center;}
+.stub-light p{font-size:9px;color:rgba(1,42,20,.22);letter-spacing:.08em;text-transform:uppercase;}
+.clip-to-light{background:#012a14;line-height:0;}
+.clip-to-light svg{display:block;width:100%;}
+
+/* ══════════════════════════════════════
+   INCLUDED SECTION
+
+   Concept: A tension-and-release gallery.
+   The section opens with a bold header
+   and five CLOSED promise items stacked
+   vertically. Each closed item shows a
+   short label in very muted type — barely
+   readable. When tapped, the item OPENS
+   and fills a full-height panel: the
+   entire item expands dramatically, a
+   large Barlow Condensed promise takes
+   over, a gold light burst appears, the
+   sweep line draws. Only one open at a
+   time. Opening one collapses the others.
+
+   The section background is a continuous
+   dark atmospheric system — grain, orbs,
+   ambient light. The section feels alive
+   before you even tap anything.
+══════════════════════════════════════ */
+.included{
+  background:#012a14;
+  padding:44px 0 0;
+  position:relative;overflow:hidden;
+}
+
+/* Section atmosphere */
+.inc-grain{
+  position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.042;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px;
+}
+.inc-orb-a{
+  position:absolute;top:-60px;right:-60px;
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.07) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:o1 14s ease-in-out infinite alternate;will-change:transform;
+}
+.inc-orb-b{
+  position:absolute;bottom:0;left:-50px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(1,70,32,.4) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:o2 18s ease-in-out infinite alternate;will-change:transform;
+}
+
+/* ── Section header ── */
+.inc-header{
+  position:relative;z-index:1;
+  padding:0 22px 32px;
+}
+.inc-eye{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:8px;font-weight:700;
+  letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(200,150,90,.72);margin-bottom:10px;
+}
+.inc-eye-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:#c8965a;flex-shrink:0;
+  animation:dot 2.2s ease-in-out infinite;
+}
+.inc-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:40px;font-weight:800;
+  text-transform:uppercase;line-height:.88;
+  color:#fff;letter-spacing:-.01em;margin-bottom:10px;
+}
+.inc-h2 em{color:#c8965a;font-style:normal;display:block;}
+.inc-intro{
+  font-size:11px;color:rgba(255,255,255,.42);
+  line-height:1.65;max-width:235px;margin-bottom:16px;
+}
+.inc-hint{
+  display:flex;align-items:center;gap:9px;
+  font-size:9px;color:rgba(255,255,255,.2);
+  letter-spacing:.1em;text-transform:uppercase;
+}
+.inc-hint-line{
+  width:22px;height:1px;
+  background:rgba(200,150,90,.3);flex-shrink:0;
+}
+.inc-hint-ico{font-size:13px;color:rgba(200,150,90,.35);}
+
+/* ══════════════════════════════════════
+   PROMISE ITEMS
+   
+   Closed: A full-width row with muted
+   short label left and a minimal icon
+   right. Height ~60px. Background barely
+   visible. Label is dim — invites tapping.
+
+   Open: Expands to ~220px. Background
+   gets a warm gold burst. The full promise
+   statement fills it in large italic Barlow.
+   Sweep line draws. Detail text fades in.
+   A close indicator appears top-right.
+══════════════════════════════════════ */
+.promises{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+}
+
+.promise{
+  position:relative;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,.06);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:
+    background 320ms ease,
+    border-color 320ms ease;
+  background:transparent;
+}
+.promise:last-child{border-bottom:1px solid rgba(255,255,255,.06);}
+
+/* Open state — the full reveal */
+.promise.open{
+  background:rgba(200,150,90,.05);
+  border-top-color:rgba(200,150,90,.18);
+}
+.promise.open + .promise{
+  border-top-color:rgba(200,150,90,.18);
+}
+
+/* ── Closed burst — light behind open item ── */
+.promise-burst{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 80% -20%,
+    rgba(200,150,90,.14) 0%,transparent 60%);
+  opacity:0;
+  transition:opacity 400ms ease;
+}
+.promise.open .promise-burst{opacity:1;}
+
+/* ── Closed row ── */
+.promise-closed{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  padding:18px 22px;gap:12px;
+  position:relative;z-index:2;
+}
+/* Short label — dim, teasing */
+.promise-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px;font-weight:800;
+  text-transform:uppercase;letter-spacing:-.005em;
+  line-height:1;
+  color:rgba(255,255,255,.35);
+  transition:color 280ms ease, opacity 280ms ease;
+  flex:1;
+}
+.promise.open .promise-label{
+  color:rgba(200,150,90,.7);
+}
+
+/* Toggle — clean circle */
+.promise-toggle{
+  width:28px;height:28px;min-width:28px;
+  border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04);
+  display:grid;place-items:center;
+  flex-shrink:0;
+  transition:
+    transform 360ms cubic-bezier(.22,1,.36,1),
+    border-color 280ms ease,
+    background 280ms ease;
+  position:relative;z-index:2;
+}
+.promise.open .promise-toggle{
+  transform:rotate(45deg);
+  border-color:rgba(200,150,90,.3);
+  background:rgba(200,150,90,.1);
+}
+.promise-toggle::before,
+.promise-toggle::after{
+  content:'';position:absolute;
+  background:rgba(255,255,255,.45);
+  border-radius:999px;
+  transition:background 280ms ease;
+}
+.promise-toggle::before{width:10px;height:1.5px;}
+.promise-toggle::after{width:1.5px;height:10px;}
+.promise.open .promise-toggle::before,
+.promise.open .promise-toggle::after{background:#c8965a;}
+
+/* ── Open body — grid collapse ── */
+.promise-body{
+  display:grid;
+  grid-template-rows:0fr;
+  transition:grid-template-rows 420ms cubic-bezier(.22,1,.36,1);
+  position:relative;z-index:2;
+}
+.promise.open .promise-body{
+  grid-template-rows:1fr;
+}
+.promise-inner{overflow:hidden;}
+
+/* Open content */
+.promise-content{
+  padding:0 22px 24px;
+}
+
+/* The big promise — large italic Barlow fills width */
+.promise-stmt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:36px;font-weight:800;
+  font-style:italic;
+  text-transform:uppercase;line-height:.88;
+  letter-spacing:-.02em;color:#fff;
+  margin-bottom:14px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 320ms ease 80ms, transform 320ms cubic-bezier(.22,1,.36,1) 80ms;
+}
+.promise.open .promise-stmt{opacity:1;transform:translateY(0);}
+.promise-stmt em{
+  font-style:italic;display:block;color:#c8965a;
+}
+
+/* Sweep line */
+.promise-sweep{
+  height:2px;border-radius:999px;
+  background:linear-gradient(90deg,#c8965a,rgba(200,150,90,.3) 65%,transparent);
+  box-shadow:0 0 8px rgba(200,150,90,.2);
+  width:0%;margin-bottom:12px;
+  transition:width .75s cubic-bezier(.22,1,.36,1) .15s;
+}
+.promise.open .promise-sweep{width:100%;}
+
+/* Detail copy */
+.promise-detail{
+  font-size:11.5px;color:rgba(255,255,255,.55);
+  line-height:1.7;
+  opacity:0;transform:translateY(6px);
+  transition:opacity 300ms ease .28s,transform 300ms ease .28s;
+}
+.promise.open .promise-detail{opacity:1;transform:translateY(0);}
+
+/* ── Section close statement ── */
+.inc-close{
+  position:relative;z-index:1;
+  padding:28px 22px 40px;
+  border-top:1px solid rgba(255,255,255,.06);
+  margin-top:0;
+}
+.inc-close-inner{
+  display:flex;align-items:center;gap:16px;
+}
+.inc-close-line{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(200,150,90,.35),transparent);
+}
+.inc-close-text{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:800;
+  font-style:italic;
+  text-transform:uppercase;line-height:.95;
+  letter-spacing:-.01em;
+  color:rgba(255,255,255,.22);
+  text-align:right;flex-shrink:0;
+}
+.inc-close-text em{color:rgba(200,150,90,.5);font-style:italic;}
+</style>
+</head>
+<body>
+<div class="label">What's Included — Premium Redesign</div>
+<div class="phone">
+<div class="screen" id="screen">
+
+  <!-- Context above — outcome statement ends here -->
+  <div class="stub"><p>↑ Outcome statement above</p></div>
+
+  <!-- INCLUDED SECTION -->
+  <div class="included">
+    <div class="inc-grain"></div>
+    <div class="inc-orb-a"></div>
+    <div class="inc-orb-b"></div>
+
+    <!-- Header -->
+    <div class="inc-header">
+      <div class="inc-eye"><div class="inc-eye-dot"></div>What's Included</div>
+      <h2 class="inc-h2">What You<br><em>Actually Get.</em></h2>
+      <p class="inc-intro">Every job. Regardless of size, access, or complexity. No exceptions.</p>
+      <div class="inc-hint">
+        <div class="inc-hint-line"></div>
+        <span>Tap each to open</span>
+        <span class="inc-hint-ico">↓</span>
+      </div>
+    </div>
+
+    <!-- Promise items -->
+    <div class="promises" id="promises">
+
+      <div class="promise" onclick="openPromise(this)">
+        <div class="promise-burst"></div>
+        <div class="promise-closed">
+          <div class="promise-label">Full debris removal</div>
+          <div class="promise-toggle"></div>
+        </div>
+        <div class="promise-body"><div class="promise-inner">
+          <div class="promise-content">
+            <div class="promise-stmt">Every branch.<br>Every log.<br><em>Every piece. Gone.</em></div>
+            <div class="promise-sweep"></div>
+            <p class="promise-detail">We haul everything away — nothing left for you to deal with. You come outside and it's like it never happened.</p>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="promise" onclick="openPromise(this)">
+        <div class="promise-burst"></div>
+        <div class="promise-closed">
+          <div class="promise-label">Yard left cleaner</div>
+          <div class="promise-toggle"></div>
+        </div>
+        <div class="promise-body"><div class="promise-inner">
+          <div class="promise-content">
+            <div class="promise-stmt">Cleaner than<br><em>we found it.</em></div>
+            <div class="promise-sweep"></div>
+            <p class="promise-detail">We rake, we clear, we check twice. We don't consider the job done until the site looks right — not good enough, actually right.</p>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="promise" onclick="openPromise(this)">
+        <div class="promise-burst"></div>
+        <div class="promise-closed">
+          <div class="promise-label">Straight pricing</div>
+          <div class="promise-toggle"></div>
+        </div>
+        <div class="promise-body"><div class="promise-inner">
+          <div class="promise-content">
+            <div class="promise-stmt">What we quote<br><em>is what you pay.</em></div>
+            <div class="promise-sweep"></div>
+            <p class="promise-detail">No add-ons discovered halfway through. No invoice shock at the end. Full cost upfront before we start.</p>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="promise" onclick="openPromise(this)">
+        <div class="promise-burst"></div>
+        <div class="promise-closed">
+          <div class="promise-label">Zero property damage</div>
+          <div class="promise-toggle"></div>
+        </div>
+        <div class="promise-body"><div class="promise-inner">
+          <div class="promise-content">
+            <div class="promise-stmt">Your property.<br><em>Left intact.</em></div>
+            <div class="promise-sweep"></div>
+            <p class="promise-detail">Access planned before a single cut. Your fence, lawn, garden — all considered. We've never left a property worse than we found it.</p>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="promise" onclick="openPromise(this)">
+        <div class="promise-burst"></div>
+        <div class="promise-closed">
+          <div class="promise-label">We show up on time</div>
+          <div class="promise-toggle"></div>
+        </div>
+        <div class="promise-body"><div class="promise-inner">
+          <div class="promise-content">
+            <div class="promise-stmt">We set a window.<br><em>We keep it.</em></div>
+            <div class="promise-sweep"></div>
+            <p class="promise-detail">No all-day waits. No last-minute calls saying we can't make it. Your time matters as much as ours.</p>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+
+    <!-- Close statement -->
+    <div class="inc-close">
+      <div class="inc-close-inner">
+        <div class="inc-close-line"></div>
+        <div class="inc-close-text">
+          All of this.<br>
+          Every job.<br>
+          <em>No exceptions.</em>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Clip to light — for when section below -->
+  <div class="clip-to-light">
+    <svg viewBox="0 0 320 36" preserveAspectRatio="none">
+      <path d="M0 36 L320 0 L320 36 Z" fill="#f2efe6"/>
+    </svg>
+  </div>
+
+  <!-- Context below -->
+  <div class="stub-light"><p>↓ When You Need It below</p></div>
+
+</div>
+</div>
+
+<script>
+(function() {
+
+  window.openPromise = function(el) {
+    const isOpen = el.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.promise').forEach(p => p.classList.remove('open'));
+    // Open this one if it was closed
+    if (!isOpen) el.classList.add('open');
+  };
+
+})();
+</script>
+</body>
+</html>

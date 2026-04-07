@@ -1,0 +1,257 @@
+---
+import PageSection from './PageSection.astro';
+import { client } from '../data/client';
+import type { SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  surfaceTone = 'olive',
+} = Astro.props;
+---
+
+<PageSection class="contact-direct-section" section="direct-contact" page={pageId} surfaceTone={surfaceTone}>
+  <div class="direct">
+    <div class="direct-inner">
+      <div class="eye light"><div class="eye-dot"></div>Or Reach Us Directly</div>
+      <h2 class="sec-h2 on-dark">Prefer to<br /><em>Call or Text?</em></h2>
+      <p class="direct-intro">Skip the form. Reach us directly — we pick up.</p>
+
+      <div class="direct-options">
+        <a class="direct-opt" href={`tel:${client.primaryPhoneHref}`}>
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"></path>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Call Us</strong>
+            <span>{client.primaryPhoneDisplay}</span>
+          </div>
+          <div class="direct-arrow" aria-hidden="true">→</div>
+        </a>
+
+        <a class="direct-opt" href={`sms:${client.primaryPhoneHref.replace(/[^\d+]/g, '')}`}>
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Text Us</strong>
+            <span>{client.primaryPhoneDisplay}</span>
+          </div>
+          <div class="direct-arrow" aria-hidden="true">→</div>
+        </a>
+
+        <a class="direct-opt" href={`mailto:${client.email}`}>
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Email Us</strong>
+            <span>{client.email}</span>
+          </div>
+          <div class="direct-arrow" aria-hidden="true">→</div>
+        </a>
+
+        <div class="direct-opt">
+          <div class="direct-ico">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="10" r="3"></circle>
+              <path d="M12 2a8 8 0 00-8 8c0 5.4 7.05 11.5 7.35 11.76a1 1 0 001.3 0C13 21.5 20 15.4 20 10a8 8 0 00-8-8z"></path>
+            </svg>
+          </div>
+          <div class="direct-copy">
+            <strong>Service Area</strong>
+            <span>Parrish, FL & Manatee County</span>
+          </div>
+          <div class="direct-arrow" aria-hidden="true">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</PageSection>
+
+<script is:inline>
+  (() => {
+    const options = Array.from(document.querySelectorAll('.direct-opt'));
+    if (!options.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!(entry.target instanceof HTMLElement)) return;
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    options.forEach((option) => observer.observe(option));
+  })();
+</script>
+
+<style>
+  :global(.page-section.contact-direct-section[data-section="direct-contact"]) {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-top: 0;
+    padding: 0;
+    background: #012a14;
+    overflow-x: clip;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  :global(.page-section.contact-direct-section[data-section="direct-contact"])::before,
+  :global(.page-section.contact-direct-section[data-section="direct-contact"])::after {
+    content: none;
+    background: none;
+    box-shadow: none;
+  }
+
+  @keyframes directDot {
+    0%,
+    100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.55); }
+  }
+
+  .direct {
+    background: #012a14;
+    padding: 44px 22px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .direct-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eye {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .eye.light { color: rgba(200,150,90,.72); }
+
+  .eye-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8965a;
+    flex-shrink: 0;
+    animation: directDot 2.2s ease-in-out infinite;
+  }
+
+  .sec-h2 {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: .9;
+    letter-spacing: -.01em;
+    margin-bottom: 10px;
+  }
+
+  .sec-h2.on-dark { color: #fff; }
+  .sec-h2.on-dark em { color: #c8965a; }
+  .sec-h2 em { font-style: normal; display: block; }
+
+  .direct-intro {
+    font-size: 11px;
+    color: rgba(255,255,255,.42);
+    line-height: 1.65;
+    max-width: 235px;
+    margin-bottom: 24px;
+  }
+
+  .direct-options {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+
+  .direct-opt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255,255,255,.07);
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      opacity .55s cubic-bezier(.22,1,.36,1),
+      transform .55s cubic-bezier(.22,1,.36,1);
+    opacity: 0;
+    transform: translateY(14px);
+    text-decoration: none;
+  }
+
+  .direct-opt:last-child { border-bottom: 1px solid rgba(255,255,255,.07); }
+  .direct-opt.in { opacity: 1; transform: translateY(0); }
+  .direct-opt:nth-child(1) { transition-delay: 0s; }
+  .direct-opt:nth-child(2) { transition-delay: .07s; }
+  .direct-opt:nth-child(3) { transition-delay: .14s; }
+  .direct-opt:nth-child(4) { transition-delay: .21s; }
+
+  .direct-ico {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    border-radius: 13px;
+    background: rgba(200,150,90,.1);
+    border: 1px solid rgba(200,150,90,.2);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    transition: background 200ms ease;
+  }
+
+  .direct-opt:active .direct-ico { background: rgba(200,150,90,.18); }
+
+  .direct-copy { flex: 1; }
+
+  .direct-copy strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -.01em;
+    margin-bottom: 2px;
+  }
+
+  .direct-copy span {
+    font-size: 11px;
+    color: rgba(255,255,255,.42);
+  }
+
+  .direct-arrow {
+    font-size: 16px;
+    color: rgba(200,150,90,.4);
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: transform 220ms ease, color 180ms ease;
+  }
+
+  .direct-opt:active .direct-arrow {
+    transform: translateX(4px);
+    color: rgba(200,150,90,.8);
+  }
+</style>

@@ -1,4 +1,5 @@
 ---
+import { client } from '../data/client';
 import { estimateServiceOptions } from '../data/services';
 
 interface Props {
@@ -35,6 +36,9 @@ const phoneId = `${instanceBaseId}-phone`;
 const zipId = `${instanceBaseId}-zip`;
 const serviceId = `${instanceBaseId}-service`;
 const detailsId = `${instanceBaseId}-details`;
+const defaultModalZip = client.serviceAreaZipCodes.includes('34219')
+  ? '34219'
+  : (client.serviceAreaZipCodes[0] ?? '34219');
 ---
 
 <div class:list={['estimate-form-shell', 'form-card', variant === 'premium-modal' && 'estimate-form-shell--premium-modal']}>
@@ -55,6 +59,7 @@ const detailsId = `${instanceBaseId}-details`;
       novalidate
     >
       <input type="hidden" name="website" value="" autocomplete="off" />
+      <input type="hidden" name="zip" value={defaultModalZip} />
 
       <div class="estimate-modal-field-row">
         <div class="estimate-modal-field">
@@ -70,21 +75,6 @@ const detailsId = `${instanceBaseId}-details`;
       <div class="estimate-modal-field">
         <label for={emailId}>Email</label>
         <input id={emailId} class="estimate-modal-input" type="email" name="email" placeholder="you@email.com" required autocomplete="email" />
-      </div>
-
-      <div class="estimate-modal-field">
-        <label for={zipId}>ZIP Code</label>
-        <input
-          id={zipId}
-          class="estimate-modal-input"
-          type="text"
-          name="zip"
-          placeholder="Parrish-area ZIP code"
-          required
-          autocomplete="postal-code"
-          inputmode="numeric"
-          pattern="[0-9]{5}(-[0-9]{4})?"
-        />
       </div>
 
       <div class="estimate-modal-field">

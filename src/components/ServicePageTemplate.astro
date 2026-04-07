@@ -2,10 +2,11 @@
 import HeroSection from './HeroSection.astro';
 import HomepageWhyChoose from './HomepageWhyChoose.astro';
 import HomepageProcess from './HomepageProcess.astro';
-import ServiceInfoSection from './ServiceInfoSection.astro';
+import SubpageIntroSection from './SubpageIntroSection.astro';
+import PremiumIncludedSection from './PremiumIncludedSection.astro';
+import PremiumWhenSection from './PremiumWhenSection.astro';
 import RelatedServicesSection from './RelatedServicesSection.astro';
 import FaqSection from './FaqSection.astro';
-import EstimateFormSection from './EstimateFormSection.astro';
 import ServiceAreaSection from './ServiceAreaSection.astro';
 
 interface FaqItem {
@@ -69,6 +70,91 @@ const processStepItems = processSteps.map((item, index) => ({
   description: item,
   paths: processIconPaths[index] ?? processIconPaths[processIconPaths.length - 1],
 }));
+
+const serviceIntroContent: Record<string, { lines: string[]; accentLine: string; body: string }> = {
+  'tree-removal': {
+    lines: ['Your tree is gone.', 'Your yard is clean.'],
+    accentLine: 'Your property is safer.',
+    body: 'We handle the entire job from access planning and safe removal to debris haul-off and final cleanup. You do not lift a finger from first call to finished job.',
+  },
+  'tree-trimming': {
+    lines: ['Your canopy is cleaner.', 'Your clearance is better.'],
+    accentLine: 'Your property looks sharper.',
+    body: 'We trim with a clean plan from the first cut to the last pass through the yard, so the tree looks better, the property feels safer, and the cleanup is already handled.',
+  },
+  'stump-grinding': {
+    lines: ['The stump is gone.', 'The yard is usable again.'],
+    accentLine: 'The project can move forward.',
+    body: 'We grind below grade, clean up the work area, and leave the space ready for grass, landscaping, or whatever comes next on the property.',
+  },
+  'emergency-tree-service': {
+    lines: ['The hazard is handled.', 'The debris is cleared.'],
+    accentLine: 'The property is safer.',
+    body: 'When storm damage turns urgent, we help move the job from first call to clear cleanup fast, with the site stabilized and the mess off your property.',
+  },
+};
+
+const serviceWhenContent: Record<string, { title: string; accentLine: string; scenarios: Array<{ title: string; accent?: string; answer: string; ctaLabel: string }>; closeStrong: string; closeBody: string }> = {
+  'tree-removal': {
+    title: 'Find Your',
+    accentLine: 'Situation.',
+    scenarios: [
+      { title: 'Dead tree creating a', accent: 'hazard?', answer: 'Brittle branches, bare canopy, visible rot, or a leaning trunk. A dead tree is a liability, and one storm is all it takes to make it your problem.', ctaLabel: 'Call Us Now — We\'re Ready →' },
+      { title: 'Too close to your roof', accent: 'or fence?', answer: 'Roots threatening the foundation, branches scraping the roof, or a tree planted too close for the space. This usually does not fix itself with time.', ctaLabel: 'Get a Free Estimate →' },
+      { title: 'Storm left a mess on', accent: 'your property?', answer: 'Fallen limbs, cracked trunks, blocked driveways, or unstable trees after heavy weather. Fast cleanup keeps the damage from getting worse.', ctaLabel: 'Same-Day Response Available →' },
+      { title: 'Clearing for a build or', accent: 'project?', answer: 'If a tree is holding up a pool, fence, addition, or access route, removal can clear the site so the rest of the project can move forward.', ctaLabel: 'Talk to Us About Your Timeline →' },
+    ],
+    closeStrong: 'Not sure if you need removal?',
+    closeBody: 'Call us and we will tell you honestly whether removal is the right move or not.',
+  },
+  'tree-trimming': {
+    title: 'Find the',
+    accentLine: 'Right Fit.',
+    scenarios: [
+      { title: 'Branches pushing over', accent: 'your roof?', answer: 'Overgrown limbs scraping shingles or hanging over the house are a common sign it is time to trim for clearance and control.', ctaLabel: 'Request Trimming →' },
+      { title: 'Canopy too heavy or', accent: 'out of shape?', answer: 'A tree that feels unbalanced, overgrown, or crowded can often be improved with targeted trimming instead of waiting for bigger issues.', ctaLabel: 'Get a Free Estimate →' },
+      { title: 'Need better light, access, or', accent: 'cleaner lines?', answer: 'Trimming can open views, improve clearance over drives and walkways, and give the whole property a cleaner finished look.', ctaLabel: 'Let\'s Talk About The Scope →' },
+      { title: 'Routine upkeep before storm', accent: 'season hits?', answer: 'Preventive trimming can remove weak growth and reduce the chances of limbs becoming a bigger problem later.', ctaLabel: 'Book Preventive Trimming →' },
+    ],
+    closeStrong: 'Not sure how much trimming you need?',
+    closeBody: 'We can look at the tree and tell you what makes sense before you commit to the work.',
+  },
+  'stump-grinding': {
+    title: 'Find Your',
+    accentLine: 'Situation.',
+    scenarios: [
+      { title: 'Old stump stuck in the', accent: 'middle of the yard?', answer: 'If the stump is in the way of mowing, walking, or using the space, grinding is usually the fastest way to reclaim the area.', ctaLabel: 'Get a Free Estimate →' },
+      { title: 'Ready to replant, landscape, or', accent: 'build over it?', answer: 'A leftover stump can block fresh grass, beds, hardscape, or the next phase of a project. Grinding clears that obstacle.', ctaLabel: 'Talk To Us About Timing →' },
+      { title: 'Roots and regrowth becoming a', accent: 'headache?', answer: 'New sprouts and lingering roots are a common sign the stump is still affecting the yard more than it should.', ctaLabel: 'Clear The Stump Out →' },
+      { title: 'Want the yard to look', accent: 'finished again?', answer: 'If the tree is gone but the site still feels incomplete, grinding is what makes the cleanup actually feel done.', ctaLabel: 'Finish The Job →' },
+    ],
+    closeStrong: 'Not sure if grinding is enough?',
+    closeBody: 'We can tell you whether the stump can be ground cleanly or if there is anything else worth planning for.',
+  },
+  'emergency-tree-service': {
+    title: 'Find Your',
+    accentLine: 'Situation.',
+    scenarios: [
+      { title: 'Tree down across', accent: 'access or driveway?', answer: 'If a storm has blocked your way in or out, fast cleanup helps restore access and reduce the risk around the property.', ctaLabel: 'Call For Immediate Help →' },
+      { title: 'Cracked limbs hanging over the', accent: 'house or yard?', answer: 'Broken branches can keep shifting after the storm passes. Emergency service helps remove the most dangerous parts quickly.', ctaLabel: 'Same-Day Response Available →' },
+      { title: 'Storm debris all over the', accent: 'property?', answer: 'When limbs, brush, and damaged tree sections are scattered everywhere, cleanup brings order back fast and keeps the job from dragging out.', ctaLabel: 'Start The Cleanup →' },
+      { title: 'Need a clear plan after', accent: 'storm damage?', answer: 'If you are not sure what is urgent versus what can wait, we can help sort out the next step and stabilize the job.', ctaLabel: 'Get Clear Next Steps →' },
+    ],
+    closeStrong: 'Not sure how urgent it is?',
+    closeBody: 'Call us and describe what happened. We can help you figure out the safest next move fast.',
+  },
+};
+
+const serviceIncludedClose: Record<string, { prefix: string; accent: string }> = {
+  'tree-removal': { prefix: 'All of this.', accent: 'Every job. No exceptions.' },
+  'tree-trimming': { prefix: 'Clean cuts.', accent: 'Clear communication. Full cleanup.' },
+  'stump-grinding': { prefix: 'Below grade.', accent: 'Clean finish. Ready for what is next.' },
+  'emergency-tree-service': { prefix: 'Fast response.', accent: 'Clear cleanup. Safer property.' },
+};
+
+const introContent = serviceIntroContent[pageId] ?? serviceIntroContent['tree-removal'];
+const whenContent = serviceWhenContent[pageId] ?? serviceWhenContent['tree-removal'];
+const includedClose = serviceIncludedClose[pageId] ?? serviceIncludedClose['tree-removal'];
 ---
 
 <HeroSection
@@ -81,22 +167,31 @@ const processStepItems = processSteps.map((item, index) => ({
 />
 
 <div class="page-shell" data-page={pageId}>
-  <ServiceInfoSection
+  <SubpageIntroSection
     pageId={pageId}
-    section="when-you-need-this-service"
-    title="When You Need It"
-    items={whenYouNeedThisService}
-    layout={whenLayout === 'cards' ? 'grid' : 'list'}
-    surfaceTone="base"
+    eyebrow="Overview"
+    lines={introContent.lines}
+    accentLine={introContent.accentLine}
+    body={introContent.body}
+    surfaceTone="olive"
   />
 
-  <ServiceInfoSection
+  <PremiumIncludedSection
     pageId={pageId}
-    section="whats-included"
-    title="What&apos;s Included"
     items={whatsIncluded}
-    layout={includedLayout === 'grid' ? 'grid' : 'stack'}
-    surfaceTone="warm"
+    closePrefix={includedClose.prefix}
+    closeAccent={includedClose.accent}
+    surfaceTone="olive"
+  />
+
+  <PremiumWhenSection
+    pageId={pageId}
+    title={whenContent.title}
+    accentLine={whenContent.accentLine}
+    scenarios={whenContent.scenarios}
+    closeStrong={whenContent.closeStrong}
+    closeBody={whenContent.closeBody}
+    surfaceTone="base"
   />
 
   <HomepageWhyChoose pageId={pageId} surfaceTone="cool" />
@@ -115,15 +210,6 @@ const processStepItems = processSteps.map((item, index) => ({
   />
 
   <FaqSection pageId={pageId} items={faqs} surfaceTone="warm" />
-
-  <EstimateFormSection
-    pageId={pageId}
-    title="Request A Free Estimate"
-    heading={estimateHeading}
-    intro={estimateIntro}
-    buttonLabel="Submit Free Estimate"
-    surfaceTone="cool"
-  />
 
   <ServiceAreaSection pageId={pageId} surfaceTone="olive" />
 </div>

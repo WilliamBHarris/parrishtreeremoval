@@ -34,7 +34,7 @@ const desktopIntroByPageId: Record<string, string> = {
 };
 
 const resolvedDesktopIntro = desktopIntro ?? desktopIntroByPageId[pageId];
-const isHome = pageId === 'home';
+const isHome = pageId === 'home' || pageId === 'services';
 ---
 
 {isHome ? (

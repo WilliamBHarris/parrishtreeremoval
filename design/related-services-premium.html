@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Related Services — Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#0a0a0a;font-family:'Inter',sans-serif;
+  display:flex;flex-direction:column;align-items:center;
+  padding:2rem 1rem;gap:12px;min-height:100vh;
+}
+.label{color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:.14em;text-transform:uppercase;}
+.phone{
+  width:320px;border-radius:42px;
+  border:7px solid #1c1c1c;background:#1c1c1c;
+  overflow:hidden;box-shadow:0 48px 96px rgba(0,0,0,0.7);
+}
+.screen{overflow-y:scroll;max-height:680px;background:#f2efe6;}
+.screen::-webkit-scrollbar{display:none;}
+
+@keyframes dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+@keyframes arrowNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Context stubs ── */
+.stub{background:#f2efe6;padding:18px 20px 0;}
+.stub p{font-size:9px;color:rgba(1,42,20,.22);letter-spacing:.08em;text-transform:uppercase;
+  text-align:center;padding-bottom:16px;border-bottom:1px solid rgba(1,42,20,.07);}
+
+/* ══════════════════════════════════════
+   RELATED SERVICES SECTION
+
+   Light beige background — same as the
+   CTA section it sits inside. Full visual
+   contrast with the dark sections above.
+
+   Three service panels, each with the
+   distinct color identity from the
+   homepage carousel. Not cards — full
+   width panels with a left icon column
+   and right content column. The service
+   name is large Barlow Condensed. A
+   specific one-line hook below it. An
+   arrow that animates on hover/tap.
+
+   The section header is minimal — just
+   an eyebrow and a clean heading. No
+   excess. The services do the talking.
+══════════════════════════════════════ */
+.related{
+  background:#f2efe6;
+  padding:44px 0 48px;
+  position:relative;overflow:hidden;
+}
+
+/* Warm orb — light section depth */
+.rel-orb{
+  position:absolute;top:-60px;right:-60px;
+  width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.06) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── Section header ── */
+.rel-header{
+  position:relative;z-index:1;
+  padding:0 22px 28px;
+}
+.rel-eye{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:8px;font-weight:700;
+  letter-spacing:.26em;text-transform:uppercase;
+  color:#8a6840;margin-bottom:10px;
+}
+.rel-eye-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:#c8965a;flex-shrink:0;
+  animation:dot 2.2s ease-in-out infinite .4s;
+}
+.rel-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:36px;font-weight:800;
+  text-transform:uppercase;line-height:.9;
+  color:#012a14;letter-spacing:-.01em;
+}
+.rel-h2 em{color:#c8965a;font-style:normal;display:block;}
+
+/* ── Service panels ── */
+.rel-panels{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+}
+
+.rel-panel{
+  position:relative;overflow:hidden;
+  padding:22px 22px 22px;
+  border-top:1px solid rgba(1,42,20,.07);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:background 200ms ease;
+  /* Scroll entrance */
+  opacity:0;transform:translateX(-16px);
+  transition:
+    opacity .6s cubic-bezier(.22,1,.36,1),
+    transform .6s cubic-bezier(.22,1,.36,1),
+    background 200ms ease;
+}
+.rel-panel:last-child{border-bottom:1px solid rgba(1,42,20,.07);}
+.rel-panel.in{opacity:1;transform:translateX(0);}
+.rel-panel:nth-child(1){transition-delay:0s}
+.rel-panel:nth-child(2){transition-delay:.07s}
+.rel-panel:nth-child(3){transition-delay:.14s}
+
+/* Active press state */
+.rel-panel:active{background:rgba(1,42,20,.04);}
+
+/* Background light burst — subtle, per service */
+.rel-panel-burst{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  opacity:0;
+  transition:opacity 300ms ease;
+}
+.rel-panel:active .rel-panel-burst{opacity:1;}
+
+/* Content layout */
+.rel-panel-inner{
+  position:relative;z-index:1;
+  display:flex;align-items:center;gap:16px;
+}
+
+/* ── Service icon block ── */
+.rel-ico-wrap{
+  width:52px;height:52px;min-width:52px;
+  border-radius:16px;
+  display:grid;place-items:center;
+  flex-shrink:0;
+  position:relative;overflow:hidden;
+  transition:transform 250ms cubic-bezier(.22,1,.36,1);
+}
+.rel-panel:active .rel-ico-wrap{transform:scale(.95);}
+
+/* Subtle inner gloss on icon block */
+.rel-ico-wrap::before{
+  content:'';position:absolute;inset:0 0 55% 0;
+  background:linear-gradient(180deg,rgba(255,255,255,.14),transparent);
+  border-radius:16px 16px 0 0;
+  pointer-events:none;
+}
+
+/* ── Service content ── */
+.rel-content{flex:1;min-width:0;}
+
+/* Service name — large Barlow Condensed */
+.rel-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:28px;font-weight:800;
+  text-transform:uppercase;line-height:.9;
+  letter-spacing:-.01em;
+  margin-bottom:5px;
+  transition:color 200ms ease;
+}
+
+/* One-line hook — specific, not generic */
+.rel-hook{
+  font-size:11px;font-weight:500;
+  color:#7a7a66;line-height:1.45;
+}
+
+/* Arrow — animated on active */
+.rel-arrow{
+  display:flex;align-items:center;justify-content:center;
+  width:28px;height:28px;min-width:28px;
+  border-radius:8px;flex-shrink:0;
+  font-size:14px;font-weight:700;
+  transition:transform 250ms cubic-bezier(.22,1,.36,1),background 200ms ease;
+}
+.rel-panel:active .rel-arrow{
+  transform:translateX(4px);
+}
+
+/* ══ SERVICE IDENTITIES ══
+   Matching the homepage carousel exactly.
+   Each service has its established
+   color identity from the swipe cards.
+══════════════════════════════════════ */
+
+/* Tree Trimming — olive / lime green */
+.rel-trimming .rel-ico-wrap{
+  background:linear-gradient(145deg,#172a07,#0c1904);
+  border:1px solid rgba(100,175,50,.15);
+  box-shadow:0 4px 16px rgba(0,0,0,.2),
+    0 0 0 1px rgba(130,210,75,.08);
+}
+.rel-trimming .rel-panel-burst{
+  background:radial-gradient(ellipse 70% 50% at 0% 50%,
+    rgba(100,175,50,.06) 0%,transparent 65%);
+}
+.rel-trimming .rel-name{color:#2d5016;}
+.rel-trimming .rel-arrow{
+  background:rgba(100,175,50,.1);
+  border:1px solid rgba(100,175,50,.18);
+  color:rgba(80,160,40,.8);
+}
+.rel-trimming:active .rel-arrow{
+  background:rgba(100,175,50,.16);
+}
+
+/* Stump Grinding — brown / amber */
+.rel-stump .rel-ico-wrap{
+  background:linear-gradient(145deg,#271804,#140c02);
+  border:1px solid rgba(185,120,38,.15);
+  box-shadow:0 4px 16px rgba(0,0,0,.2),
+    0 0 0 1px rgba(205,140,55,.08);
+}
+.rel-stump .rel-panel-burst{
+  background:radial-gradient(ellipse 70% 50% at 0% 50%,
+    rgba(185,120,38,.06) 0%,transparent 65%);
+}
+.rel-stump .rel-name{color:#7a3e10;}
+.rel-stump .rel-arrow{
+  background:rgba(185,120,38,.1);
+  border:1px solid rgba(185,120,38,.18);
+  color:rgba(180,115,35,.8);
+}
+.rel-stump:active .rel-arrow{
+  background:rgba(185,120,38,.16);
+}
+
+/* Storm Cleanup — navy / electric blue */
+.rel-storm .rel-ico-wrap{
+  background:linear-gradient(145deg,#091628,#050d18);
+  border:1px solid rgba(75,130,220,.15);
+  box-shadow:0 4px 16px rgba(0,0,0,.2),
+    0 0 0 1px rgba(110,165,255,.08);
+}
+.rel-storm .rel-panel-burst{
+  background:radial-gradient(ellipse 70% 50% at 0% 50%,
+    rgba(75,130,220,.06) 0%,transparent 65%);
+}
+.rel-storm .rel-name{color:#1a3a6e;}
+.rel-storm .rel-arrow{
+  background:rgba(75,130,220,.1);
+  border:1px solid rgba(75,130,220,.18);
+  color:rgba(80,135,225,.8);
+}
+.rel-storm:active .rel-arrow{
+  background:rgba(75,130,220,.16);
+}
+
+/* Emergency pulse dot on storm */
+.storm-pulse{
+  position:absolute;top:-3px;right:-3px;
+  width:9px;height:9px;border-radius:50%;
+  background:#4a8fd9;
+  border:2px solid #f2efe6;
+  animation:stormPulse 2s ease-in-out infinite;
+}
+@keyframes stormPulse{
+  0%{box-shadow:0 0 0 0 rgba(74,143,217,.6)}
+  70%{box-shadow:0 0 0 5px rgba(74,143,217,0)}
+  100%{box-shadow:0 0 0 0 rgba(74,143,217,0)}
+}
+</style>
+</head>
+<body>
+<div class="label">Related Services — Premium Redesign</div>
+<div class="phone">
+<div class="screen" id="screen">
+
+  <!-- Context above -->
+  <div class="stub"><p>↑ Estimate CTA above</p></div>
+
+  <!-- RELATED SERVICES -->
+  <div class="related">
+    <div class="rel-orb"></div>
+
+    <!-- Header -->
+    <div class="rel-header">
+      <div class="rel-eye"><div class="rel-eye-dot"></div>Also Available</div>
+      <h2 class="rel-h2">We Handle<br><em>More Than This.</em></h2>
+    </div>
+
+    <!-- Panels -->
+    <div class="rel-panels" id="relPanels">
+
+      <!-- Tree Trimming -->
+      <div class="rel-panel rel-trimming">
+        <div class="rel-panel-burst"></div>
+        <div class="rel-panel-inner">
+          <div class="rel-ico-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="rgba(130,210,75,0.9)" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"/>
+              <circle cx="6" cy="18" r="3"/>
+              <path d="M20 4L8.12 15.88"/>
+              <path d="M14.47 14.48L20 20"/>
+              <path d="M8.12 8.12L12 12"/>
+            </svg>
+          </div>
+          <div class="rel-content">
+            <div class="rel-name" >Tree<br>Trimming</div>
+            <div class="rel-hook">Cleaner canopy. Better clearance. Healthier trees.</div>
+          </div>
+          <div class="rel-arrow">→</div>
+        </div>
+      </div>
+
+      <!-- Stump Grinding -->
+      <div class="rel-panel rel-stump">
+        <div class="rel-panel-burst"></div>
+        <div class="rel-panel-inner">
+          <div class="rel-ico-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="rgba(205,140,55,0.9)" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="7"/>
+              <circle cx="12" cy="12" r="2"/>
+              <path d="M12 5V3M12 21v-2M5 12H3M21 12h-2
+                M7.05 7.05L5.64 5.64M18.36 18.36l-1.41-1.41"/>
+            </svg>
+          </div>
+          <div class="rel-content">
+            <div class="rel-name">Stump<br>Grinding</div>
+            <div class="rel-hook">Gone below grade. Nothing left to mow around.</div>
+          </div>
+          <div class="rel-arrow">→</div>
+        </div>
+      </div>
+
+      <!-- Storm Cleanup -->
+      <div class="rel-panel rel-storm">
+        <div class="rel-panel-burst"></div>
+        <div class="rel-panel-inner">
+          <div class="rel-ico-wrap" style="position:relative;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+              stroke="rgba(110,165,255,0.88)" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+              <path d="M11 13l-2 3h4l-2 3"/>
+            </svg>
+            <div class="storm-pulse"></div>
+          </div>
+          <div class="rel-content">
+            <div class="rel-name">Storm<br>Cleanup</div>
+            <div class="rel-hook">Fast response. Any damage. Same-day when possible.</div>
+          </div>
+          <div class="rel-arrow">→</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+(function(){
+  const screen = document.getElementById('screen');
+  const panels = document.querySelectorAll('.rel-panel');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { root: screen, threshold: 0.3 });
+  panels.forEach(p => obs.observe(p));
+})();
+</script>
+</body>
+</html>

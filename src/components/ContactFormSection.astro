@@ -1,0 +1,304 @@
+---
+import PageSection from './PageSection.astro';
+import { client } from '../data/client';
+import { estimateServiceOptions } from '../data/services';
+import type { SectionTone } from '../data/client-questionnaire';
+
+interface Props {
+  pageId: string;
+  surfaceTone?: SectionTone;
+}
+
+const {
+  pageId,
+  surfaceTone = 'base',
+} = Astro.props;
+
+const defaultZip = client.serviceAreaZipCodes.includes('34219')
+  ? '34219'
+  : (client.serviceAreaZipCodes[0] ?? '34219');
+---
+
+<PageSection class="contact-form-page-section" section="contact-form" page={pageId} surfaceTone={surfaceTone}>
+  <div class="contact-form-sec">
+    <div class="contact-form-inner">
+      <div class="eye dark"><div class="eye-dot"></div>Get In Touch</div>
+      <h2 class="sec-h2 on-light">Send Us a<br /><em>Message.</em></h2>
+      <p class="contact-form-intro">We'll follow up same day — usually within a few hours.</p>
+
+      <form
+        class="cf-form"
+        method="post"
+        action="/api/estimate.php"
+        data-estimate-form
+        novalidate
+      >
+        <input type="hidden" name="website" value="" autocomplete="off" />
+        <input type="hidden" name="zip" value={defaultZip} />
+
+        <div class="cf-row">
+          <div class="cf-field">
+            <label class="cf-label" for="contact-page-name">Name</label>
+            <input id="contact-page-name" class="cf-input" type="text" name="name" placeholder="Your name" required />
+          </div>
+          <div class="cf-field">
+            <label class="cf-label" for="contact-page-phone">Phone</label>
+            <input id="contact-page-phone" class="cf-input" type="tel" name="phone" placeholder="(941) ···" required inputmode="tel" />
+          </div>
+        </div>
+
+        <div class="cf-field">
+          <label class="cf-label" for="contact-page-email">Email</label>
+          <input id="contact-page-email" class="cf-input" type="email" name="email" placeholder="you@email.com" required />
+        </div>
+
+        <div class="cf-field">
+          <label class="cf-label" for="contact-page-service">Service Needed</label>
+          <select id="contact-page-service" class="cf-select" name="service" required>
+            <option value="">Select a service</option>
+            {estimateServiceOptions.map((option) => (
+              <option value={option}>{option}</option>
+            ))}
+            <option value="Not Sure">Not Sure</option>
+          </select>
+        </div>
+
+        <div class="cf-field">
+          <label class="cf-label" for="contact-page-details">Project Details</label>
+          <textarea
+            id="contact-page-details"
+            class="cf-textarea"
+            name="details"
+            placeholder="Brief description — size of tree, location on property, any urgency..."
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="cf-submit" data-submit-button>
+          <span class="cf-submit-txt">Send Message</span>
+          <div class="cf-submit-ico" aria-hidden="true">→</div>
+        </button>
+        <p class="form-status contact-form-status" data-form-status aria-live="polite" role="status"></p>
+        <p class="cf-privacy">We respect your privacy. <strong>No spam, ever.</strong></p>
+      </form>
+    </div>
+  </div>
+</PageSection>
+
+<style>
+  :global(.page-section.contact-form-page-section[data-section="contact-form"]) {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-top: 0;
+    padding: 0;
+    background: #f2efe6;
+    overflow-x: clip;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  :global(.page-section.contact-form-page-section[data-section="contact-form"])::before,
+  :global(.page-section.contact-form-page-section[data-section="contact-form"])::after {
+    content: none;
+    background: none;
+    box-shadow: none;
+  }
+
+  @keyframes contactDot {
+    0%,
+    100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.55); }
+  }
+
+  .contact-form-sec {
+    background: #f2efe6;
+    padding: 44px 22px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+
+
+  .contact-form-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .eye {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .eye.dark { color: #8a6840; }
+
+  .eye-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8965a;
+    flex-shrink: 0;
+    animation: contactDot 2.2s ease-in-out infinite;
+  }
+
+  .sec-h2 {
+    font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: .9;
+    letter-spacing: -.01em;
+    margin-bottom: 10px;
+  }
+
+  .sec-h2.on-light { color: #012a14; }
+  .sec-h2.on-light em { color: #c8965a; }
+  .sec-h2 em { font-style: normal; display: block; }
+
+  .contact-form-intro {
+    font-size: 11px;
+    color: #7a7a66;
+    line-height: 1.65;
+    max-width: 230px;
+    margin-top: 8px;
+  }
+
+  .cf-form {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    margin-top: 24px;
+  }
+
+  .cf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .cf-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .cf-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #012a14;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .cf-input,
+  .cf-select {
+    background: #fff;
+    border: 1.5px solid rgba(1,42,20,.1);
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-size: 13px;
+    color: #012a14;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    width: 100%;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .cf-input::placeholder,
+  .cf-textarea::placeholder { color: rgba(1,42,20,.28); }
+
+  .cf-input:focus,
+  .cf-select:focus,
+  .cf-textarea:focus {
+    border-color: rgba(200,150,90,.45);
+    box-shadow: 0 0 0 3px rgba(200,150,90,.08);
+  }
+
+  .cf-select {
+    color: rgba(1,42,20,.4);
+    appearance: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6' stroke='rgba(1,42,20,0.3)' stroke-width='2' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+  }
+
+  .cf-textarea {
+    background: #fff;
+    border: 1.5px solid rgba(1,42,20,.1);
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-size: 13px;
+    color: #012a14;
+    font-family: 'Inter', sans-serif;
+    resize: none;
+    height: 96px;
+    outline: none;
+    width: 100%;
+    transition: border-color 200ms ease, box-shadow 200ms ease;
+  }
+
+  .cf-submit {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(180deg,#d4a060,#b07840);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 15px 18px;
+    border-radius: 13px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: -.01em;
+    box-shadow: 0 10px 28px rgba(180,110,40,.35), inset 0 1px 0 rgba(255,255,255,.18);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    border: 0;
+  }
+
+  .cf-submit::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 56% 0;
+    background: linear-gradient(180deg,rgba(255,255,255,.16),transparent);
+  }
+
+  .cf-submit-txt,
+  .cf-submit-ico {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cf-submit-ico {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.18);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .contact-form-status {
+    margin: 0;
+  }
+
+  .cf-privacy {
+    font-size: 9.5px;
+    color: rgba(1,42,20,.3);
+    text-align: center;
+    line-height: 1.5;
+    margin-top: 2px;
+  }
+
+  .cf-privacy strong { color: rgba(1,42,20,.5); }
+</style>
