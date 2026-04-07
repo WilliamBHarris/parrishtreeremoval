@@ -317,7 +317,13 @@ const premiumProcessSteps = pageId === 'home'
       }
 
       const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+      const sequenceUnits = (steps.length * 2) - 1;
       let ticking = false;
+      let timelineHeight = timeline.offsetHeight || 1;
+
+      const syncMetrics = () => {
+        timelineHeight = timeline.offsetHeight || 1;
+      };
 
       const updateTimeline = () => {
         ticking = false;
@@ -325,9 +331,8 @@ const premiumProcessSteps = pageId === 'home'
         const rect = timeline.getBoundingClientRect();
         const viewport = window.innerHeight || 1;
         const start = viewport * 0.8;
-        const travel = rect.height + (viewport * 0.22);
+        const travel = timelineHeight + (viewport * 0.22);
         const progress = clamp((start - rect.top) / travel, 0, 1);
-        const sequenceUnits = (steps.length * 2) - 1;
         const sequenceProgress = progress * sequenceUnits;
 
         steps.forEach((step, i) => {
@@ -345,7 +350,7 @@ const premiumProcessSteps = pageId === 'home'
 
           if (line instanceof HTMLElement) {
             const lineFill = clamp(lineProgress, 0, 1);
-            line.style.height = `${lineFill * 100}%`;
+            line.style.setProperty('--line-fill-progress', String(lineFill));
             line.classList.toggle('filled', lineFill >= 0.999);
           }
         });
@@ -359,7 +364,17 @@ const premiumProcessSteps = pageId === 'home'
 
       updateTimeline();
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
+      window.addEventListener('resize', () => {
+        syncMetrics();
+        onScroll();
+      });
+      if ('ResizeObserver' in window) {
+        const resizeObserver = new ResizeObserver(() => {
+          syncMetrics();
+          onScroll();
+        });
+        resizeObserver.observe(timeline);
+      }
     })();
   </script>
 )}
@@ -556,9 +571,9 @@ const premiumProcessSteps = pageId === 'home'
   }
 
   .home-process-intro {
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 500;
-    color: rgba(255,255,255,0.68);
+    color: rgba(255,255,255,0.78);
     line-height: 1.7;
     max-width: 240px;
     margin: 0;
@@ -645,15 +660,16 @@ const premiumProcessSteps = pageId === 'home'
     top: 0;
     left: 0;
     right: 0;
-    height: 0%;
+    bottom: 0;
     border-radius: 999px;
     background: linear-gradient(180deg, #c8965a 0%, rgba(200,150,90,0.6) 100%);
     box-shadow: 0 0 8px rgba(200,150,90,0.3);
-    transition: height 600ms cubic-bezier(0.22,1,0.36,1);
+    transform: translateY(calc((1 - var(--line-fill-progress, 0)) * -100%));
+    transition: transform 600ms cubic-bezier(0.22,1,0.36,1);
   }
 
   .home-process-connector-fill.filled {
-    height: 100%;
+    transform: translateY(0);
   }
 
   .home-process-step:last-child .home-process-connector {
@@ -676,7 +692,7 @@ const premiumProcessSteps = pageId === 'home'
     text-transform: uppercase;
     line-height: 0.82;
     letter-spacing: -0.02em;
-    color: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.42);
     margin-bottom: 8px;
     position: relative;
     overflow: hidden;
@@ -690,7 +706,7 @@ const premiumProcessSteps = pageId === 'home'
   .home-process-step-title {
     font-size: 14px;
     font-weight: 800;
-    color: rgba(255,255,255,0.66);
+    color: rgba(255,255,255,0.76);
     letter-spacing: -0.01em;
     margin-bottom: 5px;
     transition: color 400ms ease;
@@ -703,16 +719,16 @@ const premiumProcessSteps = pageId === 'home'
   .home-process-detail {
     margin: 0;
     max-width: 220px;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 400;
-    color: rgba(255,255,255,0.58);
+    color: rgba(255,255,255,0.68);
     line-height: 1.65;
     overflow-wrap: anywhere;
     transition: color 400ms ease;
   }
 
   .home-process-step.active .home-process-detail {
-    color: rgba(255,255,255,0.74);
+    color: rgba(255,255,255,0.84);
   }
 
   .home-process-thesis {

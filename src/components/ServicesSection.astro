@@ -741,16 +741,18 @@ const homeUltimateCardMicroBySlug: Record<string, string> = {
     var AUTO_ADVANCE_MS = 4000;
     var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var activeIndex = 0;
-    var autoplayStart = performance.now();
     var scrollSettleTimer = 0;
+    var autoplayTimer = 0;
+    var cardStep = 1;
 
-    var getCardStep = function () {
+    var measureCardStep = function () {
       var firstCard = track.querySelector('.svc-card');
       if (!(firstCard instanceof HTMLElement)) return 1;
 
       var trackStyles = window.getComputedStyle(track);
       var gap = parseFloat(trackStyles.columnGap || trackStyles.gap || '0') || 0;
-      return firstCard.offsetWidth + gap;
+      cardStep = firstCard.offsetWidth + gap;
+      return cardStep;
     };
 
     var clampIndex = function (value) {
@@ -759,12 +761,17 @@ const homeUltimateCardMicroBySlug: Record<string, string> = {
       return value;
     };
 
-    var updateDots = function (index, progress) {
+    var updateDots = function (index) {
       dots.forEach(function (dot, dotIndex) {
         dot.classList.toggle('active', dotIndex === index);
         var fill = dot.querySelector('.svc-scroll-dot-fill');
         if (!fill) return;
-        fill.style.width = dotIndex === index ? String(Math.max(0, Math.min(1, progress)) * 100) + '%' : '0%';
+        fill.style.animation = 'none';
+        fill.style.width = '0%';
+        if (dotIndex === index && !reducedMotion) {
+          fill.offsetWidth;
+          fill.style.animation = 'svcDotFill ' + String(AUTO_ADVANCE_MS) + 'ms linear forwards';
+        }
       });
     };
 
@@ -783,26 +790,32 @@ const homeUltimateCardMicroBySlug: Record<string, string> = {
     };
 
     var syncActiveIndexFromScroll = function () {
-      var step = getCardStep();
-      var rawIndex = track.scrollLeft / step;
+      var rawIndex = track.scrollLeft / cardStep;
       activeIndex = clampIndex(Math.round(rawIndex));
       updateCards(activeIndex);
-      updateDots(activeIndex, 0);
+    };
+
+    var clearAutoplay = function () {
+      window.clearTimeout(autoplayTimer);
+      autoplayTimer = 0;
     };
 
     var resetAutoplay = function () {
-      autoplayStart = performance.now();
-      updateDots(activeIndex, 0);
+      clearAutoplay();
+      updateDots(activeIndex);
+      if (!reducedMotion && !document.hidden) {
+        autoplayTimer = window.setTimeout(function () {
+          scrollToIndex((activeIndex + 1) % cards.length);
+        }, AUTO_ADVANCE_MS);
+      }
     };
 
     var scrollToIndex = function (index) {
       var nextIndex = clampIndex(index);
-      var step = getCardStep();
       activeIndex = nextIndex;
       updateCards(activeIndex);
-      updateDots(activeIndex, 0);
       track.scrollTo({
-        left: nextIndex * step,
+        left: nextIndex * cardStep,
         behavior: reducedMotion ? 'auto' : 'smooth',
       });
       resetAutoplay();
@@ -819,7 +832,16 @@ const homeUltimateCardMicroBySlug: Record<string, string> = {
 
     track.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', function () {
+      measureCardStep();
       syncActiveIndexFromScroll();
+      resetAutoplay();
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        clearAutoplay();
+        return;
+      }
       resetAutoplay();
     });
 
@@ -832,29 +854,9 @@ const homeUltimateCardMicroBySlug: Record<string, string> = {
     }, { passive: true });
 
     revealCards();
+    measureCardStep();
     syncActiveIndexFromScroll();
     resetAutoplay();
-
-    var autoplayTick = function (now) {
-      if (!document.hidden && !reducedMotion) {
-        var elapsed = now - autoplayStart;
-        var progress = Math.max(0, Math.min(1, elapsed / AUTO_ADVANCE_MS));
-        updateDots(activeIndex, progress);
-
-        if (progress >= 1) {
-          scrollToIndex((activeIndex + 1) % cards.length);
-        }
-      }
-      window.requestAnimationFrame(autoplayTick);
-    };
-    window.requestAnimationFrame(autoplayTick);
-
-    var angleTick = function () {
-      var activeCard = track.querySelector('.svc-card.is-active');
-      if (activeCard) activeCard.style.setProperty('--svc-angle', String((Date.now() / 28) % 360) + 'deg');
-      window.requestAnimationFrame(angleTick);
-    };
-    window.requestAnimationFrame(angleTick);
   })();
 </script>
 

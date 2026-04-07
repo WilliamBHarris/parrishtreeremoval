@@ -1,7 +1,6 @@
 ---
-import globalCss from '../styles/global.css?raw';
+import '../styles/global.css';
 import siteInteractionsScript from '../lib/site/site-interactions.inline.js?raw';
-import { transformSync } from 'esbuild';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import EstimateForm from '../components/EstimateForm.astro';
@@ -99,6 +98,7 @@ const fontFaceCss = `
     font-display: swap;
   }
 `;
+const headCss = `${brandCssVars}\n${fontFaceCss}`;
 const schemaList = [
   {
     '@context': 'https://schema.org',
@@ -118,10 +118,6 @@ const bodyClasses = [
   `template-button-border-${brand.presets.buttonBorderStyle}`,
   `template-section-frame-${brand.presets.sectionFrameStyle}`,
 ];
-const minifiedCss = transformSync(`${brandCssVars}\n${fontFaceCss}\n${globalCss}`, {
-  loader: 'css',
-  minify: true,
-}).code;
 ---
 
 <!doctype html>
@@ -134,7 +130,6 @@ const minifiedCss = transformSync(`${brandCssVars}\n${fontFaceCss}\n${globalCss}
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     <meta name="theme-color" content={brand.colors.themeColor} />
-    <link rel="preload" href="/fonts/barlow-condensed-400-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/barlow-condensed-700-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/barlow-condensed-800-latin.woff2" as="font" type="font/woff2" crossorigin />
     {criticalImage && (
@@ -151,7 +146,7 @@ const minifiedCss = transformSync(`${brandCssVars}\n${fontFaceCss}\n${globalCss}
     <link rel="icon" href={brand.assets.faviconSvg} type="image/svg+xml" />
     <link rel="icon" href={brand.assets.faviconIco} sizes="any" />
     <link rel="canonical" href={canonical} />
-    <style is:global set:html={minifiedCss}></style>
+    <style is:global set:html={headCss}></style>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
