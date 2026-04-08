@@ -4209,7 +4209,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.78);
+  color: rgba(255,255,255,0.92);
 }
 
 .svc-strip-dot {
@@ -4235,7 +4235,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 .svc-scroll-hint-text {
   font-size: 8px;
   font-weight: 600;
-  color: rgba(255,255,255,0.72);
+  color: rgba(255,255,255,0.86);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -4656,7 +4656,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 .svc-card-stat-label {
   font-size: 10px;
   font-weight: 600;
-  color: rgba(255,255,255,0.82);
+  color: rgba(255,255,255,0.92);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -4664,7 +4664,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 .svc-card-desc {
   font-size: 12px;
   font-weight: 400;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.92);
   line-height: 1.56;
   transition: opacity 300ms ease;
 }
@@ -4720,7 +4720,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 
 .svc-card-cta-micro {
   font-size: 10px;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.9);
   margin-top: 0;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -4736,7 +4736,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 
 .svc-helper-text {
   font-size: 11px;
-  color: rgba(255,255,255,0.94);
+  color: #fff;
   line-height: 1.5;
 }
 
