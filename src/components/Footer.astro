@@ -194,6 +194,19 @@ const footerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
 )}
 
 <style>
+  @keyframes homeFooterDotPulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.35;
+      transform: scale(0.55);
+    }
+  }
+
   .home-footer {
     background: #011a0d;
     overflow-x: clip;
@@ -250,15 +263,27 @@ const footerLogo = resolveConfiguredImageAsset(brand.assets.headerLogo);
   }
 
   .home-footer-stmt-label {
-    font-size: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.24em;
     text-transform: uppercase;
     color: rgba(200,150,90,0.92);
-    display: block;
     margin-bottom: 16px;
     position: relative;
     z-index: 1;
+  }
+
+  .home-footer-stmt-label::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8965a;
+    flex-shrink: 0;
+    animation: homeFooterDotPulse 2.2s ease-in-out infinite;
   }
 
   .home-footer-stmt-text {

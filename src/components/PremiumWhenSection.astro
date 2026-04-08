@@ -28,8 +28,8 @@ const {
   eyebrow = 'Does This Sound Like You?',
   title,
   accentLine,
-  intro = 'Four situations we handle every week. Scroll into each one — then call us.',
-  hint = 'Scroll into each',
+  intro = 'Four situations we handle every week. Then call us.',
+  hint = '',
   scenarios,
   closeStrong,
   closeBody,
@@ -39,9 +39,9 @@ const {
 
 const panelThemes = [
   { panelClass: 'p1', tag: 'Hazard', pulse: true },
-  { panelClass: 'p2', tag: 'Structure', pulse: false },
+  { panelClass: 'p2', tag: 'Structure', pulse: true },
   { panelClass: 'p3', tag: 'Emergency', pulse: true },
-  { panelClass: 'p4', tag: 'Planning', pulse: false },
+  { panelClass: 'p4', tag: 'Planning', pulse: true },
 ];
 ---
 
@@ -57,23 +57,30 @@ const panelThemes = [
         <div class="when-eye"><div class="when-eye-dot"></div>{eyebrow}</div>
         <h2 class="when-h2">{title}<em>{accentLine}</em></h2>
         <p class="when-intro">{intro}</p>
-        <div class="when-hint">
-          <div class="when-hint-line"></div>
-          <span class="when-hint-text">{hint}</span>
-          <span class="when-hint-arrow">↓</span>
-        </div>
       </div>
     </div>
 
-    <div class="snap-container" data-when-snap-container>
-      {scenarios.map((scenario, index) => {
-        const theme = panelThemes[index] ?? panelThemes[panelThemes.length - 1];
-        return (
-          <div
-            class:list={['panel', theme.panelClass, index === 0 && 'active']}
-            id={`panel-${pageId}-${index}`}
-            data-when-panel
-          >
+    <div class="when-scroll-hint" aria-hidden="true">
+      <span class="when-scroll-hint-text">Swipe</span>
+      <div class="when-scroll-hint-dots">
+        {scenarios.map((_, index) => (
+          <span class:list={['when-scroll-dot', index === 0 && 'active']} data-when-dot data-card={index}>
+            <span class="when-scroll-dot-fill"></span>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <div class="when-track-wrap">
+      <div class="when-track" data-when-track>
+        {scenarios.map((scenario, index) => {
+          const theme = panelThemes[index] ?? panelThemes[panelThemes.length - 1];
+          return (
+            <div
+              class:list={['panel', theme.panelClass, index === 0 && 'active']}
+              id={`panel-${pageId}-${index}`}
+              data-when-card
+            >
             <div class="p-grain" aria-hidden="true"></div>
             <div class="p-light" aria-hidden="true"></div>
             <div class="p-orb" aria-hidden="true"></div>
@@ -114,22 +121,16 @@ const panelThemes = [
                 <div class="p-btn-ico">→</div>
               </button>
             </div>
-
-            {index < scenarios.length - 1 && (
-              <div class="p-more">
-                <span class="p-more-text">Next</span>
-                <span class="p-more-arrow">↓</span>
-              </div>
-            )}
           </div>
         );
       })}
+      </div>
     </div>
 
     <div class="when-close">
       <div class="when-close-rule"></div>
       <div class="when-close-row">
-        <p class="when-close-copy"><strong>{closeStrong}</strong> {closeBody}</p>
+        <p class="when-close-copy"><strong>{closeStrong}</strong></p>
         <div class="when-close-cta">{closeLink}</div>
       </div>
     </div>
@@ -138,37 +139,125 @@ const panelThemes = [
 
 <script is:inline>
   (() => {
-    document.querySelectorAll('[data-when-snap-container]').forEach((container) => {
-      if (!(container instanceof HTMLElement)) return;
-      const panels = Array.from(container.querySelectorAll('[data-when-panel]'));
-      if (!panels.length) return;
+    var mobileQuery = window.matchMedia('(max-width: 767px)');
+    if (!mobileQuery.matches) return;
 
-      const activatePanel = (index) => {
-        panels.forEach((panel, panelIndex) => {
-          if (!(panel instanceof HTMLElement)) return;
-          if (panelIndex === index && !panel.classList.contains('active')) {
-            panel.classList.add('active');
-          }
-        });
-      };
+    var track = document.querySelector('[data-when-track]');
+    if (!track) return;
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const index = panels.indexOf(entry.target);
-            if (index !== -1) activatePanel(index);
-          });
-        },
-        {
-          root: container,
-          threshold: 0.6,
+    var dots = Array.prototype.slice.call(document.querySelectorAll('[data-when-dot]'));
+    var cards = Array.prototype.slice.call(track.querySelectorAll('[data-when-card]'));
+    if (!dots.length || cards.length < 2) return;
+
+    var AUTO_ADVANCE_MS = 4000;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var activeIndex = 0;
+    var scrollSettleTimer = 0;
+    var autoplayTimer = 0;
+    var cardStep = 1;
+
+    var measureCardStep = function () {
+      var firstCard = track.querySelector('.panel');
+      if (!(firstCard instanceof HTMLElement)) return 1;
+      var trackStyles = window.getComputedStyle(track);
+      var gap = parseFloat(trackStyles.columnGap || trackStyles.gap || '0') || 0;
+      cardStep = firstCard.offsetWidth + gap;
+      return cardStep;
+    };
+
+    var clampIndex = function (value) {
+      if (value < 0) return 0;
+      if (value > cards.length - 1) return cards.length - 1;
+      return value;
+    };
+
+    var updateDots = function (index) {
+      dots.forEach(function (dot, dotIndex) {
+        dot.classList.toggle('active', dotIndex === index);
+        var fill = dot.querySelector('.when-scroll-dot-fill');
+        if (!fill) return;
+        fill.style.animation = 'none';
+        fill.style.width = '0%';
+        if (dotIndex === index && !reducedMotion) {
+          fill.offsetWidth;
+          fill.style.animation = 'whenDotFill ' + String(AUTO_ADVANCE_MS) + 'ms linear forwards';
         }
-      );
+      });
+    };
 
-      panels.forEach((panel) => observer.observe(panel));
-      activatePanel(0);
+    var updateCards = function (index) {
+      cards.forEach(function (card, cardIndex) {
+        card.classList.toggle('active', cardIndex === index);
+      });
+    };
+
+    var syncActiveIndexFromScroll = function () {
+      var rawIndex = track.scrollLeft / cardStep;
+      activeIndex = clampIndex(Math.round(rawIndex));
+      updateCards(activeIndex);
+    };
+
+    var clearAutoplay = function () {
+      window.clearTimeout(autoplayTimer);
+      autoplayTimer = 0;
+    };
+
+    var resetAutoplay = function () {
+      clearAutoplay();
+      updateDots(activeIndex);
+      if (!reducedMotion && !document.hidden) {
+        autoplayTimer = window.setTimeout(function () {
+          scrollToIndex((activeIndex + 1) % cards.length);
+        }, AUTO_ADVANCE_MS);
+      }
+    };
+
+    var scrollToIndex = function (index) {
+      var nextIndex = clampIndex(index);
+      activeIndex = nextIndex;
+      updateCards(activeIndex);
+      track.scrollTo({
+        left: nextIndex * cardStep,
+        behavior: reducedMotion ? 'auto' : 'smooth',
+      });
+      resetAutoplay();
+    };
+
+    var handleScroll = function () {
+      syncActiveIndexFromScroll();
+      window.clearTimeout(scrollSettleTimer);
+      scrollSettleTimer = window.setTimeout(function () {
+        syncActiveIndexFromScroll();
+        resetAutoplay();
+      }, 140);
+    };
+
+    track.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', function () {
+      measureCardStep();
+      syncActiveIndexFromScroll();
+      resetAutoplay();
     });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        clearAutoplay();
+        return;
+      }
+      resetAutoplay();
+    });
+
+    track.addEventListener('touchstart', function () {
+      window.clearTimeout(scrollSettleTimer);
+    }, { passive: true });
+
+    track.addEventListener('pointerdown', function () {
+      window.clearTimeout(scrollSettleTimer);
+    }, { passive: true });
+
+    measureCardStep();
+    syncActiveIndexFromScroll();
+    resetAutoplay();
   })();
 </script>
 
@@ -296,7 +385,7 @@ const panelThemes = [
 
   .when-header {
     background: #012a14;
-    padding: 40px 22px 36px;
+    padding: 40px 22px 20px;
     position: relative;
     overflow: hidden;
   }
@@ -310,12 +399,12 @@ const panelThemes = [
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.26em;
     text-transform: uppercase;
     color: rgba(200, 150, 90, 0.72);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .when-eye-dot {
@@ -345,52 +434,91 @@ const panelThemes = [
   }
 
   .when-intro {
-    font-size: 11px;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.84);
     line-height: 1.65;
     max-width: 235px;
-    margin-bottom: 20px;
+    margin-bottom: 6px;
   }
 
-  .when-hint {
+  .when-scroll-hint {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    padding: 0 22px 0;
+    position: relative;
+    z-index: 1;
   }
 
-  .when-hint-line {
-    width: 24px;
-    height: 1px;
-    background: rgba(200, 150, 90, 0.3);
-  }
-
-  .when-hint-text {
+  .when-scroll-hint-text {
     font-size: 9px;
-    color: rgba(255, 255, 255, 0.74);
-    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
-  .when-hint-arrow {
-    font-size: 14px;
-    color: rgba(200, 150, 90, 0.84);
-    animation: bounce 2s ease-in-out infinite;
+  .when-scroll-hint-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
-  .snap-container {
-    height: 480px;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    -webkit-overflow-scrolling: touch;
+  .when-scroll-dot {
+    width: 4px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
     position: relative;
+    overflow: hidden;
   }
 
-  .snap-container::-webkit-scrollbar {
+  .when-scroll-dot-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    border-radius: inherit;
+    background: currentColor;
+  }
+
+  .when-scroll-dot[data-card='0'] { color: #c8965a; }
+  .when-scroll-dot[data-card='1'] { color: rgba(55, 185, 135, 0.9); }
+  .when-scroll-dot[data-card='2'] { color: #4a8fd9; }
+  .when-scroll-dot[data-card='3'] { color: rgba(200, 140, 45, 0.88); }
+
+  .when-scroll-dot.active {
+    width: 20px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  @keyframes whenDotFill {
+    from { width: 0%; }
+    to { width: 100%; }
+  }
+
+  .when-track-wrap {
+    padding: 6px 0 0;
+  }
+
+  .when-track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 84vw;
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 20px;
+    scrollbar-width: none;
+  }
+
+  .when-track::-webkit-scrollbar {
     display: none;
   }
 
   .panel {
-    height: 480px;
+    height: 410px;
     width: 100%;
     scroll-snap-align: start;
     position: relative;
@@ -398,8 +526,17 @@ const panelThemes = [
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 28px 22px 24px;
+    padding: 22px 22px 20px;
     flex-shrink: 0;
+    border-radius: 28px;
+    opacity: 0.7;
+    transform: scale(0.98);
+    transition: opacity 260ms ease, transform 260ms ease;
+  }
+
+  .panel.active {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .p-grain {
@@ -515,11 +652,14 @@ const panelThemes = [
     letter-spacing: -0.025em;
     color: #fff;
     opacity: 0;
-    animation: none;
+    opacity: 0.72;
+    transform: translateY(6px);
+    transition: opacity 260ms ease, transform 260ms ease;
   }
 
   .panel.active .p-q {
-    animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .p-q .accent {
@@ -544,16 +684,19 @@ const panelThemes = [
   }
 
   .p-answer {
-    font-size: 11.5px;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.84);
     line-height: 1.68;
     margin-bottom: 20px;
-    opacity: 0;
+    opacity: 0.72;
+    transform: translateY(4px);
     overflow-wrap: anywhere;
+    transition: opacity 260ms ease, transform 260ms ease;
   }
 
   .panel.active .p-answer {
-    animation: fadeUp 0.5s ease-out 0.45s both;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .p-btn {
@@ -570,14 +713,17 @@ const panelThemes = [
     overflow: hidden;
     letter-spacing: -0.01em;
     box-shadow: 0 8px 24px rgba(180, 110, 40, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    opacity: 0;
+    opacity: 0.8;
     -webkit-tap-highlight-color: transparent;
     border: 0;
     cursor: pointer;
+    transform: translateY(4px);
+    transition: opacity 260ms ease, transform 260ms ease;
   }
 
   .panel.active .p-btn {
-    animation: fadeUp 0.5s ease-out 0.55s both;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .p-btn::before {
@@ -602,34 +748,6 @@ const panelThemes = [
     font-size: 12px;
     position: relative;
     z-index: 1;
-  }
-
-  .p-more {
-    position: absolute;
-    bottom: 16px;
-    right: 22px;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    opacity: 0;
-  }
-
-  .panel.active .p-more {
-    animation: fadeUp 0.4s ease-out 0.7s both;
-  }
-
-  .p-more-text {
-    font-size: 8px;
-    color: rgba(255, 255, 255, 0.2);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .p-more-arrow {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.2);
-    animation: bounce 2s ease-in-out infinite;
   }
 
   .p1 {
@@ -825,20 +943,20 @@ const panelThemes = [
   }
 
   .when-close-copy {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.36);
-    line-height: 1.65;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.5;
     flex: 1;
     margin: 0;
   }
 
   .when-close-copy strong {
-    color: rgba(255, 255, 255, 0.72);
+    color: #fff;
     font-weight: 700;
   }
 
   .when-close-cta {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 800;
     color: #c8965a;
     white-space: nowrap;
