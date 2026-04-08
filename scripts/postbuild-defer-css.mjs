@@ -22,7 +22,7 @@ walk(distDir, (filePath) => {
   if (!filePath.endsWith('.html')) return;
   const html = fs.readFileSync(filePath, 'utf8');
   const rewritten = html.replace(stylesheetPattern, (_match, href) => {
-    return `<link rel="preload" as="style" href="${href}"><link rel="stylesheet" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`;
+    return `<link rel="stylesheet" href="${href}" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="${href}"></noscript>`;
   });
   if (rewritten !== html) {
     fs.writeFileSync(filePath, rewritten);

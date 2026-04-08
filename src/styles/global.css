@@ -4205,11 +4205,11 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .svc-strip-text {
-  font-size: 8px;
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.92);
+  color: #ffffff;
 }
 
 .svc-strip-dot {
@@ -4233,8 +4233,8 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .svc-scroll-hint-text {
-  font-size: 8px;
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 700;
   color: #ffffff;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -4735,13 +4735,14 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .svc-helper-text {
-  font-size: 11px;
+  font-size: 12px;
   color: #fff;
   line-height: 1.5;
+  font-weight: 500;
 }
 
 .svc-helper-text a {
-  color: #f0c58d;
+  color: #ffffff;
   font-weight: 800;
   text-decoration: none;
 }
