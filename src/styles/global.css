@@ -3630,23 +3630,23 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .hm-bc-link {
-  color: rgba(255,255,255,0.74);
+  color: #ffffff;
 }
 
 .hm-bc-sep {
-  color: rgba(255,255,255,0.68);
+  color: #ffffff;
   font-size: 9px;
 }
 
 .hm-bc-cur {
-  color: rgba(200,150,90,0.65);
+  color: #f0c58d;
 }
 
 .hm-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  color: rgba(200,150,90,0.75);
+  color: #f0c58d;
   font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -3737,7 +3737,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .hm-sub-text {
-  color: #f0e9de !important;
+  color: #ffffff !important;
   font-size: 13px !important;
   display: block;
 }
@@ -3795,14 +3795,14 @@ body.template-section-title-boxed-label .clone-kicker::after {
   gap: 0;
   text-decoration: none;
   padding-left: 0;
-  color: rgba(255,255,255,0.84);
+  color: #ffffff;
   font-size: 11.5px;
   font-weight: 500;
   -webkit-tap-highlight-color: transparent;
 }
 
 .hm-call-prefix {
-  color: rgba(255,255,255,0.84);
+  color: #ffffff;
   font-size: 11.5px;
   font-weight: 500;
   letter-spacing: 0;
@@ -3811,7 +3811,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .hm-call-num {
-  color: rgba(255,255,255,0.92);
+  color: #ffffff;
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0;
@@ -3883,7 +3883,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .hm-stat-label {
-  color: rgba(255,255,255,0.72);
+  color: #ffffff;
   font-size: 7.5px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -4209,7 +4209,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .svc-strip-dot {
@@ -4235,7 +4235,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 .svc-scroll-hint-text {
   font-size: 9px;
   font-weight: 700;
-  color: #ffffff;
+  color: #ffffff !important;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -4736,13 +4736,13 @@ body.template-section-title-boxed-label .clone-kicker::after {
 
 .svc-helper-text {
   font-size: 12px;
-  color: #fff;
+  color: #ffffff !important;
   line-height: 1.5;
   font-weight: 500;
 }
 
 .svc-helper-text a {
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 800;
   text-decoration: none;
 }
@@ -7255,7 +7255,7 @@ select:focus-visible {
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(200,150,90,0.65);
+    color: #f0c58d;
   }
 
   .mobile-drawer-nav {
@@ -7338,19 +7338,19 @@ select:focus-visible {
 
   .menu-link-arrow {
     font-size: 16px;
-    color: rgba(255,255,255,0.78);
+    color: #ffffff;
     font-weight: 300;
     transition: transform 280ms cubic-bezier(0.22,1,0.36,1), color 200ms ease;
   }
 
   .menu-link:hover .menu-link-arrow {
     transform: translateX(4px);
-    color: rgba(200,150,90,0.5);
+    color: #f0c58d;
   }
 
   .menu-link.active .menu-link-arrow,
   .menu-link[aria-current="page"] .menu-link-arrow {
-    color: rgba(200,150,90,0.68);
+    color: #f0c58d;
   }
 
   .drawer-submenu-group {
@@ -7370,7 +7370,7 @@ select:focus-visible {
   .menu-sub-link {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255,255,255,0.82);
+    color: #ffffff;
     min-height: 0;
     padding: 7px 0;
     display: flex;
@@ -7395,7 +7395,7 @@ select:focus-visible {
   }
 
   .menu-sub-link:hover {
-    color: rgba(200,150,90,0.8);
+    color: #f0c58d;
   }
 
   .menu-sub-link[aria-current="page"] {
@@ -7451,13 +7451,13 @@ select:focus-visible {
     justify-content: center;
     gap: 7px;
     font-size: 11px;
-    color: rgba(255,255,255,0.82);
+    color: #ffffff;
     text-decoration: none;
     width: 100%;
   }
 
 .menu-cta-phone strong {
-    color: rgba(255,255,255,0.82);
+    color: #ffffff;
     font-weight: 700;
   }
 
