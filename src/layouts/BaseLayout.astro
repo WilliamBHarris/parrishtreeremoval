@@ -1,5 +1,5 @@
 ---
-import globalStylesHref from '../styles/global.css?url';
+import '../styles/global.css';
 import siteInteractionsScript from '../lib/site/site-interactions.inline.js?raw';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -145,8 +145,6 @@ const bodyClasses = [
     <link rel="icon" href={brand.assets.faviconIco} sizes="any" />
     <link rel="canonical" href={canonical} />
     <style is:global set:html={headCss}></style>
-    <link rel="stylesheet" href={globalStylesHref} media="print" onload="this.media='all'" />
-    <noscript><link rel="stylesheet" href={globalStylesHref} /></noscript>
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />

@@ -4154,7 +4154,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .svm-intro {
-  color: #f0e9de !important;
+  color: #ffffff !important;
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
@@ -4166,7 +4166,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 
 .svm-intro-text {
   font-family: var(--font-body);
-  color: #f0e9de !important;
+  color: #ffffff !important;
   font-size: 14px !important;
   font-weight: 500;
   line-height: 1.65;
@@ -4235,7 +4235,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 .svc-scroll-hint-text {
   font-size: 8px;
   font-weight: 600;
-  color: rgba(255,255,255,0.86);
+  color: #ffffff;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -4741,8 +4741,8 @@ body.template-section-title-boxed-label .clone-kicker::after {
 }
 
 .svc-helper-text a {
-  color: #e9ba80;
-  font-weight: 700;
+  color: #f0c58d;
+  font-weight: 800;
   text-decoration: none;
 }
 
