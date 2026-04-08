@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import criticalCss from '../styles/critical.css?raw';
 import siteInteractionsScript from '../lib/site/site-interactions.inline.js?raw';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -98,7 +99,7 @@ const fontFaceCss = `
     font-display: swap;
   }
 `;
-const headCss = `${brandCssVars}\n${fontFaceCss}`;
+const headCss = `${brandCssVars}\n${fontFaceCss}\n${criticalCss}`;
 const schemaList = [
   {
     '@context': 'https://schema.org',
