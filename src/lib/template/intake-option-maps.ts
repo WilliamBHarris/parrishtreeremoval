@@ -71,7 +71,7 @@ export const writingToneMap: Record<WritingToneLabel, WritingToneFlavor> = {
 
 export const presetIntentNotes = {
   'preset-a-baseline':
-    'Safest no-regression path. Use when the locked Variant A baseline is the desired final output.',
+    'Use when the current live Parrish build is the desired final output. This is the active Template A source of truth.',
   'preset-b-premium-modern':
     'Best for clients who want a more elevated, editorial, and premium-feeling version of the template.',
   'preset-c-local-family-owned':
@@ -112,7 +112,7 @@ export type WritingToneFlavor =
   | 'direct-practical';
 
 export const serviceDisplayMap: Record<ServiceDisplayLabel, ServicesVariant> = {
-  'Variant A service cards': 'grid-cards',
+  'Variant A service cards': 'stacked-panels',
   'Tabbed services': 'tabs',
   'Accordion services': 'compact-list',
   'Carousel services': 'stacked-panels',
@@ -203,34 +203,34 @@ export const sectionFrameStyleMap: Record<SectionFrameStyleLabel, SectionFrameSt
 };
 
 export const faqDisplayMap: Record<FaqDisplayLabel, FaqVariant> = {
-  'Variant A FAQ': 'clean-list',
+  'Variant A FAQ': 'accordion',
   'Expandable questions': 'accordion',
 };
 
 export const processDisplayMap: Record<ProcessDisplayLabel, ProcessVariant> = {
-  'Variant A stacked process': 'stacked-steps',
+  'Variant A stacked process': 'timeline',
   'Connected timeline process': 'timeline',
 };
 
 export const serviceAreaDisplayMap: Record<ServiceAreaDisplayLabel, ServiceAreaVariant> = {
-  'Variant A map section': 'map-card',
+  'Variant A map section': 'compact-map',
   'ZIP code service check': 'compact-map',
 };
 
 export const estimateDisplayMap: Record<string, EstimateCtaVariant> = {
-  'Variant A estimate section': 'single-panel',
+  'Variant A estimate section': 'emphasized-conversion',
   'Highlighted single card': 'emphasized-conversion',
 };
 
 export const relatedServicesDisplayMap: Record<RelatedServicesDisplayLabel, RelatedServicesVariant> = {
-  'Variant A related services': 'stacked-buttons',
+  'Variant A related services': 'grid-links',
   'Variant A service cards': 'grid-links',
   'Stacked centered buttons': 'stacked-buttons',
   'Highlighted single card': 'card-links',
 };
 
 export const whyChooseDisplayMap: Record<WhyChooseDisplayLabel, WhyChooseVariant> = {
-  'Variant A why choose us': 'icon-grid',
+  'Variant A why choose us': 'stacked-panels',
   'Standard reassurance cards': 'stacked-panels',
 };
 
@@ -265,36 +265,42 @@ export const variantOptions = {
     { value: 'minimal-overlay', label: 'Minimal overlay header', description: 'Lighter overlay-capable header with reduced framing and cleaner transparency.' },
   ] satisfies ReadonlyArray<VariantOption<HeaderVariant>>,
   services: [
-    { value: 'grid-cards', label: 'Variant A service cards', description: 'Locked baseline services grid.' },
+    { value: 'stacked-panels', label: 'Variant A service cards', description: 'Current live services direction.' },
+    { value: 'grid-cards', label: 'Legacy services grid', description: 'Older service-card grid retained only as an alternate legacy option.' },
     { value: 'tabs', label: 'Tabbed services', description: 'One featured service panel with tabs above for switching services.' },
     { value: 'stacked-panels', label: 'Carousel services', description: 'One featured service panel with previous/next controls for browsing services horizontally.' },
     { value: 'compact-list', label: 'Accordion services', description: 'One-open-at-a-time services accordion with a revealed featured content panel.' },
   ] satisfies ReadonlyArray<VariantOption<ServicesVariant>>,
   estimateCta: [
-    { value: 'single-panel', label: 'Variant A estimate section', description: 'Locked baseline estimate section.' },
+    { value: 'emphasized-conversion', label: 'Variant A estimate section', description: 'Current live estimate section.' },
+    { value: 'single-panel', label: 'Legacy estimate section', description: 'Older single-panel estimate treatment retained as a legacy alternate.' },
     { value: 'emphasized-conversion', label: 'Highlighted single card', description: 'Stronger conversion card treatment.' },
   ] satisfies ReadonlyArray<VariantOption<EstimateCtaVariant>>,
   relatedServices: [
-    { value: 'stacked-buttons', label: 'Variant A related services', description: 'Locked baseline related-services button stack.' },
-    { value: 'grid-links', label: 'Variant A service cards', description: 'Card-style service links.' },
+    { value: 'grid-links', label: 'Variant A related services', description: 'Current live related-services card links.' },
+    { value: 'stacked-buttons', label: 'Legacy related-services stack', description: 'Older stacked-button treatment retained as a legacy alternate.' },
     { value: 'card-links', label: 'Highlighted single card', description: 'Single stronger related-services card treatment.' },
   ] satisfies ReadonlyArray<VariantOption<RelatedServicesVariant>>,
   whyChoose: [
-    { value: 'icon-grid', label: 'Variant A why choose us', description: 'Locked baseline why-choose-us icon grid.' },
+    { value: 'stacked-panels', label: 'Variant A why choose us', description: 'Current live why-choose-us direction.' },
+    { value: 'icon-grid', label: 'Legacy icon grid', description: 'Older icon-grid presentation retained as a legacy alternate.' },
     { value: 'stacked-panels', label: 'Standard reassurance cards', description: 'Stacked reassurance panels for alternate preset directions.' },
   ] satisfies ReadonlyArray<VariantOption<WhyChooseVariant>>,
   faq: [
-    { value: 'clean-list', label: 'Variant A FAQ', description: 'Locked baseline FAQ presentation with stacked card items.' },
+    { value: 'accordion', label: 'Variant A FAQ', description: 'Current live FAQ presentation.' },
+    { value: 'clean-list', label: 'Legacy FAQ list', description: 'Older stacked FAQ list retained as a legacy alternate.' },
     { value: 'accordion', label: 'Expandable questions', description: 'Accordion rows with one open answer at a time.' },
     { value: 'card-grid', label: 'Card-based FAQ grid', description: 'Multi-column card FAQ for broader desktop layouts.' },
   ] satisfies ReadonlyArray<VariantOption<FaqVariant>>,
   process: [
-    { value: 'stacked-steps', label: 'Variant A stacked process', description: 'Locked baseline Process presentation.' },
+    { value: 'timeline', label: 'Variant A stacked process', description: 'Current live process direction.' },
+    { value: 'stacked-steps', label: 'Legacy stacked process', description: 'Older stacked process treatment retained as a legacy alternate.' },
     { value: 'numbered-cards', label: 'Numbered card process', description: 'Static numbered step cards with stronger sequence framing.' },
     { value: 'timeline', label: 'Connected timeline process', description: 'Vertical connected timeline with numbered markers.' },
   ] satisfies ReadonlyArray<VariantOption<ProcessVariant>>,
   serviceArea: [
-    { value: 'map-card', label: 'Variant A map section', description: 'Locked baseline map-led service area section.' },
+    { value: 'compact-map', label: 'Variant A map section', description: 'Current live service-area direction.' },
+    { value: 'map-card', label: 'Legacy map section', description: 'Older map-led service area section retained as a legacy alternate.' },
     { value: 'compact-map', label: 'ZIP code service check', description: 'Map section with the tighter ZIP-check-led presentation.' },
     { value: 'text-first', label: 'Text-first service area', description: 'Service area copy-forward presentation with a narrower map treatment.' },
   ] satisfies ReadonlyArray<VariantOption<ServiceAreaVariant>>,
@@ -370,13 +376,13 @@ export const variantOptions = {
 export const siteStylePresets = {
   'preset-a-baseline': {
     id: 'preset-a-baseline',
-    label: 'Preset A: Locked Baseline',
-    description: 'Locked canonical public-site bundle. Preserve this as the current live no-regression default.',
-    intendedClient: 'Reference baseline for low-risk client swaps when the live Parrish build is the expected output.',
-    useCase: 'Reference implementation and safest starting point when the current live build should remain intact.',
-    visualIdentity: 'Clean, trustworthy, local-service baseline.',
-    writingDirection: 'Professional, direct, and locally grounded.',
-    conversionFocus: 'Straightforward estimates with balanced service credibility.',
+    label: 'Preset A: Current Live Template',
+    description: 'Current public-site bundle. This is the active Parrish Template A baseline.',
+    intendedClient: 'Use when the current Parrish live build is the intended final result.',
+    useCase: 'Primary default starting point for the current site and future no-regression deployments.',
+    visualIdentity: 'Current live Parrish mobile-first presentation.',
+    writingDirection: 'Direct, clear, and aligned to the current live site.',
+    conversionFocus: 'Current live conversion system and section behavior.',
     colorTemplate: 'baseline-a',
     typographyPreset: 'baseline-a',
     borderPreset: 'layered-angled',
@@ -389,13 +395,13 @@ export const siteStylePresets = {
     buttonBorderStyle: 'baseline-a',
     sectionFrameStyle: 'baseline-a',
     hero: 'split-image',
-    services: 'grid-cards',
-    estimateCta: 'single-panel',
-    relatedServices: 'stacked-buttons',
-    whyChoose: 'icon-grid',
-    process: 'stacked-steps',
-    faq: 'clean-list',
-    serviceArea: 'map-card',
+    services: 'stacked-panels',
+    estimateCta: 'emphasized-conversion',
+    relatedServices: 'grid-links',
+    whyChoose: 'stacked-panels',
+    process: 'timeline',
+    faq: 'accordion',
+    serviceArea: 'compact-map',
     buttonStyle: 'gradient-pill',
     iconStyle: 'emoji',
   },

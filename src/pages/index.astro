@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DesktopHomepage from '../components/DesktopHomepage.astro';
 import HomepageProcess from '../components/HomepageProcess.astro';
 import HomepageWhyChoose from '../components/HomepageWhyChoose.astro';
 import HeroSection from '../components/HeroSection.astro';
@@ -22,6 +23,7 @@ const homeFaqSchema = createFaqSchema(homePage.faq);
   title={homePage.title}
   description={homePage.description}
   schema={homeFaqSchema ?? undefined}
+  bodyClass="homepage-desktop-redesign"
   criticalImage={{
     src: homepageCriticalImage.src,
     srcSet: homepageCriticalImage.srcSet,
@@ -29,54 +31,47 @@ const homeFaqSchema = createFaqSchema(homePage.faq);
     type: homepageCriticalImage.type,
   }}
 >
-  <HeroSection
-    pageId="home"
-    titlePrimary={homePage.hero.titlePrimary}
-    titleSecondary={homePage.hero.titleSecondary}
-    intro={homePage.hero.intro}
-    outlineWords={homePage.hero.outlineWords}
-    variant={homePage.hero.variant}
-    cta={homePage.hero.cta}
-  />
+  <DesktopHomepage />
 
-  <div class="page-shell" data-page="home">
-    <section class="page-section trust-badges-section" aria-label="Helpful project highlights" data-section="trust-badges" data-page="home">
-      <div class="badge-row">
-        {homePage.trustBadges.map((badge) => (
-          <article class="badge-item">
-            <span class="badge-title">{badge.label}</span>
-            <span class="badge-description">{badge.description}</span>
-          </article>
-        ))}
-      </div>
-    </section>
-
-    <ServicesSection
+  <div class="home-mobile-stack">
+    <HeroSection
       pageId="home"
-      sectionId="services"
-      title="Our Services"
-      lead={homePage.servicesLead}
-      services={serviceCardList}
-      variant={templateConfig.presets.services}
-      surfaceTone="base"
+      titlePrimary={homePage.hero.titlePrimary}
+      titleSecondary={homePage.hero.titleSecondary}
+      intro={homePage.hero.intro}
+      outlineWords={homePage.hero.outlineWords}
+      variant={homePage.hero.variant}
+      cta={homePage.hero.cta}
     />
 
-    <HomepageWhyChoose pageId="home" surfaceTone="warm" />
+    <div class="page-shell" data-page="home">
+      <ServicesSection
+        pageId="home"
+        sectionId="services"
+        title="Our Services"
+        lead={homePage.servicesLead}
+        services={serviceCardList}
+        variant={templateConfig.presets.services}
+        surfaceTone="base"
+      />
 
-    <HomepageProcess pageId="home" surfaceTone="cool" />
+      <HomepageWhyChoose pageId="home" surfaceTone="warm" />
 
-    <EstimateCtaSection
-      pageId="home"
-      sectionId="estimate-cta"
-      eyebrow={homePage.estimateCta.eyebrow}
-      heading={homePage.estimateCta.heading}
-      intro={homePage.estimateCta.intro}
-      buttonLabel={homePage.estimateCta.buttonLabel}
-      surfaceTone="olive"
-    />
+      <HomepageProcess pageId="home" surfaceTone="cool" />
 
-    <FaqSection pageId="home" items={homePage.faq} surfaceTone="base" />
+      <EstimateCtaSection
+        pageId="home"
+        sectionId="estimate-cta"
+        eyebrow={homePage.estimateCta.eyebrow}
+        heading={homePage.estimateCta.heading}
+        intro={homePage.estimateCta.intro}
+        buttonLabel={homePage.estimateCta.buttonLabel}
+        surfaceTone="olive"
+      />
 
-    <ServiceAreaSection pageId="home" surfaceTone="cool" />
+      <FaqSection pageId="home" items={homePage.faq} surfaceTone="base" />
+
+      <ServiceAreaSection pageId="home" surfaceTone="cool" />
+    </div>
   </div>
 </BaseLayout>

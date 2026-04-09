@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parrish Tree Removal — Desktop Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:#f2efe6;
+  min-width:1280px;
+  overflow-x:hidden;
+  cursor:none; /* custom cursor */
+}
+
+/* ═══ CUSTOM CURSOR ═══ */
+.cursor{
+  position:fixed;
+  width:12px;height:12px;
+  background:#c8965a;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 80ms ease, width 200ms ease, height 200ms ease, opacity 200ms ease;
+  mix-blend-mode:normal;
+}
+.cursor-ring{
+  position:fixed;
+  width:36px;height:36px;
+  border:1.5px solid rgba(200,150,90,0.5);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 180ms ease, width 250ms ease, height 250ms ease, opacity 250ms ease, border-color 200ms ease;
+}
+body:hover .cursor{opacity:1;}
+.cursor.expanded,.cursor-ring.expanded{
+  width:8px;height:8px;
+}
+.cursor-ring.expanded{
+  width:52px;height:52px;
+  border-color:rgba(200,150,90,0.8);
+}
+
+/* ═══ SHARED ═══ */
+:root{
+  --green:#012a14;
+  --green-mid:#014820;
+  --gold:#c8965a;
+  --gold-grad:linear-gradient(180deg,#d4a060,#b07840);
+  --beige:#f2efe6;
+}
+@keyframes g1{0%,100%{opacity:1}33%{opacity:.08}66%{opacity:.5}}
+@keyframes g2{0%,100%{opacity:.08}33%{opacity:1}66%{opacity:.18}}
+@keyframes g3{0%,100%{opacity:.18}33%{opacity:.06}66%{opacity:1}}
+@keyframes lp{0%{opacity:.55}100%{opacity:1}}
+@keyframes o1{0%{transform:translate(0,0)scale(1)}100%{transform:translate(-18px,22px)scale(1.09)}}
+@keyframes o2{0%{transform:translate(0,0)scale(1)}100%{transform:translate(22px,-18px)scale(1.08)}}
+@keyframes dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes sweep{from{width:0;opacity:.4}to{width:100%;opacity:1}}
+@keyframes stormP{0%{box-shadow:0 0 0 0 rgba(74,143,217,.6)}70%{box-shadow:0 0 0 9px rgba(74,143,217,0)}100%{box-shadow:0 0 0 0 rgba(74,143,217,0)}}
+
+/* Grain texture helper */
+.grain{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px;
+}
+
+/* Clip shapes */
+.clip-gold-down{line-height:0;background:var(--green);}
+.clip-gold-down svg{display:block;width:100%;}
+.clip-dark-up{line-height:0;background:var(--beige);}
+.clip-dark-up svg{display:block;width:100%;}
+.clip-light-down{line-height:0;background:var(--green);}
+.clip-light-down svg{display:block;width:100%;}
+
+/* ═══════════════════════════════════════
+   HEADER — minimal, transparent to sticky
+═══════════════════════════════════════ */
+.hdr{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  transition:background 300ms ease,backdrop-filter 300ms ease,border-color 300ms ease;
+  border-bottom:1px solid transparent;
+}
+.hdr.scrolled{
+  background:rgba(1,42,20,.92);
+  backdrop-filter:blur(16px);
+  border-color:rgba(255,255,255,.06);
+}
+.hdr-inner{
+  max-width:1400px;margin:0 auto;
+  padding:0 64px;
+  height:72px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.hdr-logo{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:17px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.08em;
+  color:#fff;line-height:1;text-decoration:none;
+  display:flex;flex-direction:column;gap:2px;
+}
+.hdr-logo em{color:var(--gold);font-style:normal;}
+.hdr-logo-sub{font-size:7.5px;font-weight:600;letter-spacing:.2em;color:rgba(255,255,255,.28);}
+
+.hdr-nav{display:flex;align-items:center;gap:40px;}
+.hdr-nav a{
+  font-size:11px;font-weight:600;letter-spacing:.06em;
+  color:rgba(255,255,255,.48);text-decoration:none;
+  transition:color 200ms ease;
+  position:relative;
+}
+.hdr-nav a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 220ms ease;
+}
+.hdr-nav a:hover,.hdr-nav a.active{color:rgba(255,255,255,.9);}
+.hdr-nav a:hover::after,.hdr-nav a.active::after{transform:scaleX(1);}
+
+.hdr-right{display:flex;align-items:center;gap:20px;}
+.hdr-tel{
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.42);
+  display:flex;align-items:center;gap:7px;
+}
+.hdr-tel strong{color:rgba(255,255,255,.72);font-weight:700;}
+.hdr-cta{
+  background:var(--gold-grad);
+  color:#fff;font-size:11.5px;font-weight:800;
+  padding:10px 24px;border-radius:8px;
+  position:relative;overflow:hidden;letter-spacing:-.01em;
+  box-shadow:0 6px 20px rgba(180,110,40,.35),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.hdr-cta::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);}
+
+/* ═══════════════════════════════════════
+   HERO — Full viewport, atmospheric, bold
+   Left: oversized headline + stats
+   Right: large decorative stat world
+═══════════════════════════════════════ */
+.hero{
+  min-height:100vh;
+  background:var(--green);
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+
+/* Layered background */
+.hero-bg{position:absolute;inset:0;background:var(--green);}
+.hero-gl{position:absolute;inset:0;pointer-events:none;will-change:opacity;}
+.hero-gl1{z-index:1;background:radial-gradient(ellipse at 8% 12%,#027030 0%,transparent 48%);animation:g1 11s ease-in-out infinite;}
+.hero-gl2{z-index:1;background:radial-gradient(ellipse at 88% 14%,#014822 0%,transparent 46%);animation:g2 11s ease-in-out infinite;}
+.hero-gl3{z-index:1;background:radial-gradient(ellipse at 52% 90%,#025c28 0%,transparent 50%);animation:g3 11s ease-in-out infinite;}
+.hero-sun{
+  position:absolute;z-index:2;pointer-events:none;
+  inset:0;
+  background:radial-gradient(ellipse 65% 52% at 50% -6%,rgba(200,150,90,.26) 0%,rgba(200,150,90,.07) 42%,transparent 65%);
+  animation:lp 9s ease-in-out infinite alternate;will-change:opacity;
+}
+.hero-grain{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.042;}
+.hero-grain.grain{}
+.hero-orb-a{
+  position:absolute;top:-120px;right:-100px;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.065) 0%,transparent 65%);
+  pointer-events:none;z-index:2;
+  animation:o1 16s ease-in-out infinite alternate;will-change:transform;
+}
+.hero-orb-b{
+  position:absolute;bottom:-80px;left:35%;
+  width:440px;height:440px;border-radius:50%;
+  background:radial-gradient(circle,rgba(1,95,45,.22) 0%,transparent 65%);
+  pointer-events:none;z-index:2;
+  animation:o2 22s ease-in-out infinite alternate;will-change:transform;
+}
+
+/* Hero content */
+.hero-inner{
+  position:relative;z-index:4;
+  flex:1;
+  max-width:1400px;margin:0 auto;
+  padding:0 64px;
+  display:grid;
+  grid-template-columns:1fr 480px;
+  gap:0;
+  align-items:center;
+  padding-top:72px; /* header height */
+}
+
+/* Left — content */
+.hero-left{
+  padding:80px 80px 80px 0;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+
+.hero-eye{
+  display:inline-flex;align-items:center;gap:9px;
+  color:rgba(200,150,90,.75);
+  font-size:9px;font-weight:700;
+  letter-spacing:.28em;text-transform:uppercase;
+  margin-bottom:28px;
+}
+.hero-eye-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);flex-shrink:0;
+  animation:dot 2.2s ease-in-out infinite;
+}
+
+/* The headline — genuinely large */
+.hero-h1{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(72px,6.5vw,96px);
+  font-weight:800;
+  text-transform:uppercase;
+  line-height:.86;
+  letter-spacing:-.02em;
+  margin-bottom:28px;
+}
+.hero-h1 .w{display:block;color:#fff;}
+.hero-h1 .wg{
+  display:block;color:var(--gold);
+  width:fit-content;position:relative;
+  padding-bottom:12px;
+}
+.hero-h1 .wg::after{
+  content:'';
+  position:absolute;bottom:0;left:0;
+  height:3px;border-radius:999px;
+  background:linear-gradient(90deg,var(--gold),rgba(200,150,90,.4) 55%,transparent);
+  box-shadow:0 0 16px rgba(200,150,90,.4);
+  width:0;animation:sweep 1s cubic-bezier(.22,1,.36,1) 2s forwards;
+}
+
+.hero-sub{
+  font-size:16px;font-weight:400;
+  color:rgba(255,255,255,.48);
+  line-height:1.7;
+  max-width:460px;
+  margin-bottom:40px;
+}
+
+.hero-ctas{display:flex;align-items:center;gap:18px;margin-bottom:56px;}
+.hero-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--gold-grad);
+  color:#fff;font-size:14px;font-weight:800;
+  padding:17px 36px;border-radius:12px;
+  position:relative;overflow:hidden;letter-spacing:-.01em;
+  box-shadow:0 14px 36px rgba(180,110,40,.42),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.hero-btn::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.17),transparent);}
+.hero-call{
+  display:flex;align-items:center;gap:6px;
+  color:rgba(255,255,255,.38);font-size:13px;font-weight:500;
+}
+.hero-call strong{color:rgba(255,255,255,.72);font-weight:700;}
+
+/* Stats — horizontal row */
+.hero-stats{
+  display:flex;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;
+  background:rgba(255,255,255,.03);
+  backdrop-filter:blur(8px);
+  overflow:hidden;
+}
+.hero-stat{
+  flex:1;padding:20px 0;text-align:center;
+}
+.hero-stat+.hero-stat{border-left:1px solid rgba(255,255,255,.07);}
+.hstat-n{
+  display:inline-flex;align-items:flex-start;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:40px;font-weight:800;
+  color:#fff;line-height:1;letter-spacing:-.025em;
+}
+.hstat-s{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:16px;font-weight:800;color:var(--gold);
+  margin-top:5px;margin-left:2px;line-height:1;
+}
+.hstat-bar{
+  height:2px;border-radius:999px;
+  background:linear-gradient(90deg,var(--gold),rgba(200,150,90,.3));
+  width:0;max-width:48px;margin:7px auto 6px;
+  transition:width .8s cubic-bezier(.22,1,.36,1);
+}
+.hstat-bar.on{width:48px;}
+.hstat-l{font-size:9px;font-weight:700;color:rgba(255,255,255,.26);letter-spacing:.14em;text-transform:uppercase;}
+
+/* Right — decorative large stat world */
+.hero-right{
+  padding:80px 0 80px 60px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  position:relative;
+}
+
+/* Massive decorative number */
+.hero-deco{
+  position:relative;
+  display:flex;flex-direction:column;
+  align-items:flex-start;
+  gap:0;
+}
+
+.hero-deco-n{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(100px,10vw,148px);
+  font-weight:800;
+  line-height:.82;
+  letter-spacing:-.04em;
+  color:transparent;
+  -webkit-text-stroke:1.5px rgba(200,150,90,.25);
+  text-transform:uppercase;
+  display:block;
+  user-select:none;
+}
+.hero-deco-label{
+  font-size:10px;font-weight:700;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(200,150,90,.5);
+  margin-top:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.hero-deco-label::before{
+  content:'';display:block;
+  width:28px;height:1px;
+  background:rgba(200,150,90,.35);flex-shrink:0;
+}
+
+/* Trust list */
+.hero-trust{
+  margin-top:40px;
+  display:flex;flex-direction:column;
+  gap:14px;
+}
+.hero-trust-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;
+  background:rgba(255,255,255,.03);
+  transition:border-color 300ms ease;
+}
+.hero-trust-item:hover{border-color:rgba(200,150,90,.18);}
+.htrust-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--gold);flex-shrink:0;
+  box-shadow:0 0 8px rgba(200,150,90,.4);
+}
+.htrust-text{font-size:13px;font-weight:600;color:rgba(255,255,255,.65);}
+.htrust-check{
+  margin-left:auto;
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(200,150,90,.1);
+  border:1px solid rgba(200,150,90,.2);
+  display:grid;place-items:center;flex-shrink:0;
+}
+
+/* Bottom clip */
+.hero-clip{position:absolute;bottom:0;left:0;right:0;z-index:5;line-height:0;}
+.hero-clip svg{display:block;width:100%;}
+
+/* ═══ TICKER ═══ */
+.ticker{background:var(--gold);overflow:hidden;position:relative;z-index:4;padding:13px 0;}
+.ticker::before{content:'';position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(90deg,var(--gold),transparent);z-index:2;}
+.ticker::after{content:'';position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(270deg,var(--gold),transparent);z-index:2;}
+.ticker-track{display:inline-flex;animation:tick 32s linear infinite;will-change:transform;}
+.ti{display:inline-flex;align-items:center;gap:9px;padding:0 28px;color:#fff;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;}
+.ti-chk{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:8px;flex-shrink:0;}
+.ti-sep{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);flex-shrink:0;}
+
+.bridge{background:var(--green);line-height:0;margin-top:-1px;z-index:3;position:relative;}
+.bridge svg{display:block;width:100%;}
+
+/* ═══════════════════════════════════════
+   SERVICES — Interactive tab panel
+   Left sidebar: 4 service names, stacked
+   Right panel: full atmospheric world
+   Clicking/hovering changes the right panel
+   This is premium, not a grid.
+═══════════════════════════════════════ */
+.services{
+  background:var(--green);
+  position:relative;overflow:hidden;
+  min-height:680px;
+}
+.svc-bg-grain{position:absolute;inset:0;z-index:0;opacity:.04;}
+.svc-bg-grain.grain{}
+.svc-bg-orb{
+  position:absolute;top:-100px;right:-100px;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.055) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:o1 16s ease-in-out infinite alternate;will-change:transform;
+}
+
+.svc-layout{
+  position:relative;z-index:1;
+  max-width:1400px;margin:0 auto;padding:0 64px;
+  display:grid;
+  grid-template-columns:340px 1fr;
+  min-height:680px;
+}
+
+/* ── Left sidebar ── */
+.svc-sidebar{
+  padding:72px 0;
+  border-right:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;
+  justify-content:space-between;
+}
+
+.svc-sidebar-head{margin-bottom:48px;}
+.svc-eye{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:8.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(200,150,90,.72);margin-bottom:12px;
+}
+.svc-eye-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:dot 2.2s ease-in-out infinite;flex-shrink:0;}
+.svc-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(36px,2.8vw,46px);font-weight:800;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.01em;
+  color:#fff;
+}
+.svc-h2 em{color:var(--gold);font-style:normal;display:block;}
+
+/* Service nav items */
+.svc-nav{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center;}
+.svc-nav-item{
+  padding:18px 0;
+  border-top:1px solid rgba(255,255,255,.06);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:border-color 300ms ease;
+}
+.svc-nav-item:last-child{border-bottom:1px solid rgba(255,255,255,.06);}
+.svc-nav-item.active{border-color:rgba(200,150,90,.2);}
+.svc-nav-item.active + .svc-nav-item{border-color:rgba(200,150,90,.2);}
+
+/* Left accent bar */
+.svc-nav-item::before{
+  content:'';
+  position:absolute;left:-64px;top:0;bottom:0;
+  width:3px;
+  transform:scaleY(0);transform-origin:top;
+  transition:transform 350ms cubic-bezier(.22,1,.36,1);
+}
+.svc-nav-item.active::before{transform:scaleY(1);}
+
+.svc-nav-n{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:800;letter-spacing:.1em;
+  color:rgba(255,255,255,.2);
+  transition:color 250ms ease;
+  width:28px;flex-shrink:0;
+}
+.svc-nav-item.active .svc-nav-n{color:rgba(200,150,90,.6);}
+
+.svc-nav-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(22px,1.8vw,28px);font-weight:800;
+  text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
+  color:rgba(255,255,255,.4);
+  transition:color 250ms ease;flex:1;padding:0 16px;
+}
+.svc-nav-item.active .svc-nav-name{color:#fff;}
+
+.svc-nav-arrow{
+  font-size:16px;color:rgba(255,255,255,.15);
+  transition:color 250ms ease,transform 300ms ease;
+}
+.svc-nav-item.active .svc-nav-arrow{color:var(--gold);transform:translateX(4px);}
+
+/* Bottom intro copy */
+.svc-sidebar-foot{
+  padding-top:32px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.svc-sidebar-copy{
+  font-size:12px;color:rgba(255,255,255,.3);line-height:1.65;
+  margin-bottom:14px;
+}
+.svc-sidebar-link{
+  font-size:11px;font-weight:700;color:rgba(200,150,90,.55);
+  letter-spacing:.04em;
+}
+
+/* ── Right panel ── */
+.svc-panel-wrap{
+  position:relative;overflow:hidden;
+}
+
+/* Each panel */
+.svc-panel{
+  position:absolute;inset:0;
+  padding:72px 72px 72px 60px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  opacity:0;
+  transition:opacity 400ms ease;
+  pointer-events:none;
+}
+.svc-panel.active{opacity:1;pointer-events:auto;}
+
+/* Panel atmosphere */
+.sp-grain{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.06;}
+.sp-grain.grain{}
+.sp-light{position:absolute;inset:0;pointer-events:none;z-index:1;animation:lp 9s ease-in-out infinite alternate;will-change:opacity;}
+.sp-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:1;will-change:transform;}
+.sp-edge{position:absolute;top:0;left:0;right:0;height:2px;z-index:4;}
+
+/* Panel top */
+.sp-top{
+  position:relative;z-index:3;
+  display:flex;align-items:flex-start;justify-content:space-between;
+}
+.sp-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  border-radius:999px;padding:6px 14px;
+  font-size:8px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+}
+.sp-tag-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.sp-ico{
+  width:56px;height:56px;
+  border-radius:16px;
+  display:grid;place-items:center;
+  position:relative;overflow:hidden;
+}
+.sp-ico::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.14),transparent);}
+
+/* Panel middle — large name */
+.sp-mid{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0;}
+
+/* Giant watermark */
+.sp-wm{
+  position:absolute;
+  right:-20px;top:50%;transform:translateY(-50%);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(120px,11vw,160px);font-weight:800;line-height:1;
+  letter-spacing:-.04em;pointer-events:none;user-select:none;
+  opacity:.06;transition:opacity 300ms ease;
+  white-space:nowrap;
+}
+.svc-panel.active .sp-wm{opacity:.1;}
+
+.sp-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(56px,5vw,76px);font-weight:800;
+  text-transform:uppercase;line-height:.85;
+  letter-spacing:-.025em;color:#fff;
+  margin-bottom:12px;
+}
+.sp-rule{
+  height:3px;border-radius:999px;
+  width:48px;margin-bottom:20px;
+  transition:width 500ms cubic-bezier(.22,1,.36,1) .1s;
+}
+.svc-panel.active .sp-rule{width:72px;}
+.sp-desc{
+  font-size:15px;color:rgba(255,255,255,.5);
+  line-height:1.7;max-width:440px;
+}
+
+/* Panel bottom — stat + CTA */
+.sp-foot{
+  position:relative;z-index:3;
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:28px;border-top:1px solid rgba(255,255,255,.07);
+}
+.sp-stat-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;text-transform:uppercase;
+  line-height:1;letter-spacing:-.01em;
+}
+.sp-stat-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;margin-top:3px;}
+.sp-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--gold-grad);
+  color:#fff;font-size:13px;font-weight:800;
+  padding:14px 28px;border-radius:11px;
+  position:relative;overflow:hidden;letter-spacing:-.01em;
+  box-shadow:0 10px 28px rgba(180,110,40,.4),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.sp-cta::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);}
+
+/* Panel identities */
+/* Panel 1 — green/gold */
+.sp1{background:linear-gradient(140deg,#014820 0%,#012010 55%,#010e08 100%);}
+.sp1::before{background:rgba(200,150,90,.12);} /* nav accent */
+.sp1-nav::before{background:linear-gradient(180deg,var(--gold),rgba(200,150,90,.2));}
+.sp1 .sp-light{background:radial-gradient(ellipse 75% 60% at 85% -10%,rgba(200,150,90,.22) 0%,transparent 65%);}
+.sp1 .sp-orb{width:280px;height:280px;background:radial-gradient(circle,rgba(200,150,90,.08) 0%,transparent 65%);bottom:-60px;left:-40px;animation:o2 16s ease-in-out infinite alternate;}
+.sp1 .sp-edge{background:linear-gradient(90deg,rgba(200,150,90,.9) 0%,rgba(200,150,90,.2) 45%,transparent 85%);}
+.sp1 .sp-tag{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);color:rgba(220,170,70,.9);}
+.sp1 .sp-tag-dot{background:var(--gold);}
+.sp1 .sp-ico{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);}
+.sp1 .sp-rule{background:linear-gradient(90deg,var(--gold),rgba(200,150,90,.3));box-shadow:0 0 12px rgba(200,150,90,.3);}
+.sp1 .sp-stat-val{color:var(--gold);}
+.sp1 .sp-wm{color:var(--gold);}
+
+/* Panel 2 — olive/lime */
+.sp2{background:linear-gradient(140deg,#182c08 0%,#0e1c04 55%,#080f03 100%);}
+.sp2 .sp-light{background:radial-gradient(ellipse 70% 60% at -8% 40%,rgba(100,185,50,.2) 0%,transparent 65%);}
+.sp2 .sp-orb{width:260px;height:260px;background:radial-gradient(circle,rgba(100,185,50,.08) 0%,transparent 65%);top:-40px;right:-30px;animation:o1 18s ease-in-out infinite alternate;}
+.sp2 .sp-edge{background:linear-gradient(90deg,rgba(130,210,70,.88) 0%,rgba(100,185,50,.2) 45%,transparent 85%);}
+.sp2 .sp-tag{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.18);color:rgba(140,220,75,.88);}
+.sp2 .sp-tag-dot{background:rgba(130,210,70,.9);}
+.sp2 .sp-ico{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.16);}
+.sp2 .sp-rule{background:linear-gradient(90deg,rgba(130,210,70,.9),rgba(100,185,50,.25));box-shadow:0 0 12px rgba(100,185,50,.2);}
+.sp2 .sp-stat-val{color:rgba(130,210,70,.9);}
+.sp2 .sp-wm{color:rgba(130,210,70,.8);}
+
+/* Panel 3 — brown/amber */
+.sp3{background:linear-gradient(140deg,#2a1904 0%,#160d02 55%,#0c0802 100%);}
+.sp3 .sp-light{background:radial-gradient(ellipse 80% 65% at 90% 105%,rgba(195,130,40,.26) 0%,transparent 65%);}
+.sp3 .sp-orb{width:260px;height:260px;background:radial-gradient(circle,rgba(195,130,40,.09) 0%,transparent 65%);top:-30px;left:-20px;animation:o1 14s ease-in-out infinite alternate;}
+.sp3 .sp-edge{background:linear-gradient(90deg,rgba(210,145,55,.88) 0%,rgba(195,130,40,.2) 45%,transparent 85%);}
+.sp3 .sp-tag{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);color:rgba(215,150,60,.88);}
+.sp3 .sp-tag-dot{background:rgba(210,145,55,.9);}
+.sp3 .sp-ico{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);}
+.sp3 .sp-rule{background:linear-gradient(90deg,rgba(210,145,55,.9),rgba(195,130,40,.25));box-shadow:0 0 12px rgba(195,130,40,.22);}
+.sp3 .sp-stat-val{color:rgba(210,145,55,.9);}
+.sp3 .sp-wm{color:rgba(210,145,55,.8);}
+
+/* Panel 4 — navy/blue */
+.sp4{background:linear-gradient(140deg,#0a1828 0%,#060e1a 55%,#030812 100%);}
+.sp4 .sp-light{background:radial-gradient(ellipse 70% 55% at 50% -18%,rgba(74,143,217,.28) 0%,rgba(50,110,195,.08) 42%,transparent 65%);}
+.sp4 .sp-orb{width:280px;height:280px;background:radial-gradient(circle,rgba(74,143,217,.09) 0%,transparent 65%);bottom:-50px;right:-40px;animation:o1 12s ease-in-out infinite alternate;}
+.sp4 .sp-edge{background:linear-gradient(90deg,transparent 0%,rgba(110,170,255,.88) 50%,transparent 100%);}
+.sp4 .sp-tag{background:rgba(74,143,217,.09);border:1px solid rgba(110,170,255,.18);color:rgba(120,175,255,.9);}
+.sp4 .sp-tag-dot{background:#4a8fd9;}
+.sp4 .sp-ico{background:rgba(74,143,217,.09);border:1px solid rgba(110,170,255,.18);}
+.sp4 .sp-rule{background:linear-gradient(90deg,rgba(110,170,255,.9),rgba(74,143,217,.25));box-shadow:0 0 12px rgba(74,143,217,.25);}
+.sp4 .sp-stat-val{color:rgba(120,175,255,.9);}
+.sp4 .sp-wm{color:rgba(110,170,255,.8);}
+
+.storm-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#4a8fd9;border:2px solid #060e1a;animation:stormP 2s ease-in-out infinite;}
+
+.svc-clip{background:var(--green);line-height:0;}
+.svc-clip svg{display:block;width:100%;}
+
+/* ═══════════════════════════════════════
+   WHY CHOOSE US
+   Full-width typographic rows.
+   Each reason is a line that wipes in.
+   No columns. Type IS the design.
+═══════════════════════════════════════ */
+.why{
+  background:var(--beige);
+  padding:120px 0 0;
+  position:relative;overflow:hidden;
+}
+.why-bg-orb{
+  position:absolute;top:-80px;right:-80px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.055) 0%,transparent 65%);
+  pointer-events:none;z-index:0;animation:o1 18s ease-in-out infinite alternate;will-change:transform;
+}
+
+.why-inner{max-width:1400px;margin:0 auto;padding:0 64px;position:relative;z-index:1;}
+
+/* Section header — left aligned, compact */
+.why-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:72px;
+  padding-bottom:40px;
+  border-bottom:1px solid rgba(1,42,20,.1);
+}
+.why-eye{display:inline-flex;align-items:center;gap:7px;font-size:8.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#8a6840;margin-bottom:12px;}
+.why-eye-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:dot 2.2s ease-in-out infinite .4s;}
+.why-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(44px,3.8vw,60px);font-weight:800;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.01em;
+  color:var(--green);
+}
+.why-h2 em{color:var(--gold);font-style:normal;display:block;}
+.why-intro{font-size:15px;color:rgba(1,42,20,.45);line-height:1.65;max-width:380px;}
+
+/* ── Typographic statement rows ── */
+.why-rows{margin-bottom:0;}
+.why-row{
+  padding:36px 0;
+  border-bottom:1px solid rgba(1,42,20,.08);
+  display:grid;
+  grid-template-columns:80px 1fr 320px;
+  gap:40px;
+  align-items:center;
+  /* Entrance */
+  opacity:0;transform:translateY(20px);
+  transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);
+}
+.why-row.in{opacity:1;transform:translateY(0);}
+.why-row:nth-child(1){transition-delay:0s}
+.why-row:nth-child(2){transition-delay:.08s}
+.why-row:nth-child(3){transition-delay:.16s}
+.why-row:nth-child(4){transition-delay:.24s}
+
+/* Row number */
+.why-row-n{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:800;letter-spacing:.1em;
+  color:rgba(1,42,20,.2);align-self:flex-start;padding-top:8px;
+}
+
+/* The BIG statement */
+.why-row-stmt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(36px,3.2vw,48px);font-weight:800;font-style:italic;
+  text-transform:uppercase;line-height:.9;letter-spacing:-.02em;
+  color:var(--green);
+  display:flex;flex-direction:column;gap:2px;
+}
+.why-row-stmt em{color:var(--gold);font-style:italic;}
+
+/* Supporting copy — right */
+.why-row-detail{
+  font-size:13px;color:rgba(1,42,20,.5);
+  line-height:1.7;
+  padding-left:24px;
+  border-left:2px solid rgba(200,150,90,.2);
+}
+
+/* CTA card below statements */
+.why-cta-band{
+  background:var(--green);
+  padding:48px 64px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:60px;
+  position:relative;overflow:hidden;
+  margin-top:72px;
+}
+.why-cta-band::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 50% -10%,rgba(200,150,90,.18) 0%,transparent 60%);
+  pointer-events:none;
+}
+.why-cta-band::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,150,90,.4),transparent);
+}
+.why-cta-band-grain{position:absolute;inset:0;pointer-events:none;opacity:.04;}
+.why-cta-band-grain.grain{}
+.why-cta-left{position:relative;z-index:1;}
+.why-cta-label{font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,150,90,.6);margin-bottom:10px;}
+.why-cta-stmt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(32px,2.8vw,44px);font-weight:800;
+  text-transform:uppercase;line-height:.9;letter-spacing:-.015em;
+  color:#fff;
+}
+.why-cta-stmt em{color:var(--gold);font-style:normal;display:block;}
+.why-cta-right{
+  display:flex;flex-direction:column;gap:12px;
+  position:relative;z-index:1;min-width:280px;
+}
+.why-cta-btn{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--gold-grad);color:#fff;
+  font-size:14px;font-weight:800;
+  padding:17px;border-radius:12px;width:100%;
+  position:relative;overflow:hidden;letter-spacing:-.01em;
+  box-shadow:0 12px 32px rgba(180,110,40,.42),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.why-cta-btn::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.17),transparent);}
+.why-cta-phone{display:flex;align-items:center;justify-content:center;gap:7px;}
+.why-cta-phone span{font-size:12px;color:rgba(255,255,255,.3);}
+.why-cta-phone strong{font-size:12px;color:rgba(255,255,255,.62);font-weight:700;}
+
+/* Dark clip */
+.why-clip{background:var(--beige);line-height:0;margin-top:0;}
+.why-clip svg{display:block;width:100%;}
+
+/* ═══════════════════════════════════════
+   PROCESS — Oversized verb moments
+   CALL. SNAP. QUOTE. DONE.
+   Each verb is massive centered type.
+   The 4 steps sit in a horizontal row.
+   A connecting animated line ties them.
+═══════════════════════════════════════ */
+.process{
+  background:var(--green);
+  padding:120px 0 0;
+  position:relative;overflow:hidden;
+}
+.proc-grain{position:absolute;inset:0;z-index:0;opacity:.04;}
+.proc-grain.grain{}
+.proc-orb{
+  position:absolute;bottom:-80px;left:-80px;
+  width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.055) 0%,transparent 65%);
+  pointer-events:none;z-index:0;animation:o2 18s ease-in-out infinite alternate;will-change:transform;
+}
+
+.proc-inner{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 64px;}
+
+.proc-head{margin-bottom:96px;display:flex;align-items:flex-end;justify-content:space-between;}
+.proc-eye{display:inline-flex;align-items:center;gap:7px;font-size:8.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,150,90,.72);margin-bottom:12px;}
+.proc-eye-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:dot 2.2s ease-in-out infinite .8s;}
+.proc-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(44px,3.8vw,60px);font-weight:800;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.01em;color:#fff;
+}
+.proc-h2 em{color:var(--gold);font-style:normal;display:block;}
+.proc-sub{font-size:15px;color:rgba(255,255,255,.38);line-height:1.65;max-width:360px;}
+
+/* Steps grid */
+.proc-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;
+  position:relative;
+  padding-bottom:0;
+}
+
+/* Connecting line */
+.proc-line{
+  position:absolute;
+  top:36px;
+  left:calc(12.5%);right:calc(12.5%);
+  height:1px;
+  background:rgba(255,255,255,.08);
+  z-index:0;
+  overflow:hidden;
+}
+.proc-line-fill{
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--gold),rgba(200,150,90,.4));
+  box-shadow:0 0 8px rgba(200,150,90,.3);
+  transform:translateX(-100%);
+  transition:transform 1.4s cubic-bezier(.22,1,.36,1);
+}
+.proc-line-fill.on{transform:translateX(0);}
+
+.proc-step{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;
+  padding:0 24px 60px;
+  /* Entrance */
+  opacity:0;transform:translateY(24px);
+  transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1);
+}
+.proc-step.in{opacity:1;transform:translateY(0);}
+.proc-step:nth-child(2){transition-delay:.1s}
+.proc-step:nth-child(3){transition-delay:.2s}
+.proc-step:nth-child(4){transition-delay:.3s}
+
+/* Circle */
+.proc-circle{
+  width:72px;height:72px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.12);
+  background:var(--green);
+  display:grid;place-items:center;
+  margin-bottom:32px;
+  position:relative;
+  transition:border-color 400ms ease,box-shadow 400ms ease;
+  box-shadow:0 0 0 0 rgba(200,150,90,.0);
+}
+.proc-step.in .proc-circle{
+  border-color:rgba(200,150,90,.45);
+  box-shadow:0 0 0 6px rgba(200,150,90,.08),0 0 24px rgba(200,150,90,.15);
+}
+.proc-circle-inner{
+  width:48px;height:48px;border-radius:50%;
+  background:rgba(255,255,255,.04);
+  display:grid;place-items:center;
+  transition:background 400ms ease;
+}
+.proc-step.in .proc-circle-inner{background:rgba(200,150,90,.1);}
+
+/* THE VERB — massive */
+.proc-verb{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(48px,4.2vw,64px);font-weight:800;
+  text-transform:uppercase;letter-spacing:-.025em;
+  color:var(--gold);line-height:1;
+  text-align:center;margin-bottom:12px;
+}
+
+.proc-title{
+  font-size:14px;font-weight:800;color:#fff;
+  text-align:center;margin-bottom:8px;letter-spacing:-.01em;
+}
+.proc-desc{
+  font-size:12.5px;color:rgba(255,255,255,.38);
+  text-align:center;line-height:1.68;
+}
+
+/* Closing statement band */
+.proc-close-band{
+  border-top:1px solid rgba(255,255,255,.07);
+  padding:48px 0 96px;
+  text-align:center;
+  position:relative;z-index:1;
+}
+.proc-close-text{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(24px,2.2vw,34px);font-weight:800;font-style:italic;
+  text-transform:uppercase;line-height:.95;letter-spacing:-.015em;
+  color:rgba(255,255,255,.22);
+}
+.proc-close-text em{color:rgba(200,150,90,.45);font-style:italic;}
+
+.proc-clip{background:var(--green);line-height:0;}
+.proc-clip svg{display:block;width:100%;}
+
+/* ═══════════════════════════════════════
+   CTA — Full bleed, dramatic, confident
+   Large type. One purpose.
+═══════════════════════════════════════ */
+.cta{
+  background:var(--beige);
+  padding:120px 64px;
+}
+.cta-card{
+  max-width:1400px;margin:0 auto;
+  background:var(--green);
+  border-radius:32px;
+  padding:80px 96px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:80px;
+  align-items:center;
+  position:relative;overflow:hidden;
+  box-shadow:0 40px 80px rgba(1,42,20,.3);
+}
+.cta-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 60% at 50% -8%,rgba(200,150,90,.2) 0%,transparent 60%);pointer-events:none;}
+.cta-card::after{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,150,90,.5),transparent);}
+.cta-grain{position:absolute;inset:0;pointer-events:none;opacity:.04;border-radius:32px;}
+.cta-grain.grain{}
+/* Decorative large number */
+.cta-deco-n{
+  position:absolute;
+  right:96px;bottom:-10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:240px;font-weight:800;line-height:.8;
+  letter-spacing:-.04em;
+  color:transparent;-webkit-text-stroke:1px rgba(200,150,90,.08);
+  pointer-events:none;user-select:none;
+  white-space:nowrap;
+}
+.cta-left{position:relative;z-index:1;}
+.cta-eye{font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:rgba(200,150,90,.6);margin-bottom:14px;}
+.cta-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(52px,4.5vw,72px);font-weight:800;
+  text-transform:uppercase;line-height:.86;letter-spacing:-.02em;
+  color:#fff;margin-bottom:16px;
+}
+.cta-h2 em{color:var(--gold);font-style:normal;display:block;}
+.cta-body{font-size:15px;color:rgba(255,255,255,.42);line-height:1.65;max-width:460px;}
+.cta-right{
+  display:flex;flex-direction:column;gap:14px;
+  position:relative;z-index:1;
+  min-width:300px;
+}
+.cta-btn{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--gold-grad);color:#fff;
+  font-size:14px;font-weight:800;
+  padding:18px 24px;border-radius:14px;
+  position:relative;overflow:hidden;letter-spacing:-.01em;
+  box-shadow:0 14px 36px rgba(180,110,40,.44),inset 0 1px 0 rgba(255,255,255,.18);
+}
+.cta-btn::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.17),transparent);}
+.cta-btn-ico{width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex-shrink:0;position:relative;z-index:1;font-size:14px;}
+.cta-btn-txt{position:relative;z-index:1;}
+.cta-phone-row{display:flex;align-items:center;justify-content:center;gap:8px;}
+.cta-phone-row span{font-size:12px;color:rgba(255,255,255,.3);}
+.cta-phone-row strong{font-size:13px;color:rgba(255,255,255,.65);font-weight:700;}
+
+/* ═══════════════════════════════════════
+   FAQ — Large, confident accordion
+   Dark section. Big questions.
+═══════════════════════════════════════ */
+.faq{
+  background:var(--green);
+  padding:0 0 0;
+  position:relative;overflow:hidden;
+}
+.faq-clip-in{background:var(--beige);line-height:0;}
+.faq-clip-in svg{display:block;width:100%;}
+.faq-grain{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.04;}
+.faq-grain.grain{}
+.faq-orb{
+  position:absolute;top:-80px;right:-80px;
+  width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.055) 0%,transparent 65%);
+  pointer-events:none;z-index:0;animation:o1 20s ease-in-out infinite alternate;will-change:transform;
+}
+
+.faq-inner{
+  position:relative;z-index:1;
+  max-width:1400px;margin:0 auto;padding:120px 64px;
+  display:grid;grid-template-columns:400px 1fr;
+  gap:96px;
+}
+
+.faq-left{position:sticky;top:100px;height:fit-content;}
+.faq-eye{display:inline-flex;align-items:center;gap:7px;font-size:8.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(200,150,90,.72);margin-bottom:12px;}
+.faq-eye-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:dot 2.2s ease-in-out infinite 1.2s;}
+.faq-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(52px,4.5vw,72px);font-weight:800;
+  text-transform:uppercase;line-height:.86;letter-spacing:-.02em;
+  color:#fff;margin-bottom:16px;
+}
+.faq-h2 em{color:var(--gold);font-style:normal;display:block;}
+.faq-intro{font-size:13px;color:rgba(255,255,255,.38);line-height:1.68;margin-bottom:28px;}
+.faq-direct{
+  display:inline-flex;align-items:center;gap:9px;
+  background:rgba(200,150,90,.1);
+  border:1px solid rgba(200,150,90,.2);
+  color:var(--gold);font-size:12px;font-weight:800;
+  padding:12px 22px;border-radius:10px;
+}
+
+/* FAQ accordion — large questions */
+.faq-list{display:flex;flex-direction:column;}
+.faq-item{
+  border-top:1px solid rgba(255,255,255,.07);
+  cursor:pointer;
+}
+.faq-item:last-child{border-bottom:1px solid rgba(255,255,255,.07);}
+.faq-item.open{border-top-color:rgba(200,150,90,.2);}
+.faq-item.open + .faq-item{border-top-color:rgba(200,150,90,.2);}
+
+.faq-q-row{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:24px;padding:28px 0;
+}
+.faq-q{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(22px,1.9vw,28px);font-weight:800;font-style:italic;
+  text-transform:uppercase;line-height:.9;letter-spacing:-.01em;
+  color:rgba(255,255,255,.6);flex:1;
+  transition:color 250ms ease;
+}
+.faq-item.open .faq-q{color:#fff;}
+.faq-tog{
+  width:30px;height:30px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.03);
+  display:grid;place-items:center;flex-shrink:0;margin-top:2px;
+  transition:transform 350ms cubic-bezier(.22,1,.36,1),border-color 250ms ease,background 250ms ease;
+  position:relative;
+}
+.faq-item.open .faq-tog{
+  transform:rotate(45deg);
+  border-color:rgba(200,150,90,.3);
+  background:rgba(200,150,90,.1);
+}
+.faq-tog::before,.faq-tog::after{content:'';position:absolute;background:rgba(255,255,255,.4);border-radius:999px;transition:background 250ms ease;}
+.faq-item.open .faq-tog::before,.faq-item.open .faq-tog::after{background:var(--gold);}
+.faq-tog::before{width:11px;height:1.5px;}
+.faq-tog::after{width:1.5px;height:11px;}
+
+.faq-ans-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows 380ms cubic-bezier(.22,1,.36,1);}
+.faq-item.open .faq-ans-wrap{grid-template-rows:1fr;}
+.faq-ans-inner{overflow:hidden;}
+.faq-ans{
+  font-size:14px;color:rgba(255,255,255,.5);
+  line-height:1.72;padding-bottom:28px;
+}
+
+/* FAQ gold sweep — active indicator */
+.faq-item.open .faq-q-row{
+  border-bottom:1px solid rgba(200,150,90,.12);
+}
+
+.faq-clip{background:var(--green);line-height:0;}
+.faq-clip svg{display:block;width:100%;}
+
+/* ═══════════════════════════════════════
+   SERVICE AREA — typographic map
+   The town map IS the design.
+   Large, editorial, atmospheric.
+═══════════════════════════════════════ */
+.area{
+  background:var(--beige);
+  padding:120px 0;
+  position:relative;overflow:hidden;
+}
+.area-orb{
+  position:absolute;bottom:-60px;right:-60px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,90,.05) 0%,transparent 65%);
+  pointer-events:none;z-index:0;animation:o2 20s ease-in-out infinite alternate;will-change:transform;
+}
+
+.area-inner{
+  position:relative;z-index:1;
+  max-width:1400px;margin:0 auto;padding:0 64px;
+  display:grid;grid-template-columns:1fr 440px;
+  gap:100px;align-items:start;
+}
+
+.area-left{}
+.area-eye{display:inline-flex;align-items:center;gap:7px;font-size:8.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:#8a6840;margin-bottom:12px;}
+.area-eye-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:dot 2.2s ease-in-out infinite 1.4s;}
+.area-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(44px,3.8vw,60px);font-weight:800;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.015em;
+  color:var(--green);margin-bottom:12px;
+}
+.area-h2 em{color:var(--gold);font-style:normal;display:block;}
+.area-intro{font-size:14px;color:rgba(1,42,20,.45);line-height:1.65;max-width:360px;margin-bottom:44px;}
+
+/* The typographic town map */
+.area-map{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:0;
+  line-height:1.1;
+}
+.town{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:800;text-transform:uppercase;letter-spacing:-.005em;
+  color:rgba(1,42,20,.35);
+  transition:color 300ms ease;
+}
+.town:hover{color:var(--green);}
+.town.primary{
+  font-size:clamp(64px,6vw,86px);color:var(--green);
+  display:flex;align-items:center;gap:12px;
+  width:100%;margin-bottom:4px;
+}
+.town-pin{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--gold);flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(200,150,90,.5);
+  animation:pinP 2.5s ease-in-out infinite;
+}
+@keyframes pinP{0%{box-shadow:0 0 0 0 rgba(200,150,90,.5)}70%{box-shadow:0 0 0 10px rgba(200,150,90,0)}100%{box-shadow:0 0 0 0 rgba(200,150,90,0)}}
+.town.lg{font-size:clamp(28px,2.6vw,38px);color:rgba(1,42,20,.5);}
+.town.md{font-size:clamp(20px,1.9vw,26px);color:rgba(1,42,20,.3);}
+.town.sm{font-size:clamp(15px,1.4vw,20px);color:rgba(1,42,20,.2);}
+.town-sep{
+  font-family:'Barlow Condensed',sans-serif;font-weight:400;
+  color:rgba(1,42,20,.15);padding:0 12px;align-self:center;
+}
+.town-sep.lg{font-size:28px;}
+.town-sep.sm{font-size:20px;padding:0 8px;}
+
+/* Right — contact card */
+.area-right{}
+.area-card{
+  background:var(--green);
+  border-radius:26px;padding:40px;
+  position:relative;overflow:hidden;
+  box-shadow:0 28px 56px rgba(1,42,20,.22);
+  position:sticky;top:100px;
+}
+.area-card::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(200,150,90,.4),transparent);}
+.area-card-grain{position:absolute;inset:0;pointer-events:none;opacity:.04;border-radius:26px;}
+.area-card-grain.grain{}
+.area-card-inner{position:relative;z-index:1;}
+.area-card-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;text-transform:uppercase;color:#fff;letter-spacing:-.01em;margin-bottom:5px;}
+.area-card-sub{font-size:12px;color:rgba(255,255,255,.38);margin-bottom:22px;}
+.zip-row{display:flex;gap:10px;margin-bottom:24px;}
+.zip-input{
+  flex:1;padding:14px 16px;
+  border:1.5px solid rgba(255,255,255,.1);border-radius:11px;
+  font-size:14px;color:#fff;
+  background:rgba(255,255,255,.06);
+  font-family:'Inter',sans-serif;outline:none;
+  transition:border-color 200ms ease;
+}
+.zip-input::placeholder{color:rgba(255,255,255,.25);}
+.zip-input:focus{border-color:rgba(200,150,90,.4);}
+.zip-btn{
+  background:var(--gold-grad);color:#fff;font-size:12.5px;font-weight:800;
+  padding:14px 22px;border-radius:11px;white-space:nowrap;
+  box-shadow:0 7px 18px rgba(180,110,40,.32),inset 0 1px 0 rgba(255,255,255,.18);
+  position:relative;overflow:hidden;
+}
+.zip-btn::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);}
+.area-hr{height:1px;background:rgba(255,255,255,.08);margin-bottom:20px;}
+.area-contacts{display:flex;flex-direction:column;gap:2px;}
+.area-contact{
+  display:flex;align-items:center;gap:13px;
+  padding:13px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  cursor:pointer;
+  transition:opacity 200ms ease;
+}
+.area-contact:last-child{border-bottom:none;}
+.area-contact:hover{opacity:.8;}
+.ac-ico{
+  width:38px;height:38px;min-width:38px;border-radius:11px;
+  background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.18);
+  display:grid;place-items:center;flex-shrink:0;
+}
+.ac-text{flex:1;}
+.ac-text strong{display:block;font-size:13px;font-weight:800;color:#fff;margin-bottom:2px;letter-spacing:-.01em;}
+.ac-text span{font-size:11px;color:rgba(255,255,255,.36);}
+.ac-arr{font-size:14px;color:rgba(200,150,90,.4);}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.footer{background:#011a0d;}
+
+/* Big brand statement */
+.footer-stmt{
+  max-width:1400px;margin:0 auto;
+  padding:72px 64px 60px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  position:relative;overflow:hidden;
+}
+.footer-stmt::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 50% 60% at 10% 0%,rgba(200,150,90,.08) 0%,transparent 60%);
+}
+.footer-stmt::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,rgba(200,150,90,.45),rgba(200,150,90,.1) 35%,transparent 65%);
+}
+.footer-stmt-text{
+  position:relative;z-index:1;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(40px,4vw,60px);font-weight:800;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.015em;
+  color:rgba(255,255,255,.16);
+}
+.footer-stmt-text em{color:rgba(200,150,90,.38);font-style:normal;}
+
+/* Links grid */
+.footer-grid{
+  max-width:1400px;margin:0 auto;
+  padding:56px 64px 48px;
+  display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr 1fr;
+  gap:56px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.footer-brand-name{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;line-height:1;margin-bottom:4px;}
+.footer-brand-name em{color:var(--gold);font-style:normal;}
+.footer-tag-line{font-size:8.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:14px;}
+.footer-desc{font-size:12px;color:rgba(255,255,255,.36);line-height:1.65;max-width:240px;margin-bottom:18px;}
+.footer-brand-tel{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(200,150,90,.08);border:1px solid rgba(200,150,90,.18);
+  border-radius:999px;padding:8px 16px;
+  color:var(--gold);font-size:11px;font-weight:800;
+}
+.footer-col-head{font-size:8px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:16px;}
+.footer-col-links{display:flex;flex-direction:column;gap:10px;}
+.footer-col-links a{font-size:13px;color:rgba(255,255,255,.42);text-decoration:none;transition:color 200ms ease;}
+.footer-col-links a:hover{color:rgba(255,255,255,.82);}
+
+/* Meta */
+.footer-meta{
+  max-width:1400px;margin:0 auto;
+  padding:20px 64px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-copy{font-size:10px;color:rgba(255,255,255,.22);}
+.footer-copy span{display:block;color:rgba(255,255,255,.28);margin-top:2px;}
+.footer-top{
+  font-size:10px;color:rgba(255,255,255,.28);
+  border:1px solid rgba(255,255,255,.08);padding:6px 14px;border-radius:999px;
+  cursor:pointer;transition:color 200ms ease,border-color 200ms ease;
+}
+.footer-top:hover{color:rgba(255,255,255,.65);border-color:rgba(255,255,255,.18);}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ════════ HEADER ════════ -->
+<header class="hdr" id="hdr">
+  <div class="hdr-inner">
+    <a class="hdr-logo" href="#">
+      <span>PARRISH <em>TREE</em></span>
+      <span class="hdr-logo-sub">Removal · Trimming · Grinding</span>
+    </a>
+    <nav class="hdr-nav">
+      <a href="#" class="active">Home</a>
+      <a href="#">Tree Removal</a>
+      <a href="#">Tree Trimming</a>
+      <a href="#">Stump Grinding</a>
+      <a href="#">Storm Cleanup</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+    <div class="hdr-right">
+      <div class="hdr-tel">or call: <strong>(941) 400-6500</strong></div>
+      <div class="hdr-cta">Get a Free Estimate →</div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-gl hero-gl1"></div>
+  <div class="hero-gl hero-gl2"></div>
+  <div class="hero-gl hero-gl3"></div>
+  <div class="hero-sun"></div>
+  <div class="hero-grain grain"></div>
+  <div class="hero-orb-a"></div>
+  <div class="hero-orb-b"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eye"><div class="hero-eye-dot"></div>Parrish, FL · Est. 2014</div>
+      <h1 class="hero-h1">
+        <span class="w">Local Tree</span>
+        <span class="w">Service</span>
+        <span class="wg">Done Right.</span>
+      </h1>
+      <p class="hero-sub">When a tree becomes a problem, we make it disappear — clean site, clear communication, every time. Serving Manatee County since 2014.</p>
+      <div class="hero-ctas">
+        <div class="hero-btn">Get a Free Estimate →</div>
+        <div class="hero-call">or call: <strong>(941) 400-6500</strong></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hstat-n"><span>500</span><span class="hstat-s">+</span></div>
+          <div class="hstat-bar on"></div>
+          <div class="hstat-l">Parrish Properties</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hstat-n"><span>10</span><span class="hstat-s">yr</span></div>
+          <div class="hstat-bar on"></div>
+          <div class="hstat-l">In Business</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hstat-n"><span>5</span><span class="hstat-s">★</span></div>
+          <div class="hstat-bar on"></div>
+          <div class="hstat-l">Google Rating</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-deco">
+        <span class="hero-deco-n">500+</span>
+        <div class="hero-deco-label">Properties served in Parrish</div>
+      </div>
+      <div class="hero-trust">
+        <div class="hero-trust-item">
+          <div class="htrust-dot"></div>
+          <span class="htrust-text">Licensed & Fully Insured</span>
+          <div class="htrust-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div class="hero-trust-item">
+          <div class="htrust-dot"></div>
+          <span class="htrust-text">Same-Day Emergency Response</span>
+          <div class="htrust-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div class="hero-trust-item">
+          <div class="htrust-dot"></div>
+          <span class="htrust-text">Full Cleanup On Every Job</span>
+          <div class="htrust-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+        <div class="hero-trust-item">
+          <div class="htrust-dot"></div>
+          <span class="htrust-text">Straight Pricing, No Surprises</span>
+          <div class="htrust-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-clip">
+    <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
+      <path d="M0 0 L1280 24 L1280 36 L0 36 Z" fill="#c8965a"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════ TICKER ════════ -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ti"><div class="ti-chk">✓</div>Licensed & Insured<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Free Estimates<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Same-Day Available<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Local & Trusted<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Storm Response<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Full Cleanup Included<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Parrish, FL Based<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Licensed & Insured<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Free Estimates<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Same-Day Available<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Local & Trusted<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Storm Response<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Full Cleanup Included<div class="ti-sep"></div></div>
+    <div class="ti"><div class="ti-chk">✓</div>Parrish, FL Based<div class="ti-sep"></div></div>
+  </div>
+</div>
+<div class="bridge">
+  <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
+    <rect width="1280" height="36" fill="#c8965a"/>
+    <path d="M0 0 L1280 36 L0 36 Z" fill="#012a14"/>
+  </svg>
+</div>
+
+<!-- ════════ SERVICES — Tab panel ════════ -->
+<section class="services">
+  <div class="svc-bg-grain grain"></div>
+  <div class="svc-bg-orb"></div>
+  <div class="svc-layout">
+
+    <!-- Sidebar -->
+    <div class="svc-sidebar">
+      <div class="svc-sidebar-head">
+        <div class="svc-eye"><div class="svc-eye-dot"></div>What We Do</div>
+        <h2 class="svc-h2">Whatever<br>The Tree.<br><em>Whatever<br>The Job.</em></h2>
+      </div>
+
+      <nav class="svc-nav" id="svcNav">
+        <div class="svc-nav-item active sp1-nav" data-panel="0" onclick="switchPanel(0)">
+          <span class="svc-nav-n">01</span>
+          <span class="svc-nav-name">Tree Removal</span>
+          <span class="svc-nav-arrow">→</span>
+        </div>
+        <div class="svc-nav-item sp2-nav" data-panel="1" onclick="switchPanel(1)">
+          <span class="svc-nav-n">02</span>
+          <span class="svc-nav-name">Tree Trimming</span>
+          <span class="svc-nav-arrow">→</span>
+        </div>
+        <div class="svc-nav-item sp3-nav" data-panel="2" onclick="switchPanel(2)">
+          <span class="svc-nav-n">03</span>
+          <span class="svc-nav-name">Stump Grinding</span>
+          <span class="svc-nav-arrow">→</span>
+        </div>
+        <div class="svc-nav-item sp4-nav" data-panel="3" onclick="switchPanel(3)">
+          <span class="svc-nav-n">04</span>
+          <span class="svc-nav-name">Storm Cleanup</span>
+          <span class="svc-nav-arrow">→</span>
+        </div>
+      </nav>
+
+      <div class="svc-sidebar-foot">
+        <p class="svc-sidebar-copy">One local crew handles all four. First call to final cleanup, done right the first time.</p>
+        <div class="svc-sidebar-link">View all services →</div>
+      </div>
+    </div>
+
+    <!-- Panels -->
+    <div class="svc-panel-wrap">
+
+      <!-- Panel 1 — Tree Removal -->
+      <div class="svc-panel sp1 active" id="panel0">
+        <div class="sp-grain grain"></div>
+        <div class="sp-light"></div>
+        <div class="sp-orb"></div>
+        <div class="sp-edge"></div>
+        <div class="sp-top">
+          <div class="sp-tag"><div class="sp-tag-dot"></div>Same-Day Available</div>
+          <div class="sp-ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22v-7"/><path d="M9 15c-3-1-5-4-4-7 2 0 4 1 5 3"/><path d="M15 15c3-1 5-4 4-7-2 0-4 1-5 3"/><path d="M8 22h8"/>
+            </svg>
+          </div>
+        </div>
+        <div class="sp-mid">
+          <div class="sp-wm">500+</div>
+          <div class="sp-name">Tree<br>Removal</div>
+          <div class="sp-rule"></div>
+          <p class="sp-desc">Safe removal of any tree — any size, any access, any situation. Full cleanup included on every single job. Your yard left cleaner than we found it.</p>
+        </div>
+        <div class="sp-foot">
+          <div>
+            <div class="sp-stat-val">Full Cleanup</div>
+            <div class="sp-stat-lbl">Always included</div>
+          </div>
+          <div class="sp-cta">View Tree Removal →</div>
+        </div>
+      </div>
+
+      <!-- Panel 2 — Tree Trimming -->
+      <div class="svc-panel sp2" id="panel1">
+        <div class="sp-grain grain"></div>
+        <div class="sp-light"></div>
+        <div class="sp-orb"></div>
+        <div class="sp-edge"></div>
+        <div class="sp-top">
+          <div class="sp-tag"><div class="sp-tag-dot"></div>Cleanup Included</div>
+          <div class="sp-ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(130,210,70,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+              <path d="M20 4L8.12 15.88"/><path d="M14.47 14.48L20 20"/><path d="M8.12 8.12L12 12"/>
+            </svg>
+          </div>
+        </div>
+        <div class="sp-mid">
+          <div class="sp-wm">★ 5</div>
+          <div class="sp-name">Tree<br>Trimming</div>
+          <div class="sp-rule"></div>
+          <p class="sp-desc">Cleaner canopy, better clearance, healthier trees. Keeps your property looking sharp year-round while protecting your roof, fences, and power lines.</p>
+        </div>
+        <div class="sp-foot">
+          <div>
+            <div class="sp-stat-val">Year Round</div>
+            <div class="sp-stat-lbl">Seasonal & ongoing</div>
+          </div>
+          <div class="sp-cta">View Tree Trimming →</div>
+        </div>
+      </div>
+
+      <!-- Panel 3 — Stump Grinding -->
+      <div class="svc-panel sp3" id="panel2">
+        <div class="sp-grain grain"></div>
+        <div class="sp-light"></div>
+        <div class="sp-orb"></div>
+        <div class="sp-edge"></div>
+        <div class="sp-top">
+          <div class="sp-tag"><div class="sp-tag-dot"></div>Ground Below Grade</div>
+          <div class="sp-ico">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(210,145,55,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/>
+              <path d="M12 5V3M12 21v-2M5 12H3M21 12h-2M7.05 7.05L5.64 5.64M18.36 18.36l-1.41-1.41"/>
+            </svg>
+          </div>
+        </div>
+        <div class="sp-mid">
+          <div class="sp-wm">100%</div>
+          <div class="sp-name">Stump<br>Grinding</div>
+          <div class="sp-rule"></div>
+          <p class="sp-desc">Nothing left to trip on, mow around, or regrow. Ground below grade and the yard reclaimed. One visit, problem solved permanently.</p>
+        </div>
+        <div class="sp-foot">
+          <div>
+            <div class="sp-stat-val">100% Gone</div>
+            <div class="sp-stat-lbl">Below grade, no regrowth</div>
+          </div>
+          <div class="sp-cta">View Stump Grinding →</div>
+        </div>
+      </div>
+
+      <!-- Panel 4 — Storm Cleanup -->
+      <div class="svc-panel sp4" id="panel3">
+        <div class="sp-grain grain"></div>
+        <div class="sp-light"></div>
+        <div class="sp-orb"></div>
+        <div class="sp-edge"></div>
+        <div class="sp-top">
+          <div class="sp-tag"><div class="sp-tag-dot"></div>Emergency Response</div>
+          <div class="sp-ico" style="position:relative">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(120,175,255,.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+              <path d="M11 13l-2 3h4l-2 3"/>
+            </svg>
+            <div class="storm-dot"></div>
+          </div>
+        </div>
+        <div class="sp-mid">
+          <div class="sp-wm">24/7</div>
+          <div class="sp-name">Storm<br>Cleanup</div>
+          <div class="sp-rule"></div>
+          <p class="sp-desc">Fast response to any storm damage. Fallen limbs, blocked driveways, split trunks — we move quickly when you need it most. Same day when possible.</p>
+        </div>
+        <div class="sp-foot">
+          <div>
+            <div class="sp-stat-val">Same Day</div>
+            <div class="sp-stat-lbl">When possible</div>
+          </div>
+          <div class="sp-cta">View Storm Cleanup →</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="svc-clip">
+    <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
+      <path d="M0 36 L1280 0 L1280 36 Z" fill="#f2efe6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════ WHY CHOOSE US — Typographic rows ════════ -->
+<section class="why">
+  <div class="why-bg-orb"></div>
+  <div class="why-inner">
+
+    <div class="why-head">
+      <div>
+        <div class="why-eye"><div class="why-eye-dot"></div>Why Choose Us</div>
+        <h2 class="why-h2">Built Around<br><em>Your Property.</em></h2>
+      </div>
+      <p class="why-intro">Four reasons Parrish homeowners keep calling us back — and sending their neighbors.</p>
+    </div>
+
+    <div class="why-rows" id="whyRows">
+
+      <div class="why-row">
+        <div class="why-row-n">01</div>
+        <div class="why-row-stmt">Licensed &amp; <em>Fully Insured.</em></div>
+        <p class="why-row-detail">Every job covered. You're not liable for anything that happens on your property. We can show proof of insurance on request, and we've never had a claim in ten years.</p>
+      </div>
+
+      <div class="why-row">
+        <div class="why-row-n">02</div>
+        <div class="why-row-stmt">Shows Up <em>On Time.</em></div>
+        <p class="why-row-detail">We set a window and we keep it. No all-day waits, no last-minute cancellations. Your time matters as much as ours, and we treat it that way.</p>
+      </div>
+
+      <div class="why-row">
+        <div class="why-row-n">03</div>
+        <div class="why-row-stmt">Left Cleaner <em>Than We Found It.</em></div>
+        <p class="why-row-detail">Full debris removal on every single job. We rake, we clear, we check twice. The job isn't done until the site looks right — not good enough, actually right.</p>
+      </div>
+
+      <div class="why-row">
+        <div class="why-row-n">04</div>
+        <div class="why-row-stmt">Straight Pricing. <em>No Surprises.</em></div>
+        <p class="why-row-detail">What we quote is what you pay. No add-ons discovered halfway through, no invoice shock at the end. The full cost is agreed before a single cut.</p>
+      </div>
+
+    </div>
+
+    <!-- CTA band -->
+    <div class="why-cta-band">
+      <div class="why-cta-band-grain grain"></div>
+      <div class="why-cta-left">
+        <div class="why-cta-label">Free Estimate · No Obligation</div>
+        <div class="why-cta-stmt">Ready to Get<br><em>Started?</em></div>
+      </div>
+      <div class="why-cta-right">
+        <div class="why-cta-btn">Request a Free Estimate →</div>
+        <div class="why-cta-phone"><span>or call us:</span><strong>(941) 400-6500</strong></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="why-clip">
+    <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
+      <path d="M0 0 L1280 36 L0 36 Z" fill="#012a14"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════ PROCESS ════════ -->
+<section class="process">
+  <div class="proc-grain grain"></div>
+  <div class="proc-orb"></div>
+  <div class="proc-inner">
+
+    <div class="proc-head">
+      <div>
+        <div class="proc-eye"><div class="proc-eye-dot"></div>How It Works</div>
+        <h2 class="proc-h2">Simple Process.<br><em>No Guesswork.</em></h2>
+      </div>
+      <p class="proc-sub">Four steps from first call to clean yard. Most jobs are completed same day or next.</p>
+    </div>
+
+    <div class="proc-steps" id="procSteps">
+      <div class="proc-line">
+        <div class="proc-line-fill" id="procLine"></div>
+      </div>
+
+      <div class="proc-step">
+        <div class="proc-circle"><div class="proc-circle-inner">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/></svg>
+        </div></div>
+        <div class="proc-verb">Call.</div>
+        <div class="proc-title">You Call or Request</div>
+        <p class="proc-desc">Reach out by phone or the estimate form. Tell us what you're dealing with.</p>
+      </div>
+
+      <div class="proc-step">
+        <div class="proc-circle"><div class="proc-circle-inner">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div></div>
+        <div class="proc-verb">Snap.</div>
+        <div class="proc-title">Send a Photo</div>
+        <p class="proc-desc">A quick photo lets us assess remotely and give an accurate quote without a site visit.</p>
+      </div>
+
+      <div class="proc-step">
+        <div class="proc-circle"><div class="proc-circle-inner">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+        </div></div>
+        <div class="proc-verb">Quote.</div>
+        <div class="proc-title">We Send the Price</div>
+        <p class="proc-desc">Flat, clear, complete. You know exactly what you'll pay before anyone shows up.</p>
+      </div>
+
+      <div class="proc-step">
+        <div class="proc-circle"><div class="proc-circle-inner">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div></div>
+        <div class="proc-verb">Done.</div>
+        <div class="proc-title">We Handle Everything</div>
+        <p class="proc-desc">We show up, do the work, clean the site, and leave your yard better than we found it.</p>
+      </div>
+
+    </div>
+
+    <div class="proc-close-band">
+      <div class="proc-close-text">First call to clean yard. <em>Usually same day.</em></div>
+    </div>
+
+  </div>
+  <div class="proc-clip">
+    <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
+      <path d="M0 36 L1280 0 L1280 36 Z" fill="#f2efe6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════ CTA ════════ -->
+<section class="cta">
+  <div class="cta-card">
+    <div class="cta-grain grain"></div>
+    <div class="cta-deco-n">5★</div>
+    <div class="cta-left">
+      <div class="cta-eye">Free Estimate · No Obligation</div>
+      <h2 class="cta-h2">Need Help With<br><em>A Tree Project?</em></h2>
+      <p class="cta-body">Tell us about the tree and we'll get back to you fast — usually within a few hours. Most jobs are quoted same day.</p>
+    </div>
+    <div class="cta-right">
+      <div class="cta-btn">
+        <span class="cta-btn-txt">Request a Free Estimate</span>
+        <div class="cta-btn-ico">→</div>
+      </div>
+      <div class="cta-phone-row"><span>or call us directly:</span><strong>(941) 400-6500</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FAQ ════════ -->
+<section class="faq">
+  <div class="faq-clip-in">
+    <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
+      <path d="M0 0 L1280 36 L0 36 Z" fill="#012a14"/>
+    </svg>
+  </div>
+  <div class="faq-grain grain"></div>
+  <div class="faq-orb"></div>
+  <div class="faq-inner">
+
+    <div class="faq-left">
+      <div class="faq-eye"><div class="faq-eye-dot"></div>FAQ</div>
+      <h2 class="faq-h2">Got<br><em>Questions?</em></h2>
+      <p class="faq-intro">Everything Parrish homeowners ask before booking. Don't see yours? Just call.</p>
+      <div class="faq-direct">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/></svg>
+        Call Us Directly
+      </div>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q-row" onclick="toggleFaq(this)">
+          <div class="faq-q">Do you provide free estimates?</div>
+          <div class="faq-tog"></div>
+        </div>
+        <div class="faq-ans-wrap"><div class="faq-ans-inner">
+          <p class="faq-ans">Yes — always. Send us a photo of the tree and we'll get you a flat price back fast, usually within a few hours. No site visit required for most jobs. No obligation if you decide not to move forward.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q-row" onclick="toggleFaq(this)">
+          <div class="faq-q">How quickly can you come out?</div>
+          <div class="faq-tog"></div>
+        </div>
+        <div class="faq-ans-wrap"><div class="faq-ans-inner">
+          <p class="faq-ans">Most jobs are booked within 1–3 days. For storm damage or emergencies we aim to respond same day when possible. Call us directly for urgent requests.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q-row" onclick="toggleFaq(this)">
+          <div class="faq-q">Is cleanup included in the price?</div>
+          <div class="faq-tog"></div>
+        </div>
+        <div class="faq-ans-wrap"><div class="faq-ans-inner">
+          <p class="faq-ans">Always. Every branch, log, and piece of debris is hauled away as part of the job. We rake, we clear, we check. You come outside and it looks like it never happened.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q-row" onclick="toggleFaq(this)">
+          <div class="faq-q">Are you licensed and insured?</div>
+          <div class="faq-tog"></div>
+        </div>
+        <div class="faq-ans-wrap"><div class="faq-ans-inner">
+          <p class="faq-ans">Fully licensed and insured for every job. You're never liable for anything that happens on your property. We can provide proof of insurance on request.</p>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q-row" onclick="toggleFaq(this)">
+          <div class="faq-q">What areas do you serve?</div>
+          <div class="faq-tog"></div>
+        </div>
+        <div class="faq-ans-wrap"><div class="faq-ans-inner">
+          <p class="faq-ans">Based in Parrish, FL. We serve all of Manatee County including Ellenton, Palmetto, Bradenton, and surrounding communities. Call us if you're not sure — we'll tell you straight.</p>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="faq-clip">
+    <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
+      <path d="M0 36 L1280 0 L1280 36 Z" fill="#f2efe6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════ SERVICE AREA ════════ -->
+<section class="area">
+  <div class="area-orb"></div>
+  <div class="area-inner">
+
+    <div class="area-left">
+      <div class="area-eye"><div class="area-eye-dot"></div>Where We Work</div>
+      <h2 class="area-h2">Serving Parrish<br><em>& Beyond.</em></h2>
+      <p class="area-intro">Based in Parrish, FL. Covering Manatee County and surrounding communities since 2014.</p>
+      <div class="area-map">
+        <div class="town primary"><div class="town-pin"></div>Parrish</div>
+        <div class="town lg">Ellenton</div>
+        <div class="town-sep lg">·</div>
+        <div class="town lg">Palmetto</div>
+        <div class="town-sep lg">·</div>
+        <div class="town lg">Bradenton</div>
+        <div style="width:100%;height:6px"></div>
+        <div class="town md">Sarasota</div>
+        <div class="town-sep sm">·</div>
+        <div class="town md">Ruskin</div>
+        <div class="town-sep sm">·</div>
+        <div class="town md">Wimauma</div>
+        <div class="town-sep sm">·</div>
+        <div class="town sm">Sun City Center</div>
+        <div class="town-sep sm">·</div>
+        <div class="town sm">Terra Ceia</div>
+      </div>
+    </div>
+
+    <div class="area-right">
+      <div class="area-card">
+        <div class="area-card-grain grain"></div>
+        <div class="area-card-inner">
+          <div class="area-card-title">Check Your ZIP Code</div>
+          <div class="area-card-sub">See if we cover your area</div>
+          <div class="zip-row">
+            <input class="zip-input" type="text" placeholder="e.g. 34219" maxlength="5" inputmode="numeric"/>
+            <div class="zip-btn">Check →</div>
+          </div>
+          <div class="area-hr"></div>
+          <div class="area-contacts">
+            <div class="area-contact">
+              <div class="ac-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/></svg></div>
+              <div class="ac-text"><strong>Call Us</strong><span>(941) 400-6500</span></div>
+              <div class="ac-arr">→</div>
+            </div>
+            <div class="area-contact">
+              <div class="ac-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+              <div class="ac-text"><strong>Text Us</strong><span>(941) 400-6500</span></div>
+              <div class="ac-arr">→</div>
+            </div>
+            <div class="area-contact">
+              <div class="ac-ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div class="ac-text"><strong>Email Us</strong><span>info@parrishtreeremoval.com</span></div>
+              <div class="ac-arr">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="footer">
+  <div class="footer-stmt">
+    <div class="footer-stmt-text">Show up. Do the work. <em>Leave it right.</em></div>
+  </div>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">PARRISH <em>TREE</em></div>
+      <div class="footer-tag-line">Removal · Trimming · Grinding · Storm</div>
+      <p class="footer-desc">Local tree service done right. Serving Parrish, FL and Manatee County since 2014. Licensed, insured, and built on showing up when we say we will.</p>
+      <div class="footer-brand-tel">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="#c8965a"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/></svg>
+        (941) 400-6500
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-head">Services</div>
+      <div class="footer-col-links"><a>Tree Removal</a><a>Tree Trimming</a><a>Stump Grinding</a><a>Storm Cleanup</a></div>
+    </div>
+    <div>
+      <div class="footer-col-head">Company</div>
+      <div class="footer-col-links"><a>About Us</a><a>Service Area</a><a>Reviews</a><a>Contact</a></div>
+    </div>
+    <div>
+      <div class="footer-col-head">Contact</div>
+      <div class="footer-col-links"><a>(941) 400-6500</a><a>info@parrishtree.com</a><a>Parrish, FL 34219</a></div>
+    </div>
+    <div>
+      <div class="footer-col-head">Coverage</div>
+      <div class="footer-col-links"><a>Parrish, FL</a><a>Ellenton, FL</a><a>Palmetto, FL</a><a>Bradenton, FL</a><a>Sarasota, FL</a></div>
+    </div>
+  </div>
+  <div class="footer-meta">
+    <div class="footer-copy">© 2025 Parrish Tree Removal. All rights reserved.<span>Licensed & Insured · Manatee County, FL</span></div>
+    <div class="footer-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to top</div>
+  </div>
+</footer>
+
+<script>
+// ── Custom cursor ──
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx+'px';
+  cursor.style.top  = my+'px';
+});
+
+function animRing(){
+  rx += (mx-rx)*.12;
+  ry += (my-ry)*.12;
+  ring.style.left = rx+'px';
+  ring.style.top  = ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a,button,.hdr-cta,.svc-nav-item,.hero-btn,.why-cta-btn,.cta-btn,.sp-cta,.faq-q-row,.area-contact,.zip-btn,.footer-top').forEach(el => {
+  el.addEventListener('mouseenter',()=>{cursor.classList.add('expanded');ring.classList.add('expanded');});
+  el.addEventListener('mouseleave',()=>{cursor.classList.remove('expanded');ring.classList.remove('expanded');});
+});
+
+// ── Header scroll ──
+const hdr = document.getElementById('hdr');
+window.addEventListener('scroll',()=>{
+  hdr.classList.toggle('scrolled', window.scrollY > 60);
+},{passive:true});
+
+// ── Services panel switcher ──
+const panels   = document.querySelectorAll('.svc-panel');
+const navItems = document.querySelectorAll('.svc-nav-item');
+const panelColors = [
+  'rgba(200,150,90,1)',       // gold
+  'rgba(130,210,70,1)',       // lime
+  'rgba(210,145,55,1)',       // amber
+  'rgba(110,170,255,1)',      // blue
+];
+
+window.switchPanel = function(idx) {
+  panels.forEach((p,i)   => p.classList.toggle('active', i===idx));
+  navItems.forEach((n,i) => {
+    n.classList.toggle('active', i===idx);
+    n.style.setProperty('--accent', panelColors[i]);
+  });
+};
+
+// Set CSS var for nav accent bars
+navItems.forEach((n,i)=>{
+  n.style.setProperty('--accent', panelColors[i]);
+});
+
+// Make nav::before use the accent
+document.querySelectorAll('.svc-nav-item').forEach((item,i)=>{
+  const style = document.createElement('style');
+  const color = panelColors[i];
+  style.textContent = `.svc-nav-item:nth-child(${i+1}).active::before{background:linear-gradient(180deg,${color},rgba(${color.slice(5,-1)},.15));}`;
+  document.head.appendChild(style);
+});
+
+// ── FAQ accordion ──
+window.toggleFaq = function(row) {
+  const item = row.closest('.faq-item');
+  const open = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!open) item.classList.add('open');
+};
+
+// ── IntersectionObserver for animations ──
+const ioOpts = { threshold: 0.2 };
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},ioOpts);
+
+document.querySelectorAll('.why-row,.proc-step').forEach(el=>io.observe(el));
+
+// Process line
+const procLineEl = document.getElementById('procLine');
+if(procLineEl){
+  const lineObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){procLineEl.classList.add('on');lineObs.unobserve(e.target);}
+    });
+  },{threshold:0.3});
+  lineObs.observe(procLineEl);
+}
+</script>
+</body>
+</html>

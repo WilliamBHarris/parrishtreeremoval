@@ -118,7 +118,6 @@ const panelThemes = [
                 aria-controls="estimate-modal"
               >
                 <span class="p-btn-txt">{scenario.ctaLabel}</span>
-                <div class="p-btn-ico">→</div>
               </button>
             </div>
           </div>
@@ -471,6 +470,7 @@ const panelThemes = [
     background: rgba(255,255,255,0.12);
     position: relative;
     overflow: hidden;
+    transition: width 300ms ease;
   }
 
   .when-scroll-dot-fill {
@@ -503,13 +503,15 @@ const panelThemes = [
   .when-track {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: 84vw;
+    grid-auto-columns: 80vw;
     gap: 14px;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 0 20px;
+    padding: 0 calc(50vw - 40vw);
+    scroll-padding-left: calc(50vw - 40vw);
+    scroll-padding-right: calc(50vw - 40vw);
     scrollbar-width: none;
   }
 
@@ -518,6 +520,7 @@ const panelThemes = [
   }
 
   .panel {
+    --svc-angle: 0deg;
     height: 410px;
     width: 100%;
     scroll-snap-align: start;
@@ -531,19 +534,47 @@ const panelThemes = [
     border-radius: 28px;
     opacity: 0.7;
     transform: scale(0.98);
-    transition: opacity 260ms ease, transform 260ms ease;
+    transition: opacity 260ms ease, transform 260ms ease, box-shadow 300ms ease, filter 300ms ease;
+    filter: brightness(0.8);
   }
 
   .panel.active {
     opacity: 1;
     transform: scale(1);
+    filter: brightness(1);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 29px;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 400ms ease;
+    pointer-events: none;
+  }
+
+  .panel::after {
+    content: '';
+    position: absolute;
+    inset: 1.5px;
+    border-radius: 27px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .panel.active::before {
+    opacity: 1;
+    animation: svcBorderSpin 10s linear infinite;
   }
 
   .p-grain {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     opacity: 0.055;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 160px;
@@ -553,7 +584,7 @@ const panelThemes = [
     position: absolute;
     inset: 0;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     animation: lp 9s ease-in-out infinite alternate;
     will-change: opacity;
   }
@@ -562,7 +593,7 @@ const panelThemes = [
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1;
     will-change: transform;
   }
 
@@ -573,6 +604,7 @@ const panelThemes = [
     right: 0;
     height: 2px;
     z-index: 3;
+    display: none;
   }
 
   .p-top {
@@ -640,21 +672,23 @@ const panelThemes = [
     flex: 1;
     display: flex;
     align-items: center;
+    min-height: 0;
   }
 
   .p-q {
     font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-    font-size: 56px;
+    font-size: 40px;
     font-weight: 800;
     font-style: italic;
     text-transform: uppercase;
-    line-height: 0.84;
+    line-height: 0.88;
     letter-spacing: -0.025em;
     color: #fff;
     opacity: 0;
     opacity: 0.72;
     transform: translateY(6px);
     transition: opacity 260ms ease, transform 260ms ease;
+    max-width: 100%;
   }
 
   .panel.active .p-q {
@@ -669,6 +703,7 @@ const panelThemes = [
   .p-bottom {
     position: relative;
     z-index: 2;
+    min-height: 0;
   }
 
   .p-sweep {
@@ -686,8 +721,8 @@ const panelThemes = [
   .p-answer {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.84);
-    line-height: 1.68;
-    margin-bottom: 20px;
+    line-height: 1.55;
+    margin-bottom: 14px;
     opacity: 0.72;
     transform: translateY(4px);
     overflow-wrap: anywhere;
@@ -702,12 +737,11 @@ const panelThemes = [
   .p-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
     background: linear-gradient(180deg, #d4a060 0%, #b07840 100%);
     color: #fff;
     font-size: 13px;
     font-weight: 800;
-    padding: 13px 20px;
+    padding: 10px 14px;
     border-radius: 12px;
     position: relative;
     overflow: hidden;
@@ -736,21 +770,18 @@ const panelThemes = [
   .p-btn-txt {
     position: relative;
     z-index: 1;
-  }
-
-  .p-btn-ico {
-    width: 24px;
-    height: 24px;
-    border-radius: 7px;
-    background: rgba(255, 255, 255, 0.18);
-    display: grid;
-    place-items: center;
-    font-size: 12px;
-    position: relative;
-    z-index: 1;
+    white-space: nowrap;
   }
 
   .p1 {
+    background: linear-gradient(165deg, #101e07 0%, #070f04 55%, #0c1806 100%);
+  }
+
+  .p1::before {
+    background: conic-gradient(from var(--svc-angle), transparent 0deg, #c8965a 60deg, transparent 120deg);
+  }
+
+  .p1::after {
     background: linear-gradient(165deg, #101e07 0%, #070f04 55%, #0c1806 100%);
   }
 
@@ -797,6 +828,14 @@ const panelThemes = [
     background: linear-gradient(165deg, #081a12 0%, #040d09 55%, #0a1610 100%);
   }
 
+  .p2::before {
+    background: conic-gradient(from var(--svc-angle), transparent 0deg, rgba(45, 175, 125, 0.9) 60deg, transparent 120deg);
+  }
+
+  .p2::after {
+    background: linear-gradient(165deg, #081a12 0%, #040d09 55%, #0a1610 100%);
+  }
+
   .p2 .p-light {
     background:
       radial-gradient(ellipse 75% 60% at -10% 45%, rgba(35, 165, 115, 0.28) 0%, rgba(25, 145, 100, 0.08) 45%, transparent 70%),
@@ -840,6 +879,14 @@ const panelThemes = [
     background: linear-gradient(165deg, #070b18 0%, #040610 55%, #060914 100%);
   }
 
+  .p3::before {
+    background: conic-gradient(from var(--svc-angle), transparent 0deg, rgba(90, 140, 255, 0.9) 60deg, transparent 120deg);
+  }
+
+  .p3::after {
+    background: linear-gradient(165deg, #070b18 0%, #040610 55%, #060914 100%);
+  }
+
   .p3 .p-light {
     background:
       radial-gradient(ellipse 70% 55% at 50% -22%, rgba(90, 140, 255, 0.38) 0%, rgba(65, 115, 240, 0.12) 40%, transparent 68%),
@@ -880,6 +927,14 @@ const panelThemes = [
   }
 
   .p4 {
+    background: linear-gradient(165deg, #1a1308 0%, #0e0a04 55%, #160f06 100%);
+  }
+
+  .p4::before {
+    background: conic-gradient(from var(--svc-angle), transparent 0deg, rgba(195, 130, 38, 0.9) 60deg, transparent 120deg);
+  }
+
+  .p4::after {
     background: linear-gradient(165deg, #1a1308 0%, #0e0a04 55%, #160f06 100%);
   }
 

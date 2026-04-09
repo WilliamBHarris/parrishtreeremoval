@@ -16,6 +16,7 @@ interface Props {
   ogImage?: string;
   robots?: string;
   showSiteChrome?: boolean;
+  bodyClass?: string;
   criticalImage?: {
     src: string;
     srcSet?: string;
@@ -31,6 +32,7 @@ const {
   ogImage = brand.assets.ogImage,
   robots = 'index,follow,max-image-preview:large',
   showSiteChrome = true,
+  bodyClass = '',
   criticalImage,
 } = Astro.props;
 
@@ -112,6 +114,7 @@ const schemaList = [
 ];
 const bodyClasses = [
   showSiteChrome ? 'layout-site-chrome' : 'layout-no-site-chrome',
+  bodyClass,
   `template-color-${brand.presets.colorTemplate}`,
   `template-section-title-${brand.presets.sectionTitleStyle}`,
   `template-card-surface-${brand.presets.cardSurface}`,

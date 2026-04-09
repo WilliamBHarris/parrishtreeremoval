@@ -62,7 +62,7 @@ const svmCardHintBySlug: Record<string, string> = {
 };
 
 const usePremiumServicesSection = pageId === 'home' || pageId === 'services';
-const showLegacyServicesSection = pageId !== 'services';
+const showLegacyServicesSection = String(pageId).startsWith('preview');
 
 const homeServicesCards = usePremiumServicesSection
   ? services.slice(0, 4).map((service) => ({
@@ -727,9 +727,6 @@ const homeUltimateCardMicroBySlug: Record<string, string> = {
 
 <script is:inline>
   (function () {
-    var mobileQuery = window.matchMedia('(max-width: 767px)');
-    if (!mobileQuery.matches) return;
-
     var track = document.querySelector('[data-svc-track]');
     if (!track) return;
 

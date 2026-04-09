@@ -4770,13 +4770,6 @@ body.template-section-title-boxed-label .clone-kicker::after {
   height: 36px;
 }
 
-/* Desktop: hide svm-home entirely */
-@media (min-width: 900px) {
-  .svm-home {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .svm-eyebrow-dot { animation: none; opacity: 0.8; }
   .svm-header,
@@ -7859,5 +7852,100 @@ select:focus-visible {
   .estimate-modal-sheet {
     border-radius: 28px;
     min-height: 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .site-header:not(.site-header--preview) .desktop-nav,
+  .site-header:not(.site-header--preview) .desktop-call-link,
+  .site-header:not(.site-header--preview) .desktop-estimate-link {
+    display: none !important;
+  }
+
+  .site-header:not(.site-header--preview) .sticky-call-fab,
+  .site-header:not(.site-header--preview) .menu-toggle {
+    display: inline-flex !important;
+  }
+
+  .page-hero.premium-mobile-hero .hm-bg,
+  .page-hero.premium-mobile-hero .hm-orb,
+  .page-hero.premium-mobile-hero .hm-p,
+  .page-hero.premium-mobile-hero .hm-panel,
+  .page-hero.premium-mobile-hero .hm-clip,
+  .page-hero.premium-mobile-hero .hm-ticker-wrap,
+  .page-hero.premium-mobile-hero .hm-bridge {
+    display: block !important;
+  }
+
+  .page-hero.premium-mobile-hero .hero-copy,
+  .page-hero.premium-mobile-hero .hero-outline-copy,
+  .page-hero.premium-mobile-hero .hero-accent-image,
+  .page-hero.premium-mobile-hero .hero-cta-wrap,
+  .page-hero.premium-mobile-hero .hero-subcopy-desktop,
+  .page-hero.premium-mobile-hero .hero-title-desktop {
+    display: none !important;
+  }
+}
+
+@media (min-width: 980px) {
+  .page-shell[data-page] .section-desktop-split {
+    display: block !important;
+    grid-template-columns: none !important;
+    column-gap: 0 !important;
+    row-gap: 0 !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split [data-block="heading"] {
+    display: block !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split .section-divider-title,
+  .page-shell[data-page] .section-desktop-split [data-block="heading"] .section-lead,
+  .page-shell[data-page] .section-desktop-split [data-block="heading"] .clone-intro,
+  .page-shell[data-page] .section-desktop-split [data-block="intro"],
+  .page-shell[data-page] .section-desktop-split [data-block="cards"],
+  .page-shell[data-page] .section-desktop-split [data-block="items"],
+  .page-shell[data-page] .section-desktop-split [data-block="links"],
+  .page-shell[data-page] .section-desktop-split [data-block="form"],
+  .page-shell[data-page] .section-desktop-split [data-block="content"],
+  .page-shell[data-page] .section-desktop-split [data-block="map"] {
+    grid-row: auto !important;
+    grid-column: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    justify-self: stretch !important;
+    align-self: auto !important;
+    margin: 0 !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split [data-block="heading"] .section-desktop-lead,
+  .page-shell[data-page] .estimate-cta-card .section-desktop-lead {
+    display: none !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split [data-block="heading"] .section-mobile-lead,
+  .page-shell[data-page] .estimate-cta-card .section-mobile-lead {
+    display: block !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split .service-card-copy-mobile {
+    display: inline !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split .service-card-copy-desktop {
+    display: none !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split .services-variant-grid-cards,
+  .page-shell[data-page] .section-desktop-split .clone-value-grid,
+  .page-shell[data-page] .section-desktop-split .process-variant-stacked-steps,
+  .page-shell[data-page] .section-desktop-split[data-section="related-services"] [data-related-services-variant="grid-links"],
+  .page-shell[data-page] .section-desktop-split[data-section="related-services"] [data-related-services-variant="card-links"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  .page-shell[data-page] .section-desktop-split .subpage-service-button {
+    width: auto !important;
+    max-width: 100% !important;
   }
 }
