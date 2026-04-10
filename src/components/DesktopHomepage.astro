@@ -333,62 +333,307 @@ const renderIcon = (kind: string, stroke: string) => {
   </div>
 
   <section class="services" id="desktop-home-services">
-    <div class="svc-bg-grain grain"></div>
-    <div class="svc-bg-orb"></div>
-    <div class="svc-layout">
-      <div class="svc-sidebar">
-        <div class="svc-sidebar-head">
-          <div class="svc-eye"><div class="svc-eye-dot"></div>What We Do</div>
-          <h2 class="svc-h2">Whatever<br/>The Tree.<br/><em>Whatever<br/>The Job.</em></h2>
+    <div class="svc-grain"></div>
+    <div class="svc-bg-light"></div>
+
+    <div class="svc-hdr">
+      <div>
+        <div class="svc-eye"><div class="svc-eye-dot"></div>What We Do</div>
+        <h2 class="svc-h2">Whatever The Tree.<br/><em>Whatever The Job.</em></h2>
+      </div>
+      <div class="svc-hdr-right">
+        <p class="svc-intro">Four services. One local crew. First call to final cleanup.</p>
+        <div class="svc-hint">
+          <div class="svc-hint-line"></div>
+          Hover a service
         </div>
-        <nav class="svc-nav" data-svc-nav>
-          {servicePanels.map((panel, index) => (
-            <button type="button" class:list={['svc-nav-item', panel.navClass, index === 0 && 'active']} data-panel-trigger={index}>
-              <span class="svc-nav-n">{panel.navNumber}</span>
-              <span class="svc-nav-name">{panel.navName}</span>
-              <span class="svc-nav-arrow">→</span>
-            </button>
-          ))}
-        </nav>
-        <div class="svc-sidebar-foot">
-          <p class="svc-sidebar-copy">One local crew handles all four. First call to final cleanup, done right the first time.</p>
-          <a class="svc-sidebar-link" href="/services">View all services →</a>
+      </div>
+    </div>
+
+    <div class="svc-body" id="svcBody">
+      <svg class="connector-svg" id="connSvg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow-gold"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-lime"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-amber"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="glow-blue"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+      </svg>
+
+      <div class="svc-list" id="svcList">
+        <div class="svc-row" id="row0" data-svc-row data-idx="0">
+          <div class="svc-row-n">01</div>
+          <span class="svc-row-name">Tree<br/><em>Removal</em></span>
+          <div class="svc-row-underline s1-ul"></div>
+        </div>
+        <div class="svc-row" id="row1" data-svc-row data-idx="1">
+          <div class="svc-row-n">02</div>
+          <span class="svc-row-name">Tree<br/><em>Trimming</em></span>
+          <div class="svc-row-underline s2-ul"></div>
+        </div>
+        <div class="svc-row" id="row2" data-svc-row data-idx="2">
+          <div class="svc-row-n">03</div>
+          <span class="svc-row-name">Stump<br/><em>Grinding</em></span>
+          <div class="svc-row-underline s3-ul"></div>
+        </div>
+        <div class="svc-row" id="row3" data-svc-row data-idx="3">
+          <div class="svc-row-n">04</div>
+          <span class="svc-row-name">Storm<br/><em>Cleanup</em></span>
+          <div class="svc-row-underline s4-ul"></div>
         </div>
       </div>
 
-      <div class="svc-panel-wrap">
-        {servicePanels.map((panel, index) => (
-          <div class:list={['svc-panel', panel.panelClass, index === 0 && 'active']} data-panel={index}>
-            <div class="sp-grain grain"></div>
-            <div class="sp-light"></div>
-            <div class="sp-orb"></div>
-            <div class="sp-edge"></div>
-            <div class="sp-top">
-              <div class="sp-tag"><div class="sp-tag-dot"></div>{panel.tag}</div>
-              <div class="sp-ico" set:html={renderIcon(panel.icon, panel.iconStroke)}></div>
-            </div>
-            <div class="sp-mid">
-              <div class="sp-wm">{panel.watermark}</div>
-              <div class="sp-name">{panel.nameLines[0]}<br/>{panel.nameLines[1]}</div>
-              <div class="sp-rule"></div>
-              <p class="sp-desc">{panel.desc}</p>
-            </div>
-            <div class="sp-foot">
-              <div>
-                <div class="sp-stat-val">{panel.statValue}</div>
-                <div class="sp-stat-lbl">{panel.statLabel}</div>
+      <div class="svc-card-col">
+        <div class="svc-card s1-card" id="theCard">
+          <div class="card-visual">
+            <div class="card-visual-panel active" id="vis0">
+              <div class="cv-bg s1-bg"></div>
+              <div class="cv-light s1-light"></div>
+              <div class="cv-orb s1-orb"></div>
+              <div class="cv-grain"></div>
+              <div class="cv-art">
+                <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="150" y="148" width="20" height="60" rx="3" fill="rgba(200,150,90,0.25)"/>
+                  <path d="M150 200 Q130 210 110 205" stroke="rgba(200,150,90,0.15)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <path d="M170 200 Q190 210 210 205" stroke="rgba(200,150,90,0.15)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <circle cx="160" cy="110" r="88" stroke="rgba(200,150,90,0.08)" stroke-width="1.5" fill="rgba(1,70,28,0.3)"/>
+                  <circle cx="160" cy="110" r="68" stroke="rgba(200,150,90,0.1)" stroke-width="1" fill="rgba(1,80,30,0.2)"/>
+                  <circle cx="160" cy="110" r="50" stroke="rgba(200,150,90,0.14)" stroke-width="1.5" fill="rgba(1,90,32,0.25)"/>
+                  <g opacity="0.35" stroke="rgba(200,150,90,0.6)" stroke-width="1.5" stroke-linecap="round">
+                    <line x1="160" y1="148" x2="160" y2="60"/>
+                    <line x1="160" y1="100" x2="100" y2="70"/>
+                    <line x1="160" y1="90" x2="220" y2="65"/>
+                    <line x1="160" y1="115" x2="88" y2="105"/>
+                    <line x1="160" y1="115" x2="232" y2="108"/>
+                    <line x1="160" y1="125" x2="108" y2="148"/>
+                    <line x1="160" y1="125" x2="212" y2="148"/>
+                  </g>
+                  <g opacity="0.5">
+                    <circle cx="100" cy="68" r="3" fill="#c8965a"/>
+                    <circle cx="88" cy="102" r="2.5" fill="#c8965a"/>
+                    <circle cx="220" cy="64" r="3" fill="#c8965a"/>
+                    <circle cx="232" cy="106" r="2.5" fill="#c8965a"/>
+                    <circle cx="160" cy="58" r="3" fill="#c8965a"/>
+                    <circle cx="108" cy="150" r="2" fill="#c8965a"/>
+                    <circle cx="212" cy="150" r="2" fill="#c8965a"/>
+                  </g>
+                  <g filter="url(#glow-gold)">
+                    <line x1="72" y1="155" x2="248" y2="75" stroke="rgba(200,150,90,0.9)" stroke-width="1.5" stroke-dasharray="6 4" style="animation:pulse 2.5s ease-in-out infinite"/>
+                    <polygon points="248,75 238,80 240,68" fill="rgba(200,150,90,0.7)"/>
+                  </g>
+                  <text x="50%" y="75%" text-anchor="middle" dominant-baseline="middle" font-family="'Barlow Condensed'" font-size="120" font-weight="800" fill="rgba(200,150,90,0.045)" letter-spacing="-4">500+</text>
+                </svg>
               </div>
-              <a class="sp-cta" href={panel.href}>{panel.cta}</a>
             </div>
-            {panel.icon === 'storm' && <div class="storm-dot"></div>}
+
+            <div class="card-visual-panel" id="vis1">
+              <div class="cv-bg s2-bg"></div>
+              <div class="cv-light s2-light"></div>
+              <div class="cv-orb s2-orb"></div>
+              <div class="cv-grain"></div>
+              <div class="cv-art">
+                <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="152" y="155" width="16" height="55" rx="3" fill="rgba(130,210,70,0.2)"/>
+                  <circle cx="160" cy="100" r="85" stroke="rgba(130,210,70,0.07)" stroke-width="1" fill="rgba(20,60,8,0.35)"/>
+                  <circle cx="160" cy="100" r="65" stroke="rgba(130,210,70,0.1)" stroke-width="1.5" fill="rgba(25,70,10,0.3)"/>
+                  <circle cx="160" cy="100" r="46" stroke="rgba(130,210,70,0.14)" stroke-width="1.5" fill="rgba(28,80,10,0.28)"/>
+                  <g stroke="rgba(130,210,70,0.7)" stroke-width="1.5" stroke-linecap="round" filter="url(#glow-lime)">
+                    <path d="M96 58 Q160 30 224 58" fill="none" stroke-dasharray="3 6"/>
+                    <line x1="76" y1="100" x2="90" y2="100"/>
+                    <line x1="244" y1="100" x2="230" y2="100"/>
+                    <line x1="96" y1="58" x2="82" y2="44"/>
+                    <line x1="224" y1="58" x2="238" y2="44"/>
+                  </g>
+                  <g opacity="0.25" stroke="rgba(130,210,70,0.5)" stroke-width="1" stroke-linecap="round">
+                    <line x1="160" y1="100" x2="160" y2="36"/>
+                    <line x1="160" y1="100" x2="214" y2="68"/>
+                    <line x1="160" y1="100" x2="214" y2="132"/>
+                    <line x1="160" y1="100" x2="160" y2="164"/>
+                    <line x1="160" y1="100" x2="106" y2="132"/>
+                    <line x1="160" y1="100" x2="106" y2="68"/>
+                  </g>
+                  <g fill="rgba(130,210,70,0.8)">
+                    <circle cx="82" cy="44" r="3"/>
+                    <circle cx="238" cy="44" r="3"/>
+                    <circle cx="76" cy="100" r="2.5"/>
+                    <circle cx="244" cy="100" r="2.5"/>
+                  </g>
+                  <g transform="translate(145,22)" stroke="rgba(130,210,70,0.55)" stroke-width="1.5" stroke-linecap="round" fill="none">
+                    <circle cx="4" cy="4" r="4"/>
+                    <circle cx="26" cy="4" r="4"/>
+                    <line x1="8" y1="6" x2="22" y2="18"/>
+                    <line x1="22" y1="6" x2="8" y2="18"/>
+                  </g>
+                  <text x="50%" y="72%" text-anchor="middle" dominant-baseline="middle" font-family="'Barlow Condensed'" font-size="110" font-weight="800" fill="rgba(130,210,70,0.045)" letter-spacing="-3">5★</text>
+                </svg>
+              </div>
+            </div>
+
+            <div class="card-visual-panel" id="vis2">
+              <div class="cv-bg s3-bg"></div>
+              <div class="cv-light s3-light"></div>
+              <div class="cv-orb s3-orb"></div>
+              <div class="cv-grain"></div>
+              <div class="cv-art">
+                <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="160" cy="175" rx="90" ry="14" fill="rgba(0,0,0,0.3)"/>
+                  <circle cx="160" cy="106" r="88" stroke="rgba(210,145,55,0.07)" stroke-width="2" fill="rgba(42,25,4,0.5)"/>
+                  <circle cx="161" cy="105" r="74" stroke="rgba(210,145,55,0.09)" stroke-width="2" fill="rgba(36,20,3,0.45)"/>
+                  <circle cx="159" cy="107" r="60" stroke="rgba(210,145,55,0.11)" stroke-width="2" fill="rgba(30,16,2,0.45)"/>
+                  <circle cx="161" cy="105" r="47" stroke="rgba(210,145,55,0.14)" stroke-width="1.5" fill="rgba(24,13,2,0.45)"/>
+                  <circle cx="160" cy="106" r="35" stroke="rgba(210,145,55,0.18)" stroke-width="1.5" fill="rgba(20,10,2,0.5)"/>
+                  <circle cx="160" cy="105" r="23" stroke="rgba(210,145,55,0.22)" stroke-width="1.5" fill="rgba(16,8,1,0.55)"/>
+                  <circle cx="160" cy="106" r="12" stroke="rgba(210,145,55,0.28)" stroke-width="1.5" fill="rgba(12,6,1,0.6)"/>
+                  <circle cx="160" cy="106" r="4" fill="rgba(210,145,55,0.5)"/>
+                  <g stroke="rgba(210,145,55,0.2)" stroke-width="1" stroke-linecap="round" opacity="0.6">
+                    <line x1="160" y1="18" x2="160" y2="106"/>
+                    <line x1="238" y1="50" x2="168" y2="100"/>
+                    <line x1="248" y1="130" x2="172" y2="108"/>
+                    <line x1="200" y1="186" x2="164" y2="114"/>
+                    <line x1="120" y1="186" x2="156" y2="114"/>
+                    <line x1="72" y1="130" x2="148" y2="108"/>
+                    <line x1="82" y1="50" x2="152" y2="100"/>
+                  </g>
+                  <circle cx="160" cy="106" r="92" stroke="rgba(210,145,55,0.35)" stroke-width="1.5" stroke-dasharray="4 8" fill="none" style="animation:spinSlowCW 12s linear infinite;transform-origin:160px 106px;"/>
+                  <g filter="url(#glow-amber)">
+                    <path d="M160 14 L155 24 L165 24 Z" fill="rgba(210,145,55,0.7)"/>
+                    <path d="M246 106 L236 101 L236 111 Z" fill="rgba(210,145,55,0.7)"/>
+                  </g>
+                  <text x="50%" y="76%" text-anchor="middle" dominant-baseline="middle" font-family="'Barlow Condensed'" font-size="110" font-weight="800" fill="rgba(210,145,55,0.05)" letter-spacing="-3">100%</text>
+                </svg>
+              </div>
+            </div>
+
+            <div class="card-visual-panel" id="vis3">
+              <div class="cv-bg s4-bg"></div>
+              <div class="cv-light s4-light"></div>
+              <div class="cv-orb s4-orb"></div>
+              <div class="cv-grain"></div>
+              <div class="cv-art">
+                <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="160" cy="78" rx="100" ry="44" fill="rgba(74,143,217,0.12)" stroke="rgba(74,143,217,0.18)" stroke-width="1.5"/>
+                  <ellipse cx="128" cy="68" rx="52" ry="36" fill="rgba(74,143,217,0.14)" stroke="rgba(74,143,217,0.14)" stroke-width="1"/>
+                  <ellipse cx="192" cy="72" rx="48" ry="32" fill="rgba(74,143,217,0.14)" stroke="rgba(74,143,217,0.14)" stroke-width="1"/>
+                  <ellipse cx="160" cy="60" rx="60" ry="34" fill="rgba(74,143,217,0.16)" stroke="rgba(74,143,217,0.2)" stroke-width="1"/>
+                  <g opacity="0.35" stroke="rgba(74,143,217,0.6)" stroke-width="1.5" stroke-linecap="round">
+                    <line x1="90" y1="125" x2="86" y2="138"/>
+                    <line x1="108" y1="132" x2="104" y2="145"/>
+                    <line x1="126" y1="120" x2="122" y2="133"/>
+                    <line x1="144" y1="138" x2="140" y2="151"/>
+                    <line x1="178" y1="124" x2="174" y2="137"/>
+                    <line x1="196" y1="136" x2="192" y2="149"/>
+                    <line x1="214" y1="120" x2="210" y2="133"/>
+                    <line x1="232" y1="130" x2="228" y2="143"/>
+                    <line x1="99" y1="150" x2="95" y2="163"/>
+                    <line x1="117" y1="158" x2="113" y2="171"/>
+                    <line x1="205" y1="152" x2="201" y2="165"/>
+                    <line x1="223" y1="148" x2="219" y2="161"/>
+                  </g>
+                  <g filter="url(#glow-blue)">
+                    <path d="M172 88 L148 132 L162 132 L138 180 L182 124 L168 124 Z" fill="rgba(110,170,255,0.85)" stroke="rgba(140,190,255,0.9)" stroke-width="1" style="animation:pulse 2.2s ease-in-out infinite"/>
+                  </g>
+                  <path d="M218 90 L206 118 L214 118 L198 148 L222 112 L214 112 Z" fill="rgba(74,143,217,0.4)" stroke="rgba(110,170,255,0.5)" stroke-width="1" style="animation:pulse 2.2s ease-in-out infinite 0.6s"/>
+                  <g opacity="0.3">
+                    <path d="M52 182 Q100 170 148 176 Q180 180 220 172 Q250 166 272 174" stroke="rgba(74,143,217,0.5)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <rect x="130" y="168" width="60" height="10" rx="5" fill="rgba(74,143,217,0.2)" transform="rotate(-5,160,173)"/>
+                  </g>
+                  <circle cx="160" cy="135" r="28" stroke="rgba(74,143,217,0.15)" stroke-width="1.5" fill="none" style="animation:pulse 1.8s ease-in-out infinite"/>
+                  <circle cx="160" cy="135" r="42" stroke="rgba(74,143,217,0.08)" stroke-width="1" fill="none" style="animation:pulse 1.8s ease-in-out infinite 0.4s"/>
+                  <text x="50%" y="72%" text-anchor="middle" dominant-baseline="middle" font-family="'Barlow Condensed'" font-size="110" font-weight="800" fill="rgba(74,143,217,0.055)" letter-spacing="-3">24/7</text>
+                </svg>
+              </div>
+            </div>
           </div>
-        ))}
+
+          <div class="card-content">
+            <div class="card-content-panel active" id="cc0">
+              <div class="cc-top">
+                <div class="cc-tag s1-tag"><div class="cc-tag-dot pulse" style="background:#e8a020;color:rgba(232,160,32,.4);animation:stP 2s ease-in-out infinite;"></div>Same-Day Available</div>
+                <div class="cc-ico s1-ico">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22v-7"/><path d="M9 15c-3-1-5-4-4-7 2 0 4 1 5 3"/><path d="M15 15c3-1 5-4 4-7-2 0-4 1-5 3"/><path d="M8 22h8"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="cc-name">Tree Removal</div>
+              <div class="cc-rule s1-rule" style="width:48px"></div>
+              <p class="cc-desc">Safe removal of any tree — any size, any access. Full cleanup included on every job. Your yard left cleaner than we found it.</p>
+              <div class="cc-foot">
+                <div><div class="cc-stat-val s1-val">500+ Jobs</div><div class="cc-stat-lbl">Completed in Parrish</div></div>
+                <a class="cc-cta" href="/tree-removal"><span>View Tree Removal</span><div class="cc-cta-ico">→</div></a>
+              </div>
+            </div>
+
+            <div class="card-content-panel" id="cc1">
+              <div class="cc-top">
+                <div class="cc-tag s2-tag"><div style="width:5px;height:5px;border-radius:50%;background:rgba(130,210,70,.9);flex-shrink:0;"></div>Cleanup Included</div>
+                <div class="cc-ico s2-ico">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(130,210,70,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+                    <path d="M20 4L8.12 15.88"/><path d="M14.47 14.48L20 20"/><path d="M8.12 8.12L12 12"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="cc-name">Tree Trimming</div>
+              <div class="cc-rule s2-rule" style="width:48px"></div>
+              <p class="cc-desc">Cleaner canopy, better clearance, healthier trees. Protects your roof and fences. Year-round sharp.</p>
+              <div class="cc-foot">
+                <div><div class="cc-stat-val s2-val">Year Round</div><div class="cc-stat-lbl">Seasonal & maintenance</div></div>
+                <a class="cc-cta" href="/tree-trimming"><span>View Tree Trimming</span><div class="cc-cta-ico">→</div></a>
+              </div>
+            </div>
+
+            <div class="card-content-panel" id="cc2">
+              <div class="cc-top">
+                <div class="cc-tag s3-tag"><div style="width:5px;height:5px;border-radius:50%;background:rgba(210,145,55,.9);flex-shrink:0;"></div>Ground Below Grade</div>
+                <div class="cc-ico s3-ico">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(210,145,55,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/>
+                    <path d="M12 5V3M12 21v-2M5 12H3M21 12h-2M7.05 7.05L5.64 5.64M18.36 18.36l-1.41-1.41"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="cc-name">Stump Grinding</div>
+              <div class="cc-rule s3-rule" style="width:48px"></div>
+              <p class="cc-desc">Nothing left to trip on, mow around, or regrow. Ground below grade. Yard fully reclaimed in one visit.</p>
+              <div class="cc-foot">
+                <div><div class="cc-stat-val s3-val">100% Gone</div><div class="cc-stat-lbl">No regrowth, below grade</div></div>
+                <a class="cc-cta" href="/stump-grinding"><span>View Stump Grinding</span><div class="cc-cta-ico">→</div></a>
+              </div>
+            </div>
+
+            <div class="card-content-panel" id="cc3">
+              <div class="cc-top">
+                <div class="cc-tag s4-tag"><div style="width:5px;height:5px;border-radius:50%;background:#4a8fd9;flex-shrink:0;animation:stP 2s ease-in-out infinite;"></div>Emergency Response</div>
+                <div class="cc-ico s4-ico" style="position:relative">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(120,175,255,.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    <path d="M11 13l-2 3h4l-2 3"/>
+                  </svg>
+                  <div class="storm-dot"></div>
+                </div>
+              </div>
+              <div class="cc-name">Storm Cleanup</div>
+              <div class="cc-rule s4-rule" style="width:48px"></div>
+              <p class="cc-desc">Fast response to any storm damage. Fallen limbs, blocked driveways, split trunks. Same day when possible.</p>
+              <div class="cc-foot">
+                <div><div class="cc-stat-val s4-val">Same Day</div><div class="cc-stat-lbl">Emergency response</div></div>
+                <a class="cc-cta" href="/emergency-tree-service"><span>View Storm Cleanup</span><div class="cc-cta-ico">→</div></a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="svc-clip">
-      <svg viewBox="0 0 1280 36" preserveAspectRatio="none">
-        <path d="M0 36 L1280 0 L1280 36 Z" fill="#f2efe6"></path>
-      </svg>
+
+    <div class="svc-foot">
+      <div class="svc-foot-txt">Not sure which service? <strong>Call us — we'll tell you honestly.</strong></div>
+      <div class="svc-foot-pills" id="pills">
+        <div class="svc-pill on"></div>
+        <div class="svc-pill"></div>
+        <div class="svc-pill"></div>
+        <div class="svc-pill"></div>
+      </div>
     </div>
   </section>
 
@@ -711,92 +956,108 @@ const renderIcon = (kind: string, stroke: string) => {
     .ti-sep{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);}
     .bridge{background:var(--green);margin-top:-1px;z-index:3;position:relative;}
 
-    .services{background:var(--green);position:relative;overflow:hidden;min-height:680px;}
-    .svc-bg-grain{position:absolute;inset:0;z-index:0;opacity:.04;}
-    .svc-bg-orb{position:absolute;top:-100px;right:-100px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,90,.045) 0%,transparent 65%);pointer-events:none;z-index:0;}
-    .svc-layout{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:0 64px;display:grid;grid-template-columns:340px 1fr;min-height:680px;}
-    .svc-sidebar{padding:72px 0;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;justify-content:space-between;}
-    .svc-sidebar-head{margin-bottom:48px;}
-    .svc-eye{color:rgba(200,150,90,.72);margin-bottom:12px;}
+    .services{background:#012a14;position:relative;overflow:hidden;min-height:820px;display:flex;flex-direction:column;}
+    .svc-grain{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.042;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px;}
+    .svc-bg-light{position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 50% at 80% 50%,rgba(200,150,90,.055) 0%,transparent 65%);animation:lp 12s ease-in-out infinite alternate;will-change:opacity;}
+    .svc-hdr{position:relative;z-index:10;padding:52px 72px 44px;display:flex;align-items:flex-end;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.055);flex-shrink:0;}
+    .svc-eye{display:inline-flex;align-items:center;gap:8px;font-size:8.5px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,150,90,.72);margin-bottom:11px;}
     .svc-h2,.why-h2,.proc-h2,.area-h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(44px,3.8vw,60px);font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:-.01em;}
-    .svc-h2{font-size:clamp(36px,2.8vw,46px);color:#fff;}
+    .svc-h2{font-size:50px;color:#fff;}
     .svc-h2 em,.why-h2 em,.proc-h2 em,.cta-h2 em,.faq-h2 em,.area-h2 em,.footer-stmt-text em{color:var(--gold);font-style:normal;display:block;}
-    .svc-nav{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center;}
-    .svc-nav-item{padding:18px 0;border-top:1px solid rgba(255,255,255,.06);cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative;display:flex;align-items:center;justify-content:space-between;transition:border-color 300ms ease;background:transparent;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left;}
-    .svc-nav-item:last-child{border-bottom:1px solid rgba(255,255,255,.06);}
-    .svc-nav-item.active{border-color:rgba(200,150,90,.2);}
-    .svc-nav-item.active + .svc-nav-item{border-color:rgba(200,150,90,.2);}
-    .svc-nav-item::before{content:'';position:absolute;left:-64px;top:0;bottom:0;width:3px;transform:scaleY(0);transform-origin:top;transition:transform 350ms cubic-bezier(.22,1,.36,1);}
-    .svc-nav-item.active::before{transform:scaleY(1);}
-    .svc-nav-n{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:.1em;color:rgba(255,255,255,.2);transition:color 250ms ease;width:28px;flex-shrink:0;}
-    .svc-nav-item.active .svc-nav-n{color:rgba(200,150,90,.6);}
-    .svc-nav-name{font-family:'Barlow Condensed',sans-serif;font-size:clamp(22px,1.8vw,28px);font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:-.01em;color:rgba(255,255,255,.4);transition:color 250ms ease;flex:1;padding:0 16px;}
-    .svc-nav-item.active .svc-nav-name{color:#fff;}
-    .svc-nav-arrow{font-size:16px;color:rgba(255,255,255,.15);transition:color 250ms ease,transform 300ms ease;}
-    .svc-nav-item.active .svc-nav-arrow{color:var(--gold);transform:translateX(4px);}
-    .svc-sidebar-foot{padding-top:32px;border-top:1px solid rgba(255,255,255,.06);}
-    .svc-sidebar-copy{font-size:12px;color:rgba(255,255,255,.3);line-height:1.65;margin-bottom:14px;}
-    .svc-sidebar-link{font-size:11px;font-weight:700;color:rgba(200,150,90,.55);letter-spacing:.04em;text-decoration:none;}
-    .svc-panel-wrap{position:relative;overflow:hidden;}
-    .svc-panel{position:absolute;inset:0;padding:72px 72px 72px 60px;display:flex;flex-direction:column;justify-content:space-between;opacity:0;transition:opacity 400ms ease;pointer-events:none;}
-    .svc-panel.active{opacity:1;pointer-events:auto;}
-    .sp-grain{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.06;}
-    .sp-light{position:absolute;inset:0;pointer-events:none;z-index:1;}
-    .sp-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:1;}
-    .sp-edge{position:absolute;top:0;left:0;right:0;height:2px;z-index:4;}
-    .sp-top{position:relative;z-index:3;display:flex;align-items:flex-start;justify-content:space-between;}
-    .sp-tag{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 14px;font-size:8px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;}
-    .sp-tag-dot{width:6px;height:6px;border-radius:50%;}
-    .sp-ico{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;position:relative;overflow:hidden;}
-    .sp-ico::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.14),transparent);}
-    .sp-mid{position:relative;z-index:3;flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 0;}
-    .sp-wm{position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-family:'Barlow Condensed',sans-serif;font-size:clamp(120px,11vw,160px);font-weight:800;line-height:1;letter-spacing:-.04em;pointer-events:none;user-select:none;opacity:.06;transition:opacity 300ms ease;white-space:nowrap;}
-    .svc-panel.active .sp-wm{opacity:.1;}
-    .sp-name{font-family:'Barlow Condensed',sans-serif;font-size:clamp(56px,5vw,76px);font-weight:800;text-transform:uppercase;line-height:.85;letter-spacing:-.025em;color:#fff;margin-bottom:12px;}
-    .sp-rule{height:3px;border-radius:999px;width:48px;margin-bottom:20px;transition:width 500ms cubic-bezier(.22,1,.36,1) .1s;}
-    .svc-panel.active .sp-rule{width:72px;}
-    .sp-desc{font-size:15px;color:rgba(255,255,255,.5);line-height:1.7;max-width:440px;}
-    .sp-foot{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid rgba(255,255,255,.07);}
-    .sp-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;text-transform:uppercase;line-height:1;letter-spacing:-.01em;}
-    .sp-stat-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;margin-top:3px;}
-    .sp-cta{display:inline-flex;align-items:center;gap:10px;background:var(--gold-grad);color:#fff;font-size:13px;font-weight:800;padding:14px 28px;border-radius:11px;position:relative;overflow:hidden;letter-spacing:-.01em;box-shadow:0 10px 28px rgba(180,110,40,.4),inset 0 1px 0 rgba(255,255,255,.18);}
-    .sp1{background:linear-gradient(140deg,#014820 0%,#012010 55%,#010e08 100%);}
-    .sp1 .sp-light{background:radial-gradient(ellipse 75% 60% at 85% -10%,rgba(200,150,90,.22) 0%,transparent 65%);}
-    .sp1 .sp-orb{width:280px;height:280px;background:radial-gradient(circle,rgba(200,150,90,.08) 0%,transparent 65%);bottom:-60px;left:-40px;}
-    .sp1 .sp-edge{background:linear-gradient(90deg,rgba(200,150,90,.9) 0%,rgba(200,150,90,.2) 45%,transparent 85%);}
-    .sp1 .sp-tag{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);color:rgba(220,170,70,.9);}
-    .sp1 .sp-tag-dot{background:var(--gold);}
-    .sp1 .sp-ico{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);}
-    .sp1 .sp-rule{background:linear-gradient(90deg,var(--gold),rgba(200,150,90,.3));box-shadow:0 0 12px rgba(200,150,90,.3);}
-    .sp1 .sp-stat-val,.sp1 .sp-wm{color:var(--gold);}
-    .sp2{background:linear-gradient(140deg,#182c08 0%,#0e1c04 55%,#080f03 100%);}
-    .sp2 .sp-light{background:radial-gradient(ellipse 70% 60% at -8% 40%,rgba(100,185,50,.2) 0%,transparent 65%);}
-    .sp2 .sp-orb{width:260px;height:260px;background:radial-gradient(circle,rgba(100,185,50,.08) 0%,transparent 65%);top:-40px;right:-30px;}
-    .sp2 .sp-edge{background:linear-gradient(90deg,rgba(130,210,70,.88) 0%,rgba(100,185,50,.2) 45%,transparent 85%);}
-    .sp2 .sp-tag{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.18);color:rgba(140,220,75,.88);}
-    .sp2 .sp-tag-dot{background:rgba(130,210,70,.9);}
-    .sp2 .sp-ico{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.16);}
-    .sp2 .sp-rule{background:linear-gradient(90deg,rgba(130,210,70,.9),rgba(100,185,50,.25));box-shadow:0 0 12px rgba(100,185,50,.2);}
-    .sp2 .sp-stat-val,.sp2 .sp-wm{color:rgba(130,210,70,.9);}
-    .sp3{background:linear-gradient(140deg,#2a1904 0%,#160d02 55%,#0c0802 100%);}
-    .sp3 .sp-light{background:radial-gradient(ellipse 80% 65% at 90% 105%,rgba(195,130,40,.26) 0%,transparent 65%);}
-    .sp3 .sp-orb{width:260px;height:260px;background:radial-gradient(circle,rgba(195,130,40,.09) 0%,transparent 65%);top:-30px;left:-20px;}
-    .sp3 .sp-edge{background:linear-gradient(90deg,rgba(210,145,55,.88) 0%,rgba(195,130,40,.2) 45%,transparent 85%);}
-    .sp3 .sp-tag{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);color:rgba(215,150,60,.88);}
-    .sp3 .sp-tag-dot{background:rgba(210,145,55,.9);}
-    .sp3 .sp-ico{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);}
-    .sp3 .sp-rule{background:linear-gradient(90deg,rgba(210,145,55,.9),rgba(195,130,40,.25));box-shadow:0 0 12px rgba(195,130,40,.22);}
-    .sp3 .sp-stat-val,.sp3 .sp-wm{color:rgba(210,145,55,.9);}
-    .sp4{background:linear-gradient(140deg,#0a1828 0%,#060e1a 55%,#030812 100%);}
-    .sp4 .sp-light{background:radial-gradient(ellipse 70% 55% at 50% -18%,rgba(74,143,217,.28) 0%,rgba(50,110,195,.08) 42%,transparent 65%);}
-    .sp4 .sp-orb{width:280px;height:280px;background:radial-gradient(circle,rgba(74,143,217,.09) 0%,transparent 65%);bottom:-50px;right:-40px;}
-    .sp4 .sp-edge{background:linear-gradient(90deg,transparent 0%,rgba(110,170,255,.88) 50%,transparent 100%);}
-    .sp4 .sp-tag{background:rgba(74,143,217,.09);border:1px solid rgba(110,170,255,.18);color:rgba(120,175,255,.9);}
-    .sp4 .sp-tag-dot{background:#4a8fd9;}
-    .sp4 .sp-ico{background:rgba(74,143,217,.09);border:1px solid rgba(110,170,255,.18);}
-    .sp4 .sp-rule{background:linear-gradient(90deg,rgba(110,170,255,.9),rgba(74,143,217,.25));box-shadow:0 0 12px rgba(74,143,217,.25);}
-    .sp4 .sp-stat-val,.sp4 .sp-wm{color:rgba(110,170,255,.8);}
-    .storm-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#4a8fd9;border:2px solid #060e1a;}
+    .svc-hdr-right{text-align:right;max-width:340px;}
+    .svc-intro{font-size:14px;color:rgba(255,255,255,.36);line-height:1.65;margin-bottom:10px;}
+    .svc-hint{font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;gap:8px;justify-content:flex-end;}
+    .svc-hint-line{width:22px;height:1px;background:rgba(200,150,90,.28);}
+    .svc-body{flex:1;display:grid;grid-template-columns:520px 1fr;position:relative;min-height:560px;}
+    .svc-list{position:relative;z-index:6;padding:0 72px;display:flex;flex-direction:column;justify-content:center;}
+    .svc-row{position:relative;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.055);overflow:visible;}
+    .svc-row:first-child{border-top:1px solid rgba(255,255,255,.055);}
+    .svc-row-name{font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:800;text-transform:uppercase;line-height:.85;letter-spacing:-.025em;color:rgba(255,255,255,.14);display:block;position:relative;z-index:2;transition:color 380ms cubic-bezier(.22,1,.36,1);user-select:none;cursor:default;}
+    .svc-row-name em{font-style:italic;}
+    .svc-row.active .svc-row-name{color:#fff;}
+    .svc-list.has-active .svc-row:not(.active) .svc-row-name{color:rgba(255,255,255,.08);}
+    .svc-row-n{position:absolute;right:0;top:22px;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.1em;color:rgba(255,255,255,.1);z-index:2;transition:color 300ms ease;}
+    .svc-row.active .svc-row-n{color:rgba(200,150,90,.5);}
+    .svc-row-underline{position:absolute;bottom:0;left:0;height:2px;border-radius:999px;transform:scaleX(0);transform-origin:left;transition:transform 550ms cubic-bezier(.22,1,.36,1);z-index:3;box-shadow:0 0 10px rgba(200,150,90,.3);}
+    .svc-row.active .svc-row-underline{transform:scaleX(1);}
+    .connector-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:20;overflow:visible;}
+    .svc-card-col{padding:48px 72px 48px 32px;display:flex;align-items:center;justify-content:center;position:relative;z-index:5;}
+    .svc-card{width:100%;max-width:520px;border-radius:26px;overflow:hidden;position:relative;transition:box-shadow 400ms ease;box-shadow:0 24px 56px rgba(0,0,0,.55);}
+    .card-visual{height:260px;position:relative;overflow:hidden;flex-shrink:0;}
+    .cv-bg{position:absolute;inset:0;}
+    .cv-light{position:absolute;inset:0;pointer-events:none;z-index:1;animation:lp 8s ease-in-out infinite alternate;will-change:opacity;}
+    .cv-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:1;will-change:transform;}
+    .cv-grain{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:.065;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px;}
+    .cv-art{position:absolute;inset:0;z-index:3;display:grid;place-items:center;}
+    .card-content{padding:28px 30px 28px;position:relative;z-index:2;}
+    .cc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .cc-tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 12px;font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;}
+    .cc-tag-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+    .cc-tag-dot.pulse{animation:stP 2s ease-in-out infinite;}
+    .cc-ico{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;position:relative;overflow:hidden;}
+    .cc-ico::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.14),transparent);}
+    .cc-name{font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:800;text-transform:uppercase;line-height:.88;letter-spacing:-.02em;color:#fff;margin-bottom:8px;}
+    .cc-rule{height:2px;border-radius:999px;width:36px;margin-bottom:12px;transition:width 500ms cubic-bezier(.22,1,.36,1) .1s;}
+    .cc-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.68;margin-bottom:20px;}
+    .cc-foot{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(255,255,255,.07);}
+    .cc-stat-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;text-transform:uppercase;line-height:1;letter-spacing:-.01em;}
+    .cc-stat-lbl{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;margin-top:3px;}
+    .cc-cta{display:inline-flex;align-items:center;gap:9px;background:linear-gradient(180deg,#d4a060,#b07840);color:#fff;font-size:12.5px;font-weight:800;padding:12px 22px;border-radius:11px;position:relative;overflow:hidden;letter-spacing:-.01em;box-shadow:0 8px 24px rgba(180,110,40,.42),inset 0 1px 0 rgba(255,255,255,.18);transition:box-shadow 200ms ease;text-decoration:none;}
+    .cc-cta:hover{box-shadow:0 12px 32px rgba(180,110,40,.55),inset 0 1px 0 rgba(255,255,255,.18);}
+    .cc-cta::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);}
+    .cc-cta span{position:relative;z-index:1;}
+    .cc-cta-ico{width:24px;height:24px;border-radius:7px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex-shrink:0;position:relative;z-index:1;font-size:12px;}
+    .card-content-panel{display:none;}
+    .card-content-panel.active{display:block;animation:fadeSlideUp 380ms cubic-bezier(.22,1,.36,1) both;}
+    .card-visual-panel{position:absolute;inset:0;opacity:0;transition:opacity 450ms ease;}
+    .card-visual-panel.active{opacity:1;}
+    .s1-bg{background:linear-gradient(145deg,#013d1a 0%,#011e0d 55%,#010d06 100%);}
+    .s1-light{background:radial-gradient(ellipse 80% 65% at 90% -15%,rgba(200,150,90,.3) 0%,rgba(160,110,50,.08) 45%,transparent 68%);}
+    .s1-orb{width:240px;height:240px;background:radial-gradient(circle,rgba(200,150,90,.1) 0%,transparent 65%);bottom:-50px;left:-30px;animation:o2 17s ease-in-out infinite alternate;}
+    .s1-tag{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);color:rgba(220,170,70,.9);}
+    .s1-ico{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);}
+    .s1-rule{background:linear-gradient(90deg,#c8965a,rgba(200,150,90,.28));box-shadow:0 0 12px rgba(200,150,90,.32);}
+    .s1-val{color:#c8965a;}
+    .s1-ul{background:linear-gradient(90deg,#c8965a,rgba(200,150,90,.3));}
+    .s1-card{border:1px solid rgba(200,150,90,.22);background:linear-gradient(145deg,#013d1a 0%,#011e0d 55%,#010d06 100%);}
+    .s1-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(200,150,90,.22),0 0 40px rgba(200,150,90,.08);}
+    .s2-bg{background:linear-gradient(145deg,#172c07 0%,#0d1c04 55%,#080f03 100%);}
+    .s2-light{background:radial-gradient(ellipse 75% 65% at -10% 45%,rgba(100,185,50,.24) 0%,rgba(70,145,30,.07) 45%,transparent 68%);}
+    .s2-orb{width:220px;height:220px;background:radial-gradient(circle,rgba(100,185,50,.09) 0%,transparent 65%);top:-30px;right:-20px;animation:o1 19s ease-in-out infinite alternate;}
+    .s2-tag{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.18);color:rgba(140,220,75,.9);}
+    .s2-ico{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.16);}
+    .s2-rule{background:linear-gradient(90deg,rgba(130,210,70,.9),rgba(100,185,50,.25));box-shadow:0 0 12px rgba(100,185,50,.2);}
+    .s2-val{color:rgba(130,210,70,.9);}
+    .s2-ul{background:linear-gradient(90deg,rgba(130,210,70,.9),rgba(100,185,50,.25));}
+    .s2-card{border:1px solid rgba(130,210,70,.2);background:linear-gradient(145deg,#172c07 0%,#0d1c04 55%,#080f03 100%);}
+    .s2-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(130,210,70,.2),0 0 40px rgba(100,185,50,.07);}
+    .s3-bg{background:linear-gradient(145deg,#2a1904 0%,#150d02 55%,#0c0802 100%);}
+    .s3-light{background:radial-gradient(ellipse 80% 65% at 95% 108%,rgba(195,130,40,.28) 0%,rgba(155,100,28,.08) 45%,transparent 68%);}
+    .s3-orb{width:220px;height:220px;background:radial-gradient(circle,rgba(195,130,40,.09) 0%,transparent 65%);top:-25px;left:-15px;animation:o1 15s ease-in-out infinite alternate;}
+    .s3-tag{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);color:rgba(215,150,60,.9);}
+    .s3-ico{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);}
+    .s3-rule{background:linear-gradient(90deg,rgba(210,145,55,.9),rgba(195,130,40,.25));box-shadow:0 0 12px rgba(195,130,40,.22);}
+    .s3-val{color:rgba(210,145,55,.9);}
+    .s3-ul{background:linear-gradient(90deg,rgba(210,145,55,.9),rgba(195,130,40,.25));}
+    .s3-card{border:1px solid rgba(210,145,55,.2);background:linear-gradient(145deg,#2a1904 0%,#150d02 55%,#0c0802 100%);}
+    .s3-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(210,145,55,.2),0 0 40px rgba(195,130,40,.07);}
+    .s4-bg{background:linear-gradient(145deg,#0a1728 0%,#060e1a 55%,#030810 100%);}
+    .s4-light{background:radial-gradient(ellipse 70% 60% at 50% -20%,rgba(74,143,217,.32) 0%,rgba(50,110,195,.1) 42%,transparent 66%);}
+    .s4-orb{width:240px;height:240px;background:radial-gradient(circle,rgba(74,143,217,.1) 0%,transparent 65%);bottom:-40px;right:-30px;animation:o1 13s ease-in-out infinite alternate;}
+    .s4-tag{background:rgba(74,143,217,.1);border:1px solid rgba(110,170,255,.2);color:rgba(130,185,255,.9);}
+    .s4-ico{background:rgba(74,143,217,.1);border:1px solid rgba(110,170,255,.18);}
+    .s4-rule{background:linear-gradient(90deg,rgba(110,170,255,.9),rgba(74,143,217,.25));box-shadow:0 0 12px rgba(74,143,217,.28);}
+    .s4-val{color:rgba(120,180,255,.9);}
+    .s4-ul{background:linear-gradient(90deg,rgba(110,170,255,.9),rgba(74,143,217,.25));}
+    .s4-card{border:1px solid rgba(110,170,255,.2);background:linear-gradient(145deg,#0a1728 0%,#060e1a 55%,#030810 100%);}
+    .s4-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(110,170,255,.2),0 0 40px rgba(74,143,217,.08);}
+    .storm-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#4a8fd9;border:2px solid #060e1a;animation:stP 2s ease-in-out infinite;}
+    .svc-foot{position:relative;z-index:10;padding:18px 72px;border-top:1px solid rgba(255,255,255,.055);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+    .svc-foot-txt{font-size:12.5px;color:rgba(255,255,255,.28);}
+    .svc-foot-txt strong{color:rgba(255,255,255,.58);font-weight:700;}
+    .svc-foot-pills{display:flex;gap:6px;align-items:center;}
+    .svc-pill{height:2.5px;border-radius:999px;background:rgba(255,255,255,.12);width:18px;transition:background 300ms ease,width 300ms ease;}
+    .svc-pill.on{background:#c8965a;width:30px;}
 
     .why{background:var(--beige);padding:120px 0 0;position:relative;overflow:hidden;}
     .why-bg-orb{position:absolute;top:-80px;right:-80px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,90,.045) 0%,transparent 65%);pointer-events:none;z-index:0;}
@@ -965,8 +1226,6 @@ const renderIcon = (kind: string, stroke: string) => {
 
     var hdr = root.querySelector('#hdr');
     var procLine = root.querySelector('[data-proc-line]');
-    var panelTriggers = Array.prototype.slice.call(root.querySelectorAll('[data-panel-trigger]'));
-    var panels = Array.prototype.slice.call(root.querySelectorAll('[data-panel]'));
     var faqItems = Array.prototype.slice.call(root.querySelectorAll('[data-faq-item]'));
     if (hdr) {
       window.addEventListener('scroll', function () {
@@ -974,39 +1233,185 @@ const renderIcon = (kind: string, stroke: string) => {
       }, { passive: true });
     }
 
-    var panelColors = [
-      'rgba(200,150,90,1)',
-      'rgba(130,210,70,1)',
-      'rgba(210,145,55,1)',
-      'rgba(110,170,255,1)'
-    ];
+    var colors = ['#c8965a', 'rgba(130,210,70,1)', 'rgba(210,145,55,1)', 'rgba(110,170,255,1)'];
+    var cardClasses = ['s1-card s1-card-glow', 's2-card s2-card-glow', 's3-card s3-card-glow', 's4-card s4-card-glow'];
+    var rows = Array.prototype.slice.call(root.querySelectorAll('[data-svc-row]'));
+    var visPanels = Array.prototype.slice.call(root.querySelectorAll('.card-visual-panel'));
+    var ccPanels = Array.prototype.slice.call(root.querySelectorAll('.card-content-panel'));
+    var pills = Array.prototype.slice.call(root.querySelectorAll('.svc-pill'));
+    var svcList = root.querySelector('#svcList');
+    var card = root.querySelector('#theCard');
+    var svg = root.querySelector('#connSvg');
+    var body = root.querySelector('#svcBody');
+    var current = 0;
+    var animTimer = null;
 
-    var switchPanel = function (index) {
-      panels.forEach(function (panel, panelIndex) {
-        panel.classList.toggle('active', panelIndex === index);
+    var drawConnector = function (idx) {
+      if (!svg || !body || !card) return;
+      while (svg.children.length > 1) svg.removeChild(svg.lastChild);
+      if (animTimer) clearTimeout(animTimer);
+
+      var rowEl = rows[idx];
+      if (!rowEl) return;
+      var bodyRect = body.getBoundingClientRect();
+      var rowRect = rowEl.getBoundingClientRect();
+      var cardRect = card.getBoundingClientRect();
+
+      var sx = rowRect.right - bodyRect.left;
+      var sy = rowRect.top + rowRect.height * 0.38 - bodyRect.top;
+      var tx = cardRect.left - bodyRect.left;
+      var ty = cardRect.top + cardRect.height * 0.45 - bodyRect.top;
+      var col = colors[idx];
+
+      var cpx1 = sx + (tx - sx) * 0.45;
+      var cpy1 = sy;
+      var cpx2 = tx - 40;
+      var cpy2 = ty;
+      var d = 'M ' + sx + ' ' + sy + ' C ' + cpx1 + ' ' + cpy1 + ', ' + cpx2 + ' ' + cpy2 + ', ' + tx + ' ' + ty;
+
+      var tmpPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      tmpPath.setAttribute('d', d);
+      svg.appendChild(tmpPath);
+      var len = tmpPath.getTotalLength();
+      svg.removeChild(tmpPath);
+
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', col);
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('stroke-linecap', 'round');
+      path.style.strokeDasharray = String(len);
+      path.style.strokeDashoffset = String(len);
+      path.style.filter = idx === 0 ? 'url(#glow-gold)' : idx === 1 ? 'url(#glow-lime)' : idx === 2 ? 'url(#glow-amber)' : 'url(#glow-blue)';
+      path.style.transition = 'stroke-dashoffset 500ms cubic-bezier(.22,1,.36,1)';
+      svg.appendChild(path);
+
+      var dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('r', '4');
+      dot.setAttribute('fill', col);
+      dot.style.filter = path.style.filter;
+      svg.appendChild(dot);
+
+      requestAnimationFrame(function () {
+        path.style.strokeDashoffset = '0';
       });
-      panelTriggers.forEach(function (trigger, triggerIndex) {
-        trigger.classList.toggle('active', triggerIndex === index);
-      });
+
+      var tmpPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      tmpPath2.setAttribute('d', d);
+      tmpPath2.style.visibility = 'hidden';
+      svg.appendChild(tmpPath2);
+
+      var start = null;
+      var dur = 520;
+      var animDot = function (ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var pt = tmpPath2.getPointAtLength(eased * len);
+        dot.setAttribute('cx', String(pt.x));
+        dot.setAttribute('cy', String(pt.y));
+        dot.style.opacity = progress < 0.05 ? String(progress / 0.05) : progress > 0.85 ? String(1 - (progress - 0.85) / 0.15) : '1';
+        if (progress < 1) requestAnimationFrame(animDot);
+      };
+      requestAnimationFrame(animDot);
+
+      setTimeout(function () {
+        var cr = card.getBoundingClientRect();
+        var br = body.getBoundingClientRect();
+        var cx = cr.left - br.left;
+        var cy = cr.top - br.top;
+        var cw = cr.width;
+        var ch = cr.height;
+        var r = 26;
+        var borderPath = 'M ' + (cx + r) + ' ' + cy + ' L ' + (cx + cw - r) + ' ' + cy + ' Q ' + (cx + cw) + ' ' + cy + ' ' + (cx + cw) + ' ' + (cy + r) + ' L ' + (cx + cw) + ' ' + (cy + ch - r) + ' Q ' + (cx + cw) + ' ' + (cy + ch) + ' ' + (cx + cw - r) + ' ' + (cy + ch) + ' L ' + (cx + r) + ' ' + (cy + ch) + ' Q ' + cx + ' ' + (cy + ch) + ' ' + cx + ' ' + (cy + ch - r) + ' L ' + cx + ' ' + (cy + r) + ' Q ' + cx + ' ' + cy + ' ' + (cx + r) + ' ' + cy;
+
+        var borderEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        borderEl.setAttribute('d', borderPath);
+        borderEl.setAttribute('fill', 'none');
+        borderEl.setAttribute('stroke', col);
+        borderEl.setAttribute('stroke-width', '1.5');
+        borderEl.setAttribute('stroke-linecap', 'round');
+        borderEl.style.filter = path.style.filter;
+
+        var t = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        t.setAttribute('d', borderPath);
+        svg.appendChild(t);
+        var totalLen = t.getTotalLength();
+        svg.removeChild(t);
+
+        borderEl.style.strokeDasharray = String(totalLen);
+        borderEl.style.strokeDashoffset = String(totalLen);
+        borderEl.style.transition = 'stroke-dashoffset 700ms cubic-bezier(.22,1,.36,1)';
+        svg.appendChild(borderEl);
+
+        requestAnimationFrame(function () {
+          borderEl.style.strokeDashoffset = '0';
+        });
+
+        setTimeout(function () {
+          borderEl.style.transition = 'opacity 400ms ease';
+          borderEl.style.opacity = '0';
+          setTimeout(function () {
+            if (borderEl.parentNode) svg.removeChild(borderEl);
+            path.style.transition = 'opacity 400ms ease';
+            path.style.opacity = '0';
+            dot.style.transition = 'opacity 200ms ease';
+            dot.style.opacity = '0';
+          }, 400);
+        }, 900);
+      }, 480);
     };
 
-    panelTriggers.forEach(function (trigger, index) {
-      var color = panelColors[index];
-      trigger.style.setProperty('--accent', color);
-      trigger.addEventListener('click', function () {
-        switchPanel(index);
+    var activateService = function (idx) {
+      if (idx === current) return;
+      current = idx;
+
+      rows.forEach(function (row, rowIndex) {
+        row.classList.toggle('active', rowIndex === idx);
       });
-      trigger.addEventListener('mouseenter', function () {
-        switchPanel(index);
+      if (svcList) svcList.classList.add('has-active');
+
+      if (card) {
+        card.className = 'svc-card';
+        cardClasses[idx].split(' ').forEach(function (cls) {
+          if (cls) card.classList.add(cls);
+        });
+      }
+
+      visPanels.forEach(function (panel, panelIndex) {
+        panel.classList.toggle('active', panelIndex === idx);
+      });
+
+      ccPanels.forEach(function (panel) {
+        panel.classList.remove('active');
+      });
+      setTimeout(function () {
+        if (ccPanels[idx]) ccPanels[idx].classList.add('active');
+      }, 80);
+
+      pills.forEach(function (pill, pillIndex) {
+        pill.classList.toggle('on', pillIndex === idx);
+      });
+
+      drawConnector(idx);
+    };
+
+    rows.forEach(function (row, index) {
+      row.addEventListener('mouseenter', function () {
+        activateService(index);
+      });
+      row.addEventListener('click', function () {
+        activateService(index);
       });
     });
 
-    var dynamicStyle = document.createElement('style');
-    dynamicStyle.textContent = panelColors.map(function (color, index) {
-      var rgba = color.slice(5, -1);
-      return '.desktop-homepage .svc-nav-item:nth-child(' + (index + 1) + ').active::before{background:linear-gradient(180deg,' + color + ',rgba(' + rgba + ',.15));}';
-    }).join('');
-    document.head.appendChild(dynamicStyle);
+    if (rows[0]) rows[0].classList.add('active');
+    if (svcList) svcList.classList.add('has-active');
+    if (card) card.className = 'svc-card ' + cardClasses[0];
+    setTimeout(function () {
+      drawConnector(0);
+    }, 400);
 
     root.querySelectorAll('[data-faq-toggle]').forEach(function (toggle) {
       toggle.addEventListener('click', function () {

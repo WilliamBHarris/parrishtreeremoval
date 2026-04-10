@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Desktop Agency Level</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#0d0d0d;
+  font-family:'Inter',sans-serif;
+  display:flex;flex-direction:column;align-items:center;
+  padding:2rem;gap:14px;min-height:100vh;
+}
+.label{color:rgba(255,255,255,.28);font-size:10px;letter-spacing:.14em;text-transform:uppercase;}
+
+.frame{
+  width:1280px;border-radius:14px;overflow:hidden;
+  box-shadow:0 60px 120px rgba(0,0,0,.8);
+  border:1px solid rgba(255,255,255,.04);
+}
+
+/* ─── keyframes ─── */
+@keyframes dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+@keyframes lp{0%{opacity:.5}100%{opacity:1}}
+@keyframes o1{0%{transform:translate(0,0)scale(1)}100%{transform:translate(-16px,18px)scale(1.09)}}
+@keyframes o2{0%{transform:translate(0,0)scale(1)}100%{transform:translate(18px,-14px)scale(1.08)}}
+@keyframes stP{0%{box-shadow:0 0 0 0 rgba(74,143,217,.7)}70%{box-shadow:0 0 0 9px rgba(74,143,217,0)}100%{box-shadow:0 0 0 0 rgba(74,143,217,0)}}
+@keyframes spinSlowCW{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes spinSlowCCW{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
+@keyframes treeSway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes lineMove{to{stroke-dashoffset:0}}
+@keyframes dotMove{0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{opacity:0}}
+@keyframes borderDraw{to{stroke-dashoffset:0}}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeSlideLeft{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes ringSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ═══════════════════════════════════════
+   SECTION
+═══════════════════════════════════════ */
+.svc{
+  background:#012a14;
+  position:relative;
+  overflow:hidden;
+  min-height:820px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Section atmosphere */
+.svc-grain{
+  position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.042;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:180px;
+}
+.svc-bg-light{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 50% at 80% 50%,rgba(200,150,90,.055) 0%,transparent 65%);
+  animation:lp 12s ease-in-out infinite alternate;will-change:opacity;
+}
+
+/* ── Header ── */
+.svc-hdr{
+  position:relative;z-index:10;
+  padding:52px 72px 44px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  flex-shrink:0;
+}
+.svc-eye{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:8.5px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(200,150,90,.72);margin-bottom:11px;
+}
+.svc-eye-dot{width:5px;height:5px;border-radius:50%;background:#c8965a;flex-shrink:0;animation:dot 2.2s ease-in-out infinite;}
+.svc-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:50px;font-weight:800;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.015em;color:#fff;
+}
+.svc-h2 em{color:#c8965a;font-style:normal;display:block;}
+.svc-hdr-right{text-align:right;max-width:340px;}
+.svc-intro{font-size:14px;color:rgba(255,255,255,.36);line-height:1.65;margin-bottom:10px;}
+.svc-hint{
+  font-size:9px;color:rgba(255,255,255,.18);
+  letter-spacing:.14em;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;justify-content:flex-end;
+}
+.svc-hint-line{width:22px;height:1px;background:rgba(200,150,90,.28);}
+
+/* ── Main body ── */
+.svc-body{
+  flex:1;
+  display:grid;
+  /* Left names take ~40%, right card ~60% */
+  grid-template-columns:520px 1fr;
+  position:relative;
+  min-height:560px;
+}
+
+/* ══════════════════════════════════════
+   LEFT — SERVICE NAMES
+   Enormous stacked names.
+   Hover changes color + emits the line.
+   Others fade back.
+══════════════════════════════════════ */
+.svc-list{
+  position:relative;z-index:6;
+  padding:0 72px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+}
+
+.svc-row{
+  position:relative;
+  padding:22px 0;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  overflow:visible;
+}
+.svc-row:first-child{border-top:1px solid rgba(255,255,255,.055);}
+
+/* The name itself */
+.svc-row-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:72px;
+  font-weight:800;
+  text-transform:uppercase;
+  line-height:.85;
+  letter-spacing:-.025em;
+  color:rgba(255,255,255,.14);
+  display:block;
+  position:relative;z-index:2;
+  transition:color 380ms cubic-bezier(.22,1,.36,1);
+  user-select:none;
+  cursor:default;
+}
+.svc-row-name em{font-style:italic;}
+
+/* Active name — full brightness */
+.svc-row.active .svc-row-name{color:#fff;}
+
+/* Faded when another is active */
+.svc-list.has-active .svc-row:not(.active) .svc-row-name{
+  color:rgba(255,255,255,.08);
+}
+
+/* Row number — top left, tiny */
+.svc-row-n{
+  position:absolute;right:0;top:22px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:800;letter-spacing:.1em;
+  color:rgba(255,255,255,.1);
+  z-index:2;
+  transition:color 300ms ease;
+}
+.svc-row.active .svc-row-n{color:rgba(200,150,90,.5);}
+
+/* The accent color line that draws under the active name */
+.svc-row-underline{
+  position:absolute;
+  bottom:0;left:0;
+  height:2px;
+  border-radius:999px;
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 550ms cubic-bezier(.22,1,.36,1);
+  z-index:3;
+  box-shadow:0 0 10px rgba(200,150,90,.3);
+}
+.svc-row.active .svc-row-underline{transform:scaleX(1);}
+
+/* ══════════════════════════════════════
+   SVG CONNECTOR LAYER
+   Sits over the entire body.
+   A path draws from each service row
+   to the card, then traces the card border.
+══════════════════════════════════════ */
+.connector-svg{
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  pointer-events:none;
+  z-index:20;
+  overflow:visible;
+}
+
+/* ══════════════════════════════════════
+   RIGHT — SERVICE CARD
+   One persistent card.
+   When a service is active:
+   - Card content swaps with animation
+   - Card border glows in that service color
+   - The connector line arrives and traces the border
+══════════════════════════════════════ */
+.svc-card-col{
+  padding:48px 72px 48px 32px;
+  display:flex;align-items:center;
+  justify-content:center;
+  position:relative;z-index:5;
+}
+
+.svc-card{
+  width:100%;
+  max-width:520px;
+  border-radius:26px;
+  overflow:hidden;
+  position:relative;
+  /* The card border glow is handled by box-shadow transition */
+  transition:box-shadow 400ms ease;
+  box-shadow:0 24px 56px rgba(0,0,0,.55);
+}
+
+/* ── Card visual illustration area ── */
+.card-visual{
+  height:260px;
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+}
+
+/* Illustration layers */
+.cv-bg{position:absolute;inset:0;}
+.cv-light{position:absolute;inset:0;pointer-events:none;z-index:1;animation:lp 8s ease-in-out infinite alternate;will-change:opacity;}
+.cv-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:1;will-change:transform;}
+.cv-grain{
+  position:absolute;inset:0;pointer-events:none;z-index:4;opacity:.065;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:140px;
+}
+.cv-art{
+  position:absolute;inset:0;z-index:3;
+  display:grid;place-items:center;
+}
+
+/* ── Card content area ── */
+.card-content{
+  padding:28px 30px 28px;
+  position:relative;z-index:2;
+}
+
+/* Tag + icon row */
+.cc-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;
+}
+.cc-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  border-radius:999px;padding:5px 12px;
+  font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+}
+.cc-tag-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.cc-tag-dot.pulse{animation:stP 2s ease-in-out infinite;}
+.cc-ico{
+  width:44px;height:44px;border-radius:13px;
+  display:grid;place-items:center;
+  position:relative;overflow:hidden;
+}
+.cc-ico::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.14),transparent);}
+
+/* Service name in card */
+.cc-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:38px;font-weight:800;
+  text-transform:uppercase;line-height:.88;letter-spacing:-.02em;
+  color:#fff;margin-bottom:8px;
+}
+
+/* Rule */
+.cc-rule{
+  height:2px;border-radius:999px;width:36px;margin-bottom:12px;
+  transition:width 500ms cubic-bezier(.22,1,.36,1) .1s;
+}
+
+/* Description */
+.cc-desc{
+  font-size:13px;color:rgba(255,255,255,.5);
+  line-height:1.68;margin-bottom:20px;
+}
+
+/* Bottom row */
+.cc-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:16px;border-top:1px solid rgba(255,255,255,.07);
+}
+.cc-stat-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;font-weight:800;text-transform:uppercase;
+  line-height:1;letter-spacing:-.01em;
+}
+.cc-stat-lbl{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase;margin-top:3px;}
+.cc-cta{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(180deg,#d4a060,#b07840);
+  color:#fff;font-size:12.5px;font-weight:800;
+  padding:12px 22px;border-radius:11px;
+  position:relative;overflow:hidden;letter-spacing:-.01em;
+  box-shadow:0 8px 24px rgba(180,110,40,.42),inset 0 1px 0 rgba(255,255,255,.18);
+  transition:box-shadow 200ms ease;
+}
+.cc-cta:hover{box-shadow:0 12px 32px rgba(180,110,40,.55),inset 0 1px 0 rgba(255,255,255,.18);}
+.cc-cta::before{content:'';position:absolute;inset:0 0 56% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent);}
+.cc-cta span{position:relative;z-index:1;}
+.cc-cta-ico{
+  width:24px;height:24px;border-radius:7px;
+  background:rgba(255,255,255,.18);
+  display:grid;place-items:center;
+  flex-shrink:0;position:relative;z-index:1;font-size:12px;
+}
+
+/* ═══════════════════════════════════
+   CARD STATE TRANSITIONS
+   Content fades + slides when switching
+═══════════════════════════════════ */
+.card-content-panel{
+  display:none;
+}
+.card-content-panel.active{
+  display:block;
+  animation:fadeSlideUp 380ms cubic-bezier(.22,1,.36,1) both;
+}
+.card-visual-panel{
+  position:absolute;inset:0;
+  opacity:0;transition:opacity 450ms ease;
+}
+.card-visual-panel.active{opacity:1;}
+
+/* ════════════════════════════════════
+   SERVICE IDENTITIES — card colors
+════════════════════════════════════ */
+
+/* Service 1 — Tree Removal — green/gold */
+.s1-bg{background:linear-gradient(145deg,#013d1a 0%,#011e0d 55%,#010d06 100%);}
+.s1-light{background:radial-gradient(ellipse 80% 65% at 90% -15%,rgba(200,150,90,.3) 0%,rgba(160,110,50,.08) 45%,transparent 68%);}
+.s1-orb{width:240px;height:240px;background:radial-gradient(circle,rgba(200,150,90,.1) 0%,transparent 65%);bottom:-50px;left:-30px;animation:o2 17s ease-in-out infinite alternate;}
+.s1-tag{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);color:rgba(220,170,70,.9);}
+.s1-ico{background:rgba(200,150,90,.1);border:1px solid rgba(200,150,90,.2);}
+.s1-rule{background:linear-gradient(90deg,#c8965a,rgba(200,150,90,.28));box-shadow:0 0 12px rgba(200,150,90,.32);}
+.s1-val{color:#c8965a;}
+.s1-ul{background:linear-gradient(90deg,#c8965a,rgba(200,150,90,.3));}
+.s1-card{border:1px solid rgba(200,150,90,.22);background:linear-gradient(145deg,#013d1a 0%,#011e0d 55%,#010d06 100%);}
+.s1-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(200,150,90,.22),0 0 40px rgba(200,150,90,.08);}
+
+/* Service 2 — Tree Trimming — olive/lime */
+.s2-bg{background:linear-gradient(145deg,#172c07 0%,#0d1c04 55%,#080f03 100%);}
+.s2-light{background:radial-gradient(ellipse 75% 65% at -10% 45%,rgba(100,185,50,.24) 0%,rgba(70,145,30,.07) 45%,transparent 68%);}
+.s2-orb{width:220px;height:220px;background:radial-gradient(circle,rgba(100,185,50,.09) 0%,transparent 65%);top:-30px;right:-20px;animation:o1 19s ease-in-out infinite alternate;}
+.s2-tag{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.18);color:rgba(140,220,75,.9);}
+.s2-ico{background:rgba(100,185,50,.09);border:1px solid rgba(130,210,70,.16);}
+.s2-rule{background:linear-gradient(90deg,rgba(130,210,70,.9),rgba(100,185,50,.25));box-shadow:0 0 12px rgba(100,185,50,.2);}
+.s2-val{color:rgba(130,210,70,.9);}
+.s2-ul{background:linear-gradient(90deg,rgba(130,210,70,.9),rgba(100,185,50,.25));}
+.s2-card{border:1px solid rgba(130,210,70,.2);background:linear-gradient(145deg,#172c07 0%,#0d1c04 55%,#080f03 100%);}
+.s2-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(130,210,70,.2),0 0 40px rgba(100,185,50,.07);}
+
+/* Service 3 — Stump — amber */
+.s3-bg{background:linear-gradient(145deg,#2a1904 0%,#150d02 55%,#0c0802 100%);}
+.s3-light{background:radial-gradient(ellipse 80% 65% at 95% 108%,rgba(195,130,40,.28) 0%,rgba(155,100,28,.08) 45%,transparent 68%);}
+.s3-orb{width:220px;height:220px;background:radial-gradient(circle,rgba(195,130,40,.09) 0%,transparent 65%);top:-25px;left:-15px;animation:o1 15s ease-in-out infinite alternate;}
+.s3-tag{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);color:rgba(215,150,60,.9);}
+.s3-ico{background:rgba(195,130,40,.09);border:1px solid rgba(210,145,55,.18);}
+.s3-rule{background:linear-gradient(90deg,rgba(210,145,55,.9),rgba(195,130,40,.25));box-shadow:0 0 12px rgba(195,130,40,.22);}
+.s3-val{color:rgba(210,145,55,.9);}
+.s3-ul{background:linear-gradient(90deg,rgba(210,145,55,.9),rgba(195,130,40,.25));}
+.s3-card{border:1px solid rgba(210,145,55,.2);background:linear-gradient(145deg,#2a1904 0%,#150d02 55%,#0c0802 100%);}
+.s3-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(210,145,55,.2),0 0 40px rgba(195,130,40,.07);}
+
+/* Service 4 — Storm — blue */
+.s4-bg{background:linear-gradient(145deg,#0a1728 0%,#060e1a 55%,#030810 100%);}
+.s4-light{background:radial-gradient(ellipse 70% 60% at 50% -20%,rgba(74,143,217,.32) 0%,rgba(50,110,195,.1) 42%,transparent 66%);}
+.s4-orb{width:240px;height:240px;background:radial-gradient(circle,rgba(74,143,217,.1) 0%,transparent 65%);bottom:-40px;right:-30px;animation:o1 13s ease-in-out infinite alternate;}
+.s4-tag{background:rgba(74,143,217,.1);border:1px solid rgba(110,170,255,.2);color:rgba(130,185,255,.9);}
+.s4-ico{background:rgba(74,143,217,.1);border:1px solid rgba(110,170,255,.18);}
+.s4-rule{background:linear-gradient(90deg,rgba(110,170,255,.9),rgba(74,143,217,.25));box-shadow:0 0 12px rgba(74,143,217,.28);}
+.s4-val{color:rgba(120,180,255,.9);}
+.s4-ul{background:linear-gradient(90deg,rgba(110,170,255,.9),rgba(74,143,217,.25));}
+.s4-card{border:1px solid rgba(110,170,255,.2);background:linear-gradient(145deg,#0a1728 0%,#060e1a 55%,#030810 100%);}
+.s4-card-glow{box-shadow:0 24px 56px rgba(0,0,0,.55),0 0 0 1px rgba(110,170,255,.2),0 0 40px rgba(74,143,217,.08);}
+
+/* storm dot */
+.storm-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:#4a8fd9;border:2px solid #060e1a;animation:stP 2s ease-in-out infinite;}
+
+/* ═══════════════════════════════════
+   FOOTER STRIP
+═══════════════════════════════════ */
+.svc-foot{
+  position:relative;z-index:10;
+  padding:18px 72px;
+  border-top:1px solid rgba(255,255,255,.055);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.svc-foot-txt{font-size:12.5px;color:rgba(255,255,255,.28);}
+.svc-foot-txt strong{color:rgba(255,255,255,.58);font-weight:700;}
+.svc-foot-pills{display:flex;gap:6px;align-items:center;}
+.svc-pill{
+  height:2.5px;border-radius:999px;
+  background:rgba(255,255,255,.12);
+  width:18px;
+  transition:background 300ms ease,width 300ms ease;
+}
+.svc-pill.on{background:#c8965a;width:30px;}
+</style>
+</head>
+<body>
+
+<div class="label">Services — Hover each service name</div>
+
+<div class="frame">
+<div class="svc">
+  <div class="svc-grain"></div>
+  <div class="svc-bg-light"></div>
+
+  <!-- Header -->
+  <div class="svc-hdr">
+    <div>
+      <div class="svc-eye"><div class="svc-eye-dot"></div>What We Do</div>
+      <h2 class="svc-h2">Whatever The Tree.<br><em>Whatever The Job.</em></h2>
+    </div>
+    <div class="svc-hdr-right">
+      <p class="svc-intro">Four services. One local crew. First call to final cleanup.</p>
+      <div class="svc-hint">
+        <div class="svc-hint-line"></div>
+        Hover a service
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="svc-body" id="svcBody">
+
+    <!-- SVG connector layer — drawn dynamically by JS -->
+    <svg class="connector-svg" id="connSvg" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow-gold"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-lime"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-amber"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <filter id="glow-blue"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- Lines drawn by JS -->
+    </svg>
+
+    <!-- LEFT: Names -->
+    <div class="svc-list" id="svcList">
+      <div class="svc-row" id="row0" data-idx="0" onmouseenter="activateService(0)" onclick="activateService(0)">
+        <div class="svc-row-n">01</div>
+        <span class="svc-row-name">Tree<br><em>Removal</em></span>
+        <div class="svc-row-underline s1-ul"></div>
+      </div>
+      <div class="svc-row" id="row1" data-idx="1" onmouseenter="activateService(1)" onclick="activateService(1)">
+        <div class="svc-row-n">02</div>
+        <span class="svc-row-name">Tree<br><em>Trimming</em></span>
+        <div class="svc-row-underline s2-ul"></div>
+      </div>
+      <div class="svc-row" id="row2" data-idx="2" onmouseenter="activateService(2)" onclick="activateService(2)">
+        <div class="svc-row-n">03</div>
+        <span class="svc-row-name">Stump<br><em>Grinding</em></span>
+        <div class="svc-row-underline s3-ul"></div>
+      </div>
+      <div class="svc-row" id="row3" data-idx="3" onmouseenter="activateService(3)" onclick="activateService(3)">
+        <div class="svc-row-n">04</div>
+        <span class="svc-row-name">Storm<br><em>Cleanup</em></span>
+        <div class="svc-row-underline s4-ul"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Card -->
+    <div class="svc-card-col">
+      <div class="svc-card s1-card" id="theCard">
+
+        <!-- Visual illustration area — panels swap -->
+        <div class="card-visual">
+
+          <!-- Visual 1: Tree Removal — botanical tree illustration -->
+          <div class="card-visual-panel active" id="vis0">
+            <div class="cv-bg s1-bg"></div>
+            <div class="cv-light s1-light"></div>
+            <div class="cv-orb s1-orb"></div>
+            <div class="cv-grain"></div>
+            <div class="cv-art">
+              <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tree trunk -->
+                <rect x="150" y="148" width="20" height="60" rx="3" fill="rgba(200,150,90,0.25)"/>
+                <!-- Root spread -->
+                <path d="M150 200 Q130 210 110 205" stroke="rgba(200,150,90,0.15)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M170 200 Q190 210 210 205" stroke="rgba(200,150,90,0.15)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Main canopy rings — large circles suggesting volume -->
+                <circle cx="160" cy="110" r="88" stroke="rgba(200,150,90,0.08)" stroke-width="1.5" fill="rgba(1,70,28,0.3)"/>
+                <circle cx="160" cy="110" r="68" stroke="rgba(200,150,90,0.1)" stroke-width="1" fill="rgba(1,80,30,0.2)"/>
+                <circle cx="160" cy="110" r="50" stroke="rgba(200,150,90,0.14)" stroke-width="1.5" fill="rgba(1,90,32,0.25)"/>
+                <!-- Branch lines radiating -->
+                <g opacity="0.35" stroke="rgba(200,150,90,0.6)" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="160" y1="148" x2="160" y2="60"/>
+                  <line x1="160" y1="100" x2="100" y2="70"/>
+                  <line x1="160" y1="90" x2="220" y2="65"/>
+                  <line x1="160" y1="115" x2="88" y2="105"/>
+                  <line x1="160" y1="115" x2="232" y2="108"/>
+                  <line x1="160" y1="125" x2="108" y2="148"/>
+                  <line x1="160" y1="125" x2="212" y2="148"/>
+                </g>
+                <!-- Leaf cluster dots — scattered -->
+                <g opacity="0.5">
+                  <circle cx="100" cy="68" r="3" fill="#c8965a"/>
+                  <circle cx="88" cy="102" r="2.5" fill="#c8965a"/>
+                  <circle cx="220" cy="64" r="3" fill="#c8965a"/>
+                  <circle cx="232" cy="106" r="2.5" fill="#c8965a"/>
+                  <circle cx="160" cy="58" r="3" fill="#c8965a"/>
+                  <circle cx="108" cy="150" r="2" fill="#c8965a"/>
+                  <circle cx="212" cy="150" r="2" fill="#c8965a"/>
+                </g>
+                <!-- CUT LINE — dramatic diagonal, the whole point -->
+                <g filter="url(#glow-gold)">
+                  <line x1="72" y1="155" x2="248" y2="75"
+                    stroke="rgba(200,150,90,0.9)" stroke-width="1.5"
+                    stroke-dasharray="6 4"
+                    style="animation:pulse 2.5s ease-in-out infinite"/>
+                  <!-- Arrow at end of cut line -->
+                  <polygon points="248,75 238,80 240,68" fill="rgba(200,150,90,0.7)"/>
+                </g>
+                <!-- Large ghost number -->
+                <text x="50%" y="75%" text-anchor="middle" dominant-baseline="middle"
+                  font-family="'Barlow Condensed'" font-size="120" font-weight="800"
+                  fill="rgba(200,150,90,0.045)" letter-spacing="-4">500+</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Visual 2: Tree Trimming — precision geometry -->
+          <div class="card-visual-panel" id="vis1">
+            <div class="cv-bg s2-bg"></div>
+            <div class="cv-light s2-light"></div>
+            <div class="cv-orb s2-orb"></div>
+            <div class="cv-grain"></div>
+            <div class="cv-art">
+              <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Trunk -->
+                <rect x="152" y="155" width="16" height="55" rx="3" fill="rgba(130,210,70,0.2)"/>
+                <!-- Perfect geometric canopy tiers — ultra clean -->
+                <circle cx="160" cy="100" r="85" stroke="rgba(130,210,70,0.07)" stroke-width="1" fill="rgba(20,60,8,0.35)"/>
+                <circle cx="160" cy="100" r="65" stroke="rgba(130,210,70,0.1)" stroke-width="1.5" fill="rgba(25,70,10,0.3)"/>
+                <circle cx="160" cy="100" r="46" stroke="rgba(130,210,70,0.14)" stroke-width="1.5" fill="rgba(28,80,10,0.28)"/>
+                <!-- Precision trim marks — the cuts being made -->
+                <g stroke="rgba(130,210,70,0.7)" stroke-width="1.5" stroke-linecap="round" filter="url(#glow-lime)">
+                  <!-- Top arc trim marks -->
+                  <path d="M96 58 Q160 30 224 58" fill="none" stroke-dasharray="3 6"/>
+                  <!-- Side cuts -->
+                  <line x1="76" y1="100" x2="90" y2="100"/>
+                  <line x1="244" y1="100" x2="230" y2="100"/>
+                  <!-- Precision lines showing the cut plane -->
+                  <line x1="96" y1="58" x2="82" y2="44"/>
+                  <line x1="224" y1="58" x2="238" y2="44"/>
+                </g>
+                <!-- Radiating precision lines from center -->
+                <g opacity="0.25" stroke="rgba(130,210,70,0.5)" stroke-width="1" stroke-linecap="round">
+                  {[0,30,60,90,120,150,180,210,240,270,300,330].map(a => ``)}
+                  <line x1="160" y1="100" x2="160" y2="36"/>
+                  <line x1="160" y1="100" x2="214" y2="68"/>
+                  <line x1="160" y1="100" x2="214" y2="132"/>
+                  <line x1="160" y1="100" x2="160" y2="164"/>
+                  <line x1="160" y1="100" x2="106" y2="132"/>
+                  <line x1="160" y1="100" x2="106" y2="68"/>
+                </g>
+                <!-- Corner accent dots -->
+                <g fill="rgba(130,210,70,0.8)">
+                  <circle cx="82" cy="44" r="3"/>
+                  <circle cx="238" cy="44" r="3"/>
+                  <circle cx="76" cy="100" r="2.5"/>
+                  <circle cx="244" cy="100" r="2.5"/>
+                </g>
+                <!-- Scissors motif — top center -->
+                <g transform="translate(145,22)" stroke="rgba(130,210,70,0.55)" stroke-width="1.5" stroke-linecap="round" fill="none">
+                  <circle cx="4" cy="4" r="4"/>
+                  <circle cx="26" cy="4" r="4"/>
+                  <line x1="8" y1="6" x2="22" y2="18"/>
+                  <line x1="22" y1="6" x2="8" y2="18"/>
+                </g>
+                <!-- Ghost stat -->
+                <text x="50%" y="72%" text-anchor="middle" dominant-baseline="middle"
+                  font-family="'Barlow Condensed'" font-size="110" font-weight="800"
+                  fill="rgba(130,210,70,0.045)" letter-spacing="-3">5★</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Visual 3: Stump Grinding — tree ring cross section -->
+          <div class="card-visual-panel" id="vis2">
+            <div class="cv-bg s3-bg"></div>
+            <div class="cv-light s3-light"></div>
+            <div class="cv-orb s3-orb"></div>
+            <div class="cv-grain"></div>
+            <div class="cv-art">
+              <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Tree ring cross-section — the stump viewed from above -->
+                <!-- Outer ground shadow -->
+                <ellipse cx="160" cy="175" rx="90" ry="14" fill="rgba(0,0,0,0.3)"/>
+                <!-- Rings — outer to inner, organic offsets -->
+                <circle cx="160" cy="106" r="88" stroke="rgba(210,145,55,0.07)" stroke-width="2" fill="rgba(42,25,4,0.5)"/>
+                <circle cx="161" cy="105" r="74" stroke="rgba(210,145,55,0.09)" stroke-width="2" fill="rgba(36,20,3,0.45)"/>
+                <circle cx="159" cy="107" r="60" stroke="rgba(210,145,55,0.11)" stroke-width="2" fill="rgba(30,16,2,0.45)"/>
+                <circle cx="161" cy="105" r="47" stroke="rgba(210,145,55,0.14)" stroke-width="1.5" fill="rgba(24,13,2,0.45)"/>
+                <circle cx="160" cy="106" r="35" stroke="rgba(210,145,55,0.18)" stroke-width="1.5" fill="rgba(20,10,2,0.5)"/>
+                <circle cx="160" cy="105" r="23" stroke="rgba(210,145,55,0.22)" stroke-width="1.5" fill="rgba(16,8,1,0.55)"/>
+                <circle cx="160" cy="106" r="12" stroke="rgba(210,145,55,0.28)" stroke-width="1.5" fill="rgba(12,6,1,0.6)"/>
+                <!-- Center heartwood -->
+                <circle cx="160" cy="106" r="4" fill="rgba(210,145,55,0.5)"/>
+                <!-- Radial grain lines — organic cracks in the wood -->
+                <g stroke="rgba(210,145,55,0.2)" stroke-width="1" stroke-linecap="round" opacity="0.6">
+                  <line x1="160" y1="18" x2="160" y2="106"/>
+                  <line x1="238" y1="50" x2="168" y2="100"/>
+                  <line x1="248" y1="130" x2="172" y2="108"/>
+                  <line x1="200" y1="186" x2="164" y2="114"/>
+                  <line x1="120" y1="186" x2="156" y2="114"/>
+                  <line x1="72" y1="130" x2="148" y2="108"/>
+                  <line x1="82" y1="50" x2="152" y2="100"/>
+                </g>
+                <!-- Grinding bit — circular cutting element -->
+                <circle cx="160" cy="106" r="92"
+                  stroke="rgba(210,145,55,0.35)" stroke-width="1.5"
+                  stroke-dasharray="4 8"
+                  fill="none"
+                  style="animation:spinSlowCW 12s linear infinite;transform-origin:160px 106px;"/>
+                <!-- Direction arrows on outer ring -->
+                <g filter="url(#glow-amber)">
+                  <path d="M160 14 L155 24 L165 24 Z" fill="rgba(210,145,55,0.7)"/>
+                  <path d="M246 106 L236 101 L236 111 Z" fill="rgba(210,145,55,0.7)"/>
+                </g>
+                <!-- Ghost stat -->
+                <text x="50%" y="76%" text-anchor="middle" dominant-baseline="middle"
+                  font-family="'Barlow Condensed'" font-size="110" font-weight="800"
+                  fill="rgba(210,145,55,0.05)" letter-spacing="-3">100%</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Visual 4: Storm Cleanup — electric storm composition -->
+          <div class="card-visual-panel" id="vis3">
+            <div class="cv-bg s4-bg"></div>
+            <div class="cv-light s4-light"></div>
+            <div class="cv-orb s4-orb"></div>
+            <div class="cv-grain"></div>
+            <div class="cv-art">
+              <svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Storm cloud — large organic shape -->
+                <ellipse cx="160" cy="78" rx="100" ry="44" fill="rgba(74,143,217,0.12)" stroke="rgba(74,143,217,0.18)" stroke-width="1.5"/>
+                <ellipse cx="128" cy="68" rx="52" ry="36" fill="rgba(74,143,217,0.14)" stroke="rgba(74,143,217,0.14)" stroke-width="1"/>
+                <ellipse cx="192" cy="72" rx="48" ry="32" fill="rgba(74,143,217,0.14)" stroke="rgba(74,143,217,0.14)" stroke-width="1"/>
+                <ellipse cx="160" cy="60" rx="60" ry="34" fill="rgba(74,143,217,0.16)" stroke="rgba(74,143,217,0.2)" stroke-width="1"/>
+                <!-- Rain drops — scattered below cloud -->
+                <g opacity="0.35" stroke="rgba(74,143,217,0.6)" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="90" y1="125" x2="86" y2="138"/>
+                  <line x1="108" y1="132" x2="104" y2="145"/>
+                  <line x1="126" y1="120" x2="122" y2="133"/>
+                  <line x1="144" y1="138" x2="140" y2="151"/>
+                  <line x1="178" y1="124" x2="174" y2="137"/>
+                  <line x1="196" y1="136" x2="192" y2="149"/>
+                  <line x1="214" y1="120" x2="210" y2="133"/>
+                  <line x1="232" y1="130" x2="228" y2="143"/>
+                  <line x1="99" y1="150" x2="95" y2="163"/>
+                  <line x1="117" y1="158" x2="113" y2="171"/>
+                  <line x1="205" y1="152" x2="201" y2="165"/>
+                  <line x1="223" y1="148" x2="219" y2="161"/>
+                </g>
+                <!-- MAIN LIGHTNING BOLT — the hero element -->
+                <g filter="url(#glow-blue)">
+                  <path d="M172 88 L148 132 L162 132 L138 180 L182 124 L168 124 Z"
+                    fill="rgba(110,170,255,0.85)"
+                    stroke="rgba(140,190,255,0.9)"
+                    stroke-width="1"
+                    style="animation:pulse 2.2s ease-in-out infinite"/>
+                </g>
+                <!-- Secondary smaller bolt -->
+                <path d="M218 90 L206 118 L214 118 L198 148 L222 112 L214 112 Z"
+                  fill="rgba(74,143,217,0.4)"
+                  stroke="rgba(110,170,255,0.5)"
+                  stroke-width="1"
+                  style="animation:pulse 2.2s ease-in-out infinite 0.6s"/>
+                <!-- Fallen tree line — what the storm leaves behind -->
+                <g opacity="0.3">
+                  <path d="M52 182 Q100 170 148 176 Q180 180 220 172 Q250 166 272 174"
+                    stroke="rgba(74,143,217,0.5)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                  <!-- Trunk -->
+                  <rect x="130" y="168" width="60" height="10" rx="5" fill="rgba(74,143,217,0.2)" transform="rotate(-5,160,173)"/>
+                </g>
+                <!-- Emergency pulse rings around bolt -->
+                <circle cx="160" cy="135" r="28" stroke="rgba(74,143,217,0.15)" stroke-width="1.5" fill="none"
+                  style="animation:pulse 1.8s ease-in-out infinite"/>
+                <circle cx="160" cy="135" r="42" stroke="rgba(74,143,217,0.08)" stroke-width="1" fill="none"
+                  style="animation:pulse 1.8s ease-in-out infinite 0.4s"/>
+                <!-- Ghost stat -->
+                <text x="50%" y="72%" text-anchor="middle" dominant-baseline="middle"
+                  font-family="'Barlow Condensed'" font-size="110" font-weight="800"
+                  fill="rgba(74,143,217,0.055)" letter-spacing="-3">24/7</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card content -->
+        <div class="card-content">
+
+          <!-- Service 1 content -->
+          <div class="card-content-panel active" id="cc0">
+            <div class="cc-top">
+              <div class="cc-tag s1-tag"><div class="cc-tag-dot s1-dot pulse" style="background:#e8a020;color:rgba(232,160,32,.4);animation:stP 2s ease-in-out infinite;"></div>Same-Day Available</div>
+              <div class="cc-ico s1-ico">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c8965a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22v-7"/><path d="M9 15c-3-1-5-4-4-7 2 0 4 1 5 3"/><path d="M15 15c3-1 5-4 4-7-2 0-4 1-5 3"/><path d="M8 22h8"/>
+                </svg>
+              </div>
+            </div>
+            <div class="cc-name">Tree Removal</div>
+            <div class="cc-rule s1-rule" style="width:48px"></div>
+            <p class="cc-desc">Safe removal of any tree — any size, any access. Full cleanup included on every job. Your yard left cleaner than we found it.</p>
+            <div class="cc-foot">
+              <div><div class="cc-stat-val s1-val">500+ Jobs</div><div class="cc-stat-lbl">Completed in Parrish</div></div>
+              <div class="cc-cta"><span>View Tree Removal</span><div class="cc-cta-ico">→</div></div>
+            </div>
+          </div>
+
+          <!-- Service 2 content -->
+          <div class="card-content-panel" id="cc1">
+            <div class="cc-top">
+              <div class="cc-tag s2-tag"><div style="width:5px;height:5px;border-radius:50%;background:rgba(130,210,70,.9);flex-shrink:0;"></div>Cleanup Included</div>
+              <div class="cc-ico s2-ico">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(130,210,70,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+                  <path d="M20 4L8.12 15.88"/><path d="M14.47 14.48L20 20"/><path d="M8.12 8.12L12 12"/>
+                </svg>
+              </div>
+            </div>
+            <div class="cc-name">Tree Trimming</div>
+            <div class="cc-rule s2-rule" style="width:48px"></div>
+            <p class="cc-desc">Cleaner canopy, better clearance, healthier trees. Protects your roof and fences. Year-round sharp.</p>
+            <div class="cc-foot">
+              <div><div class="cc-stat-val s2-val">Year Round</div><div class="cc-stat-lbl">Seasonal & maintenance</div></div>
+              <div class="cc-cta"><span>View Tree Trimming</span><div class="cc-cta-ico">→</div></div>
+            </div>
+          </div>
+
+          <!-- Service 3 content -->
+          <div class="card-content-panel" id="cc2">
+            <div class="cc-top">
+              <div class="cc-tag s3-tag"><div style="width:5px;height:5px;border-radius:50%;background:rgba(210,145,55,.9);flex-shrink:0;"></div>Ground Below Grade</div>
+              <div class="cc-ico s3-ico">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(210,145,55,.9)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/>
+                  <path d="M12 5V3M12 21v-2M5 12H3M21 12h-2M7.05 7.05L5.64 5.64M18.36 18.36l-1.41-1.41"/>
+                </svg>
+              </div>
+            </div>
+            <div class="cc-name">Stump Grinding</div>
+            <div class="cc-rule s3-rule" style="width:48px"></div>
+            <p class="cc-desc">Nothing left to trip on, mow around, or regrow. Ground below grade. Yard fully reclaimed in one visit.</p>
+            <div class="cc-foot">
+              <div><div class="cc-stat-val s3-val">100% Gone</div><div class="cc-stat-lbl">No regrowth, below grade</div></div>
+              <div class="cc-cta"><span>View Stump Grinding</span><div class="cc-cta-ico">→</div></div>
+            </div>
+          </div>
+
+          <!-- Service 4 content -->
+          <div class="card-content-panel" id="cc3">
+            <div class="cc-top">
+              <div class="cc-tag s4-tag"><div style="width:5px;height:5px;border-radius:50%;background:#4a8fd9;flex-shrink:0;animation:stP 2s ease-in-out infinite;"></div>Emergency Response</div>
+              <div class="cc-ico s4-ico" style="position:relative">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(120,175,255,.88)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                  <path d="M11 13l-2 3h4l-2 3"/>
+                </svg>
+                <div class="storm-dot"></div>
+              </div>
+            </div>
+            <div class="cc-name">Storm Cleanup</div>
+            <div class="cc-rule s4-rule" style="width:48px"></div>
+            <p class="cc-desc">Fast response to any storm damage. Fallen limbs, blocked driveways, split trunks. Same day when possible.</p>
+            <div class="cc-foot">
+              <div><div class="cc-stat-val s4-val">Same Day</div><div class="cc-stat-lbl">Emergency response</div></div>
+              <div class="cc-cta"><span>View Storm Cleanup</span><div class="cc-cta-ico">→</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="svc-foot">
+    <div class="svc-foot-txt">Not sure which service? <strong>Call us — we'll tell you honestly.</strong></div>
+    <div class="svc-foot-pills" id="pills">
+      <div class="svc-pill on"></div>
+      <div class="svc-pill"></div>
+      <div class="svc-pill"></div>
+      <div class="svc-pill"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+
+const COLORS = ['#c8965a','rgba(130,210,70,1)','rgba(210,145,55,1)','rgba(110,170,255,1)'];
+const CARD_CLASSES = ['s1-card s1-card-glow','s2-card s2-card-glow','s3-card s3-card-glow','s4-card s4-card-glow'];
+const GLOW_CLASSES = ['s1-card-glow','s2-card-glow','s3-card-glow','s4-card-glow'];
+const BG_CLASSES   = ['s1-bg','s2-bg','s3-bg','s4-bg'];
+
+const rows     = document.querySelectorAll('.svc-row');
+const visPanels= document.querySelectorAll('.card-visual-panel');
+const ccPanels = document.querySelectorAll('.card-content-panel');
+const pills    = document.querySelectorAll('.svc-pill');
+const svcList  = document.getElementById('svcList');
+const card     = document.getElementById('theCard');
+const svg      = document.getElementById('connSvg');
+const body     = document.getElementById('svcBody');
+
+let current   = 0;
+let connLine  = null;
+let connDot   = null;
+let animTimer = null;
+
+// Draw the connecting line from row midpoint to card
+function drawConnector(idx) {
+  // Clear previous
+  while(svg.children.length > 1) svg.removeChild(svg.lastChild); // keep defs
+  if(animTimer) clearTimeout(animTimer);
+
+  const bodyRect = body.getBoundingClientRect();
+  const rowEl    = rows[idx];
+  const rowRect  = rowEl.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
+
+  // Source: right edge of the name row (midpoint vertically)
+  const sx = rowRect.right  - bodyRect.left;
+  const sy = rowRect.top + rowRect.height * 0.38 - bodyRect.top;
+
+  // Target: left edge of card (midpoint vertically)
+  const tx = cardRect.left  - bodyRect.left;
+  const ty = cardRect.top + cardRect.height * 0.45 - bodyRect.top;
+
+  const col = COLORS[idx];
+
+  // Build a smooth bezier path: start horizontal, then curve to card
+  const cpx1 = sx + (tx - sx) * 0.45;
+  const cpy1 = sy;
+  const cpx2 = tx - 40;
+  const cpy2 = ty;
+  const d = `M ${sx} ${sy} C ${cpx1} ${cpy1}, ${cpx2} ${cpy2}, ${tx} ${ty}`;
+
+  // Measure path length
+  const tmpPath = document.createElementNS('http://www.w3.org/2000/svg','path');
+  tmpPath.setAttribute('d', d);
+  svg.appendChild(tmpPath);
+  const len = tmpPath.getTotalLength();
+  svg.removeChild(tmpPath);
+
+  // Create the animated line
+  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d', d);
+  path.setAttribute('fill','none');
+  path.setAttribute('stroke', col);
+  path.setAttribute('stroke-width','1.5');
+  path.setAttribute('stroke-linecap','round');
+  path.style.strokeDasharray = len;
+  path.style.strokeDashoffset = len;
+  path.style.filter = idx===0 ? 'url(#glow-gold)' : idx===1 ? 'url(#glow-lime)' : idx===2 ? 'url(#glow-amber)' : 'url(#glow-blue)';
+  path.style.transition = `stroke-dashoffset 500ms cubic-bezier(.22,1,.36,1)`;
+  svg.appendChild(path);
+
+  // Moving dot along the path
+  const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  dot.setAttribute('r','4');
+  dot.setAttribute('fill', col);
+  dot.style.filter = path.style.filter;
+  svg.appendChild(dot);
+
+  // Trigger the draw
+  requestAnimationFrame(()=>{
+    path.style.strokeDashoffset = '0';
+  });
+
+  // Animate dot along path
+  let start = null;
+  const DUR = 520;
+  function animDot(ts){
+    if(!start) start=ts;
+    const progress = Math.min((ts-start)/DUR,1);
+    const eased = 1 - Math.pow(1-progress,3);
+    const pt = tmpPath2.getPointAtLength(eased * len);
+    dot.setAttribute('cx', pt.x);
+    dot.setAttribute('cy', pt.y);
+    dot.style.opacity = progress < 0.05 ? progress/0.05 : progress > 0.85 ? 1-(progress-0.85)/0.15 : '1';
+    if(progress < 1) requestAnimationFrame(animDot);
+  }
+
+  // We need path in DOM for getPointAtLength
+  const tmpPath2 = document.createElementNS('http://www.w3.org/2000/svg','path');
+  tmpPath2.setAttribute('d', d);
+  tmpPath2.style.visibility='hidden';
+  svg.appendChild(tmpPath2);
+  requestAnimationFrame(animDot);
+
+  // Card border trace — after line arrives (~500ms)
+  // Draw an animated rect stroke around the card
+  setTimeout(()=>{
+    const cr = card.getBoundingClientRect();
+    const br = body.getBoundingClientRect();
+    const cx = cr.left - br.left;
+    const cy = cr.top  - br.top;
+    const cw = cr.width;
+    const ch = cr.height;
+    const r  = 26; // border-radius
+
+    // Path tracing the card border
+    const borderPath = `M ${cx+r} ${cy} L ${cx+cw-r} ${cy} Q ${cx+cw} ${cy} ${cx+cw} ${cy+r} L ${cx+cw} ${cy+ch-r} Q ${cx+cw} ${cy+ch} ${cx+cw-r} ${cy+ch} L ${cx+r} ${cy+ch} Q ${cx} ${cy+ch} ${cx} ${cy+ch-r} L ${cx} ${cy+r} Q ${cx} ${cy} ${cx+r} ${cy}`;
+
+    const borderEl = document.createElementNS('http://www.w3.org/2000/svg','path');
+    borderEl.setAttribute('d', borderPath);
+    borderEl.setAttribute('fill','none');
+    borderEl.setAttribute('stroke', col);
+    borderEl.setAttribute('stroke-width','1.5');
+    borderEl.setAttribute('stroke-linecap','round');
+    borderEl.style.filter = path.style.filter;
+
+    const totalLen = (() => {
+      const t = document.createElementNS('http://www.w3.org/2000/svg','path');
+      t.setAttribute('d', borderPath);
+      svg.appendChild(t);
+      const l = t.getTotalLength();
+      svg.removeChild(t);
+      return l;
+    })();
+
+    borderEl.style.strokeDasharray = totalLen;
+    borderEl.style.strokeDashoffset = totalLen;
+    borderEl.style.transition = `stroke-dashoffset 700ms cubic-bezier(.22,1,.36,1)`;
+    svg.appendChild(borderEl);
+
+    requestAnimationFrame(()=>{
+      borderEl.style.strokeDashoffset = '0';
+    });
+
+    // Fade out after tracing complete
+    setTimeout(()=>{
+      borderEl.style.transition = 'opacity 400ms ease';
+      borderEl.style.opacity = '0';
+      setTimeout(()=>{
+        if(borderEl.parentNode) svg.removeChild(borderEl);
+        // Also fade the connecting line
+        path.style.transition = 'opacity 400ms ease';
+        path.style.opacity = '0';
+        dot.style.transition = 'opacity 200ms ease';
+        dot.style.opacity = '0';
+      }, 400);
+    }, 900);
+
+  }, 480);
+}
+
+window.activateService = function(idx){
+  if(idx === current) return;
+  current = idx;
+
+  // Update rows
+  rows.forEach((r,i)=>{
+    r.classList.toggle('active', i===idx);
+  });
+  svcList.classList.add('has-active');
+
+  // Update card classes
+  card.className = 'svc-card';
+  CARD_CLASSES[idx].split(' ').forEach(c=>{ if(c) card.classList.add(c); });
+
+  // Swap visuals
+  visPanels.forEach((v,i)=>v.classList.toggle('active',i===idx));
+
+  // Swap content
+  ccPanels.forEach((c,i)=>{
+    c.classList.remove('active');
+  });
+  // Small delay so exit animation is visible
+  setTimeout(()=>{
+    ccPanels[idx].classList.add('active');
+  }, 80);
+
+  // Update pills
+  pills.forEach((p,i)=>p.classList.toggle('on',i===idx));
+
+  // Draw connector
+  drawConnector(idx);
+};
+
+// Init — activate first
+rows[0].classList.add('active');
+card.className = 'svc-card ' + CARD_CLASSES[0];
+setTimeout(()=>drawConnector(0), 400);
+
+})();
+</script>
+</body>
+</html>
