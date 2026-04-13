@@ -101,14 +101,16 @@ const panelThemes = [
             </div>
 
             <div class="p-middle">
-              <div class="p-q">
-                {scenario.title}
-                {scenario.accent && <span class="accent">{scenario.accent}</span>}
+              <div class="p-heading">
+                <div class="p-q">
+                  {scenario.title}
+                  {scenario.accent && <span class="accent">{scenario.accent}</span>}
+                </div>
+                <div class="p-sweep"></div>
               </div>
             </div>
 
             <div class="p-bottom">
-              <div class="p-sweep"></div>
               <p class="p-answer">{scenario.answer}</p>
               <button
                 type="button"
@@ -521,15 +523,16 @@ const panelThemes = [
 
   .panel {
     --svc-angle: 0deg;
-    height: 410px;
+    height: 372px;
     width: 100%;
     scroll-snap-align: start;
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 22px 22px 20px;
+    justify-content: flex-start;
+    padding: 20px 20px 18px;
+    gap: 10px;
     flex-shrink: 0;
     border-radius: 28px;
     opacity: 0.7;
@@ -669,24 +672,28 @@ const panelThemes = [
   .p-middle {
     position: relative;
     z-index: 2;
-    flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     min-height: 0;
+    padding-top: 6px;
+  }
+
+  .p-heading {
+    width: 100%;
   }
 
   .p-q {
     font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-    font-size: 40px;
+    font-size: 32px;
     font-weight: 800;
-    font-style: italic;
+    font-style: normal;
     text-transform: uppercase;
     line-height: 0.88;
     letter-spacing: -0.025em;
     color: #fff;
     opacity: 0;
     opacity: 0.72;
-    transform: translateY(6px);
+    transform: translateY(4px);
     transition: opacity 260ms ease, transform 260ms ease;
     max-width: 100%;
   }
@@ -704,13 +711,18 @@ const panelThemes = [
     position: relative;
     z-index: 2;
     min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .p-sweep {
     height: 2px;
     border-radius: 999px;
     width: 0%;
-    margin-bottom: 14px;
+    margin-top: 8px;
+    margin-bottom: 6px;
   }
 
   .panel.active .p-sweep {
@@ -719,12 +731,15 @@ const panelThemes = [
   }
 
   .p-answer {
-    font-size: 13px;
+    font-size: 14px;
     color: rgba(255, 255, 255, 0.84);
-    line-height: 1.55;
-    margin-bottom: 14px;
+    line-height: 1.62;
+    margin: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
     opacity: 0.72;
-    transform: translateY(4px);
+    transform: translateY(2px);
     overflow-wrap: anywhere;
     transition: opacity 260ms ease, transform 260ms ease;
   }
@@ -753,6 +768,8 @@ const panelThemes = [
     cursor: pointer;
     transform: translateY(4px);
     transition: opacity 260ms ease, transform 260ms ease;
+    align-self: flex-start;
+    margin-top: 10px;
   }
 
   .panel.active .p-btn {
@@ -979,7 +996,7 @@ const panelThemes = [
 
   .when-close {
     background: #012a14;
-    padding: 28px 22px 36px;
+    padding: 28px 22px 56px;
     position: relative;
     z-index: 1;
   }
