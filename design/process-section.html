@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Process Section</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f5f2e8;
+        min-width: 1280px;
+        overflow-x: hidden;
+      }
+
+      @keyframes dot {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.3;
+          transform: scale(0.55);
+        }
+      }
+      @keyframes tick {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes lineDraw {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+      @keyframes circlePulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(200, 150, 90, 0.6);
+        }
+        70% {
+          box-shadow: 0 0 0 14px rgba(200, 150, 90, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(200, 150, 90, 0);
+        }
+      }
+      @keyframes circleGlow {
+        from {
+          opacity: 0;
+          transform: scale(0.88);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes ctaSlideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-150%) skewX(-15deg);
+          opacity: 0;
+        }
+        12% {
+          opacity: 1;
+        }
+        88% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(250%) skewX(-15deg);
+          opacity: 0;
+        }
+      }
+
+      .grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 160px;
+      }
+
+      /* ── context stubs ── */
+      .rev-stub {
+        background: #f5f0e8;
+        padding: 28px 64px;
+        border-bottom: 1px solid rgba(1, 42, 20, 0.07);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .stub-lbl {
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(1, 42, 20, 0.3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .guar-stub {
+        background: #010e07;
+        padding: 28px 64px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .guar-lbl {
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.28);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      /* ════════════════════════════════════════
+   PROCESS SECTION
+   Dark green. Centered. One viewport.
+   Line draws. Steps activate sequentially.
+   CTA slides down after sequence completes.
+════════════════════════════════════════ */
+      .proc {
+        background: #012a14;
+        position: relative;
+        overflow: hidden;
+        padding: 72px 0 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Atmospheric glow — centered */
+      .proc-glow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 65% 55% at 50% 42%,
+            rgba(200, 150, 90, 0.07) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 40% 30% at 50% 85%,
+            rgba(200, 150, 90, 0.05) 0%,
+            transparent 60%
+          );
+      }
+      .proc-grain {
+        z-index: 0;
+        opacity: 0.04;
+      }
+
+      /* Orb — subtle depth */
+      .proc-orb {
+        position: absolute;
+        bottom: -100px;
+        right: -100px;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(200, 150, 90, 0.045) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── HEADER — centered ── */
+      .proc-header {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 0 64px 56px;
+        flex-shrink: 0;
+        opacity: 0;
+      }
+      .proc-header.visible {
+        animation: fadeUp 0.5s ease forwards;
+      }
+
+      .proc-eye {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: rgba(200, 150, 90, 0.72);
+        margin-bottom: 14px;
+      }
+      .proc-eye-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #c8965a;
+        animation: dot 2.2s ease-in-out infinite;
+      }
+
+      .proc-h2 {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(44px, 4.2vw, 60px);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        line-height: 0.88;
+        color: #fff;
+        margin-bottom: 0;
+      }
+      .proc-h2 em {
+        color: #c8965a;
+        font-style: normal;
+        display: block;
+      }
+
+      /* ── STEPS ZONE ── */
+      .proc-steps-zone {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 80px;
+        max-width: 1280px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      /* The four steps row */
+      .proc-steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+        position: relative;
+        margin-bottom: 0;
+      }
+
+      /* Connecting line track — runs behind circles */
+      .proc-line-track {
+        position: absolute;
+        /* Centered vertically on circles */
+        top: 52px;
+        left: calc(12.5%);
+        right: calc(12.5%);
+        height: 2px;
+        background: rgba(255, 255, 255, 0.06);
+        z-index: 0;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      /* The animated fill */
+      .proc-line-fill {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #c8965a, rgba(200, 150, 90, 0.5));
+        box-shadow: 0 0 12px rgba(200, 150, 90, 0.4);
+        border-radius: 999px;
+        transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .proc-line-fill.drawn {
+        width: 100%;
+      }
+
+      /* Individual step */
+      .proc-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 16px 0;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Circle */
+      .proc-circle {
+        width: 104px;
+        height: 104px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(200, 150, 90, 0.2);
+        background: #012a14;
+        display: grid;
+        place-items: center;
+        margin-bottom: 24px;
+        position: relative;
+        /* Initial state */
+        opacity: 0.35;
+        transition:
+          opacity 350ms ease,
+          border-color 350ms ease,
+          box-shadow 350ms ease;
+      }
+      /* Inner circle */
+      .proc-circle-inner {
+        width: 66px;
+        height: 66px;
+        border-radius: 50%;
+        background: rgba(200, 150, 90, 0.06);
+        display: grid;
+        place-items: center;
+        transition: background 350ms ease;
+      }
+      .proc-circle-inner svg {
+        opacity: 0.45;
+        transition: opacity 350ms ease;
+      }
+
+      /* Active circle state */
+      .proc-circle.active {
+        opacity: 1;
+        border-color: rgba(200, 150, 90, 0.65);
+        box-shadow:
+          0 0 0 8px rgba(200, 150, 90, 0.07),
+          0 0 28px rgba(200, 150, 90, 0.2);
+      }
+      .proc-circle.active .proc-circle-inner {
+        background: rgba(200, 150, 90, 0.14);
+      }
+      .proc-circle.active svg {
+        opacity: 1;
+      }
+
+      /* Pulse — fires once when circle activates */
+      .proc-circle.pulse {
+        animation: circlePulse 0.6s ease forwards;
+      }
+
+      /* THE VERB — the big moment */
+      .proc-verb {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(52px, 5vw, 72px);
+        font-weight: 800;
+        font-style: italic;
+        text-transform: uppercase;
+        letter-spacing: -0.025em;
+        line-height: 1;
+        color: rgba(200, 150, 90, 0.25);
+        text-align: center;
+        margin-bottom: 10px;
+        transition:
+          color 350ms ease,
+          text-shadow 350ms ease;
+      }
+      .proc-step.active .proc-verb {
+        color: #c8965a;
+        text-shadow: 0 0 40px rgba(200, 150, 90, 0.3);
+      }
+
+      .proc-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.3);
+        text-align: center;
+        margin-bottom: 5px;
+        letter-spacing: -0.01em;
+        transition: color 350ms ease;
+      }
+      .proc-step.active .proc-title {
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .proc-desc {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.22);
+        text-align: center;
+        line-height: 1.6;
+        max-width: 180px;
+        transition: color 350ms ease;
+      }
+      .proc-step.active .proc-desc {
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      /* ── CLOSING LINE ── */
+      .proc-close {
+        text-align: center;
+        padding: 40px 0 36px;
+        position: relative;
+        z-index: 2;
+        opacity: 0;
+        flex-shrink: 0;
+      }
+      .proc-close.visible {
+        animation: fadeUp 0.5s ease forwards;
+      }
+      .proc-close-rule {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.07);
+        max-width: 1280px;
+        margin: 0 auto 32px;
+      }
+      .proc-close-txt {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(20px, 1.9vw, 28px);
+        font-weight: 800;
+        font-style: italic;
+        text-transform: uppercase;
+        letter-spacing: -0.015em;
+        color: rgba(255, 255, 255, 0.22);
+      }
+      .proc-close-txt em {
+        color: rgba(200, 150, 90, 0.5);
+        font-style: italic;
+      }
+
+      /* ══ CTA BAND — slides down after sequence ══ */
+      .proc-cta-band {
+        position: relative;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.22);
+        border-top: 1px solid rgba(200, 150, 90, 0.12);
+        padding: 28px 80px;
+        flex-shrink: 0;
+        /* Hidden until sequence completes */
+        display: none;
+        overflow: hidden;
+      }
+      .proc-cta-band::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(200, 150, 90, 0.45),
+          transparent
+        );
+      }
+      .proc-cta-band.revealed {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 48px;
+        animation: ctaSlideDown 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+      .proc-cta-band-grain {
+        z-index: 0;
+        opacity: 0.04;
+      }
+      .proc-cta-band-glow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse 60% 200% at 50% 50%,
+          rgba(200, 150, 90, 0.08) 0%,
+          transparent 65%
+        );
+      }
+
+      /* Left: ready text */
+      .proc-cta-left {
+        position: relative;
+        z-index: 1;
+      }
+      .proc-cta-ready {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(200, 150, 90, 0.6);
+        margin-bottom: 6px;
+      }
+      .proc-cta-stmt {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: clamp(26px, 2.4vw, 34px);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.015em;
+        line-height: 0.9;
+        color: #fff;
+      }
+      .proc-cta-stmt em {
+        color: #c8965a;
+        font-style: normal;
+      }
+
+      /* Center: estimate button */
+      .proc-cta-center {
+        position: relative;
+        z-index: 1;
+      }
+      .proc-est-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        background: linear-gradient(180deg, #d4a060, #b07840);
+        color: #fff;
+        padding: 16px 32px;
+        border-radius: 13px;
+        position: relative;
+        overflow: hidden;
+        box-shadow:
+          0 12px 32px rgba(180, 110, 40, 0.48),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+      }
+      .proc-est-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 55% 0;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.17),
+          transparent
+        );
+      }
+      .proc-est-btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 30%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.18),
+          transparent
+        );
+        transform: translateX(-150%) skewX(-15deg);
+        animation: shimmer 0.55s ease 0.3s both;
+      }
+      .est-btn-inner {
+        position: relative;
+        z-index: 1;
+      }
+      .est-btn-lbl {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.62);
+        margin-bottom: 2px;
+      }
+      .est-btn-txt {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 22px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        line-height: 1;
+        color: #fff;
+      }
+      .est-btn-arr {
+        position: relative;
+        z-index: 1;
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        display: grid;
+        place-items: center;
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 20px;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      /* Right: phone */
+      .proc-cta-right {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .proc-cta-ph-lbl {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: 5px;
+      }
+      .proc-cta-ph-num {
+        font-family: "Barlow Condensed", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: #c8965a;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .proc-cta-avail {
+        font-size: 9.5px;
+        color: rgba(255, 255, 255, 0.26);
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- context above -->
+    <div class="rev-stub">
+      <div class="stub-lbl">↑ Reviews section above</div>
+    </div>
+
+    <!-- ══ PROCESS ══ -->
+    <section class="proc" id="proc">
+      <div class="proc-glow"></div>
+      <div class="grain proc-grain"></div>
+      <div class="proc-orb"></div>
+
+      <!-- Header — centered -->
+      <div class="proc-header" id="procHeader">
+        <div class="proc-eye">
+          <div class="proc-eye-dot"></div>
+          How It Works
+        </div>
+        <div class="proc-h2">Simple Process.<br /><em>No Guesswork.</em></div>
+      </div>
+
+      <!-- Steps -->
+      <div class="proc-steps-zone">
+        <div class="proc-steps" id="procSteps">
+          <!-- Connecting line -->
+          <div class="proc-line-track">
+            <div class="proc-line-fill" id="procLine"></div>
+          </div>
+
+          <!-- CALL -->
+          <div class="proc-step" id="ps0">
+            <div class="proc-circle" id="pc0">
+              <div class="proc-circle-inner">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#c8965a"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path
+                    d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="proc-verb">Call.</div>
+            <div class="proc-title">You Call or Request</div>
+            <p class="proc-desc">
+              Reach out by phone or online. Tell us what you're dealing with.
+            </p>
+          </div>
+
+          <!-- TALK -->
+          <div class="proc-step" id="ps1">
+            <div class="proc-circle" id="pc1">
+              <div class="proc-circle-inner">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#c8965a"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path
+                    d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div class="proc-verb">Talk.</div>
+            <div class="proc-title">We Have a Quick Chat</div>
+            <p class="proc-desc">
+              We ask a few questions to understand the job and assess what's
+              needed.
+            </p>
+          </div>
+
+          <!-- QUOTE -->
+          <div class="proc-step" id="ps2">
+            <div class="proc-circle" id="pc2">
+              <div class="proc-circle-inner">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#c8965a"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+                  />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+              </div>
+            </div>
+            <div class="proc-verb">Quote.</div>
+            <div class="proc-title">We Send the Price</div>
+            <p class="proc-desc">
+              Flat, clear, complete. You know exactly what you'll pay before
+              anyone shows up.
+            </p>
+          </div>
+
+          <!-- DONE -->
+          <div class="proc-step" id="ps3">
+            <div class="proc-circle" id="pc3">
+              <div class="proc-circle-inner">
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#c8965a"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+            </div>
+            <div class="proc-verb">Done.</div>
+            <div class="proc-title">We Handle Everything</div>
+            <p class="proc-desc">
+              We show up, do the work, clean the site, and leave it better than
+              we found it.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Closing statement -->
+      <div class="proc-close" id="procClose">
+        <div class="proc-close-rule"></div>
+        <div class="proc-close-txt">
+          First call to clean yard. <em>Usually same day.</em>
+        </div>
+      </div>
+
+      <!-- CTA BAND — slides down after sequence -->
+      <div class="proc-cta-band" id="procCtaBand">
+        <div class="grain proc-cta-band-grain"></div>
+        <div class="proc-cta-band-glow"></div>
+        <div class="proc-cta-left">
+          <div class="proc-cta-ready">Ready to get started?</div>
+          <div class="proc-cta-stmt">
+            Four steps.<br /><em>Starting with one call.</em>
+          </div>
+        </div>
+        <div class="proc-cta-center">
+          <div class="proc-est-btn">
+            <div class="est-btn-inner">
+              <div class="est-btn-lbl">Free · No Obligation</div>
+              <div class="est-btn-txt">Get a Free Estimate</div>
+            </div>
+            <div class="est-btn-arr">→</div>
+          </div>
+        </div>
+        <div class="proc-cta-right">
+          <div class="proc-cta-ph-lbl">Or call directly</div>
+          <div class="proc-cta-ph-num">
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="rgba(200,150,90,.85)"
+            >
+              <path
+                d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"
+              />
+            </svg>
+            (941) 400-6500
+          </div>
+          <div class="proc-cta-avail">Slots available this week</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- context below -->
+    <div class="guar-stub">
+      <div class="guar-lbl">↓ Guarantee section below</div>
+    </div>
+
+    <script>
+      const steps = [0, 1, 2, 3];
+      const circles = steps.map((i) => document.getElementById(`pc${i}`));
+      const stepEls = steps.map((i) => document.getElementById(`ps${i}`));
+      const line = document.getElementById("procLine");
+      const header = document.getElementById("procHeader");
+      const close = document.getElementById("procClose");
+      const ctaBand = document.getElementById("procCtaBand");
+
+      let sequenceRun = false;
+
+      function runSequence() {
+        if (sequenceRun) return;
+        sequenceRun = true;
+
+        /* Header fades in */
+        header.classList.add("visible");
+
+        /* 400ms later — line starts drawing */
+        setTimeout(() => {
+          line.classList.add("drawn");
+        }, 400);
+
+        /* Activate each step as line reaches it
+     Line takes 1200ms total across 4 steps
+     Each step activates at 25% intervals = 300ms apart
+     Starting at 400ms (when line begins) */
+        const lineStart = 400;
+        const lineDur = 1200;
+        const stepDelay = lineDur / 4;
+
+        steps.forEach((_, i) => {
+          const activateAt = lineStart + stepDelay * i + stepDelay * 0.5;
+          setTimeout(() => {
+            circles[i].classList.add("active");
+            circles[i].classList.add("pulse");
+            stepEls[i].classList.add("active");
+          }, activateAt);
+        });
+
+        /* Closing line after all steps */
+        setTimeout(
+          () => {
+            close.classList.add("visible");
+          },
+          lineStart + lineDur + 200,
+        );
+
+        /* CTA band slides in 400ms after close line */
+        setTimeout(
+          () => {
+            ctaBand.classList.add("revealed");
+          },
+          lineStart + lineDur + 600,
+        );
+      }
+
+      /* IntersectionObserver */
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              runSequence();
+              obs.disconnect();
+            }
+          });
+        },
+        { threshold: 0.25 },
+      );
+
+      obs.observe(document.getElementById("proc"));
+    </script>
+  </body>
+</html>

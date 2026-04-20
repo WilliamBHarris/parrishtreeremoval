@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviews Section</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:#012a14;min-width:1280px;overflow-x:hidden;}
+
+@keyframes dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.55)}}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes centerRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideFromLeft{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideFromRight{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+.grain{position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px;}
+
+/* ── context stubs ── */
+.svc-stub{background:#012a14;padding:28px 64px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;}
+.svc-stub-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;}
+.proc-stub{background:#012a14;padding:28px 64px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;}
+
+/* ════════════════════════════════════════
+   REVIEWS SECTION
+════════════════════════════════════════ */
+.reviews{
+  background:#f5f0e8;
+  position:relative;
+  overflow:hidden;
+  /* Generous height — section deserves real presence */
+  padding:72px 0 0;
+  border-top:1px solid rgba(1,42,20,.07);
+  border-bottom:1px solid rgba(1,42,20,.07);
+}
+
+/* Top soft gradient — softens hard edge from dark section */
+.rev-top-fade{
+  position:absolute;top:0;left:0;right:0;
+  height:48px;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(1,32,12,.04) 0%,transparent 100%);
+}
+
+/* Warm atmospheric glow */
+.rev-glow{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 65% 55% at 50% 35%,rgba(200,150,90,.055) 0%,transparent 65%),
+    radial-gradient(ellipse 35% 28% at 15% 85%,rgba(200,150,90,.035) 0%,transparent 60%),
+    radial-gradient(ellipse 35% 28% at 85% 85%,rgba(200,150,90,.035) 0%,transparent 60%);
+}
+.rev-grain{z-index:0;opacity:.024;}
+
+/* ── HEADER ── */
+.rev-header{
+  position:relative;z-index:2;
+  max-width:1280px;margin:0 auto;
+  padding:0 64px 52px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  border-bottom:1.5px solid rgba(1,42,20,.09);
+  opacity:0;
+}
+.rev-header.visible{animation:fadeUp .5s ease forwards;}
+
+.rev-header-left{}
+.rev-eye{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(200,150,90,.8);margin-bottom:12px;
+}
+.rev-eye-dot{width:5px;height:5px;border-radius:50%;background:#c8965a;animation:dot 2.2s ease-in-out infinite;}
+
+.rev-h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(42px,4vw,58px);
+  font-weight:800;text-transform:uppercase;
+  letter-spacing:-.02em;line-height:.88;
+  color:#012a14;
+}
+.rev-h2 em{color:#c8965a;font-style:normal;display:block;}
+
+/* Google credential */
+.rev-header-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+  padding-bottom:4px;
+}
+.rev-google{
+  display:inline-flex;align-items:center;gap:10px;
+  border:1px solid rgba(1,42,20,.12);border-radius:999px;
+  padding:7px 16px;
+  background:rgba(1,42,20,.04);
+}
+.rev-google-g{
+  width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(135deg,#4285f4,#34a853,#fbbc05,#ea4335);
+  display:grid;place-items:center;flex-shrink:0;
+  font-size:11px;font-weight:800;color:#fff;font-family:'Inter',sans-serif;
+}
+.rev-google-txt{font-size:10px;font-weight:700;color:rgba(1,42,20,.55);letter-spacing:.04em;}
+.rev-google-stars{font-size:14px;color:#c8965a;letter-spacing:1px;}
+
+.rev-meta{font-size:11px;color:rgba(1,42,20,.35);font-style:italic;}
+
+/* ── CARDS ZONE ── */
+.rev-cards-wrap{
+  position:relative;z-index:2;
+  max-width:1280px;margin:0 auto;
+  padding:52px 64px 56px;
+  display:grid;
+  /* Flanking cards narrower, center wider */
+  grid-template-columns:1fr 1.42fr 1fr;
+  gap:20px;
+  align-items:center;
+}
+
+/* Horizontal connecting line through card mid-points */
+.rev-cards-wrap::before{
+  content:'';
+  position:absolute;
+  left:64px;right:64px;
+  top:50%;transform:translateY(-50%);
+  height:1px;
+  background:rgba(1,42,20,.06);
+  z-index:0;
+  pointer-events:none;
+}
+
+/* ── BASE CARD ── */
+.rev-card{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:36px 32px 28px;
+  /* Near-black warm background — cinematic, not flat dark green */
+  background:#0b0906;
+  box-shadow:0 8px 32px rgba(1,12,4,.18);
+  cursor:default;
+  opacity:0;
+  /* Hover lift */
+  transition:transform 220ms ease, box-shadow 220ms ease;
+  z-index:1;
+}
+.rev-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 22px 52px rgba(1,12,4,.28);
+}
+
+/* Flanking cards */
+.rev-card.flank{
+  height:380px;
+}
+
+/* Center card — taller, warmer bg, more presence */
+.rev-card.center{
+  height:460px;
+  background:#0e0b07;
+  /* Slightly elevated */
+  box-shadow:0 16px 48px rgba(1,12,4,.28),0 0 0 1px rgba(200,150,90,.08);
+}
+
+/* Card inner glow — warm light from bottom */
+.card-glow{
+  position:absolute;bottom:0;left:0;right:0;
+  height:65%;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 110%,rgba(180,120,20,.12) 0%,transparent 65%);
+}
+.rev-card.center .card-glow{
+  background:radial-gradient(ellipse 80% 60% at 50% 110%,rgba(200,140,22,.16) 0%,transparent 65%);
+}
+
+/* Card grain */
+.card-grain{z-index:1;opacity:.055;}
+
+/* ── STARS ── */
+.card-stars{
+  position:relative;z-index:3;
+  font-size:18px;color:#c8965a;
+  letter-spacing:3px;
+  margin-bottom:14px;
+  flex-shrink:0;
+}
+.rev-card.center .card-stars{font-size:22px;}
+
+/* ── QUOTE WATERMARK ── */
+.card-wm{
+  position:absolute;
+  top:-18px;left:20px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:180px;font-weight:800;
+  line-height:1;letter-spacing:-.04em;
+  -webkit-text-stroke:1px rgba(200,150,90,.08);
+  color:transparent;
+  pointer-events:none;user-select:none;
+  z-index:1;
+}
+.rev-card.center .card-wm{
+  font-size:220px;
+  -webkit-text-stroke:1px rgba(200,150,90,.1);
+}
+
+/* ── QUOTE TEXT ── */
+.card-quote{
+  position:relative;z-index:3;
+  flex:1;
+  font-family:'Barlow Condensed',sans-serif;
+  /* Lowercase italic — human, warm */
+  font-style:italic;
+  font-weight:700;
+  font-size:clamp(18px,1.7vw,22px);
+  color:rgba(255,255,255,.72);
+  line-height:1.42;
+  margin-bottom:24px;
+}
+.rev-card.center .card-quote{
+  font-size:clamp(24px,2.2vw,30px);
+  color:rgba(255,255,255,.78);
+  line-height:1.38;
+}
+/* Quote highlight — second line in gold */
+.card-quote em{
+  color:#c8965a;font-style:italic;
+}
+
+/* ── ATTRIBUTION ── */
+.card-attr{
+  position:relative;z-index:3;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.07);
+  flex-shrink:0;
+}
+.card-attr-left{}
+.card-name{
+  font-size:13px;font-weight:800;color:#fff;
+  letter-spacing:-.01em;margin-bottom:2px;
+}
+.card-location{
+  font-size:10.5px;font-weight:700;
+  /* Gold — local trust signal */
+  color:#c8965a;
+  letter-spacing:.04em;margin-bottom:2px;
+}
+.card-date{
+  font-size:9.5px;color:rgba(255,255,255,.25);
+  letter-spacing:.04em;
+}
+
+/* Service tag — color coded per service */
+.card-tag{
+  display:inline-flex;align-items:center;gap:5px;
+  border-radius:999px;padding:4px 10px;
+  font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--tag-border,rgba(200,150,90,.2));
+  background:var(--tag-bg,rgba(200,150,90,.08));
+  color:var(--tag-color,rgba(200,150,90,.85));
+  flex-shrink:0;
+}
+.card-tag-dot{width:5px;height:5px;border-radius:50%;background:var(--tag-dot,#c8965a);flex-shrink:0;}
+
+/* Service color variables */
+.tag-removal{
+  --tag-border:rgba(200,150,90,.22);
+  --tag-bg:rgba(200,150,90,.09);
+  --tag-color:rgba(220,168,78,.9);
+  --tag-dot:#c8965a;
+}
+.tag-stump{
+  --tag-border:rgba(218,155,64,.22);
+  --tag-bg:rgba(218,155,64,.09);
+  --tag-color:rgba(228,165,72,.9);
+  --tag-dot:rgba(218,155,64,.9);
+}
+.tag-storm{
+  --tag-border:rgba(118,182,255,.22);
+  --tag-bg:rgba(118,182,255,.08);
+  --tag-color:rgba(138,192,255,.88);
+  --tag-dot:#7ab2ff;
+}
+.tag-trim{
+  --tag-border:rgba(132,218,72,.22);
+  --tag-bg:rgba(132,218,72,.08);
+  --tag-color:rgba(148,224,82,.88);
+  --tag-dot:rgba(132,218,72,.9);
+}
+
+/* ── ANIMATION CLASSES ── */
+.rev-card.anim-center{animation:centerRise .58s cubic-bezier(.22,1,.36,1) forwards;}
+.rev-card.anim-left{animation:slideFromLeft .55s cubic-bezier(.22,1,.36,1) forwards;}
+.rev-card.anim-right{animation:slideFromRight .55s cubic-bezier(.22,1,.36,1) forwards;}
+
+/* ── BOTTOM CONVERSION BAND ── */
+.rev-bottom{
+  position:relative;z-index:2;
+  border-top:1.5px solid rgba(1,42,20,.09);
+  background:rgba(1,42,20,.03);
+  padding:22px 64px;
+  display:flex;align-items:center;justify-content:space-between;
+  opacity:0;
+}
+.rev-bottom.visible{animation:fadeUp .5s ease .4s forwards;}
+
+.rev-bottom-left{
+  display:flex;align-items:center;gap:10px;
+}
+.rev-bottom-txt{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(18px,1.7vw,24px);
+  font-weight:800;font-style:italic;
+  text-transform:uppercase;letter-spacing:-.01em;
+  color:rgba(1,42,20,.5);
+}
+.rev-bottom-txt strong{color:#c8965a;font-style:italic;}
+
+.rev-google-link{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:11.5px;font-weight:700;
+  color:rgba(200,150,90,.65);
+  cursor:pointer;letter-spacing:.02em;
+  border-bottom:1px solid rgba(200,150,90,.2);
+  padding-bottom:1px;
+  transition:color 200ms,border-color 200ms;
+}
+.rev-google-link:hover{color:#c8965a;border-color:rgba(200,150,90,.5);}
+</style>
+</head>
+<body>
+
+<!-- services context above -->
+<div class="svc-stub">
+  <div class="svc-stub-lbl">↑ Services section above</div>
+</div>
+
+<!-- ══ REVIEWS ══ -->
+<section class="reviews" id="reviews">
+  <div class="rev-top-fade"></div>
+  <div class="rev-glow"></div>
+  <div class="grain rev-grain"></div>
+
+  <!-- Header -->
+  <div class="rev-header" id="revHeader">
+    <div class="rev-header-left">
+      <div class="rev-eye"><div class="rev-eye-dot"></div>What Parrish Homeowners Say</div>
+      <div class="rev-h2">Don't Take<br><em>Our Word For It.</em></div>
+    </div>
+    <div class="rev-header-right">
+      <div class="rev-google">
+        <div class="rev-google-g">G</div>
+        <div class="rev-google-txt">Verified Google Reviews</div>
+        <div class="rev-google-stars">★★★★★</div>
+      </div>
+      <div class="rev-meta">5.0 average · Parrish, FL · 47 reviews</div>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="rev-cards-wrap" id="revCards">
+
+    <!-- LEFT FLANKING — Stump Grinding -->
+    <div class="rev-card flank" id="cardLeft">
+      <div class="card-glow"></div>
+      <div class="grain card-grain"></div>
+      <div class="card-wm">&ldquo;</div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-quote">
+        "The stump was gone, <em>the chips were cleaned,</em> and the yard looked finished. One visit, done permanently."
+      </div>
+      <div class="card-attr">
+        <div class="card-attr-left">
+          <div class="card-name">Chris P.</div>
+          <div class="card-location">Ellenton, FL</div>
+          <div class="card-date">February 2025</div>
+        </div>
+        <div class="card-tag tag-stump">
+          <div class="card-tag-dot"></div>
+          Stump Grinding
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER FEATURED — Tree Removal -->
+    <div class="rev-card center" id="cardCenter">
+      <div class="card-glow"></div>
+      <div class="grain card-grain"></div>
+      <div class="card-wm">&ldquo;</div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-quote">
+        "They showed up when they said, <em>left the yard cleaner than before the tree was there,</em> and charged exactly what they quoted. I've already sent three neighbors their way."
+      </div>
+      <div class="card-attr">
+        <div class="card-attr-left">
+          <div class="card-name">Sarah K.</div>
+          <div class="card-location">Parrish, FL</div>
+          <div class="card-date">March 2025</div>
+        </div>
+        <div class="card-tag tag-removal">
+          <div class="card-tag-dot"></div>
+          Tree Removal
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT FLANKING — Storm Cleanup -->
+    <div class="rev-card flank" id="cardRight">
+      <div class="card-glow"></div>
+      <div class="grain card-grain"></div>
+      <div class="card-wm">&ldquo;</div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-quote">
+        "Called at 7am after the storm. <em>Crew was here by noon,</em> driveway cleared, everything gone. Couldn't believe how fast."
+      </div>
+      <div class="card-attr">
+        <div class="card-attr-left">
+          <div class="card-name">Robert S.</div>
+          <div class="card-location">Palmetto, FL</div>
+          <div class="card-date">January 2025</div>
+        </div>
+        <div class="card-tag tag-storm">
+          <div class="card-tag-dot"></div>
+          Storm Cleanup
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom conversion band -->
+  <div class="rev-bottom" id="revBottom">
+    <div class="rev-bottom-left">
+      <div class="rev-bottom-txt">
+        Join <strong>500+</strong> Parrish homeowners who've trusted us with their property.
+      </div>
+    </div>
+    <div class="rev-google-link">
+      Read all reviews on Google →
+    </div>
+  </div>
+
+</section>
+
+<!-- process context below -->
+<div class="proc-stub">
+  <div class="svc-stub-lbl">↓ Process section below</div>
+</div>
+
+<script>
+/* Parallax on scroll */
+const cardLeft   = document.getElementById('cardLeft');
+const cardCenter = document.getElementById('cardCenter');
+const cardRight  = document.getElementById('cardRight');
+const section    = document.getElementById('reviews');
+
+window.addEventListener('scroll', () => {
+  const rect = section.getBoundingClientRect();
+  const inView = rect.top < window.innerHeight && rect.bottom > 0;
+  if(!inView) return;
+  const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
+  const offset = (progress - 0.5) * 18;
+  /* Center stays, flanks drift very slightly */
+  cardLeft.style.transform  = `translateY(${offset * 0.6}px)`;
+  cardRight.style.transform = `translateY(${offset * 0.6}px)`;
+  /* Center barely moves — feels closer */
+  cardCenter.style.transform = `translateY(${offset * 0.15}px)`;
+}, {passive:true});
+
+/* IntersectionObserver — trigger animations */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(!e.isIntersecting) return;
+
+    /* Header */
+    document.getElementById('revHeader').classList.add('visible');
+
+    /* Center card rises first */
+    setTimeout(() => {
+      cardCenter.classList.add('anim-center');
+    }, 100);
+
+    /* Flanks slide in 180ms later */
+    setTimeout(() => {
+      cardLeft.classList.add('anim-left');
+    }, 280);
+    setTimeout(() => {
+      cardRight.classList.add('anim-right');
+    }, 280);
+
+    /* Bottom band last */
+    setTimeout(() => {
+      document.getElementById('revBottom').classList.add('visible');
+    }, 500);
+
+    obs.disconnect();
+  });
+}, {threshold: 0.15});
+
+obs.observe(section);
+</script>
+</body>
+</html>

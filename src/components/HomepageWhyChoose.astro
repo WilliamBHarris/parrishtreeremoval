@@ -640,11 +640,13 @@ const homeWhyItems = [
       let renderedOverlayProgress = 0;
       let rafId = 0;
       let whyHeight = 1;
+      let whyDocTop = 0;
       let ctaTop = 0;
       let ctaHeight = 1;
 
       const syncMetrics = () => {
         whyHeight = why.offsetHeight || 1;
+        whyDocTop = why.getBoundingClientRect().top + window.scrollY;
         if (cta instanceof HTMLElement) {
           ctaTop = cta.offsetTop;
           ctaHeight = cta.offsetHeight || 1;
@@ -652,16 +654,16 @@ const homeWhyItems = [
       };
 
       const measureOverlay = () => {
-        const rect = why.getBoundingClientRect();
+        const top = whyDocTop - window.scrollY;
         const viewport = window.innerHeight || document.documentElement.clientHeight;
-        const progress = Math.min(Math.max((viewport - rect.top) / (viewport + whyHeight), 0), 1);
+        const progress = Math.min(Math.max((viewport - top) / (viewport + whyHeight), 0), 1);
         const start = 0.58;
         const end = 0.97;
         const baseOverlayProgress = Math.min(Math.max((progress - start) / (end - start), 0), 1);
 
         let ctaOverlayProgress = 0;
         if (cta instanceof HTMLElement) {
-          const ctaTopInViewport = rect.top + ctaTop;
+          const ctaTopInViewport = top + ctaTop;
           const ctaEntryProgress = Math.min(
             Math.max(
               (viewport - ctaTopInViewport) / Math.max(viewport * 0.96, 1),

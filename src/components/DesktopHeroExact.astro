@@ -1,0 +1,475 @@
+---
+import { getImage } from 'astro:assets';
+import { client } from '../data/client';
+import treeBgAsset from '../assets/hero/treeline-bg.png';
+import treeFgAsset from '../assets/hero/treeline-fg.png';
+
+const currentYear = new Date().getFullYear();
+const estYear = client.yearsInBusiness ? currentYear - client.yearsInBusiness : 2014;
+const jobsCompleted = client.jobsCompleted ?? 500;
+const yearsInBusiness = client.yearsInBusiness ?? 10;
+const googleRating = client.googleRating ?? 5;
+const brandWords = client.businessName.split(' ');
+const brandLead = brandWords[0] ?? client.businessName;
+const brandAccent = brandWords.slice(1).join(' ');
+
+const treeImageSizes = '100vw';
+const treeImageWidths = [1280, 1536] as const;
+const [treeBgWebp, treeFgWebp] = await Promise.all([
+  getImage({
+    src: treeBgAsset,
+    format: 'webp',
+    widths: treeImageWidths,
+    sizes: treeImageSizes,
+    quality: 68,
+  }),
+  getImage({
+    src: treeFgAsset,
+    format: 'webp',
+    widths: treeImageWidths,
+    sizes: treeImageSizes,
+    quality: 68,
+  }),
+]);
+---
+
+<header class="hdr" id="hdr">
+  <div class="hdr-inner">
+    <a class="logo" href="/">
+      <span class="logo-wordmark" aria-hidden="true">
+        <span class="logo-wordmark-base">{brandLead}</span>
+        <span class="logo-wordmark-accent">{brandAccent}</span>
+      </span>
+    </a>
+    <nav class="hdr-nav">
+      <a href="/services">Services</a>
+      <a href="/about">About</a>
+      <a href="#desktop-area">Service Area</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="hdr-r">
+      <a class="hdr-phone" href={`tel:${client.primaryPhoneHref}`}>
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1-.24c1.07.36 2.22.55 3.41.55a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.3 21 3 13.7 3 4.5a1 1 0 0 1 1-1h3.51a1 1 0 0 1 1 1c0 1.19.19 2.34.55 3.41a1 1 0 0 1-.24 1z"
+            fill="currentColor"
+          ></path>
+        </svg>
+        <span>{client.primaryPhoneDisplay}</span>
+      </a>
+      <button type="button" class="hdr-btn" data-open-estimate-modal aria-haspopup="dialog" aria-controls="estimate-modal">
+        <span>Get a Free Estimate →</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="hero-scene">
+<section class="hero" id="hero">
+  <div class="sky"></div>
+  <div class="sky-tex"></div>
+
+  <svg
+    class="god-rays"
+    viewBox="0 0 1280 760"
+    preserveAspectRatio="xMidYMax slice"
+    xmlns="http://www.w3.org/2000/svg"
+    style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;"
+  >
+    <defs>
+      <linearGradient id="rg" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="rgb(228,162,32)" stop-opacity="0.7"></stop>
+        <stop offset="30%" stop-color="rgb(210,142,24)" stop-opacity="0.28"></stop>
+        <stop offset="65%" stop-color="rgb(190,122,18)" stop-opacity="0.08"></stop>
+        <stop offset="100%" stop-color="rgb(170,102,12)" stop-opacity="0"></stop>
+      </linearGradient>
+    </defs>
+    <g stroke="url(#rg)" stroke-linecap="round">
+      <line x1="640" y1="820" x2="640" y2="0" stroke-width="2.8"></line>
+      <line x1="640" y1="820" x2="504" y2="0" stroke-width="2.1"></line>
+      <line x1="640" y1="820" x2="776" y2="0" stroke-width="2.1"></line>
+      <line x1="640" y1="820" x2="368" y2="0" stroke-width="1.6"></line>
+      <line x1="640" y1="820" x2="912" y2="0" stroke-width="1.6"></line>
+      <line x1="640" y1="820" x2="232" y2="0" stroke-width="1.2"></line>
+      <line x1="640" y1="820" x2="1048" y2="0" stroke-width="1.2"></line>
+      <line x1="640" y1="820" x2="96" y2="0" stroke-width=".9"></line>
+      <line x1="640" y1="820" x2="1184" y2="0" stroke-width=".9"></line>
+      <line x1="640" y1="820" x2="-40" y2="60" stroke-width=".7"></line>
+      <line x1="640" y1="820" x2="1320" y2="60" stroke-width=".7"></line>
+      <line x1="640" y1="820" x2="572" y2="0" stroke-width="1.4"></line>
+      <line x1="640" y1="820" x2="708" y2="0" stroke-width="1.4"></line>
+      <line x1="640" y1="820" x2="436" y2="0" stroke-width="1.1"></line>
+      <line x1="640" y1="820" x2="844" y2="0" stroke-width="1.1"></line>
+      <line x1="640" y1="820" x2="300" y2="0" stroke-width=".85"></line>
+      <line x1="640" y1="820" x2="980" y2="0" stroke-width=".85"></line>
+      <line x1="640" y1="820" x2="164" y2="0" stroke-width=".65"></line>
+      <line x1="640" y1="820" x2="1116" y2="0" stroke-width=".65"></line>
+    </g>
+  </svg>
+
+  <svg
+    class="stars"
+    viewBox="0 0 1280 380"
+    preserveAspectRatio="xMidYMid slice"
+    xmlns="http://www.w3.org/2000/svg"
+    style="position:absolute;top:0;left:0;right:0;height:48%;z-index:2;pointer-events:none;"
+  >
+    <g fill="rgba(255,255,255,1)">
+      <circle cx="88" cy="38" r="1.1"></circle>
+      <circle cx="212" cy="15" r=".85"></circle>
+      <circle cx="344" cy="62" r="1.0"></circle>
+      <circle cx="468" cy="24" r=".8"></circle>
+      <circle cx="582" cy="48" r="1.2"></circle>
+      <circle cx="698" cy="12" r=".85"></circle>
+      <circle cx="828" cy="36" r="1.0"></circle>
+      <circle cx="952" cy="58" r=".8"></circle>
+      <circle cx="1068" cy="20" r="1.1"></circle>
+      <circle cx="1188" cy="44" r=".9"></circle>
+      <circle cx="148" cy="84" r=".8"></circle>
+      <circle cx="298" cy="96" r=".95"></circle>
+      <circle cx="432" cy="72" r=".85"></circle>
+      <circle cx="556" cy="108" r=".8"></circle>
+      <circle cx="712" cy="82" r="1.0"></circle>
+      <circle cx="868" cy="92" r=".8"></circle>
+      <circle cx="992" cy="70" r=".95"></circle>
+      <circle cx="1112" cy="104" r=".85"></circle>
+      <circle cx="52" cy="112" r=".8"></circle>
+      <circle cx="224" cy="128" r=".95"></circle>
+      <circle cx="388" cy="142" r=".8"></circle>
+      <circle cx="524" cy="122" r=".85"></circle>
+      <circle cx="668" cy="148" r=".8"></circle>
+      <circle cx="812" cy="132" r=".95"></circle>
+      <circle cx="976" cy="152" r=".8"></circle>
+      <circle cx="1096" cy="136" r=".85"></circle>
+      <circle cx="1244" cy="118" r=".8"></circle>
+      <circle cx="160" cy="166" r=".85"></circle>
+      <circle cx="316" cy="178" r=".8"></circle>
+    </g>
+  </svg>
+
+  <div class="grain hero-grain"></div>
+  <div class="hero-body">
+    <div class="wm">PARRISH</div>
+    <div class="eyebrow">
+      <div class="ey-loc">
+        <span>Parrish, FL</span>
+        <span class="ey-sep">·</span>
+        <span>Est. {estYear}</span>
+        <span class="ey-sep">·</span>
+        <span>Manatee County</span>
+      </div>
+      <div class="ey-avail">
+        <div class="av-dot"></div>
+        <span class="av-txt">Available Today · Slots Open This Week</span>
+      </div>
+    </div>
+
+    <h1 class="h1">
+      <span class="l1">Show Up.</span>
+      <span class="l2">Do The Work.</span>
+      <span class="l3">Leave It Right.<span class="l3-neon"></span></span>
+    </h1>
+
+    <p class="hero-sub">
+      When a tree becomes a problem, we make it disappear.
+      <strong>Clean site, clear communication, every time.</strong>
+      Serving Manatee County since {estYear}.
+    </p>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-n"><span class="stat-v" data-target={String(jobsCompleted)}>0</span><span class="stat-s">+</span></div>
+        <div class="stat-l">Parrish Properties</div>
+      </div>
+      <div class="sdiv"></div>
+      <div class="stat">
+        <div class="stat-n"><span class="stat-v" data-target={String(yearsInBusiness)}>0</span><span class="stat-s">yr</span></div>
+        <div class="stat-l">In Business</div>
+      </div>
+      <div class="sdiv"></div>
+      <div class="stat">
+        <div class="stat-n"><span class="stat-v" data-target={String(googleRating)}>0</span><span class="stat-s">★</span></div>
+        <div class="stat-l">Google Rating</div>
+      </div>
+      <div class="sdiv"></div>
+      <div class="stat">
+        <div class="stat-n"><span class="stat-v" data-target="100">0</span><span class="stat-s">%</span></div>
+        <div class="stat-l">Cleanup Included</div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <button type="button" class="cta-est" data-open-estimate-modal aria-haspopup="dialog" aria-controls="estimate-modal">
+        <div class="est-in">
+          <div class="est-lbl">Free · No Obligation</div>
+          <div class="est-txt">Get a Free Estimate</div>
+        </div>
+        <div class="est-arr">→</div>
+      </button>
+      <div class="cdiv"></div>
+      <a class="cta-ph" href={`tel:${client.primaryPhoneHref}`}>
+        <div class="cta-ph-lbl">Or call directly</div>
+        <div class="cta-ph-num">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="rgba(200,150,90,.9)"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/></svg>
+          {client.primaryPhoneDisplay}
+        </div>
+      </a>
+    </div>
+
+    <div class="cta-soft-row">
+      <button type="button" class="cta-soft" data-hero-photo-trigger aria-haspopup="dialog" aria-controls="estimate-modal">
+        Send us a photo of your tree →
+      </button>
+    </div>
+
+    <div class="hero-av">
+      <div class="av2-dot"></div>
+      <div class="av2-txt"><strong>Slots available this week</strong> · Parrish &amp; Manatee County</div>
+    </div>
+  </div>
+
+  <div class="scroll-ind" id="si">
+    <div class="scr-lbl">Scroll</div>
+    <div class="scr-arr">↓</div>
+  </div>
+
+  <div class="treeline" id="tl">
+    <div class="tree-bg" id="tbg">
+      <img
+        src={treeBgWebp.src}
+        srcset={treeBgWebp.srcSet.attribute}
+        sizes={treeImageSizes}
+        width="1536"
+        height="519"
+        alt="Florida tree silhouette"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="sw sw1"></div>
+      <div class="sw sw2"></div>
+      <div class="sw sw3"></div>
+      <div class="sw sw4"></div>
+      <div class="sw sw5"></div>
+    </div>
+    <div class="tree-fg" id="tfg">
+      <img
+        src={treeFgWebp.src}
+        srcset={treeFgWebp.srcSet.attribute}
+        sizes={treeImageSizes}
+        width="1536"
+        height="519"
+        alt="Florida tree silhouette"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <div class="sw sw1"></div>
+      <div class="sw sw2"></div>
+      <div class="sw sw3"></div>
+      <div class="sw sw4"></div>
+      <div class="sw sw5"></div>
+    </div>
+  </div>
+</section>
+
+<div class="tick-wrap">
+  <div class="ticker">
+    <div class="tt">
+      <div class="ti"><div class="td"></div>Licensed &amp; Insured</div>
+      <div class="ti"><div class="td"></div>Free Estimates</div>
+      <div class="ti"><div class="td"></div>Same-Day Available</div>
+      <div class="ti"><div class="td"></div>Local &amp; Trusted</div>
+      <div class="ti"><div class="td"></div>Storm Response</div>
+      <div class="ti"><div class="td"></div>Full Cleanup Included</div>
+      <div class="ti"><div class="td"></div>{yearsInBusiness} Years in Parrish</div>
+      <div class="ti"><div class="td"></div>Licensed &amp; Insured</div>
+      <div class="ti"><div class="td"></div>Free Estimates</div>
+      <div class="ti"><div class="td"></div>Same-Day Available</div>
+      <div class="ti"><div class="td"></div>Local &amp; Trusted</div>
+      <div class="ti"><div class="td"></div>Storm Response</div>
+      <div class="ti"><div class="td"></div>Full Cleanup Included</div>
+      <div class="ti"><div class="td"></div>{yearsInBusiness} Years in Parrish</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script is:inline>
+  (() => {
+    const hdr = document.getElementById('hdr');
+    const si = document.getElementById('si');
+    const hero = document.getElementById('hero');
+    const photoTrigger = document.querySelector('[data-hero-photo-trigger]');
+    const estimateTrigger = document.querySelector('.cta-est[data-open-estimate-modal]');
+    if (!hdr || !si || !hero) return;
+
+    let latestY = window.scrollY;
+    let gone = false;
+    let ticking = false;
+
+    const updateScene = () => {
+      ticking = false;
+      const y = latestY;
+      hdr.classList.toggle('dark', y > 80);
+      if (y > 50 && !gone) {
+        gone = true;
+        si.classList.add('gone');
+      }
+    };
+
+    const scheduleSceneUpdate = () => {
+      latestY = window.scrollY;
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateScene);
+    };
+
+    updateScene();
+    window.addEventListener('scroll', scheduleSceneUpdate, { passive: true });
+    window.addEventListener('resize', scheduleSceneUpdate, { passive: true });
+
+    if (photoTrigger instanceof HTMLElement && estimateTrigger instanceof HTMLElement) {
+      photoTrigger.addEventListener('click', () => {
+        estimateTrigger.click();
+      });
+    }
+
+    function countUp(el, target, dur, cb) {
+      const t0 = performance.now();
+      (function f(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        el.textContent = String(Math.round(eased * target));
+        if (p < 1) requestAnimationFrame(f);
+        else {
+          el.textContent = String(target);
+          if (cb) cb();
+        }
+      })(performance.now());
+    }
+
+    const els = [...document.querySelectorAll('.stat-v')];
+    const tgts = els.map((el) => Number(el.getAttribute('data-target') || '0'));
+    const durs = [900, 550, 350, 650];
+    setTimeout(() => {
+      let d = 0;
+      els.forEach((el, i) => {
+        setTimeout(() => countUp(el, tgts[i], durs[i] || 650, null), d);
+        d += (durs[i] || 650) + 100;
+      });
+    }, 1600);
+  })();
+</script>
+
+<style>
+  :root{
+    --desktop-hero-ticker-height: 78px;
+  }
+  @keyframes dot {0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.55)}}
+  @keyframes tick {from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes availP {0%,100%{opacity:1;transform:scale(1)}50%{opacity:.38;transform:scale(.62)}}
+  @keyframes fadeUp {from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes wmFadeUp {from{opacity:0;transform:translate(-50%,-46%)}to{opacity:1;transform:translate(-50%,-50%)}}
+  @keyframes slideLeft {from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes riseUp {from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes sweepLine {from{width:0;opacity:.5}to{width:100%;opacity:1}}
+  @keyframes shimmer {0%{transform:translateX(-160%) skewX(-15deg);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateX(260%) skewX(-15deg);opacity:0}}
+  @keyframes treeIn {from{transform:translateY(60px)}to{transform:translateY(0)}}
+  @keyframes heroIn {from{opacity:0}to{opacity:1}}
+  @keyframes skyPulse {0%,100%{opacity:.5}50%{opacity:.85}}
+  @keyframes godPulse {0%,100%{opacity:.1}50%{opacity:.18}}
+  @keyframes starShimmer {0%,100%{opacity:.016}50%{opacity:.042}}
+  @keyframes scrollBounce {0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+  @keyframes sw1 {0%,100%{transform:translateX(0px)}35%{transform:translateX(2.8px)}72%{transform:translateX(-1.4px)}}
+  @keyframes sw2 {0%,100%{transform:translateX(0px)}42%{transform:translateX(-3.8px)}76%{transform:translateX(1.6px)}}
+  @keyframes sw3 {0%,100%{transform:translateX(0px)}30%{transform:translateX(3.2px)}68%{transform:translateX(-2.2px)}}
+  @keyframes sw4 {0%,100%{transform:translateX(0px)}48%{transform:translateX(-2.8px)}82%{transform:translateX(1.2px)}}
+  @keyframes sw5 {0%,100%{transform:translateX(0px)}38%{transform:translateX(2.2px)}74%{transform:translateX(-3.2px)}}
+  @keyframes statIn {from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes divIn {from{height:0;opacity:0}to{height:42px;opacity:1}}
+
+  .grain{position:absolute;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:160px;}
+  .hdr{position:fixed;top:0;left:0;right:0;z-index:200;background:transparent !important;border-bottom:1px solid transparent !important;box-shadow:none !important;transition:background 350ms ease,border-color 350ms ease,backdrop-filter 350ms ease}
+  .hdr.dark{background:rgba(1,36,14,.94);border-color:rgba(255,255,255,.07);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .hdr-inner{position:relative;width:100%;height:72px;padding:0 20px}
+  .logo{position:absolute;left:20px;top:50%;transform:translateY(-50%);text-decoration:none;display:inline-flex;align-items:center;min-width:72px;height:56px}
+  .logo-wordmark{display:inline-flex;height:100%;flex-direction:row;align-items:center;justify-content:flex-start;gap:.22rem;line-height:1;text-transform:uppercase;font-family:'Barlow Condensed','Arial Narrow',sans-serif;letter-spacing:.035em;white-space:nowrap}
+  .logo-wordmark-base,.logo-wordmark-accent{font-size:1.62rem;font-weight:800}
+  .logo-wordmark-base,.logo-wordmark-accent{display:block;line-height:1}
+  .logo-wordmark-base{color:#fff}
+  .logo-wordmark-accent{color:#c8965a}
+  .hdr-nav{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;gap:34px}
+  .hdr-nav a{font-size:12px;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.5);text-decoration:none;transition:color 200ms}
+  .hdr-nav a:hover{color:#fff}
+  .hdr-r{position:absolute;right:20px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:18px}
+  .hdr-phone{display:inline-flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1;color:rgba(200,150,90,.88);white-space:nowrap;text-decoration:none;text-shadow:0 0 18px rgba(200,150,90,.12)}
+  .hdr-phone svg{flex:0 0 auto;color:rgba(200,150,90,.8)}
+  .hdr-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(180deg,#d4a060,#b07840);color:#fff;font-size:12px;font-weight:800;padding:10px 22px;border-radius:9px;position:relative;overflow:hidden;letter-spacing:-.01em;box-shadow:0 6px 18px rgba(180,110,40,.38),inset 0 1px 0 rgba(255,255,255,.18);cursor:pointer;border:0}
+  .hdr-btn::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.16),transparent)}
+  .hdr-btn span{position:relative;z-index:1}
+  .hero-scene{position:relative;width:100%;height:100vh !important;min-height:100vh !important;max-height:100vh !important;display:flex;flex-direction:column;overflow:hidden;margin-top:0 !important;padding-top:0 !important;contain:layout paint style;isolation:isolate}
+  .hero-scene > .hero{position:relative;width:100%;flex:1 1 auto;min-height:0 !important;max-height:none !important;height:auto !important;overflow:hidden;display:flex;flex-direction:column;opacity:0;animation:heroIn .8s ease .1s forwards;margin-top:0 !important;padding-top:0 !important;background:transparent !important;contain:paint}
+  .sky{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 20% 26% at 50% 100%,rgba(242,170,30,.78) 0%,rgba(218,142,22,.38) 22%,rgba(185,112,14,.12) 44%,transparent 60%),radial-gradient(ellipse 90% 28% at 50% 100%,rgba(212,148,26,.6) 0%,rgba(188,118,16,.28) 38%,transparent 68%),radial-gradient(ellipse 55% 18% at 28% 100%,rgba(198,128,20,.35) 0%,rgba(175,105,14,.14) 45%,transparent 70%),linear-gradient(180deg,#010b03 0%,#011608 10%,#012010 20%,#012a14 32%,#013618 46%,#024020 58%,#033220 70%,#021a0c 82%,#010e06 92%,#010804 100%)}
+  .sky-tex{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 38% 16% at 50% 92%,rgba(255,255,255,.018) 0%,transparent 70%),radial-gradient(ellipse 58% 26% at 50% 96%,rgba(255,255,255,.012) 0%,transparent 70%),radial-gradient(ellipse 76% 36% at 50% 100%,rgba(255,255,255,.007) 0%,transparent 70%);animation:skyPulse 14s ease-in-out infinite;transform:translateZ(0)}
+  .god-rays{position:absolute;bottom:0;left:0;right:0;height:100%;z-index:2;pointer-events:none;opacity:.16;animation:godPulse 9s ease-in-out infinite;contain:paint;transform:translateZ(0)}
+  .stars{position:absolute;top:0;left:0;right:0;height:50%;z-index:2;pointer-events:none;animation:starShimmer 11s ease-in-out infinite;contain:paint;transform:translateZ(0)}
+  .wm{position:absolute;top:31%;left:50%;transform:translate(-50%,-50%);z-index:3;pointer-events:none;user-select:none;font-family:'Barlow Condensed',sans-serif;font-size:clamp(320px,31vw,460px);font-weight:800;font-style:normal;letter-spacing:-.05em;line-height:1;-webkit-text-stroke:1px rgba(255,255,255,.022);color:rgba(255,255,255,.022);white-space:nowrap;opacity:0;animation:wmFadeUp .9s ease .6s both}
+  .hero-grain{z-index:5;opacity:.055}
+  .hero-body{position:relative;z-index:10;flex:1;width:100%;max-width:1280px;margin:0 auto;padding:72px 80px 38vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transform:translateY(8px)}
+  .eyebrow{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:-6px;opacity:0;animation:fadeUp .5s ease .62s both}
+  .ey-loc{font-size:9.5px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:rgba(200,150,90,.65);display:flex;align-items:center;gap:10px}
+  .ey-sep{color:rgba(255,255,255,.16)}
+  .ey-avail{display:inline-flex;align-items:center;gap:9px;padding:5px 16px 5px 12px;border-left:2.5px solid #50dc50;background:rgba(50,200,50,.07);border-radius:0 7px 7px 0}
+  .av-dot{width:6px;height:6px;border-radius:50%;background:#50dc50;flex-shrink:0;animation:availP 2.1s ease-in-out infinite;transform-origin:center}
+  .av-txt{font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(100,225,100,.84)}
+  .h1{display:flex;flex-direction:column;align-items:center;gap:0;width:min(100%,1000px);margin-bottom:14px}
+  .l1{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:800;text-transform:uppercase;letter-spacing:-.022em;line-height:.9;color:rgba(255,255,255,.55);display:block;opacity:0;animation:slideLeft .58s cubic-bezier(.22,1,.36,1) .75s both}
+  .l2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(82px,9.2vw,132px);font-weight:800;text-transform:uppercase;letter-spacing:-.03em;line-height:.84;color:#fff;display:block;text-shadow:0 0 68px rgba(255,255,255,.05),0 2px 28px rgba(0,0,0,.56);opacity:0;animation:riseUp .68s cubic-bezier(.22,1,.36,1) .95s both}
+  .l3{font-family:'Barlow Condensed',sans-serif;font-size:82px;font-weight:800;font-style:normal;text-transform:uppercase;letter-spacing:-.028em;line-height:.9;color:#c8965a;display:inline-block;position:relative;padding-bottom:11px;opacity:0;animation:fadeUp .62s cubic-bezier(.22,1,.36,1) 1.15s both}
+  .l3::after{content:'';position:absolute;bottom:0;left:0;height:3px;border-radius:999px;background:linear-gradient(90deg,#c8965a,rgba(200,150,90,.55) 65%,transparent);box-shadow:0 0 22px rgba(200,150,90,.6),0 0 8px rgba(200,150,90,.4);width:0;animation:sweepLine .9s cubic-bezier(.22,1,.36,1) 1.95s forwards}
+  .l3-neon{position:absolute;bottom:-1px;height:5px;width:22%;border-radius:999px;background:linear-gradient(90deg,transparent,rgba(255,225,130,.95),transparent);opacity:0;animation:shimmer .56s ease 2.5s both}
+  .hero-sub{font-size:15px;font-weight:400;color:rgba(255,255,255,.42);line-height:1.55;max-width:700px;margin-bottom:20px;opacity:0;animation:fadeUp .5s ease 1.18s both}
+  .hero-sub strong{color:rgba(255,255,255,.72);font-weight:600}
+  .stats-row{display:flex;align-items:center;justify-content:space-between;gap:0;width:min(100%,920px);margin-bottom:22px}
+  .stat{display:flex;flex-direction:column;align-items:center;opacity:0}
+  .stat:nth-child(1){animation:statIn .4s ease 1.55s both}.stat:nth-child(3){animation:statIn .4s ease 1.72s both}.stat:nth-child(5){animation:statIn .4s ease 1.89s both}.stat:nth-child(7){animation:statIn .4s ease 2.06s both}
+  .stat-n{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:800;letter-spacing:-.025em;line-height:1;color:#fff;display:flex;align-items:flex-start;gap:3px}
+  .stat-v{display:inline-block;color:#fff}
+  .stat-s{font-family:'Barlow Condensed',sans-serif;font-size:clamp(14px,1.4vw,18px);font-weight:800;color:#c8965a;margin-top:6px}
+  .stat-l{font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.26);margin-top:6px;white-space:nowrap}
+  .sdiv{width:1px;height:0;background:rgba(255,255,255,.18);margin:0 24px;align-self:center;flex-shrink:0}
+  .sdiv:nth-child(2){animation:divIn .3s ease 1.62s forwards}.sdiv:nth-child(4){animation:divIn .3s ease 1.79s forwards}.sdiv:nth-child(6){animation:divIn .3s ease 1.96s forwards}
+  .cta-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:80px;row-gap:0;width:min(100%,920px);margin-bottom:12px;opacity:0;animation:fadeUp .5s ease 1.44s both}
+  .cta-est{display:inline-flex;align-items:center;gap:18px;background:linear-gradient(180deg,#d4a060,#b07840);color:#fff;padding:14px 32px;border-radius:14px;position:relative;overflow:hidden;box-shadow:0 14px 36px rgba(180,110,40,.5),inset 0 1px 0 rgba(255,255,255,.2);cursor:pointer;flex-shrink:0;border:0}
+  .cta-est::before{content:'';position:absolute;inset:0 0 55% 0;background:linear-gradient(180deg,rgba(255,255,255,.17),transparent)}
+  .cta-est::after{content:'';position:absolute;top:0;left:0;height:100%;width:32%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-160%) skewX(-15deg);animation:shimmer .56s ease 2.5s both}
+  .est-in{position:relative;z-index:1}.est-lbl{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:3px}.est-txt{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:1;color:#fff}
+  .est-arr{position:relative;z-index:1;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);display:grid;place-items:center;font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;flex-shrink:0}
+  .cdiv{width:1px;height:42px;background:rgba(255,255,255,.12);flex-shrink:0;justify-self:center}
+  .cta-row .cta-est{justify-self:end}
+  .cta-ph{display:flex;flex-direction:column;align-items:flex-start;flex-shrink:0;text-decoration:none;justify-self:start}
+  .cta-ph-lbl{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:5px}
+  .cta-ph-num{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;letter-spacing:-.01em;color:#c8965a;line-height:1;display:flex;align-items:center;gap:8px}
+  .cta-soft-row{display:flex;align-items:center;justify-content:center;gap:7px;opacity:0;animation:fadeUp .5s ease 1.58s both}
+  .cta-soft{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:rgba(200,150,90,.45) !important;cursor:pointer;border:0 !important;border-bottom:0 !important;padding:0 !important;background:transparent !important;box-shadow:none !important;letter-spacing:.01em;transition:color .2s,border-color .2s}
+  .cta-soft:hover{color:rgba(200,150,90,.88);border-color:rgba(200,150,90,.42)}
+  .hero-av{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;opacity:0;animation:fadeUp .5s ease 1.68s both}
+  .av2-dot{width:7px;height:7px;border-radius:50%;background:#50dc50;animation:availP 2.2s ease-in-out infinite;transform-origin:center}
+  .av2-txt{font-size:11px;font-weight:600;color:rgba(255,255,255,.34)} .av2-txt strong{color:rgba(255,255,255,.64);font-weight:700}
+  .scroll-ind{position:absolute;right:38px;bottom:42vh;z-index:12;display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;animation:fadeUp .5s ease 2.1s both;transition:opacity .4s ease;contain:paint}
+  .scroll-ind.gone{opacity:0 !important;pointer-events:none}
+  .scr-lbl{font-size:13px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.82);writing-mode:vertical-rl}
+  .scr-arr{font-size:28px;color:rgba(255,255,255,.82);animation:scrollBounce 1.9s ease-in-out infinite}
+  .treeline{position:absolute;bottom:0;left:0;right:0;z-index:6;pointer-events:none;animation:treeIn .9s cubic-bezier(.22,1,.36,1) .72s both;contain:paint}
+  .tree-bg,.tree-fg{will-change:transform;transform:translateZ(0)}
+  .tree-bg{position:absolute;bottom:0;left:-2%;width:104%}.tree-bg img{display:block;width:100%;opacity:.22;transform:translateY(-12px) translateZ(0)}
+  .tree-fg{position:relative;width:100%}.tree-fg img{display:block;width:100%;transform:translateZ(0)}
+  .sw{position:absolute;top:0;bottom:0;pointer-events:none}.sw1{left:2%;width:14%;animation:sw1 8.4s cubic-bezier(.45,.05,.55,.95) infinite}.sw2{left:20%;width:11%;animation:sw2 7.1s cubic-bezier(.4,.08,.6,.92) infinite 1.5s}.sw3{left:42%;width:17%;animation:sw3 11s cubic-bezier(.42,.06,.58,.94) infinite .8s}.sw4{left:67%;width:14%;animation:sw4 7.8s cubic-bezier(.44,.07,.56,.93) infinite 2.4s}.sw5{left:83%;width:12%;animation:sw5 9.5s cubic-bezier(.41,.09,.59,.91) infinite 1.2s}
+  .tick-wrap{position:relative;z-index:8;flex:0 0 var(--desktop-hero-ticker-height);height:var(--desktop-hero-ticker-height);margin-top:0}
+  .ticker{background:#c8965a;overflow:hidden;height:100%;display:flex;align-items:center;position:relative;box-shadow:0 -12px 32px rgba(200,150,90,.2),0 -4px 12px rgba(200,150,90,.12)}
+  .ticker::before,.ticker::after{content:'';position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(90deg,#c8965a,transparent);z-index:2}.ticker::after{left:auto;right:0;background:linear-gradient(270deg,#c8965a,transparent)}
+  .tt{display:inline-flex;white-space:nowrap;animation:tick 28s linear infinite}
+  .ti{display:inline-flex;align-items:center;gap:10px;padding:0 24px;color:rgba(255,255,255,.92);font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .td{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5)}
+</style>

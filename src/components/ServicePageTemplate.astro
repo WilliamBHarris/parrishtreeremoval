@@ -8,6 +8,7 @@ import PremiumWhenSection from './PremiumWhenSection.astro';
 import RelatedServicesSection from './RelatedServicesSection.astro';
 import FaqSection from './FaqSection.astro';
 import ServiceAreaSection from './ServiceAreaSection.astro';
+import { client } from '../data/client';
 
 interface FaqItem {
   question: string;
@@ -49,13 +50,14 @@ const {
   includedLayout = 'grid',
 } = Astro.props;
 
+const locationSuffix = ` in ${client.primaryLocation}`;
 const getVisibleRelatedLabel = (label: string) =>
   label
-    .replace(' in Parrish, FL', '')
-    .replace('Contact Parrish Tree Removal', 'Contact');
+    .replace(locationSuffix, '')
+    .replace(`Contact ${client.businessName}`, 'Contact');
 
-const heroMainTitle = heroTitle.replace(' in Parrish, FL', '');
-const heroLocationTitle = heroTitle.includes(' in Parrish, FL') ? 'in Parrish, FL' : '';
+const heroMainTitle = heroTitle.replace(locationSuffix, '');
+const heroLocationTitle = heroTitle.includes(locationSuffix) ? `in ${client.primaryLocation}` : '';
 const heroOutlineWords = `${heroMainTitle} ${heroLocationTitle}`.trim().split(/\s+/);
 
 const processIconPaths = [

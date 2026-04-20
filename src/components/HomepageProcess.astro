@@ -320,19 +320,21 @@ const premiumProcessSteps = pageId === 'home'
       const sequenceUnits = (steps.length * 2) - 1;
       let ticking = false;
       let timelineHeight = timeline.offsetHeight || 1;
+      let timelineDocTop = 0;
 
       const syncMetrics = () => {
         timelineHeight = timeline.offsetHeight || 1;
+        timelineDocTop = timeline.getBoundingClientRect().top + window.scrollY;
       };
 
       const updateTimeline = () => {
         ticking = false;
 
-        const rect = timeline.getBoundingClientRect();
+        const top = timelineDocTop - window.scrollY;
         const viewport = window.innerHeight || 1;
         const start = viewport * 0.8;
         const travel = timelineHeight + (viewport * 0.22);
-        const progress = clamp((start - rect.top) / travel, 0, 1);
+        const progress = clamp((start - top) / travel, 0, 1);
         const sequenceProgress = progress * sequenceUnits;
 
         steps.forEach((step, i) => {
@@ -362,6 +364,7 @@ const premiumProcessSteps = pageId === 'home'
         window.requestAnimationFrame(updateTimeline);
       };
 
+      syncMetrics();
       updateTimeline();
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', () => {

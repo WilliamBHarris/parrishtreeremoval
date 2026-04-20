@@ -190,6 +190,7 @@ const bindEstimateModal = () => {
   const handleWrap = modal.querySelector(".estimate-modal-handle-wrap");
   const pageContext = modal.querySelector(".estimate-modal-page-context");
   const header = modal.querySelector(".estimate-modal-header");
+  const serviceSelect = modal.querySelector('select[name="service"]');
   const closeDuration = prefersReducedMotion.matches ? 0 : 320;
 
   const clearCloseTimeout = () => {
@@ -238,11 +239,31 @@ const bindEstimateModal = () => {
     }
   };
 
-  const openModal = () => {
+  const syncServiceFromTrigger = (trigger) => {
+    if (!(serviceSelect instanceof HTMLSelectElement) || !(trigger instanceof Element)) return;
+
+    const explicitService = trigger.getAttribute("data-estimate-service");
+    if (explicitService) {
+      serviceSelect.value = explicitService;
+      serviceSelect.dispatchEvent(new Event("change", { bubbles: true }));
+      return;
+    }
+
+    const premiumServicesRoot = trigger.closest("[data-premium-services]");
+    const activePane = premiumServicesRoot?.querySelector("[data-ps-pane].is-active");
+    const activeService = activePane instanceof HTMLElement ? activePane.dataset.serviceName : "";
+    if (!activeService) return;
+
+    serviceSelect.value = activeService;
+    serviceSelect.dispatchEvent(new Event("change", { bubbles: true }));
+  };
+
+  const openModal = (trigger = null) => {
     clearCloseTimeout();
     resetDrag();
     lastFocused =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    syncServiceFromTrigger(trigger);
     modal.removeAttribute("hidden");
     modal.removeAttribute("inert");
     modal.setAttribute("aria-hidden", "false");
@@ -279,7 +300,7 @@ const bindEstimateModal = () => {
     const openTrigger = target.closest("[data-open-estimate-modal]");
     if (openTrigger) {
       event.preventDefault();
-      openModal();
+      openModal(openTrigger);
       return;
     }
 

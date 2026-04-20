@@ -74,4 +74,49 @@ const homeFaqSchema = createFaqSchema(homePage.faq);
       <ServiceAreaSection pageId="home" surfaceTone="cool" />
     </div>
   </div>
+
+  <style is:global>
+    @media (max-width: 899px) {
+      body.homepage-desktop-redesign #main-content > :not(.home-mobile-stack) {
+        display: none !important;
+      }
+    }
+
+    @media (min-width: 900px) {
+      body.homepage-desktop-redesign #main-content {
+        padding-top: 0 !important;
+      }
+
+      body.homepage-desktop-redesign #main-content > :not(.desktop-homepage) {
+        display: none !important;
+      }
+
+      body.homepage-desktop-redesign .site-header-shell,
+      body.homepage-desktop-redesign .home-footer,
+      body.homepage-desktop-redesign .site-footer {
+        display: none !important;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    (() => {
+      const main = document.getElementById('main-content');
+      if (!main) return;
+
+      const desktop = main.querySelector('.desktop-homepage');
+      const mobile = main.querySelector('.home-mobile-stack');
+      const mq = window.matchMedia('(min-width: 900px)');
+
+      const syncStacks = () => {
+        if (mq.matches) {
+          if (mobile && mobile.parentNode === main) mobile.remove();
+        } else {
+          if (desktop && desktop.parentNode === main) desktop.remove();
+        }
+      };
+
+      syncStacks();
+    })();
+  </script>
 </BaseLayout>

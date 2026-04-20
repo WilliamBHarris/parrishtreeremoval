@@ -2436,7 +2436,6 @@ body.template-section-title-boxed-label .clone-kicker::after {
   position: absolute;
   inset: 0;
   background: rgba(6, 10, 14, 0.76);
-  backdrop-filter: blur(8px);
 }
 
 .estimate-modal-dialog {
@@ -3392,11 +3391,6 @@ body.template-section-title-boxed-label .clone-kicker::after {
   100% { width: 100%; opacity: 1; }
 }
 
-@keyframes fadeUp {
-  0%   { opacity: 0; transform: translateY(14px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes tickScroll {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -4330,13 +4324,12 @@ body.template-section-title-boxed-label .clone-kicker::after {
   text-decoration: none;
   opacity: 0;
   transform: translateX(28px);
-  transition: transform 140ms ease, opacity 0.5s ease, box-shadow 300ms ease, filter 300ms ease;
+  transition: transform 140ms ease, opacity 0.5s ease, box-shadow 300ms ease;
   -webkit-tap-highlight-color: transparent;
-  filter: brightness(0.78);
 }
 
 .svc-card.visible {
-  opacity: 1;
+  opacity: 0.68;
   transform: translateX(0);
 }
 
@@ -4393,7 +4386,7 @@ body.template-section-title-boxed-label .clone-kicker::after {
 .c4 .svc-card-border::after { background: linear-gradient(150deg, #091628 0%, #050d18 55%, #020609 100%); }
 
 .svc-card.is-active {
-  filter: brightness(1);
+  opacity: 1;
   box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
@@ -7147,8 +7140,6 @@ select:focus-visible {
   .menu-scrim {
     inset: var(--header-safe) 0 0 0;
     background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
   }
 
   .mobile-drawer {
@@ -7201,7 +7192,6 @@ select:focus-visible {
     border-radius: 50%;
     background: radial-gradient(circle, rgba(200,150,90,0.07) 0%, transparent 65%);
     pointer-events: none;
-    animation: orbFloat 12s ease-in-out infinite alternate;
   }
 
   .menu-bg-orb2 {
@@ -7213,7 +7203,6 @@ select:focus-visible {
     border-radius: 50%;
     background: radial-gradient(circle, rgba(1,70,32,0.4) 0%, transparent 65%);
     pointer-events: none;
-    animation: orbFloat2 15s ease-in-out infinite alternate;
   }
 
   .menu-grain {
@@ -7476,8 +7465,6 @@ select:focus-visible {
 
 .estimate-modal-scrim {
   background: rgba(0,0,0,0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
 .estimate-modal-dialog {
@@ -7838,20 +7825,186 @@ select:focus-visible {
 
 @media (min-width: 900px) {
   .estimate-modal {
-    align-items: center;
-    padding: 24px;
+    align-items: stretch;
+    justify-content: flex-end;
+    padding: 0;
   }
 
   .estimate-modal-dialog {
-    width: min(calc(100vw - 28px), 22.5rem);
-    max-width: min(calc(100vw - 28px), 22.5rem);
-    max-height: min(92vh, 56rem);
-    transform: none;
+    width: min(460px, 100vw);
+    max-width: min(460px, 100vw);
+    height: 100dvh;
+    max-height: 100dvh;
+    background: transparent;
+    box-shadow: -30px 0 80px rgba(0,0,0,.38);
+    transform: translateX(100%);
+    transition: transform 420ms cubic-bezier(.22, 1, .36, 1);
+    will-change: transform;
+  }
+
+  .estimate-modal.is-open .estimate-modal-dialog {
+    transform: translateX(0);
   }
 
   .estimate-modal-sheet {
-    border-radius: 28px;
-    min-height: 0;
+    border-radius: 0;
+    min-height: 100%;
+    background: linear-gradient(180deg, rgba(1,26,10,.985), rgba(0,10,3,.985));
+    color: #fff;
+    overflow-y: auto;
+  }
+
+  .estimate-modal-sheet::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: .04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px;
+  }
+
+  .estimate-modal-handle-wrap {
+    display: none;
+  }
+
+  .estimate-modal-header {
+    position: relative;
+    z-index: 1;
+    padding: 22px 22px 0;
+  }
+
+  .estimate-modal-eyebrow {
+    margin-bottom: 10px;
+    font-size: 9px;
+    letter-spacing: .26em;
+    color: rgba(200,150,90,.7);
+  }
+
+  .estimate-modal-title {
+    font-size: 38px;
+    line-height: .88;
+    color: #fff;
+  }
+
+  .estimate-modal-title em {
+    color: #c8965a;
+  }
+
+  .estimate-modal-close {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    margin-top: 0;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.07);
+  }
+
+  .estimate-modal-close svg {
+    stroke: rgba(255,255,255,.72);
+  }
+
+  .estimate-modal-sub {
+    position: relative;
+    z-index: 1;
+    padding: 8px 22px 24px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: rgba(255,255,255,.3);
+  }
+
+  .estimate-form-shell--premium-modal {
+    position: relative;
+    z-index: 1;
+    padding: 0 22px 22px;
+    gap: 14px;
+  }
+
+  .estimate-form--premium-modal {
+    padding: 0;
+    gap: 14px;
+  }
+
+  .estimate-modal-field {
+    gap: 6px;
+  }
+
+  .estimate-modal-field label {
+    font-size: 9px;
+    letter-spacing: .16em;
+    color: rgba(255,255,255,.32);
+  }
+
+  .estimate-modal-input,
+  .estimate-modal-select,
+  .estimate-modal-textarea {
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    background: rgba(255,255,255,.05);
+    color: #fff;
+    box-shadow: none;
+  }
+
+  .estimate-modal-input::placeholder,
+  .estimate-modal-textarea::placeholder,
+  .estimate-modal-select {
+    color: rgba(255,255,255,.28);
+  }
+
+  .estimate-modal-input:focus,
+  .estimate-modal-select:focus,
+  .estimate-modal-textarea:focus {
+    border-color: rgba(200,150,90,.4);
+    box-shadow: none;
+    background: rgba(255,255,255,.08);
+  }
+
+  .estimate-modal-select option {
+    background: #011a08;
+    color: #fff;
+  }
+
+  .estimate-modal-select-arrow {
+    color: rgba(255,255,255,.4);
+  }
+
+  .estimate-form--premium-modal .estimate-modal-textarea {
+    height: 120px !important;
+    min-height: 120px !important;
+  }
+
+  .estimate-modal-submit {
+    justify-content: space-between;
+    align-self: stretch;
+    padding: 16px 18px;
+    border-radius: 12px;
+  }
+
+  .estimate-modal-submit-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -.01em;
+  }
+
+  .estimate-modal-submit-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.2);
+    border: 1px solid rgba(255,255,255,.28);
+  }
+
+  .estimate-modal-privacy {
+    padding: 0;
+    font-size: 10px;
+    color: rgba(255,255,255,.2);
+  }
+
+  .estimate-modal .form-status {
+    color: rgba(255,255,255,.8);
   }
 }
 

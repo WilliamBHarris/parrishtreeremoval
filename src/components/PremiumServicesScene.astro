@@ -1,0 +1,1538 @@
+---
+import { getImage } from 'astro:assets';
+import { client } from '../data/client';
+import removalImage from '../assets/premium-services/removal.jpg';
+import trimmingImage from '../assets/premium-services/trimming.jpg';
+import stumpImage from '../assets/premium-services/stump.jpg';
+import stormImage from '../assets/premium-services/storm.jpg';
+
+const currentYear = new Date().getFullYear();
+const estYear = client.yearsInBusiness ? currentYear - client.yearsInBusiness : 2014;
+
+const services = [
+  {
+    situation: 'I need a tree removed',
+    name: 'Tree Removal',
+    href: '/tree-removal',
+    imagePosition: '60% 28%',
+    accent: '#c8965a',
+    glow: 'rgba(200,150,90,.42)',
+    tint: 'rgba(180,120,20,.06)',
+    quote:
+      '"They were here within 3 hours. Took down a massive oak and the yard was spotless when they left."',
+    attr: 'Sarah K. · Parrish, FL · Tree Removal',
+    desc: [
+      'Any size tree, any access situation.',
+      'Safe cut, clean haul-off, immaculate site.',
+      `500+ trees removed in ${client.primaryLocation} since ${estYear}.`,
+    ],
+    trust: [
+      { label: 'Full cleanup included', detail: 'Every log and chip removed' },
+      { label: 'Quoted within 2 hours', detail: 'Photo to flat price, fast' },
+      { label: 'Licensed and fully insured', detail: "You're never liable" },
+    ],
+    avail: 'Slots available this week · Call to confirm',
+    response: 'Under 2 hrs',
+    ctaSub: 'Typical response: same day',
+    urgency: 'Same-day removal available for hazard trees',
+  },
+  {
+    situation: 'My tree is overgrown',
+    name: 'Tree Trimming',
+    href: '/tree-trimming',
+    imagePosition: '50% 18%',
+    accent: 'rgba(132,218,72,.97)',
+    glow: 'rgba(130,218,70,.36)',
+    tint: 'rgba(80,160,30,.05)',
+    quote:
+      `"Trimmed three trees hanging over my roof. Couldn't even tell they'd been here by the time they left."`,
+    attr: 'Mike R. · Ellenton, FL · Tree Trimming',
+    desc: [
+      'Clearance from roofs, fences, and power lines.',
+      'Healthier canopy, better structure and light.',
+      'Full cleanup on every single trim job.',
+    ],
+    trust: [
+      { label: 'Cleanup on every trim', detail: 'Branches hauled, yard raked' },
+      { label: 'Most jobs 2 to 4 hours', detail: 'In and out, no disruption' },
+      { label: 'Licensed and insured', detail: 'Trained crew, proper gear' },
+    ],
+    avail: 'Available Mon-Sat',
+    response: 'Same day',
+    ctaSub: 'Available slots this week',
+    urgency: 'Most trimming jobs booked within 3 days',
+  },
+  {
+    situation: 'I have a stump to remove',
+    name: 'Stump Grinding',
+    href: '/stump-grinding',
+    imagePosition: '46% 22%',
+    accent: 'rgba(218,155,64,.97)',
+    glow: 'rgba(215,152,62,.38)',
+    tint: 'rgba(180,110,20,.05)',
+    quote: `"Stump was completely gone in under an hour. Couldn't even tell where it had been."`,
+    attr: 'Jennifer L. · Bradenton, FL · Stump Grinding',
+    desc: [
+      'Ground below grade, permanently gone.',
+      'No regrowth, no trip hazard, no eyesore.',
+      'Done in a single visit with commercial equipment.',
+    ],
+    trust: [
+      { label: 'Ground below grade', detail: 'No regrowth, ever' },
+      { label: 'Single visit, done', detail: 'Commercial grinder, fast' },
+      { label: 'Chips hauled away', detail: 'Yard left completely clean' },
+    ],
+    avail: 'Next-day for most jobs',
+    response: 'Next day',
+    ctaSub: 'Most jobs next-day turnaround',
+    urgency: 'Next-day availability for most stump jobs',
+  },
+  {
+    situation: 'Storm damage, need help now',
+    name: 'Storm Cleanup',
+    href: '/emergency-tree-service',
+    imagePosition: '50% 34%',
+    accent: 'rgba(118,182,255,.97)',
+    glow: 'rgba(112,175,255,.34)',
+    tint: 'rgba(40,100,200,.06)',
+    quote:
+      '"Called at 7am after the storm. Crew was here by noon. Driveway clear, everything gone same day."',
+    attr: 'Tom W. · Parrish, FL · Storm Cleanup',
+    desc: [
+      'Fast response when it matters most.',
+      'Fallen limbs and blocked driveways cleared.',
+      'Emergency line answered 24 hours a day.',
+    ],
+    trust: [
+      { label: 'Same-day response', detail: 'We move fast when it matters' },
+      { label: '24/7 emergency line', detail: 'Real person, not a machine' },
+      { label: 'Fully insured', detail: 'Safe hazard tree removal' },
+    ],
+    avail: 'Emergency line 24/7',
+    response: '47 min avg',
+    ctaSub: 'Emergency crews standing by',
+    urgency: 'Storm crews available today, call now',
+  },
+] as const;
+
+const serviceImageAssets = [removalImage, trimmingImage, stumpImage, stormImage] as const;
+const serviceImageSizes = '(max-width: 767px) 100vw, 100vw';
+const serviceImageWidths = [560, 840, 1200] as const;
+const serviceImages = await Promise.all(
+  serviceImageAssets.map(async (src) => {
+    const [avif, webp, jpeg] = await Promise.all([
+      getImage({
+        src,
+        format: 'avif',
+        widths: serviceImageWidths,
+        sizes: serviceImageSizes,
+        quality: 34,
+      }),
+      getImage({
+        src,
+        format: 'webp',
+        widths: serviceImageWidths,
+        sizes: serviceImageSizes,
+        quality: 46,
+      }),
+      getImage({
+        src,
+        format: 'jpeg',
+        widths: serviceImageWidths,
+        sizes: serviceImageSizes,
+        quality: 56,
+      }),
+    ]);
+
+    return { avif, webp, jpeg };
+  })
+);
+
+const iconSvg = {
+  phone:
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(200,150,90,.85)" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011-.24c1.12.37 2.33.57 3.59.57a1 1 0 011 1V20a1 1 0 01-1 1C10.3 21 3 13.7 3 4.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.26.2 2.47.57 3.59a1 1 0 01-.45 1z"/></svg>',
+  check:
+    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+  clock:
+    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  shield:
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+} as const;
+
+const trustIconKinds = [
+  ['check', 'clock', 'shield'],
+  ['check', 'clock', 'shield'],
+  ['check', 'clock', 'shield'],
+  ['check', 'clock', 'shield'],
+] as const;
+---
+
+<section class="ps" data-premium-services>
+  <div class="ps-side-label">SERVICES</div>
+
+  <div class="ps-photo-wrap" aria-hidden="true">
+    {services.map((service, index) => (
+      <picture>
+        <source
+          type="image/avif"
+          srcset={serviceImages[index].avif.srcSet.attribute}
+          sizes={serviceImageSizes}
+        />
+        <source
+          type="image/webp"
+          srcset={serviceImages[index].webp.srcSet.attribute}
+          sizes={serviceImageSizes}
+        />
+        <img
+          class:list={['ps-photo', `ps-photo--kb${index + 1}`, index === 0 && 'is-active']}
+          data-ps-photo
+          src={serviceImages[index].jpeg.src}
+          srcset={serviceImages[index].jpeg.srcSet.attribute}
+          alt=""
+          width="1024"
+          height="1536"
+          loading={index === 0 ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchpriority={index === 0 ? 'high' : 'auto'}
+          sizes={serviceImageSizes}
+          style={`--ps-pos:${service.imagePosition};--ps-scale:${index % 2 === 0 ? '1.06' : '1.05'};`}
+        />
+      </picture>
+    ))}
+  </div>
+
+  <div class="ps-tint" data-ps-tint></div>
+  <div class="ps-gradient-top"></div>
+  <div class="ps-gradient-bottom"></div>
+  <div class="ps-vignette"></div>
+
+  <div class="ps-content">
+    <div class="ps-top">
+      <div class="ps-top-left">
+        <div class="ps-eye"><span class="ps-eye-dot"></span>Our Services</div>
+        <div class="ps-divider"></div>
+        <div class="ps-tagline">One crew · Four services · {client.primaryLocation}, FL</div>
+        <div class="ps-divider"></div>
+        <div class="ps-live"><span class="ps-live-dot"></span>31 jobs completed this month</div>
+      </div>
+      <div class="ps-top-right">
+        <div class="ps-phone">
+          <span class="ps-phone-label">Call now:</span>
+          <a href={`tel:${client.primaryPhoneHref}`} class="ps-phone-number">{client.primaryPhoneDisplay}</a>
+        </div>
+        <button type="button" class="ps-top-cta" data-open-estimate-modal aria-haspopup="dialog" aria-controls="estimate-modal">
+          <span>Get a Free Estimate</span>
+          <b>→</b>
+        </button>
+      </div>
+    </div>
+
+    <div class="ps-nav" role="tablist" aria-label="Homepage services">
+      {services.map((service, index) => (
+        <button
+          type="button"
+          class:list={['ps-nav-item', index === 0 && 'is-active']}
+          data-ps-trigger
+          data-index={String(index)}
+          data-accent={service.accent}
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          tabindex={index === 0 ? '0' : '-1'}
+          style={`--ps-accent:${service.accent};--ps-glow:${service.glow};`}
+        >
+          <span class="ps-nav-ghost">{String(index + 1).padStart(2, '0')}</span>
+          <span class="ps-nav-progress"></span>
+          <span class="ps-nav-num">{String(index + 1).padStart(2, '0')}</span>
+          <span class="ps-nav-copy">
+            <span class="ps-nav-situation">{service.situation}</span>
+            <span class="ps-nav-name">{service.name}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div class="ps-stage">
+      {services.map((service, index) => (
+        <article
+          class:list={['ps-pane', index === 0 && 'is-active']}
+          data-ps-pane
+          data-accent={service.accent}
+          data-service-name={service.name}
+          style={`--ps-accent:${service.accent};--ps-glow:${service.glow};`}
+        >
+          <div class="ps-pane-main">
+            <div class="ps-left">
+              <div class="ps-name-wrap">
+                <h2 class="ps-name" data-text={service.name}>{service.name}</h2>
+              </div>
+              <div class="ps-rule"></div>
+              <div class="ps-desc">
+                {service.desc.map((line) => (
+                  <div class="ps-desc-line">
+                    <span class="ps-desc-dot"></span>
+                    <span>{line}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="ps-right">
+              <div class="ps-proof">
+                <div class="ps-quote-mark">“</div>
+                <p class="ps-quote">{service.quote}</p>
+                <p class="ps-attr">{service.attr}</p>
+              </div>
+
+              <div class="ps-trust">
+                {service.trust.map((item, trustIndex) => (
+                  <div class="ps-trust-item">
+                    <div class="ps-trust-icon">
+                      <span
+                        class="ps-trust-icon-svg"
+                        set:html={iconSvg[trustIconKinds[index][trustIndex]]}
+                      ></span>
+                    </div>
+                    <div>
+                      <div class="ps-trust-label">{item.label}</div>
+                      <div class="ps-trust-detail">{item.detail}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div class="ps-bottom">
+            <button type="button" class="ps-cta" data-open-estimate-modal aria-haspopup="dialog" aria-controls="estimate-modal">
+              <span class="ps-cta-copy">
+                <span class="ps-cta-label">Free · No Obligation</span>
+                <span class="ps-cta-title">Get a Free Estimate</span>
+                <span class="ps-cta-sub">{service.ctaSub}</span>
+              </span>
+              <span class="ps-cta-arrow">→</span>
+            </button>
+
+            <div class="ps-bottom-divider"></div>
+
+            <div class="ps-bottom-col">
+              <div class="ps-bottom-label">Or call directly</div>
+              <a href={`tel:${client.primaryPhoneHref}`} class="ps-bottom-phone">
+                <span class="ps-phone-icon" set:html={iconSvg.phone}></span>
+                {client.primaryPhoneDisplay}
+              </a>
+              <div class="ps-bottom-meta">{service.avail}</div>
+            </div>
+
+            <div class="ps-bottom-divider"></div>
+
+            <div class="ps-bottom-col">
+              <div class="ps-bottom-label">Typical response</div>
+              <div class="ps-bottom-response">{service.response}</div>
+              <div class="ps-bottom-meta">from first contact</div>
+            </div>
+
+            <div class="ps-guarantee">
+              <div class="ps-guarantee-icon">
+                <span set:html={iconSvg.shield}></span>
+              </div>
+              <div class="ps-guarantee-copy">
+                Satisfaction guaranteed
+                <span>We come back if you're not happy</span>
+              </div>
+            </div>
+
+            <div class="ps-urgency">
+              <span class="ps-urgency-dot"></span>
+              <span class="ps-urgency-text" data-ps-urgency-text>{service.urgency}</span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<div class="ps-bottom-strip">
+  <div class="ps-bottom-strip-inner">
+    <div class="ps-bottom-strip-text">Not sure which service? <em>Call us — we'll tell you honestly.</em></div>
+    <a href="/services" class="ps-bottom-strip-link">View all services →</a>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-premium-services]');
+    if (!(root instanceof HTMLElement) || root.dataset.psBound === 'true') return;
+    root.dataset.psBound = 'true';
+
+    const photos = Array.from(root.querySelectorAll('[data-ps-photo]'));
+    const panes = Array.from(root.querySelectorAll('[data-ps-pane]'));
+    const triggers = Array.from(root.querySelectorAll('[data-ps-trigger]'));
+    const urgencyTexts = Array.from(root.querySelectorAll('[data-ps-urgency-text]'));
+    const tint = root.querySelector('[data-ps-tint]');
+    let activeIndex = 0;
+    let autoTimer = 0;
+    let urgencyTimer = 0;
+    let isVisible = false;
+    let hasBooted = false;
+    const AUTO_MS = 9000;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const warmedPhotos = new Set();
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback.bind(window)
+      : (callback) => window.setTimeout(callback, 180);
+
+    const warmPhoto = (src) => {
+      if (!src || warmedPhotos.has(src)) return Promise.resolve();
+      warmedPhotos.add(src);
+
+      return new Promise((resolve) => {
+        const preload = new Image();
+        preload.decoding = 'async';
+        preload.loading = 'eager';
+
+        const finish = () => {
+          if (typeof preload.decode === 'function') {
+            preload.decode().catch(() => {}).finally(resolve);
+            return;
+          }
+          resolve();
+        };
+
+        preload.addEventListener('load', finish, { once: true });
+        preload.addEventListener('error', resolve, { once: true });
+        preload.src = src;
+
+        if (preload.complete) finish();
+      });
+    };
+
+    const queuePhotoWarmup = () => {
+      let chain = Promise.resolve();
+
+      photos.slice(1).forEach((photo, index) => {
+        chain = chain.then(() => new Promise((resolve) => {
+          idle(() => {
+            if (!(photo instanceof HTMLImageElement)) {
+              resolve();
+              return;
+            }
+
+            warmPhoto(photo.currentSrc || photo.src).finally(resolve);
+          }, { timeout: 1000 + index * 300 });
+        }));
+      });
+    };
+
+    const typewriteUrgency = (index) => {
+      window.clearTimeout(urgencyTimer);
+
+      urgencyTexts.forEach((node, nodeIndex) => {
+        if (!(node instanceof HTMLElement)) return;
+        if (nodeIndex !== index) {
+          node.textContent = node.dataset.fullText || node.textContent || '';
+        }
+      });
+
+      const target = urgencyTexts[index];
+      if (!(target instanceof HTMLElement)) return;
+
+      const full = target.dataset.fullText || target.textContent || '';
+      target.dataset.fullText = full;
+
+      if (!isVisible || reduceMotion.matches) {
+        target.textContent = full;
+        return;
+      }
+
+      target.textContent = '';
+      let cursor = 0;
+
+      const step = () => {
+        if (!(target instanceof HTMLElement)) return;
+        if (cursor <= full.length) {
+          target.textContent = full.slice(0, cursor);
+          cursor += 1;
+          urgencyTimer = window.setTimeout(step, 18);
+          return;
+        }
+
+        target.textContent = full;
+      };
+
+      urgencyTimer = window.setTimeout(step, 360);
+    };
+
+    const activate = (index, userAction = false) => {
+      activeIndex = index;
+
+      triggers.forEach((trigger, triggerIndex) => {
+        const isActive = triggerIndex === index;
+        trigger.classList.toggle('is-active', isActive);
+        trigger.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        trigger.tabIndex = isActive ? 0 : -1;
+      });
+
+      panes.forEach((pane, paneIndex) => {
+        pane.classList.toggle('is-active', paneIndex === index);
+      });
+
+      photos.forEach((photo, photoIndex) => {
+        photo.classList.toggle('is-active', photoIndex === index);
+      });
+
+      const activePane = panes[index];
+      const activeTrigger = triggers[index];
+      if (tint instanceof HTMLElement && activePane instanceof HTMLElement) {
+        const accent = activePane.dataset.accent || '';
+        tint.style.background = accent
+          ? `linear-gradient(180deg, transparent 0%, ${accent}12 100%)`
+          : '';
+      }
+
+      triggers.forEach((trigger) => {
+        trigger.style.setProperty('--ps-progress-play', 'paused');
+      });
+      if (activeTrigger instanceof HTMLElement) {
+        activeTrigger.style.setProperty('--ps-progress-play', 'running');
+        activeTrigger.style.setProperty('--ps-progress-duration', `${AUTO_MS}ms`);
+      }
+
+      typewriteUrgency(index);
+
+      if (userAction) schedule();
+    };
+
+    const schedule = () => {
+      window.clearTimeout(autoTimer);
+      if (!isVisible) return;
+      autoTimer = window.setTimeout(() => {
+        activate((activeIndex + 1) % panes.length, false);
+        schedule();
+      }, AUTO_MS);
+    };
+
+    const boot = () => {
+      if (hasBooted) return;
+      hasBooted = true;
+      const firstPhoto = photos[0];
+      if (firstPhoto instanceof HTMLImageElement) {
+        warmPhoto(firstPhoto.currentSrc || firstPhoto.src).catch(() => {});
+      }
+      queuePhotoWarmup();
+      activate(0, false);
+    };
+
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => activate(index, true));
+      trigger.addEventListener('keydown', (event) => {
+        if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let nextIndex = index;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % triggers.length;
+        if (event.key === 'ArrowLeft') nextIndex = (index - 1 + triggers.length) % triggers.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = triggers.length - 1;
+        activate(nextIndex, true);
+        const nextTrigger = triggers[nextIndex];
+        if (nextTrigger instanceof HTMLButtonElement) nextTrigger.focus();
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      isVisible = Boolean(entry?.isIntersecting);
+      root.classList.toggle('is-visible', isVisible);
+      if (isVisible) {
+        boot();
+        schedule();
+        typewriteUrgency(activeIndex);
+      } else {
+        window.clearTimeout(autoTimer);
+        window.clearTimeout(urgencyTimer);
+      }
+    }, { rootMargin: '200px 0px' });
+
+    observer.observe(root);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        window.clearTimeout(autoTimer);
+        window.clearTimeout(urgencyTimer);
+        return;
+      }
+      if (isVisible) schedule();
+    });
+  })();
+</script>
+
+<style>
+  .ps {
+    --ps-accent: #c8965a;
+    position: relative;
+    min-height: 740px;
+    overflow: clip;
+    background: #011608;
+    color: #fff;
+    content-visibility: auto;
+    contain: layout paint style;
+    contain-intrinsic-size: 740px;
+  }
+
+  .ps-side-label {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    z-index: 5;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    color: rgba(255,255,255,0.12);
+  }
+
+  .ps-photo-wrap,
+  .ps-tint,
+  .ps-gradient-top,
+  .ps-gradient-bottom,
+  .ps-vignette,
+  .ps-content {
+    position: absolute;
+    inset: 0;
+  }
+
+  .ps-photo-wrap {
+    overflow: hidden;
+    transform: translateZ(0);
+    contain: paint;
+  }
+
+  .ps-photo {
+    position: absolute;
+    inset: -4%;
+    width: calc(100% + 8%);
+    height: calc(100% + 8%);
+    object-fit: cover;
+    object-position: var(--ps-pos);
+    opacity: 0;
+    transform: scale(var(--ps-scale, 1.05));
+    transition: opacity 320ms ease, transform 6s ease-out;
+    backface-visibility: hidden;
+    transform-origin: center;
+    will-change: opacity, transform;
+  }
+
+  .ps.is-visible .ps-photo.is-active {
+    opacity: 1;
+    will-change: transform, opacity;
+  }
+
+  .ps.is-visible .ps-photo.is-active.ps-photo--kb1 {
+    animation: psKenBurns1 12s ease-in-out infinite alternate;
+  }
+
+  .ps.is-visible .ps-photo.is-active.ps-photo--kb2 {
+    animation: psKenBurns2 12s ease-in-out infinite alternate;
+  }
+
+  .ps.is-visible .ps-photo.is-active.ps-photo--kb3 {
+    animation: psKenBurns3 12s ease-in-out infinite alternate;
+  }
+
+  .ps.is-visible .ps-photo.is-active.ps-photo--kb4 {
+    animation: psKenBurns4 12s ease-in-out infinite alternate;
+  }
+
+  .ps-tint {
+    background: linear-gradient(180deg, transparent 0%, rgba(200,150,90,0.08) 100%);
+    transition: background 260ms ease;
+    transform: translateZ(0);
+  }
+
+  .ps-gradient-top {
+    height: 220px;
+    background: linear-gradient(180deg, rgba(0,8,2,.84) 0%, rgba(0,8,2,.44) 40%, transparent 100%);
+    transform: translateZ(0);
+  }
+
+  .ps-gradient-bottom {
+    background: linear-gradient(180deg, transparent 0%, rgba(0,4,1,.32) 50%, rgba(0,4,1,.92) 82%, #000401 100%);
+    transform: translateZ(0);
+  }
+
+  .ps-vignette {
+    background: radial-gradient(ellipse 120% 100% at 50% 50%, transparent 32%, rgba(0,2,1,.34) 70%, rgba(0,2,1,.64) 100%);
+    transform: translateZ(0);
+  }
+
+  .ps-content {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    transform: translateZ(0);
+  }
+
+  .ps-top {
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 64px 0 52px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    background: rgba(0,0,0,.18);
+  }
+
+  .ps-top-left,
+  .ps-top-right,
+  .ps-phone,
+  .ps-eye,
+  .ps-live {
+    display: flex;
+    align-items: center;
+  }
+
+  .ps-top-left {
+    gap: 14px;
+  }
+
+  .ps-eye,
+  .ps-live {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ps-eye {
+    gap: 7px;
+    color: rgba(200,150,90,.78);
+  }
+
+  .ps-eye-dot,
+  .ps-live-dot,
+  .ps-desc-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: currentColor;
+  }
+
+  .ps-eye-dot,
+  .ps-live-dot,
+  .ps-desc-dot,
+  .ps-urgency-dot {
+    animation: psDotPulse 2.2s ease-in-out infinite;
+  }
+
+  .ps-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255,255,255,.12);
+  }
+
+  .ps-tagline {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,.3);
+  }
+
+  .ps-live {
+    gap: 7px;
+    padding: 4px 12px;
+    border: 1px solid rgba(80,220,80,.2);
+    border-radius: 999px;
+    color: rgba(80,220,80,.7);
+    background: rgba(80,220,80,.06);
+  }
+
+  .ps-live-dot {
+    background: #50dc50;
+  }
+
+  .ps-top-right {
+    gap: 18px;
+  }
+
+  .ps-phone {
+    gap: 8px;
+  }
+
+  .ps-phone-label {
+    font-size: 10px;
+    color: rgba(255,255,255,.34);
+  }
+
+  .ps-phone-number,
+  .ps-bottom-phone,
+  .ps-bottom-response {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .ps-phone-number {
+    font-size: 22px;
+    color: #c8965a;
+  }
+
+  .ps-top-cta,
+  .ps-cta {
+    border: 0;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(180deg, #d4a060, #b07840);
+    box-shadow: 0 8px 18px rgba(180,110,40,.24);
+  }
+
+  .ps-top-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ps-top-cta::before,
+  .ps-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 55% 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.16), transparent);
+  }
+
+  .ps-top-cta::after,
+  .ps-cta::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent);
+    transform: translateX(-150%) skewX(-15deg);
+  }
+
+  .ps-top-cta:hover::after {
+    animation: psShimmer .5s ease forwards;
+  }
+
+  .ps-cta::after {
+    animation: psShimmer .5s ease 2s, psShimmer .5s ease 10s, psShimmer .5s ease 18s, psShimmer .5s ease 26s;
+  }
+
+  .ps-top-cta b,
+  .ps-cta-arrow {
+    display: inline-grid;
+    place-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ps-top-cta span,
+  .ps-cta-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ps-top-cta b {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: rgba(0,0,0,.2);
+  }
+
+  .ps-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    background: rgba(0,0,0,.2);
+  }
+
+  .ps-nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 70px;
+    padding: 0 28px;
+    border: 0;
+    border-right: 1px solid rgba(255,255,255,.06);
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    contain: paint;
+  }
+
+  .ps-nav-item:last-child {
+    border-right: 0;
+  }
+
+  .ps-nav-item:hover {
+    background: rgba(255,255,255,.03);
+  }
+
+  .ps-nav-item.is-active {
+    color: #fff;
+  }
+
+  .ps-nav-item::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2.5px;
+    background: var(--ps-accent);
+    box-shadow: 0 0 8px var(--ps-glow);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 420ms cubic-bezier(.22,1,.36,1);
+  }
+
+  .ps-nav-item.is-active::after {
+    transform: scaleX(1);
+  }
+
+  .ps-nav-ghost {
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-52%);
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 88px;
+    font-weight: 800;
+    font-style: italic;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,.05);
+    pointer-events: none;
+  }
+
+  .ps-nav-item.is-active .ps-nav-ghost {
+    -webkit-text-stroke: 1px color-mix(in srgb, var(--ps-accent) 22%, transparent);
+  }
+
+  .ps-nav-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    overflow: hidden;
+  }
+
+  .ps-nav-progress::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--ps-accent);
+    box-shadow: 0 0 6px var(--ps-glow);
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: psProgress var(--ps-progress-duration, 9000ms) linear paused;
+    animation-play-state: var(--ps-progress-play, paused);
+  }
+
+  .ps-nav-item.is-active .ps-nav-progress::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 20%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.8), transparent);
+    animation: psSweep .6s ease .45s both;
+  }
+
+  .ps-nav-item.is-active .ps-nav-progress::before {
+    animation-name: psProgress;
+  }
+
+  .ps-nav-num {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .16em;
+    color: rgba(255,255,255,.24);
+  }
+
+  .ps-nav-item.is-active .ps-nav-num,
+  .ps-nav-item.is-active .ps-nav-situation {
+    color: var(--ps-accent);
+  }
+
+  .ps-nav-copy {
+    display: block;
+  }
+
+  .ps-nav-situation {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.24);
+  }
+
+  .ps-nav-name {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: clamp(17px, 1.6vw, 21px);
+    font-style: italic;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.36);
+  }
+
+  .ps-nav-item.is-active .ps-nav-name {
+    color: #fff;
+  }
+
+  .ps-stage {
+    position: relative;
+    flex: 1;
+    contain: layout paint;
+  }
+
+  .ps-pane {
+    position: absolute;
+    inset: 0;
+    padding: 44px 60px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(14px);
+    transition: opacity 240ms ease, transform 240ms ease;
+    contain: layout paint style;
+    will-change: opacity, transform;
+  }
+
+  .ps-pane.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .ps-pane-main > *,
+  .ps-bottom {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 320ms ease, transform 320ms ease;
+  }
+
+  .ps-pane.is-active .ps-pane-main > *,
+  .ps-pane.is-active .ps-bottom {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ps-pane.is-active .ps-right {
+    transition-delay: 70ms;
+  }
+
+  .ps-pane.is-active .ps-bottom {
+    transition-delay: 120ms;
+  }
+
+  .ps-pane-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: 44px;
+    align-items: end;
+  }
+
+  .ps-left {
+    padding-right: 12px;
+  }
+
+  .ps-name {
+    position: relative;
+    margin: 0 0 14px;
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: clamp(72px, 7.6vw, 104px);
+    font-style: italic;
+    font-weight: 800;
+    line-height: .84;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 24px var(--ps-glow), 0 3px 18px rgba(0,0,0,.68);
+    transform: translateZ(0);
+  }
+
+  .ps-name::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: inherit;
+    text-shadow: 0 0 42px color-mix(in srgb, var(--ps-glow) 72%, transparent), 0 3px 18px rgba(0,0,0,.68);
+    opacity: .32;
+    pointer-events: none;
+    animation: psTitleGlowOpacity 5.6s ease-in-out infinite;
+  }
+
+  .ps-rule {
+    width: min(100%, 720px);
+    height: 2px;
+    margin-bottom: 16px;
+    border-radius: 999px;
+    background: var(--ps-accent);
+    transform-origin: left center;
+    transform: scaleX(.92);
+    transition: transform 320ms ease;
+  }
+
+  .ps-pane.is-active .ps-rule {
+    transform: scaleX(1);
+  }
+
+  .ps-desc {
+    display: grid;
+    gap: 8px;
+  }
+
+  .ps-desc-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,.58);
+    font-size: 14px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 280ms ease, transform 280ms ease;
+  }
+
+  .ps-pane.is-active .ps-desc-line {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ps-pane.is-active .ps-desc-line:nth-child(1) {
+    transition-delay: 110ms;
+  }
+
+  .ps-pane.is-active .ps-desc-line:nth-child(2) {
+    transition-delay: 150ms;
+  }
+
+  .ps-pane.is-active .ps-desc-line:nth-child(3) {
+    transition-delay: 190ms;
+  }
+
+  .ps-desc-dot {
+    color: var(--ps-accent);
+    flex: 0 0 auto;
+  }
+
+  .ps-right {
+    padding-left: 44px;
+    border-left: 1px solid rgba(255,255,255,.08);
+  }
+
+  .ps-proof {
+    position: relative;
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 300ms ease, transform 300ms ease;
+    contain: paint;
+  }
+
+  .ps-pane.is-active .ps-proof {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ps-quote-mark {
+    position: absolute;
+    top: -30px;
+    left: -6px;
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 118px;
+    font-weight: 800;
+    line-height: 1;
+    color: color-mix(in srgb, var(--ps-accent) 44%, transparent);
+  }
+
+  .ps-quote {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 8px;
+    padding-left: 14px;
+    border-left: 2px solid var(--ps-accent);
+    color: rgba(255,255,255,.7);
+    font-size: 14.5px;
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .ps-attr {
+    margin: 0;
+    padding-left: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+
+  .ps-trust {
+    display: grid;
+    gap: 10px;
+  }
+
+  .ps-trust-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 280ms ease, transform 280ms ease;
+    contain: paint;
+  }
+
+  .ps-pane.is-active .ps-trust-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ps-pane.is-active .ps-trust-item:nth-child(1) {
+    transition-delay: 110ms;
+  }
+
+  .ps-pane.is-active .ps-trust-item:nth-child(2) {
+    transition-delay: 155ms;
+  }
+
+  .ps-pane.is-active .ps-trust-item:nth-child(3) {
+    transition-delay: 200ms;
+  }
+
+  .ps-trust-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--ps-accent) 40%, rgba(255,255,255,.08));
+    background: rgba(255,255,255,.06);
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    color: var(--ps-accent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ps-trust-icon::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 55% 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.09), transparent);
+  }
+
+  .ps-trust-icon-svg {
+    display: inline-grid;
+    width: 13px;
+    height: 13px;
+    place-items: center;
+    line-height: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ps-trust-icon-svg :global(svg),
+  .ps-phone-icon :global(svg),
+  .ps-guarantee-icon :global(svg) {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .ps-trust-label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .ps-trust-detail {
+    font-size: 10.5px;
+    color: rgba(255,255,255,.36);
+  }
+
+  .ps-bottom {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding-top: 26px;
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+
+  .ps-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 28px;
+    border-radius: 13px;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0);
+  }
+
+  .ps-cta:hover,
+  .ps-top-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 11px 22px rgba(180,110,40,.28);
+  }
+
+  .ps-cta-copy {
+    display: block;
+    text-align: left;
+  }
+
+  .ps-cta-label,
+  .ps-bottom-label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.58);
+  }
+
+  .ps-cta-title,
+  .ps-bottom-phone,
+  .ps-bottom-response {
+    display: block;
+    line-height: 1;
+  }
+
+  .ps-cta-title {
+    margin-top: 4px;
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .ps-cta-sub,
+  .ps-bottom-meta {
+    display: block;
+    margin-top: 4px;
+    font-size: 9.5px;
+    color: rgba(255,255,255,.32);
+  }
+
+  .ps-cta-arrow {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.24);
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+  }
+
+  .ps-bottom-divider {
+    width: 1px;
+    height: 44px;
+    margin: 0 24px;
+    background: rgba(255,255,255,.1);
+  }
+
+  .ps-bottom-col {
+    flex: 0 0 auto;
+  }
+
+  .ps-bottom-phone {
+    margin-top: 4px;
+    font-size: 30px;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ps-phone-icon {
+    display: inline-grid;
+    width: 16px;
+    height: 16px;
+    place-items: center;
+    line-height: 0;
+  }
+
+  .ps-bottom-response {
+    margin-top: 4px;
+    font-size: 22px;
+    color: rgba(255,255,255,.8);
+  }
+
+  .ps-guarantee {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    margin-right: 22px;
+  }
+
+  .ps-guarantee-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 1px solid color-mix(in srgb, var(--ps-accent) 30%, transparent);
+    background: color-mix(in srgb, var(--ps-accent) 12%, transparent);
+    display: grid;
+    place-items: center;
+    color: color-mix(in srgb, var(--ps-accent) 88%, white);
+    line-height: 0;
+  }
+
+  .ps-guarantee-copy {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: rgba(255,255,255,.42);
+  }
+
+  .ps-guarantee-copy span {
+    display: block;
+    margin-top: 1px;
+    font-size: 9px;
+    font-weight: 400;
+    color: rgba(255,255,255,.26);
+  }
+
+  .ps-urgency {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,.72);
+  }
+
+  .ps-urgency-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #50dc50;
+    flex: 0 0 auto;
+  }
+
+  .ps-urgency-text {
+    min-width: 28ch;
+    contain: content;
+  }
+
+  .ps-bottom-strip {
+    background: #012a14;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+
+  .ps-bottom-strip-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px 64px;
+  }
+
+  .ps-bottom-strip-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .ps-bottom-strip-text {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.3);
+  }
+
+  .ps-bottom-strip-text em,
+  .ps-bottom-strip-link {
+    color: #c8965a;
+    font-style: normal;
+  }
+
+  .ps-bottom-strip-link {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  @keyframes psProgress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  @keyframes psDotPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .36; transform: scale(.6); }
+  }
+
+  @keyframes psShimmer {
+    0%, 92%, 100% { transform: translateX(-150%) skewX(-15deg); }
+    96% { transform: translateX(320%) skewX(-15deg); }
+  }
+
+  @keyframes psSweep {
+    from { transform: translateX(-140%) skewX(-15deg); }
+    to { transform: translateX(340%) skewX(-15deg); }
+  }
+
+  @keyframes psKenBurns1 {
+    from { transform: scale(calc(var(--ps-scale, 1.05) + 0.01)) translate3d(0, 0, 0); }
+    to { transform: scale(calc(var(--ps-scale, 1.05) + 0.04)) translate3d(1.4%, -1.1%, 0); }
+  }
+
+  @keyframes psKenBurns2 {
+    from { transform: scale(calc(var(--ps-scale, 1.05) + 0.015)) translate3d(0, 0, 0); }
+    to { transform: scale(calc(var(--ps-scale, 1.05) + 0.042)) translate3d(-1.6%, -0.8%, 0); }
+  }
+
+  @keyframes psKenBurns3 {
+    from { transform: scale(calc(var(--ps-scale, 1.05) + 0.012)) translate3d(0, 0, 0); }
+    to { transform: scale(calc(var(--ps-scale, 1.05) + 0.04)) translate3d(1.1%, 0.9%, 0); }
+  }
+
+  @keyframes psKenBurns4 {
+    from { transform: scale(calc(var(--ps-scale, 1.05) + 0.014)) translate3d(0, 0, 0); }
+    to { transform: scale(calc(var(--ps-scale, 1.05) + 0.043)) translate3d(-1.2%, 1.1%, 0); }
+  }
+
+  @keyframes psTitleGlowOpacity {
+    0%, 100% { opacity: .32; }
+    50% { opacity: .68; }
+  }
+
+  @media (max-width: 1199px) {
+    .ps-top,
+    .ps-pane {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+    .ps-pane-main {
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 28px;
+    }
+
+    .ps-bottom-strip-inner {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+  }
+</style>
